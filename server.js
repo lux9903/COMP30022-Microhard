@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -18,6 +19,8 @@ const connection = mongoose.connection;
 connection.once('open', () => {
 	console.log("MongoDB database connection established successfully");
 })
+
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 const exercisesRouter = require('./backend/routes/exercises');
 const usersRouter = require('./backend/routes/users');
