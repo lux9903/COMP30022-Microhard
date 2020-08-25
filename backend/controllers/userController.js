@@ -46,7 +46,6 @@ const login = async (req,res) => {
     // Create and assign a token
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
     res.header('auth-token',token).send(token);
-    res.send("Log in")
 }
 module.exports = {
     getUser,
