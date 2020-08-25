@@ -1,7 +1,8 @@
 const exerciseRouter = require('express').Router();
 const exerciseController = require('../controllers/exerciseController');
+const auth = require('./authRouter');
 
-exerciseRouter.get('/',function (req,res){
+exerciseRouter.get('/',auth,function (req,res){
 	exerciseController.getExercise(req,res);
 });
 
