@@ -22,8 +22,13 @@ connection.once('open', () => {
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-const exercisesRouter = require('./backend/routes/exercises');
-const usersRouter = require('./backend/routes/users');
+//models
+require('./backend/models/userModel');
+require('./backend/models/exerciseModel');
+
+// routers
+const exercisesRouter = require('./backend/routes/exercisesRouter');
+const usersRouter = require('./backend/routes/usersRouter');
 
 app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
