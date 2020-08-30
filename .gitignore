@@ -1,5 +1,6 @@
 # Local development
 .env
+.idea
 *.dev
 .DS_Store
 
@@ -35,5 +36,5 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
-
-.idea
+"sendgrid.env"
+"sendgrid.env"
