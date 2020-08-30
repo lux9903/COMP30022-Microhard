@@ -54,7 +54,7 @@ exports.resetPassword = (req, res) => {
         if (!user) return res.status(401).json({ message: 'Password reset token is invalid or has expired.' });
 
         //Set the new password
-        user.password = req.body.password;
+        user.setPassword(req.body.password);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
 

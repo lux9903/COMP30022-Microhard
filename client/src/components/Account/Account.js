@@ -152,7 +152,7 @@ class Account extends Component {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            this.props.dispatch(resetPassword(values));
+                            this.props.dispatch(resetPassword(values, this.props.match.params.token));
                         }}>
                         {({ errors, touched }) => (
                             <Form>
@@ -202,7 +202,7 @@ class Account extends Component {
 
                                             <div className='form-footer text-right'>
                                                 <button type='submit' className='btn btn-primary'>
-                                                    Update settings
+                                                    Update Password
                                                 </button>
                                             </div>
                                         </div>
