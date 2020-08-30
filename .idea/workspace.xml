@@ -20,9 +20,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a13b60f-fd62-46c2-ad7c-2c45fcb8df6d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/client/public/favicons/favicon.PNG" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Account/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Account/Account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/passwordController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/passwordController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/android-chrome-192x192.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/android-chrome-192x192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/android-chrome-384x384.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/android-chrome-384x384.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/apple-touch-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/apple-touch-icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/browserconfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/browserconfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/favicon-16x16.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/favicon-16x16.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/favicon-32x32.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/favicon-32x32.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/mstile-150x150.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/mstile-150x150.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicons/site.webmanifest" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicons/site.webmanifest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Cancellation.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Closure.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Crash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Delay.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Hazard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Inspector.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/img/icon-Traffic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +83,7 @@
       <workItem from="1598323003294" duration="17839000" />
       <workItem from="1598543641773" duration="8889000" />
       <workItem from="1598780474583" duration="5205000" />
-      <workItem from="1598786183363" duration="3976000" />
+      <workItem from="1598786183363" duration="4798000" />
     </task>
     <servers />
   </component>
