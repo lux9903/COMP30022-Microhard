@@ -19,23 +19,26 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="68e485dc-0afd-4e7c-bc48-4b4471360ba2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/.env.example" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    <list default="true" id="3a13b60f-fd62-46c2-ad7c-2c45fcb8df6d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1gUBqq9O5UMjzZ93rax1ZvNPbci" />
+  <component name="ProjectId" id="1gVNu5WVdZD40PZzMGVBJZuSUhJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -46,24 +49,21 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\84907\Documents\GitHub\COMP30022-Microhard" />
-      <recent name="C:\Users\84907\Documents\GitHub\COMP30022-Microhard\backend" />
-    </key>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="68e485dc-0afd-4e7c-bc48-4b4471360ba2" name="Default Changelist" comment="" />
-      <created>1598159483203</created>
+      <changelist id="3a13b60f-fd62-46c2-ad7c-2c45fcb8df6d" name="Default Changelist" comment="" />
+      <created>1598196018976</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1598159483203</updated>
-      <workItem from="1598159484255" duration="592000" />
-      <workItem from="1598193263269" duration="8886000" />
-      <workItem from="1598202318980" duration="840000" />
-      <workItem from="1598239439844" duration="1473000" />
+      <updated>1598196018976</updated>
+      <workItem from="1598196020361" duration="4328000" />
+      <workItem from="1598202412670" duration="751000" />
+      <workItem from="1598239428057" duration="4515000" />
+      <workItem from="1598323003294" duration="17839000" />
+      <workItem from="1598543641773" duration="8889000" />
+      <workItem from="1598780474583" duration="5205000" />
+      <workItem from="1598786183363" duration="5446000" />
     </task>
     <servers />
   </component>
@@ -83,37 +83,41 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="550" y="329" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598240110158">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598784486212">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="550" y="329" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598240110158" />
-    <state x="530" y="274" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598240507656">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598784486212" />
+    <state x="514" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598550458060">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="530" y="274" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598240507656" />
-    <state x="882" y="284" key="FileChooserDialogImpl" timestamp="1598196017421">
+    <state x="514" y="325" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598550458060" />
+    <state x="744" y="279" key="FileChooserDialogImpl" timestamp="1598239435815">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="882" y="284" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1598196017421" />
-    <state width="1362" height="247" key="GridCell.Tab.0.bottom" timestamp="1598202657245">
+    <state x="744" y="279" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1598239435815" />
+    <state width="1114" height="278" key="GridCell.Tab.0.bottom" timestamp="1598555205651">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="247" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598202657245" />
-    <state width="1362" height="247" key="GridCell.Tab.0.center" timestamp="1598202657245">
+    <state width="1114" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598555205651" />
+    <state width="1114" height="278" key="GridCell.Tab.0.center" timestamp="1598555205651">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="247" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598202657245" />
-    <state width="1362" height="247" key="GridCell.Tab.0.left" timestamp="1598202657245">
+    <state width="1114" height="278" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598555205651" />
+    <state width="1114" height="278" key="GridCell.Tab.0.left" timestamp="1598555205651">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="247" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598202657245" />
-    <state width="1362" height="247" key="GridCell.Tab.0.right" timestamp="1598202657245">
+    <state width="1114" height="278" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598555205651" />
+    <state width="1114" height="278" key="GridCell.Tab.0.right" timestamp="1598555205651">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="247" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598202657245" />
-    <state x="617" y="441" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1598202762938">
+    <state width="1114" height="278" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598555205651" />
+    <state x="781" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1598346990080">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="617" y="441" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1598202762938" />
+    <state x="781" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1598346990080" />
+    <state x="143" y="230" width="672" height="678" key="search.everywhere.popup" timestamp="1598346162590">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="143" y="230" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598346162590" />
   </component>
 </project>
