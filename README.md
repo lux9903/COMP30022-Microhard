@@ -18,13 +18,3 @@ Copy contents of .env.example and put it in a file called .env
 ```
 > npm run dev
 ```
-
-Go to localhost:5000
-
-Open up a new terminal window
-
-```
-> cd client
-> npm install
-> npm run dev
-```
