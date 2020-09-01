@@ -15,8 +15,8 @@ Student E-portfolio app. Mongo/Express/React/Node.js.
 > cd client
 > npm install
 ```
-3, Copy contents of .env.example and put it in a file called .env
-4, Open another terminal window
+3. Copy contents of .env.example and put it in a file called .env
+4. Open another terminal window
 
 ```
 > npm run dev
