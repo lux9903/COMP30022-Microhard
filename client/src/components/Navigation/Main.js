@@ -10,7 +10,8 @@ import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
-import Plan from '../Home/Plan'
+import Plan from '../Home/Plan';
+import Image from '../Home/Image';
 
 class Main extends Component {
     render() {
@@ -23,6 +24,7 @@ class Main extends Component {
 
                 <PrivateHome exact path='/' authed={this.props.user} />
                 <PrivateRoute exact path='/plan' component={Plan} authed={this.props.user} />
+                <PrivateRoute exact path='/image' component={Image} authed={this.props.user} />
                 <PrivateRoute exact path='/account' component={Account} authed={this.props.user} />
 
                 <Route component={NoMatch} />
