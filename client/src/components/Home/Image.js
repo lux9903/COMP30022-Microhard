@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import logo from '../../img/form-logo.PNG';
 
 import ReactDOM from 'react-dom';
-import axios from 'axios';
+//import axios from 'axios';
+import axios from '../../helpers/axiosConfig';
 
 export default class FilesUploadComponent extends Component {
     
 
     componentDidMount() {
-        const imgs = axios.get('/image').then(res=>{
+        const imgs = axios.get("/image").then(res=>{
             if(res.data.files){
                 const imgPic = res.data.files.map((ele) =>
                     <img src = {ele} alt = {ele}/>);

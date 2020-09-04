@@ -55,7 +55,7 @@ const getAllImage = (req, res) => {
       var imgPath = [];
       for(file of files){
         if(file.isImage){
-          imgPath.push("/image/"+file.filename);
+          imgPath.push("/api/image/"+file.filename);
         }
       }
       return res.json({'files': imgPath});

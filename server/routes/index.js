@@ -1,8 +1,8 @@
 var router = require('express').Router();
 
 router.use('/api/user', require('./userRouter'));
-router.use('/image', require('./imageRouter'));
-router.use('/file', require('./fileRouter'));
+router.use('/api/image', require('./imageRouter'));
+router.use('/api/file', require('./fileRouter'));
 
 
 router.use(function (err, req, res, next) {
