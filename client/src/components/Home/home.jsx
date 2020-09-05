@@ -4,12 +4,14 @@ import {Link} from 'react-router-dom';
 import logo from '../../img/form-logo.PNG';
 import Appbar from '../Navigation/Appbar';
 import Hero from '../Home/Hero';
+import Functionalities from './Functionalities';
 
 export default () => {
   return (
     <Fragment>
       <Appbar />
       <Hero />
+      <Functionalities />
     </Fragment>
   );
 };
