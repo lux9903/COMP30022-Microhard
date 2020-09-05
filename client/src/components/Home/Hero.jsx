@@ -4,6 +4,10 @@ import {Grid, Button, Container, Typography} from '@material-ui/core';
 import heroImage from './heroImage.png';
 
 const useStyles = makeStyles({
+  root: {
+    backgroundColor: '#F9FAFC',
+    paddingBottom: '100px',
+  },
   body: {
     color: '#595e53',
     textAlign: 'center',

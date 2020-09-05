@@ -6,6 +6,7 @@ import logo from './logo.png';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
+    backgroundColor: '#F9FAFC',
   },
   logo: {
     maxHeight: '2.8rem',
@@ -27,7 +28,10 @@ export default function Appbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="sticky" style={{backgroundColor: '#F4F5F7'}}>
+      <AppBar
+        position="static"
+        style={{background: 'transparent', boxShadow: 'none'}}
+      >
         <Toolbar>
           <Button>
             <img
