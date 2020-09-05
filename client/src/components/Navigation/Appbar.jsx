@@ -8,9 +8,8 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
   logo: {
-    maxHeight: '2.5rem',
-    maxWidth: '4rem',
-    padding: '5px 10px',
+    maxHeight: '2.8rem',
+    padding: '3px 10px',
   },
   navItem: {
     marginLeft: 'auto',

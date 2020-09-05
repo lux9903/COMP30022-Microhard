@@ -21,10 +21,13 @@ const theme = createMuiTheme({
     secondary: {
       light: '#FFA478',
       main: '#E77052',
-      dark: '#ba000d',
+      dark: '#ff5722',
       contrastText: '#000',
     },
   },
+
+  background: '#F4F5F7',
+
   typography: {
     fontFamily: 'Nunito, Roboto, sans-serif',
     button: {

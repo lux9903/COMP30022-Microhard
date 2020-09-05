@@ -13,7 +13,7 @@ import ResetPassword from '../Account/ResetPassword';
 import Plan from '../Home/Plan';
 
 // Pages
-import home from '../Home/Home';
+import home from '../Home/home';
 
 class Main extends Component {
   render() {
