@@ -93,7 +93,7 @@ export default function Appbar() {
               <br />
             </Typography>
             <Grid container justify="center" alignItems="flex-end">
-              <img src={heroImage} className={classes.image} />
+              <img src={heroImage} className={classes.image} alt="heroImg" />
             </Grid>
           </Grid>
         </Grid>

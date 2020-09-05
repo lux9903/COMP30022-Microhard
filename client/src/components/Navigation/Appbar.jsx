@@ -34,11 +34,7 @@ export default function Appbar() {
       >
         <Toolbar>
           <Button>
-            <img
-              className={classes.logo}
-              src={logo}
-              alt={'microhard logo image'}
-            />
+            <img className={classes.logo} src={logo} alt={'logo'} />
           </Button>
 
           <div className={classes.navItem}>

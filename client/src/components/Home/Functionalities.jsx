@@ -1,6 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Grid, Typography, Container} from '@material-ui/core';
+import styled, {keyframes} from 'styled-components';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,7 +11,28 @@ const useStyles = makeStyles((theme) => ({
   greyText: {
     color: 'grey',
   },
+  body: {
+    align: 'center',
+    color: 'grey',
+    lineHeight: '1.3',
+    paddingTop: '5px',
+  },
+  icon: {
+    width: 'auto',
+    height: '80px',
+    marginBottom: '24px',
+  },
 }));
+
+const float = keyframes`
+    from { transform: translate(0,  -6px); }
+    65%  { transform: translate(-3px, 6px); }
+    to   { transform: translate(0, -6px); }
+`;
+
+const Float = styled.div`
+  animation: ${float} 4.5s linear infinite;
+`;
 
 export default function Functionalities() {
   const classes = useStyles();
@@ -24,15 +46,11 @@ export default function Functionalities() {
         <br />
         <Grid container justify="center" alignItems="center" align="center">
           <Grid item xs={12} sm={6}>
-            <Grid item xs={10} sm={7}>
+            <Grid item xs={10} sm={8}>
               <Typography variant="h6" align="center">
-                Functionality 1
+                Showcase e-portfolio to employers
               </Typography>
-              <Typography
-                variant="p"
-                align="center"
-                className={classes.greyText}
-              >
+              <Typography variant="p" className={classes.body}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Typography>
@@ -42,15 +60,18 @@ export default function Functionalities() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Grid item xs={10} sm={7}>
+            <Grid item xs={10} sm={8}>
+              <Float>
+                <img
+                  src="https://image.flaticon.com/icons/svg/3050/3050452.svg"
+                  alt="skill"
+                  className={classes.icon}
+                />
+              </Float>
               <Typography variant="h6" align="center">
-                Functionality 2
+                Monitor your skill-building progress
               </Typography>
-              <Typography
-                variant="p"
-                align="center"
-                className={classes.greyText}
-              >
+              <Typography variant="p" className={classes.body}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Typography>
@@ -60,15 +81,11 @@ export default function Functionalities() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Grid item xs={10} sm={7}>
+            <Grid item xs={10} sm={8}>
               <Typography variant="h6" align="center">
-                Functionality 3
+                Comment on other students' projects
               </Typography>
-              <Typography
-                variant="p"
-                align="center"
-                className={classes.greyText}
-              >
+              <Typography variant="p" className={classes.body}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Typography>
@@ -78,15 +95,11 @@ export default function Functionalities() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Grid item xs={10} sm={7}>
+            <Grid item xs={10} sm={8}>
               <Typography variant="h6" align="center">
-                Functionality 4
+                Layout your projects in a logical way
               </Typography>
-              <Typography
-                variant="p"
-                align="center"
-                className={classes.greyText}
-              >
+              <Typography variant="p" className={classes.body}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </Typography>
