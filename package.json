@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "watch": "nodemon run dev",
     "client": "cd client && npm start",
     "stop": "lsof -ti :3000 | xargs kill",
@@ -38,6 +38,7 @@
     "express-session": "^1.17.0",
     "gridfs-stream": "^1.1.1",
     "heroku": "^7.42.13",
+    "http-proxy-middleware": "^1.0.5",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
     "methods": "1.1.2",

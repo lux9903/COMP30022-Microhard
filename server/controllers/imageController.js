@@ -4,7 +4,7 @@ const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
-
+const path = require('path');
 //file transfer database
 const conn = mongoose.createConnection(process.env.DATABASE);
 let gfs;

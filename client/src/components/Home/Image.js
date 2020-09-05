@@ -30,7 +30,7 @@ export default class FilesUploadComponent extends Component {
                     <h3>React File Upload</h3>
                 </div>
                 <div>
-                    <form action ="/image/upload" method = "POST" encType="multipart/form-data">
+                    <form action ="api/image/upload" method = "POST" encType="multipart/form-data">
                         <input type = "file" name = "file" id = "file"/>
                         <input type="submit" value="Submit"/>
                     </form>
