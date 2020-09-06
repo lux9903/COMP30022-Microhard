@@ -1,12 +1,11 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import {AppBar, Toolbar, Button, Typography, Link} from '@material-ui/core';
+import {AppBar, Toolbar, Button} from '@material-ui/core';
 import logo from './logo.png';
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    backgroundColor: '#F9FAFC',
   },
   logo: {
     maxHeight: '2.8rem',
