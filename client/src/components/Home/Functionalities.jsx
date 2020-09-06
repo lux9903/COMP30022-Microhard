@@ -45,6 +45,12 @@ export default function Functionalities() {
         <br />
         <br />
         <Grid container justify="center" alignItems="center" align="center">
+          <Grid item xs={12} sm={12}>
+            <Typography variant="h4">How can Microhard help you... </Typography>
+            <br />
+            <br />
+            <br />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <Grid item xs={10} sm={8}>
               <Float>

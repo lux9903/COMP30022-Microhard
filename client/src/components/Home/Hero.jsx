@@ -2,34 +2,33 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Grid, Button, Container, Typography} from '@material-ui/core';
 import heroImage from './heroImage.png';
+import Appbar from '../Navigation/Appbar';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: '#F9FAFC',
+    backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)',
     paddingBottom: '100px',
   },
   body: {
     color: '#595e53',
     textAlign: 'center',
   },
-
   image: {
-    maxHeight: '28rem',
+    maxWidth: '530px',
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '420px',
+    },
   },
-});
+}));
 
-export default function Appbar() {
+export default function Hero() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
+      <Appbar />
       <Container fixed>
-        <Grid
-          container
-          justify={'center'}
-          direction={'row'}
-          alignItems={'center'}
-        >
+        <Grid container justify="center" direction="row" alignItems="center">
           <Grid item xs={12} md={6}>
             <Grid
               container
