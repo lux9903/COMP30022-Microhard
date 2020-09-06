@@ -47,6 +47,13 @@ export default function Functionalities() {
         <Grid container justify="center" alignItems="center" align="center">
           <Grid item xs={12} sm={6}>
             <Grid item xs={10} sm={8}>
+              <Float>
+                <img
+                  src="https://image.flaticon.com/icons/svg/3281/3281289.svg"
+                  alt="skill"
+                  className={classes.icon}
+                />
+              </Float>
               <Typography variant="h6" align="center">
                 Showcase e-portfolio to employers
               </Typography>
@@ -82,6 +89,13 @@ export default function Functionalities() {
 
           <Grid item xs={12} sm={6}>
             <Grid item xs={10} sm={8}>
+              <Float>
+                <img
+                  src="https://image.flaticon.com/icons/svg/134/134908.svg"
+                  alt="skill"
+                  className={classes.icon}
+                />
+              </Float>
               <Typography variant="h6" align="center">
                 Comment on other students' projects
               </Typography>
@@ -96,6 +110,13 @@ export default function Functionalities() {
 
           <Grid item xs={12} sm={6}>
             <Grid item xs={10} sm={8}>
+              <Float>
+                <img
+                  src="https://image.flaticon.com/icons/svg/2345/2345026.svg"
+                  alt="skill"
+                  className={classes.icon}
+                />
+              </Float>
               <Typography variant="h6" align="center">
                 Layout your projects in a logical way
               </Typography>
