@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Route } from 'react-router-dom';
-import Welcome from '../Home/Welcome'
+import Profile from '../Home/Profile'
 import HomePage from '../Home/HomePage';
 import PrimaryNav from './PrimaryNav';
 import Footer from './Footer';
@@ -14,7 +14,7 @@ export default function PrivateRoute({ authed, ...rest }) {
                     <Fragment>
                         <PrimaryNav />
                         <div className='main'>
-                            <Welcome />
+                            <Profile />
                         </div>
                         <Footer />
                     </Fragment>
