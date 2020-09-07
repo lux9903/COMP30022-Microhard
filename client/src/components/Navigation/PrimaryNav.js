@@ -85,7 +85,7 @@ class PrimaryNav extends Component {
                         </NavLink>
 
                         <NavLink to='/image' className='nav-link' activeClassName='active'>
-                            <span>Traning Plan</span>
+                            <span>Upload Image</span>
                         </NavLink>
 
                     </Nav>
