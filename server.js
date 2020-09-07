@@ -7,6 +7,7 @@ const errorhandler = require('errorhandler');
 const mongoose = require('mongoose');
 const compression = require('compression');
 const MongoStore = require('connect-mongo')(session);
+const methodOverride = require('method-override');
 
 require('dotenv').config();
 
@@ -44,6 +45,9 @@ app.use(bodyParser.json());
 
 app.use(require('method-override')());
 
+//delete request abcdefg
+app.use(methodOverride('_method'));
+
 app.use(
   session({
     secret: 'web-it',
@@ -57,6 +61,7 @@ app.use(
 // Models
 
 require('./server/models/userModel');
+require('./server/models/imageModel');
 
 // Authentication
 require('./server/config/passport');
@@ -65,9 +70,9 @@ require('./server/config/passport');
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(require('./server/routes'));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/client/build/index.html`));
-});
+//app.get('*', (req, res) => {
+//  res.sendFile(path.join(`${__dirname}/client/build/index.html`));
+//});
 
 /// catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -75,6 +80,8 @@ app.use(function (req, res, next) {
   err.status = 404;
   next(err);
 });
+
+//
 
 /// error handlers
 
