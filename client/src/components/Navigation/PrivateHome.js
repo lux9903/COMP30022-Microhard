@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Route } from 'react-router-dom';
 import Welcome from '../Home/Welcome'
-import Home from '../Home/Home';
+import HomePage from '../Home/HomePage';
 import PrimaryNav from './PrimaryNav';
 import Footer from './Footer';
 
@@ -19,7 +19,7 @@ export default function PrivateRoute({ authed, ...rest }) {
                         <Footer />
                     </Fragment>
                 ) : (
-                    <Home />
+                    <HomePage />
                 )
             }
         />
