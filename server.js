@@ -61,6 +61,7 @@ app.use(
 // Models
 
 require('./server/models/userModel');
+require('./server/models/imageModel');
 
 // Authentication
 require('./server/config/passport');

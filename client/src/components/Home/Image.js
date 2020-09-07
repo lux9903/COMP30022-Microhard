@@ -8,7 +8,32 @@ import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
 
 export default class FilesUploadComponent extends Component {
-    
+    constructor(props) {
+        super(props);
+        this.state ={
+            file: null
+        };
+        this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+    onFormSubmit(e){
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file',this.state.file);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+        axios.post("/image/upload",formData,config)
+            .then((response) => {
+                alert("The file is successfully uploaded");
+            }).catch((error) => {
+        });
+    }
+    onChange(e) {
+        this.setState({file:e.target.files[0]});
+    }
 
     componentDidMount() {
         const imgs = axios.get("/image").then(res=>{
@@ -18,8 +43,9 @@ export default class FilesUploadComponent extends Component {
                 ReactDOM.render(imgPic,document.getElementById('all_img'));
             }
         })
-
     }
+
+
 
 
     render() {
@@ -30,9 +56,9 @@ export default class FilesUploadComponent extends Component {
                     <h3>React File Upload</h3>
                 </div>
                 <div>
-                    <form action ="api/image/upload" method = "POST" encType="multipart/form-data">
-                        <input type = "file" name = "file" id = "file"/>
-                        <input type="submit" value="Submit"/>
+                    <form onSubmit={this.onFormSubmit}>
+                        <input type="file" name="file" onChange= {this.onChange} />
+                        <button type="submit">Upload</button>
                     </form>
                 </div>
                 <div id="all_img">

@@ -5,6 +5,8 @@ const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const path = require('path');
+const Image = mongoose.model('Image');
+const User = mongoose.model('User');
 //file transfer database
 const conn = mongoose.createConnection(process.env.DATABASE);
 let gfs;
@@ -27,7 +29,7 @@ const storage = new GridFsStorage({
           const filename = buf.toString('hex') + path.extname(file.originalname);
           const fileInfo = {
             filename: filename,
-            bucketName: 'uploads'
+            bucketName: 'uploads',
           };
           resolve(fileInfo);
         });
@@ -38,29 +40,39 @@ const upload = multer({ storage });
 
 //get all Image
 const getAllImage = (req, res) => {
-  gfs.files.find().toArray((err,files)=>{
-    if(!files || files.length ===0){
-      return res.json({
-        files: false
-      });
-    }else{
-      files.map(file=>{
-        if(file.contentType ==="image/jpeg" || file.contentType === 'image/png')
-        {
-          file.isImage = true;
-        } else {
-          file.isImage = false;
-        }
-      });
-      var imgPath = [];
-      for(file of files){
-        if(file.isImage){
-          imgPath.push("/api/image/"+file.filename);
-        }
-      }
-      return res.json({'files': imgPath});
+  User.findById(req.payload.id).then(function(user){
+    if (!user){
+      return res.sendStatus(401).send('The user does not exist.');
     }
+    Image.find({user: user._id}).distinct('fileId').then(function(image){
+      console.log(image);
+      gfs.files.find({_id: {$in: image}}).toArray((err,files)=>{
+        if(!files || files.length ===0){
+          return res.json({
+            files: false
+          });
+        }else{
+          files.map(file=>{
+            if(file.contentType ==="image/jpeg" || file.contentType === 'image/png')
+            {
+              file.isImage = true;
+            } else {
+              file.isImage = false;
+            }
+          });
+          var imgPath = [];
+          for(file of files){
+            if(file.isImage){
+              imgPath.push("/api/image/"+file.filename);
+            }
+          }
+          return res.json({'files': imgPath});
+        }
+      });
+    });
   });
+  
+
 }
 
 //get specific image by filename
