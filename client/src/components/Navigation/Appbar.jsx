@@ -2,6 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {AppBar, Toolbar, Button} from '@material-ui/core';
 import logo from './logo.png';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
@@ -54,6 +55,7 @@ export default function Bar() {
                         </Button>
 
                         <Button
+                            component={ Link } to="/sign-in"
                             className={classes.greyText}
                             href="#outlined-buttons"
                             style={{margin: '0px 20px 0px 10px'}}
@@ -62,6 +64,7 @@ export default function Bar() {
                         </Button>
 
                         <Button
+                            component={ Link } to="/sign-up"
                             variant="outlined"
                             color={'primary'}
                             href="#outlined-buttons"

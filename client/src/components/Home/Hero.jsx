@@ -61,6 +61,7 @@ export default function Hero() {
                                     <Grid item xs={6}>
                                         <Grid container justify="center">
                                             <Button
+                                                component={ Link } to="/sign-up"
                                                 color="primary"
                                                 variant="outlined"
                                                 size="large"
