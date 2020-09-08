@@ -60,13 +60,13 @@ const getAllImage = (req, res) => {
               file.isImage = false;
             }
           });
-          var imgPath = [];
+          var imgObj = [];
           for(file of files){
             if(file.isImage){
-              imgPath.push("/api/image/"+file.filename);
+              imgObj.push(file);
             }
           }
-          return res.json({'files': imgPath});
+          return res.json({'files':imgObj});
         }
       });
     });
@@ -98,9 +98,29 @@ const getOneImage = (req, res) => {
   });
 }
 
+const deleteImage = (req, res) =>{
+	User.findById(req.payload.id).then(function(user){
+	    if (!user){
+	      return res.sendStatus(401).send('The user does not exist.');
+	    }
+	    
+	    Image.delete({user: user._id, fileId: req.params.id}, (err)=> {
+	    	if(err){
+	    		return res.status(404).json({err:"Relation does not exist"});
+	    	}
+	    	gfs.remove({_id:req.params.id, root: 'uploads'}, (err, gridsStore) =>{
+    			if(err){
+      				return res.status(404).json({err:err});
+    			}
+  			});
+	    		return res.send("Deleted"+req.params.id);
+	    });
 
+		})
+}
 module.exports = {
   upload,
   getAllImage,
   getOneImage,
+  deleteImage,
 };
