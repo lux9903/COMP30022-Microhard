@@ -2,10 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { signOutUser } from '../../actions/userAction';
 import { Link, NavLink } from 'react-router-dom';
-import { Navbar, Nav, Dropdown } from 'react-bootstrap';
-import logo from '../../img/logo.PNG';
+import {Dropdown } from 'react-bootstrap';
+import logo from '../../components/Navigation/logo.png';
 import Gravatar from 'react-gravatar';
+import App from '../App';
+import {AppBar, Toolbar, Button} from '@material-ui/core';
 
+// This is the navigation bar after a successful login
 class PrimaryNav extends Component {
     render() {
         const { user } = this.props.user;
@@ -68,31 +71,29 @@ class PrimaryNav extends Component {
         }
 
         return (
-            <Navbar bg='light' expand='lg' className='bg-white'>
-                <Link to='/' className='navbar-brand'>
-                    <img src={logo} alt='Microhard' className='nav-logo' />
-                    <div className='sr-only'>Microhard</div>
+          <AppBar
+            position="sticky"
+            style={{backgroundColor: '#F4F5F7'}}
+          >
+            <Toolbar>
+              <Link to='/'>
+                <img src={logo} alt='Microhard' style={{maxHeight: '2.7rem', padding: '0px 10px', margin: '10px 20px'}}/>
+              </Link>
+              <div style={{flex: '1', textAlign: 'center'}} >
+                <Link exact={true} to='/'>
+                  <Button style={{color: 'grey', margin: '0px 20px'}}>Profile</Button>
                 </Link>
+                <Link to='/plan'>
+                  <Button style={{color: 'grey', margin: '0px 20px'}}>Training Plan</Button>
+                </Link>
+                <Link to='/image'>
+                  <Button style={{color: 'grey', margin: '0px 20px'}}>Upload Image</Button>
+                </Link>
+              </div>
 
-                <div className='navbar-wrap'>
-                    <Nav className='mx-auto'>
-                        <NavLink exact={true} to='/' className='nav-link' activeClassName='active'>
-                            <span>Profile</span>
-                        </NavLink>
-
-                        <NavLink to='/plan' className='nav-link' activeClassName='active'>
-                            <span>Traning Plan</span>
-                        </NavLink>
-
-                        <NavLink to='/image' className='nav-link' activeClassName='active'>
-                            <span>Upload Image</span>
-                        </NavLink>
-
-                    </Nav>
-
-                    {content}
-                </div>
-            </Navbar>
+              {content}
+            </Toolbar>
+          </AppBar>
         );
     }
 }
