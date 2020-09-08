@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const pdfController = require('../controllers/pdfController');
 const upload = pdfController.upload;
 
-const Pdf = mongoose.model('Pdf');
+const Pdf = require('../models/pdfModel');
 const User = mongoose.model('User');
 
 // : /api/pdf
@@ -18,6 +18,7 @@ pdfRouter.post('/upload',auth.optional, pdfController.upload.single('file'), (re
         pdf.user = user;
         pdf.fileId = req.file.id;
         pdf.save();
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
       });
 });

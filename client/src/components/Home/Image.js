@@ -14,6 +14,7 @@ export default class FilesUploadComponent extends Component {
             file: null
         };
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
         this.onChange = this.onChange.bind(this);
     }
     onFormSubmit(e){
@@ -26,6 +27,21 @@ export default class FilesUploadComponent extends Component {
             }
         };
         axios.post("/image/upload",formData,config)
+            .then((response) => {
+                alert("The file is successfully uploaded");
+            }).catch((error) => {
+        });
+    }
+    onFormSubmitPDF(e){
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file',this.state.file);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+        axios.post("/pdf/upload",formData,config)
             .then((response) => {
                 alert("The file is successfully uploaded");
             }).catch((error) => {
@@ -58,6 +74,11 @@ export default class FilesUploadComponent extends Component {
                 </div>
                 <div>
                     <form onSubmit={this.onFormSubmit}>
+                        <input type="file" name="file" onChange= {this.onChange} />
+                        <button type="submit">Upload</button>
+                    </form>
+
+                    <form onSubmit={this.onFormSubmitPDF}>
                         <input type="file" name="file" onChange= {this.onChange} />
                         <button type="submit">Upload</button>
                     </form>

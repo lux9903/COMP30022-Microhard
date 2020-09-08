@@ -3,6 +3,7 @@ var router = require('express').Router();
 router.use('/api/user', require('./userRouter'));
 router.use('/api/image', require('./imageRouter'));
 router.use('/api/file', require('./fileRouter'));
+router.use('/api/pdf', require('./pdfRouter'));
 
 
 router.use(function (err, req, res, next) {

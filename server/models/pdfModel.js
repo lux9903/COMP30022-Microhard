@@ -13,4 +13,5 @@ const pdfSchema = new Schema(
     },
     {timestamps: true });
 
-mongoose.model('Pdf', pdfSchema)
+const PDF = mongoose.model('Pdf', pdfSchema);
+module.exports = PDF;

@@ -6,7 +6,7 @@ const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const path = require('path');
-const Pdf = mongoose.model('Pdf');
+const Pdf = require('../models/pdfModel');
 const User = mongoose.model('User');
 
 //file transfer database
