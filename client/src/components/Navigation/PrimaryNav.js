@@ -26,6 +26,9 @@ const styles = (theme) => ({
   appbar: {
     backgroundColor: '#F4F5F7',
   },
+  noDecoration: {
+    textDecoration: 'none !important',
+  },
 });
 
 // This is the navigation bar after a successful login
@@ -101,13 +104,13 @@ class PrimaryNav extends Component {
             </Button>
           </Link>
           <div className={classes.buttonSection}>
-            <Link exact={true} to="/">
+            <Link exact={true} to="/" className={classes.noDecoration}>
               <Button className={classes.button}>Profile</Button>
             </Link>
-            <Link to="/plan">
+            <Link to="/plan" className={classes.noDecoration}>
               <Button className={classes.button}>Training Plan</Button>
             </Link>
-            <Link to="/image">
+            <Link to="/image" className={classes.noDecoration}>
               <Button className={classes.button}>Upload Image</Button>
             </Link>
           </div>

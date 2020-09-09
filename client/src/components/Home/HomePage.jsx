@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import logo from '../../img/form-logo.PNG';
 import Hero from '../Home/Hero';
 import Functionalities from './Functionalities';
+import Appbar from '../Navigation/Appbar';
 
 export default function HomePage() {
   return (
@@ -11,6 +12,7 @@ export default function HomePage() {
       <Helmet>
         <title>Microhard &middot; Home</title>
       </Helmet>
+      <Appbar />
       <Hero />
       <Functionalities />
     </Fragment>
