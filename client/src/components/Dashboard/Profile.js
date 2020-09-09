@@ -6,11 +6,9 @@ import logo from '../Dashboard/profile.png';
 
 import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
-import {makeStyles} from '@material-ui/core/styles';
 import {Container, Grid, Typography} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
+import Gravatar from 'react-gravatar';
 
 const styles = (theme) => ({
   root: {
@@ -19,18 +17,22 @@ const styles = (theme) => ({
   profileHeader: {
     height: '280px',
     backgroundColor: '#094183',
-    padding: '20px',
+    paddingTop: '45px',
   },
   profileImage: {
-    width: '225px',
-    height: '225px',
+    maxHeight: '240px',
     objectFit: 'cover',
     borderRadius: '50%',
   },
-
+  profileText: {
+    color: '#fff',
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  },
   allImages: {
     maxHeight: '300px',
-    padding: '20px',
+    padding: '0px 20px',
   },
 });
 
@@ -50,6 +52,9 @@ class Profile extends Component {
 
     return (
       <Fragment>
+        <Helmet>
+          <title>Microhard &middot; Profile </title>
+        </Helmet>
         <div className={classes.root}>
           <div className={classes.profileHeader}>
             <Container fixed>
@@ -59,25 +64,30 @@ class Profile extends Component {
                 direction="row"
                 alignItems="center"
               >
-                <Grid item md={4}>
-                  <img
-                    src={logo}
-                    alt={'profile img'}
+                <Grid item md={3} justify="center">
+                  <Gravatar
+                    email={user.email}
+                    size={170}
                     className={classes.profileImage}
                   />
                 </Grid>
-                <Grid item md={8}>
+                <Grid item md={9}>
                   <Grid container justify="left" direction="row">
-                    <Grid item md={12}>
-                      <Typography variant="h4" style={{color: '#fff'}}>
+                    <Grid item sm={12} md={12}>
+                      <Typography variant="h4" className={classes.profileText}>
                         {user.username}
                       </Typography>
                     </Grid>
                     <br />
                     <br />
-                    <Grid item md={12}>
-                      <Typography variant="h6" style={{color: '#fff'}}>
+                    <Grid item xs={12} md={12}>
+                      <Typography variant="h6" className={classes.profileText}>
                         {user.bio}
+                      </Typography>
+                    </Grid>
+                    <Grid item sm={12} md={12}>
+                      <Typography variant="h6" className={classes.profileText}>
+                        {user.email}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -94,23 +104,6 @@ class Profile extends Component {
           </Container>
         </div>
       </Fragment>
-      // <section>
-      //     <Helmet>
-      //         <title>Microhard &middot; Profile </title>
-      //     </Helmet>
-      //
-      //     <div className='container-fluid'>
-      //
-      //         <div className='form-wrap'>
-      //             <h1 className='h1 form-title'>Welcome to Microhard  </h1>
-      //             <h2 className = 'h2 form-title'>This is the account of  {user.username}  </h2>
-      //             <h2 className = 'h2 form-title'>Some information about me:  {user.bio}  </h2>
-      //             <h2 className = 'h2 form-title'>My email address is: {user.email}  </h2>
-      //             <h2 className = 'h2 form-title'>Here is some of my image </h2>
-      //         </div>
-      //     </div>
-      //     <div id="all_img"></div>
-      // </section>
     );
   }
 }
