@@ -5,14 +5,14 @@ import logo from '../../img/form-logo.PNG';
 import Hero from '../Home/Hero';
 import Functionalities from './Functionalities';
 
-export default function HomaPage() {
-    return (
-        <Fragment>
-            <Helmet>
-                <title>Microhard &middot; Home</title>
-            </Helmet>
-            <Hero />
-            <Functionalities />
-        </Fragment>
-    );
-};
+export default function HomePage() {
+  return (
+    <Fragment>
+      <Helmet>
+        <title>Microhard &middot; Home</title>
+      </Helmet>
+      <Hero />
+      <Functionalities />
+    </Fragment>
+  );
+}
