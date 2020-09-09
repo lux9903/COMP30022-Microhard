@@ -9,6 +9,8 @@ import logo from '../../img/form-logo.PNG';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
+    lastname: Yup.string().required('*Lastname is required'),
+    firstname: Yup.string().required('*Firstname is required'),
     username: Yup.string().required('*Username is required'),
     email: Yup.string().email().required('*Email is required'),
     password: Yup.string().required('*Password is required'),
@@ -56,6 +58,8 @@ class SignUp extends Component {
 
                                 <Formik
                                     initialValues={{
+                                        lastname:'',
+                                        firstname:'',
                                         username: '',
                                         email: '',
                                         password: '',
@@ -66,6 +70,42 @@ class SignUp extends Component {
                                     }}>
                                     {({errors, touched}) => (
                                         <Form className='form-signin'>
+                                            <div className='form-group'>
+                                                <div className='form-label-wrap'>
+                                                    <label htmlFor='firstname'>Firstname</label>
+                                                </div>
+                                                <Field
+                                                    type='text'
+                                                    name='firstname'
+                                                    placeholder='Enter your firstname'
+                                                    className={`form-control ${
+                                                        touched.firstname && errors.firstname ? 'is-invalid' : ''
+                                                    }`}
+                                                />
+                                                <ErrorMessage
+                                                    component='div'
+                                                    name='firstname'
+                                                    className='invalid-feedback'
+                                                />
+                                            </div>
+                                            <div className='form-group'>
+                                                <div className='form-label-wrap'>
+                                                    <label htmlFor='lastname'>Lastname</label>
+                                                </div>
+                                                <Field
+                                                    type='text'
+                                                    name='lastname'
+                                                    placeholder='Enter your lastname'
+                                                    className={`form-control ${
+                                                        touched.lastname && errors.lastname ? 'is-invalid' : ''
+                                                    }`}
+                                                />
+                                                <ErrorMessage
+                                                    component='div'
+                                                    name='lastname'
+                                                    className='invalid-feedback'
+                                                />
+                                            </div>
                                             <div className='form-group'>
                                                 <div className='form-label-wrap'>
                                                     <label htmlFor='username'>Username</label>
