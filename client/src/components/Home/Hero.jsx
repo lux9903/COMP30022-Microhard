@@ -1,14 +1,14 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Grid, Button, Container, Typography} from '@material-ui/core';
 import heroImage from './heroImage.png';
-import Appbar from '../Navigation/Appbar';
 import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)',
-    // paddingBottom: '100px',
+    paddingTop: '50px',
+    paddingBottom: '70px',
   },
   body: {
     color: '#595e53',
@@ -27,7 +27,6 @@ export default function Hero() {
 
   return (
     <div className={classes.root}>
-      <Appbar />
       <Container fixed>
         <Grid container justify="center" direction="row" alignItems="center">
           <Grid item xs={12} md={6}>
