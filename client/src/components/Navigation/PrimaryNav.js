@@ -2,20 +2,17 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {signOutUser} from '../../actions/userAction';
 import {Link, NavLink} from 'react-router-dom';
-import {Dropdown} from 'react-bootstrap';
 import logo from '../../components/Navigation/logo.png';
 import Gravatar from 'react-gravatar';
 import App from '../App';
 import {AppBar, Toolbar, Button} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
+import Popover from '@material-ui/core/Popover';
 
 const styles = (theme) => ({
   button: {
@@ -44,7 +41,6 @@ const styles = (theme) => ({
 
 // This is the navigation bar after a successful login
 class PrimaryNav extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -59,18 +55,18 @@ class PrimaryNav extends Component {
     const open = Boolean(this.state.anchorEl);
 
     const handleMenu = (event) => {
-      this.setState({ anchorEl: event.currentTarget})
+      this.setState({anchorEl: event.currentTarget});
     };
 
     const handleClose = () => {
-      this.setState({ anchorEl: null})
+      this.setState({anchorEl: null});
     };
 
     const signOut = (e) => {
       e.preventDefault();
       this.props.dispatch(signOutUser());
     };
-/*
+    /*
     const CustomToggle = React.forwardRef(({children, onClick}, ref) => (
       <a
         className="dropdown-toggle nav-link"
@@ -141,36 +137,46 @@ class PrimaryNav extends Component {
               <Button className={classes.button}>Upload Image</Button>
             </Link>
           </div>
+
           <div>
-                    <IconButton
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={handleMenu}
-                    >
-                      <Gravatar email={user.email} size={32} className="nav-avatar" />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-
-                        open={open}
-                        onClose={handleClose}
-                    >
-                      <MenuItem component={Link} to="/account">Account</MenuItem>
-                      <MenuItem href="/" onClick={signOut}>Sign out</MenuItem>
-                    </Menu>
-                  </div>
-
+            <PopupState variant="popover" popupId="demo-popup-popover">
+              {(popupState) => (
+                <div>
+                  <IconButton
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    color="inherit"
+                  >
+                    <Gravatar
+                      email={user.email}
+                      size={32}
+                      className="nav-avatar"
+                      {...bindTrigger(popupState)}
+                    />
+                  </IconButton>
+                  <Popover
+                    {...bindPopover(popupState)}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
+                  >
+                    <MenuItem component={Link} to="/account">
+                      Account
+                    </MenuItem>
+                    <MenuItem href="/" onClick={signOut}>
+                      Sign out
+                    </MenuItem>
+                  </Popover>
+                </div>
+              )}
+            </PopupState>
+          </div>
           {content}
         </Toolbar>
       </AppBar>
