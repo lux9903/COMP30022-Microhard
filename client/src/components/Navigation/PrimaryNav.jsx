@@ -1,18 +1,20 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {signOutUser} from '../../actions/userAction';
 import {Link, NavLink} from 'react-router-dom';
 import logo from '../../components/Navigation/logo.png';
 import Gravatar from 'react-gravatar';
 import App from '../App';
-import {AppBar, Toolbar, Button} from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  IconButton,
+  MenuItem,
+  Popover,
+} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
-import Popover from '@material-ui/core/Popover';
 
 const styles = (theme) => ({
   button: {
@@ -36,9 +38,9 @@ const styles = (theme) => ({
   },
   title: {
     flexGrow: 1,
-    noDecoration: {
-      textDecoration: 'none !important',
-    },
+  },
+  noDecoration: {
+    textDecoration: 'none !important',
   },
 });
 
@@ -55,72 +57,11 @@ class PrimaryNav extends Component {
     const {user} = this.props.user;
     let content;
 
-    const open = Boolean(this.state.anchorEl);
-
-    const handleMenu = (event) => {
-      this.setState({anchorEl: event.currentTarget});
-    };
-
-    const handleClose = () => {
-      this.setState({anchorEl: null});
-    };
-
     const signOut = (e) => {
       e.preventDefault();
       this.props.dispatch(signOutUser());
     };
-    /*
-    const CustomToggle = React.forwardRef(({children, onClick}, ref) => (
-      <a
-        className="dropdown-toggle nav-link"
-        href="/"
-        ref={ref}
-        onClick={(e) => {
-          e.preventDefault();
-          onClick(e);
-        }}
-      >
-        {children}
-      </a>
-    ));
 
-    if (user == null) {
-      content = (
-        <Fragment>
-          <li className="nav-item">
-            <Link to="/sign-up" className="btn btn-primary">
-              Sign up
-            </Link>
-          </li>
-
-          <li className="nav-item">
-            <Link to="/sign-in" className="btn btn-outline-primary">
-              Sign in
-            </Link>
-          </li>
-        </Fragment>
-      );
-    } else {
-      content = (
-        <Fragment>
-          <Dropdown alignRight>
-            <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-              <Gravatar email={user.email} size={32} className="nav-avatar" />
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Link to="/account" className="dropdown-item">
-                Account
-              </Link>
-              <a href="/" onClick={signOut} className="dropdown-item">
-                Sign out
-              </a>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Fragment>
-      );
-    }
-*/
     return (
       <AppBar position="sticky" className={classes.appbar}>
         <Toolbar>
