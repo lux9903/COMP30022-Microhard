@@ -10,6 +10,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Gravatar from 'react-gravatar';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import {ReactPhotoCollage} from 'react-photo-collage';
 
 const styles = (theme) => ({
   root: {
@@ -77,6 +78,21 @@ const styles = (theme) => ({
   },
 });
 
+const setting = {
+  width: '600px',
+  height: ['250px', '170px'],
+  layout: [1, 4],
+  photos: [
+    {src: 'url/image-1.jpg'},
+    {src: 'url/image-2.jpg'},
+    {src: 'url/image-3.jpg'},
+    {src: 'url/image-4.jpg'},
+    {src: 'url/image-5.jpg'},
+    {src: 'url/image-6.jpg'},
+  ],
+  showNumOfRemainingPhotos: true,
+};
+
 class Profile extends Component {
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
@@ -130,8 +146,17 @@ class Profile extends Component {
             </div>
 
             <Container>
-              <Grid justify="center">
-                <Grid item xs={12} sm={12} md={8}></Grid>
+              <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{minHeight: '90vh'}}
+              >
+                <Grid item xs={12} md={12} sm={12}>
+                  <ReactPhotoCollage {...setting} />
+                </Grid>
               </Grid>
             </Container>
           </div>
