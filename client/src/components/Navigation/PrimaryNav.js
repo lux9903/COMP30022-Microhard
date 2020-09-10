@@ -36,8 +36,9 @@ const styles = (theme) => ({
   },
   title: {
     flexGrow: 1,
-  noDecoration: {
-    textDecoration: 'none !important',
+    noDecoration: {
+      textDecoration: 'none !important',
+    },
   },
 });
 
