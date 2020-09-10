@@ -29,6 +29,7 @@ const styles = (theme) => ({
   buttonSection: {
     flex: '1',
     textAlign: 'center',
+    marginLeft: '-50px',
   },
   appbar: {
     backgroundColor: '#F4F5F7',

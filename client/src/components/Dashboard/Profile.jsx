@@ -76,6 +76,11 @@ const styles = (theme) => ({
     color: '#999',
     textAlign: 'center !important',
   },
+  profileImage: {
+    maxHeight: '240px',
+    objectFit: 'cover',
+    borderRadius: '50%',
+  },
 });
 
 const setting = {
@@ -122,7 +127,11 @@ class Profile extends Component {
                 <Grid item xs={12} sm={12} md={12}>
                   <div className={classes.profile}>
                     <div>
-                      <img src={profile} alt="profile pic" />
+                      <Gravatar
+                        email={user.email}
+                        size={170}
+                        className={classes.profileImage}
+                      />
                     </div>
                     <div style={{marginTop: '-40px'}}>
                       <h3 className={classes.fullName}>
