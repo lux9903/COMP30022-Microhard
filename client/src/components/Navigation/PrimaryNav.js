@@ -36,6 +36,8 @@ const styles = (theme) => ({
   },
   title: {
     flexGrow: 1,
+  noDecoration: {
+    textDecoration: 'none !important',
   },
 });
 
@@ -127,13 +129,13 @@ class PrimaryNav extends Component {
             </Button>
           </Link>
           <div className={classes.buttonSection}>
-            <Link exact={true} to="/">
+            <Link exact={true} to="/" className={classes.noDecoration}>
               <Button className={classes.button}>Profile</Button>
             </Link>
-            <Link to="/plan">
+            <Link to="/plan" className={classes.noDecoration}>
               <Button className={classes.button}>Training Plan</Button>
             </Link>
-            <Link to="/image">
+            <Link to="/image" className={classes.noDecoration}>
               <Button className={classes.button}>Upload Image</Button>
             </Link>
           </div>
