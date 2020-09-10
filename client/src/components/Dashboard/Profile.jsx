@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
-import profile from '../../img/profile-pic.jpg';
 import clsx from 'clsx';
 import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
@@ -57,8 +56,8 @@ const styles = (theme) => ({
       transform: 'translate3d(0, -50%, 0)',
       objectFit: 'cover',
       borderRadius: '50% !important',
-      height: '140px',
-      width: '140px',
+      height: '180px',
+      width: '180px',
     },
   },
   fullName: {
@@ -76,28 +75,12 @@ const styles = (theme) => ({
     color: '#999',
     textAlign: 'center !important',
   },
-  profileImage: {
-    maxHeight: '240px',
-    objectFit: 'cover',
-    borderRadius: '50%',
+  imageCollage: {
+    margin: '20px auto 50px auto',
+    textAlign: 'center',
   },
 });
-/*
-const setting = {
-  width: '600px',
-  height: ['250px', '170px'],
-  layout: [1, 4],
-  photos: [
-    {src: 'url/image-1.jpg'},
-    {src: 'url/image-2.jpg'},
-    {src: 'url/image-3.jpg'},
-    {src: 'url/image-4.jpg'},
-    {src: 'url/image-5.jpg'},
-    {src: 'url/image-6.jpg'},
-  ],
-  showNumOfRemainingPhotos: true,
-};
-*/
+
 class Profile extends Component {
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
@@ -116,20 +99,20 @@ class Profile extends Component {
           showNumOfRemainingPhotos: true,
         };
         let photogrid = (
-            <Container>
-              <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justify="center"
-                  style={{minHeight: '90vh'}}
-              >
-                <Grid item xs={12} md={12} sm={12}>
-                  <ReactPhotoCollage {...setting} />
-                </Grid>
+          <Container>
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justify="center"
+              style={{minHeight: '90vh'}}
+            >
+              <Grid item xs={12} md={12} sm={12}>
+                <ReactPhotoCollage {...setting} />
               </Grid>
-            </Container>
+            </Grid>
+          </Container>
         );
         ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
@@ -155,11 +138,7 @@ class Profile extends Component {
                 <Grid item xs={12} sm={12} md={12}>
                   <div className={classes.profile}>
                     <div>
-                      <Gravatar
-                        email={user.email}
-                        size={170}
-                        className={classes.profileImage}
-                      />
+                      <Gravatar email={user.email} size={'2048px'} />
                     </div>
                     <div style={{marginTop: '-40px'}}>
                       <h3 className={classes.fullName}>
@@ -169,7 +148,7 @@ class Profile extends Component {
                       <IconButton href={'mailto:' + user.email}>
                         <EmailIcon />
                       </IconButton>
-                      <IconButton href={'mailto:' + user.email}>
+                      <IconButton href="https://www.linkedin.com/">
                         <LinkedInIcon />
                       </IconButton>
                     </div>
@@ -181,74 +160,22 @@ class Profile extends Component {
             <div className={classes.biography}>
               <p>{user.bio}</p>
             </div>
-            <div id="all_img" className={classes.allImages}></div>
+            <Container>
+              <Grid justify="center">
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  className={classes.imageCollage}
+                >
+                  <div id="all_img"></div>
+                </Grid>
+              </Grid>
+            </Container>
           </div>
         </div>
       </Fragment>
-
-      // <Fragment>
-      //   <Helmet>
-      //     <title>Microhard &middot; Profile </title>
-      //   </Helmet>
-      //   <div className={classes.root}>
-      //     <div className={classes.profileHeader}>
-      //       <Container fixed>
-      //         <Grid
-      //           container
-      //           justify="center"
-      //           direction="row"
-      //           alignItems="center"
-      //         >
-      //           <Grid item md={3} justify="center">
-      //             <Gravatar
-      //               email={user.email}
-      //               size={170}
-      //               className={classes.profileImage}
-      //             />
-      //           </Grid>
-      //           <Grid item md={9}>
-      //             <Grid container justify="left" direction="row">
-      //               <Grid item sm={12} md={12}>
-      //                 <Typography variant="h4" className={classes.profileText}>
-      //                   {user.firstname} {user.lastname}
-      //                 </Typography>
-      //               </Grid>
-      //               <br />
-      //               <br />
-      //               <Grid item xs={12} md={12}>
-      //                 <Typography variant="h6" className={classes.profileText}>
-      //                   {user.bio}
-      //                 </Typography>
-      //               </Grid>
-      //               <Grid item sm={12} md={12}>
-      //                 <Typography variant="h6" className={classes.profileText}>
-      //                   {user.email}
-      //                 </Typography>
-      //               </Grid>
-      //               <Grid item sm={12} md={12}>
-      //                 <Typography variant="h6" className={classes.profileText}>
-      //                   {user.username}
-      //                 </Typography>
-      //               </Grid>
-      //               <Grid item sm={12} md={12}>
-      //                 <Typography variant="h6" className={classes.profileText}>
-      //                   {user.major}
-      //                 </Typography>
-      //               </Grid>
-      //             </Grid>
-      //           </Grid>
-      //         </Grid>
-      //       </Container>
-      //     </div>
-      //     <Container>
-      //       <br />
-      //       <Typography variant="body1">
-      //         Here are some of my images:{' '}
-      //       </Typography>
-      //       <div id="all_img" className={classes.allImages}></div>
-      //     </Container>
-      //   </div>
-      // </Fragment>
     );
   }
 }
