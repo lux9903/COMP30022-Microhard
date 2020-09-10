@@ -24,6 +24,15 @@ const updateUser = (req, res, next) => {
             }
 
             // only update fields that were actually passed...
+            if (typeof req.body.user.firstname !== 'undefined') {
+                user.firstname = req.body.user.firstname;
+            }
+            if (typeof req.body.user.lastname !== 'undefined') {
+                user.lastname = req.body.user.lastname;
+            }
+            if (typeof req.body.user.major !== 'undefined') {
+                user.major = req.body.user.major;
+            }
             if (typeof req.body.user.username !== 'undefined') {
                 user.username = req.body.user.username;
             }
@@ -75,6 +84,8 @@ const signInUser = (req, res, next) => {
 const signUpUser = (req, res, next) => {
     let user = new User();
 
+    user.lastname = req.body.user.lastname;
+    user.firstname = req.body.user.firstname;
     user.username = req.body.user.username;
     user.email = req.body.user.email;
     user.setPassword(req.body.user.password);

@@ -1,6 +1,12 @@
 # COMP30022-Microhard
 Student E-portfolio app. Mongo/Express/React/Node.js.
 
+>The ePortfolio system must be capable of allowing you
+to submit individual guest lecture reports and end-of subject individual reflections that are requirements in
+COMP30022, as well as a team report. You will be
+assigned a client in addition, either a staff member or
+a group of Masters students studying SWEN90016.
+
 ## Heroku deployment link
 
 - **Demo URL**: https://comp30022-microhard.herokuapp.com/`

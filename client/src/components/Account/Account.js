@@ -7,6 +7,8 @@ import { Formik, ErrorMessage, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
+    lastname: Yup.string().required('*Lastname is required'),
+    firstname: Yup.string().required('*Firstname is required'),
     username: Yup.string().required('*Username is required'),
     email: Yup.string().email().required('*Email is required'),
     bio: Yup.string(),
@@ -61,6 +63,9 @@ class Account extends Component {
                             username: user.username,
                             email: user.email,
                             bio: user.bio,
+                            lastname: user.lastname,
+                            firstname: user.firstname,
+                            major: user.major,
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
@@ -80,6 +85,36 @@ class Account extends Component {
                                     <div className='col'>
                                         <div className='form-card'>
                                             <div className='form-content'>
+                                                <div className='form-group'>
+                                                    <label htmlFor='firstname'>Firstname</label>
+                                                    <Field
+                                                        name='firstname'
+                                                        placeholder='Enter your firstname'
+                                                        className={`form-control ${
+                                                            touched.firstname && errors.firstname ? 'is-invalid' : ''
+                                                        }`}
+                                                    />
+                                                    <ErrorMessage
+                                                        component='div'
+                                                        name='firstname'
+                                                        className='invalid-feedback'
+                                                    />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor='lastname'>Lastname</label>
+                                                    <Field
+                                                        name='lastname'
+                                                        placeholder='Enter your lastname'
+                                                        className={`form-control ${
+                                                            touched.lastname && errors.lastname ? 'is-invalid' : ''
+                                                        }`}
+                                                    />
+                                                    <ErrorMessage
+                                                        component='div'
+                                                        name='lastname'
+                                                        className='invalid-feedback'
+                                                    />
+                                                </div>
                                                 <div className='form-group'>
                                                     <label htmlFor='username'>Username</label>
                                                     <Field
@@ -109,6 +144,21 @@ class Account extends Component {
                                                     <ErrorMessage
                                                         component='div'
                                                         name='email'
+                                                        className='invalid-feedback'
+                                                    />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor='Major'>Major</label>
+                                                    <Field
+                                                        name='major'
+                                                        placeholder='Enter your major'
+                                                        className={`form-control ${
+                                                            touched.major && errors.major ? 'is-invalid' : ''
+                                                        }`}
+                                                    />
+                                                    <ErrorMessage
+                                                        component='div'
+                                                        name='major'
                                                         className='invalid-feedback'
                                                     />
                                                 </div>

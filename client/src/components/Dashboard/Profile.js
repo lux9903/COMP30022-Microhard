@@ -90,6 +90,21 @@ class Profile extends Component {
                         {user.email}
                       </Typography>
                     </Grid>
+                    <Grid item sm={12} md={12}>
+                      <Typography variant="h6" className={classes.profileText}>
+                        {user.lastname}
+                      </Typography>
+                    </Grid>
+                    <Grid item sm={12} md={12}>
+                      <Typography variant="h6" className={classes.profileText}>
+                        {user.firstname}
+                      </Typography>
+                      <Grid item sm={12} md={12}>
+                        <Typography variant="h6" className={classes.profileText}>
+                          {user.major}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
