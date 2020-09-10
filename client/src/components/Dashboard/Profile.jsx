@@ -82,7 +82,7 @@ const styles = (theme) => ({
     borderRadius: '50%',
   },
 });
-
+/*
 const setting = {
   width: '600px',
   height: ['250px', '170px'],
@@ -97,13 +97,41 @@ const setting = {
   ],
   showNumOfRemainingPhotos: true,
 };
-
+*/
 class Profile extends Component {
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
       if (res.data.files) {
-        const imgPic = res.data.files.map((ele) => <img src={ele} alt={ele} />);
-        ReactDOM.render(imgPic, document.getElementById('all_img'));
+        //const imgPic = res.data.files.map((ele) => <img src={ele} alt={ele} />);
+        const photodata = res.data.files.map(getPhoto);
+        function getPhoto(elem) {
+          return {src: elem};
+        }
+
+        const setting = {
+          width: '600px',
+          height: ['250px', '170px'],
+          layout: [1, 4],
+          photos: photodata,
+          showNumOfRemainingPhotos: true,
+        };
+        let photogrid = (
+            <Container>
+              <Grid
+                  container
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{minHeight: '90vh'}}
+              >
+                <Grid item xs={12} md={12} sm={12}>
+                  <ReactPhotoCollage {...setting} />
+                </Grid>
+              </Grid>
+            </Container>
+        );
+        ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
     });
   }
@@ -153,21 +181,7 @@ class Profile extends Component {
             <div className={classes.biography}>
               <p>{user.bio}</p>
             </div>
-
-            <Container>
-              <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{minHeight: '90vh'}}
-              >
-                <Grid item xs={12} md={12} sm={12}>
-                  <ReactPhotoCollage {...setting} />
-                </Grid>
-              </Grid>
-            </Container>
+            <div id="all_img" className={classes.allImages}></div>
           </div>
         </div>
       </Fragment>
