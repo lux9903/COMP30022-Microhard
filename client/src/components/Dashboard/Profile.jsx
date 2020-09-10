@@ -75,7 +75,7 @@ class Profile extends Component {
                   <Grid container justify="left" direction="row">
                     <Grid item sm={12} md={12}>
                       <Typography variant="h4" className={classes.profileText}>
-                        {user.username}
+                        {user.firstname} {user.lastname}
                       </Typography>
                     </Grid>
                     <br />
@@ -92,18 +92,13 @@ class Profile extends Component {
                     </Grid>
                     <Grid item sm={12} md={12}>
                       <Typography variant="h6" className={classes.profileText}>
-                        {user.lastname}
+                        {user.username}
                       </Typography>
                     </Grid>
                     <Grid item sm={12} md={12}>
                       <Typography variant="h6" className={classes.profileText}>
-                        {user.firstname}
+                        {user.major}
                       </Typography>
-                      <Grid item sm={12} md={12}>
-                        <Typography variant="h6" className={classes.profileText}>
-                          {user.major}
-                        </Typography>
-                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
