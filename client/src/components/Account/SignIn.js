@@ -39,9 +39,11 @@ const useStyles = (theme) => ({
         margin: '0px 20px',
     },
     image: {
-        backgroundImage: 'img',
+        backgroundImage: 'url(' + img + ')',
+        //backgroundImage: `url(${"../../img/form-background.jpg"})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
+        backgroundSize: "cover",
     },
     form: {
         width: '100%',
@@ -86,10 +88,10 @@ class SignIn extends Component {
                                 <img src={logo} alt="Microhard" className={classes.logo} />
                                 </Button>
                             </Link>
-                            <Typography variant="h4" fontWeight="fontWeightBold">
+                            <Typography variant="h4" fontWeight="fontWeightBold" padding="10px">
                                 Sign in to your account
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h6">
                                 {'Or '}
                                 <Link color="inherit" to="/sign-up">
                                     create a new account.

@@ -34,7 +34,8 @@ const useStyles = (theme) => ({
         margin: '0px 20px',
     },
     image: {
-        backgroundImage: 'img',
+        backgroundImage: 'url(' + img + ')',
+        backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
     },
@@ -64,10 +65,10 @@ class ResetPassword extends Component {
                                 <img src={logo} alt="Microhard" className={classes.logo} />
                                 </Button>
                             </Link>
-                            <Typography variant="h4" fontWeight="fontWeightBold">
+                            <Typography variant="h4" fontWeight="fontWeightBold"padding="10px">
                                 Sign in to your account
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h6">
                                 {'Or '}
                                 <Link color="inherit" to="/sign-up">
                                     create a new account.

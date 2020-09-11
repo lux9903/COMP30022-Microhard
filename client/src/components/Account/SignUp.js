@@ -40,7 +40,8 @@ const useStyles = (theme) => ({
         margin: '0px 20px',
     },
     image: {
-        backgroundImage: 'img',
+        backgroundImage: 'url(' + img + ')',
+        backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
     },
@@ -85,10 +86,10 @@ class SignUp extends Component {
                                 <img src={logo} alt="Microhard" className={classes.logo} />
                                 </Button>
                             </Link>
-                            <Typography variant="h4" fontWeight="fontWeightBold">
+                            <Typography variant="h4" fontWeight="fontWeightBold" padding="10px">
                                 Create your account
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h6">
                                 {'Or '}
                                 <Link color="inherit" to="/sign-in">
                                     sign in to your account.
