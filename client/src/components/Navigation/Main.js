@@ -12,6 +12,8 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Plan from '../Dashboard/Plan';
 import Image from '../Dashboard/Image';
+import Project from '../Dashboard/Project';
+import Projectex from '../Dashboard/Project_example';
 
 class Main extends Component {
   render() {
@@ -27,6 +29,18 @@ class Main extends Component {
           exact
           path="/plan"
           component={Plan}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/projectex"
+          component={Projectex}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/project"
+          component={Project}
           authed={this.props.user}
         />
         <PrivateRoute
