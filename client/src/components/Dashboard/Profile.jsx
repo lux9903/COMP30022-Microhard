@@ -85,10 +85,10 @@ class Profile extends Component {
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
       if (res.data.files) {
-        //const imgPic = res.data.files.map((ele) => <img src={ele} alt={ele} />);
+        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
         const photodata = res.data.files.map(getPhoto);
         function getPhoto(elem) {
-          return {src: elem};
+          return {src: "/api/image/"+elem.filename};
         }
 
         const setting = {
