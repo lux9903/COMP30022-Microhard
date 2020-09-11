@@ -1,19 +1,159 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { signInUser } from '../../actions/userAction';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { Spinner, Alert } from 'react-bootstrap';
 import { Formik, ErrorMessage, Field, Form } from 'formik';
+//import logo from '../../img/form-logo.PNG';
 import logo from '../../img/form-logo.PNG';
 import * as Yup from 'yup';
+
+import {Grid, Button, Container, Typography} from '@material-ui/core';
+import {TextField, CssBaseline, Box} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+//import Link from '@material-ui/core/Link';
+
+
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email().required('*Email is required'),
     password: Yup.string().required('*Password is required'),
 });
 
+const useStyles = (theme) => ({
+    root: {
+        height: '100vh',
+    },
+    image: {
+        backgroundImage: 'logo',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+});
+
+
+
 class SignIn extends Component {
+    render() {
+        const { error, isAuthenticating } = this.props.user;
+        const { classes } = this.props;
+
+        let content;
+
+        if (error) {
+            content = <Alert variant='danger'>{error}</Alert>;
+        } else if (isAuthenticating) {
+            content = (
+                <div className='text-center'>
+                    <Spinner animation='border' role='status'>
+                        <span className='sr-only'>Loading...</span>
+                    </Spinner>
+                </div>
+            );
+        }
+
+        return (
+            <Fragment>
+                <Helmet>
+                    <title>Microhard &middot; Sign in</title>
+                </Helmet>
+
+                <Grid container component="main" className={classes.root}>
+                    <CssBaseline />
+                    <Grid item xs={false} sm={4} md={7} className={classes.image}/>
+                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                        <Typography component="h2" variant="h5">
+                            Sign in to your account
+                        </Typography>
+
+                        <Typography component="h2" variant="h5">
+                            {'Or '}
+                            <Link color="inherit" to="/sign-up">
+                                create a new account
+                            </Link>
+                        </Typography>
+                        <Formik
+                            initialValues={{
+                                email: '',
+                                password: '',
+                            }}
+                            validationSchema={validationSchema}
+                            onSubmit={(values) => {
+                                this.props.dispatch(signInUser({ user: values }));
+                            }}>
+                            {({ errors, touched }) => (
+                                <Form className={classes.form}>
+                                    <div className={classes.form_group}>
+                                        <Field
+                                            variant="outlined"
+                                            margin="normal"
+                                            id="email"
+                                            label="Enter your email address"
+                                            name="email"
+                                            className={`form-control ${
+                                                touched.email && errors.email ? 'is-invalid' : ''
+                                            }`}
+                                        />
+                                        <ErrorMessage
+                                            component='div'
+                                            name='email'
+                                            className='invalid-feedback'
+                                        />
+                                    </div>
+                                    <div className={classes.form_group}>
+                                        <Field
+                                            variant="outlined"
+                                            margin="normal"
+                                            name="password"
+                                            label="Enter your password"
+                                            type="password"
+                                            id="password"
+                                            className={`form-control ${
+                                                touched.password && errors.password ? 'is-invalid' : ''
+                                            }`}
+                                        />
+                                        <ErrorMessage
+                                            component='div' 
+                                            name='password'
+                                            className='invalid-feedback'
+                                        />
+                                    </div>
+                                    <Button
+                                        type="submit"
+                                        variant="raised"
+                                        color="primary"
+                                    >
+                                        Sign in
+                                    </Button>
+                                </Form>
+                            )}
+                        </Formik>
+                        
+                        {content}
+                        
+                        <Link to="/forgot-password" variant="body2">
+                            Forgot password?
+                        </Link>
+                    </Grid>
+                </Grid>
+            </Fragment>
+        );
+    }
+}
+
+
+
+/*class SignIn extends Component {
     render() {
         const { error, isAuthenticating } = this.props.user;
 
@@ -52,7 +192,6 @@ class SignIn extends Component {
                                     Or <Link to='/sign-up'>create a new account</Link>.
                                 </div>
                                 
-
                                 <Formik
                                     initialValues={{
                                         email: '',
@@ -120,10 +259,12 @@ class SignIn extends Component {
             </section>
         );
     }
-}
+}*/
 
 const mapStateToProps = (state) => ({
     ...state,
 });
 
-export default connect(mapStateToProps)(SignIn);
+//export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps)(withStyles(useStyles)(SignIn));
+
