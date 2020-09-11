@@ -8,11 +8,11 @@ fileRouter.get('/', (req,res)=>{
 });
 
 fileRouter.get('/:filename', (req, res) => {
-  fileRouter.getOneFile(req, res);
+  fileController.getOneFile(req, res);
 });
 
 fileRouter.delete('/:id', (req,res)=>{
-  fileRouter.deleteOneFile(req, res);
+  fileController.deleteOneFile(req, res);
 });
 
 module.exports = fileRouter;

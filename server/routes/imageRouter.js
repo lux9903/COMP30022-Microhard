@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const imageRouter = require('express').Router();
 const auth = require('./authRouter');
 const imageController = require('../controllers/imageController');
+
 const Image = mongoose.model('Image');
 const User = mongoose.model('User');
 const upload = imageController.upload;
@@ -31,4 +32,8 @@ imageRouter.get('/:filename',auth.optional, (req, res) => {
   imageController.getOneImage(req, res);
 });
 
+// delete image by filename /: filename
+imageRouter.delete('/:id', auth.optional, (req, res) => {
+	imageController.deleteImage(req, res);
+});
 module.exports = imageRouter;
