@@ -35,7 +35,7 @@ pdfRouter.get('/:filename',auth.optional, (req, res) => {
 
 // delete image by filename /: filename
 pdfRouter.delete('/:id', auth.optional, (req, res) => {
-	pdfController.deleteImage(req, res);
+	pdfController.deletePdf(req, res);
 });
 
 module.exports = pdfRouter;

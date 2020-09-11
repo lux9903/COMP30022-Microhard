@@ -13,6 +13,7 @@ export default class FilesUploadComponent extends Component {
         this.state ={
             file: null
         };
+        this.ondelete = this.ondelete.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -50,6 +51,19 @@ export default class FilesUploadComponent extends Component {
     onChange(e) {
         this.setState({file:e.target.files[0]});
     }
+    ondelete(e){
+    	e.preventDefault();
+    	const formData = new FormData();
+    	const config = {
+    		headers: {
+                'content-type': 'multipart/form-data'
+            }
+    	};
+    	axios.delete('/pdf/5f57882947ad6155d8f36837').then((response) =>{
+    		alert("deleted");
+    	}).catch((error) => {
+        });
+    }
 
     componentDidMount() {
         const imgs = axios.get("/image").then(res=>{
@@ -85,6 +99,7 @@ export default class FilesUploadComponent extends Component {
                 </div>
                 <div id="all_img">
                 </div>
+                <button onClick = {this.ondelete}> test Delete</button>
                 </div>
             </div>
         )

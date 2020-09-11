@@ -104,7 +104,7 @@ const deleteImage = (req, res) =>{
 	      return res.sendStatus(401).send('The user does not exist.');
 	    }
 	    
-	    Image.delete({user: user._id, fileId: req.params.id}, (err)=> {
+	    Image.deleteOne({user: user._id, fileId: req.params.id}, (err)=> {
 	    	if(err){
 	    		return res.status(404).json({err:"Relation does not exist"});
 	    	}
