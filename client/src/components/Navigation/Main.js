@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Route, Switch} from 'react-router-dom';
 
-import PrivateRoute from '../Navigation/PrivateRoute';
-import PrivateHome from '../Navigation/PrivateHome';
+import PrivateRoute from './PrivateRoute';
+import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
-import NoMatch from '../Navigation/NoMatch';
+import NoMatch from './NoMatch';
 import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
-import Plan from '../Dashboard/Plan';
+import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project';
 import Projectex from '../Dashboard/Project_example';
@@ -27,8 +27,8 @@ class Main extends Component {
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute
           exact
-          path="/plan"
-          component={Plan}
+          path="/experiences"
+          component={Experience}
           authed={this.props.user}
         />
         <PrivateRoute

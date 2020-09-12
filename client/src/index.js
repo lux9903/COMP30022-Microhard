@@ -19,9 +19,9 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     secondary: {
-      light: '#FFA478',
-      main: '#E77052',
-      dark: '#ff5722',
+      light: '#7CBDCE',
+      main: '#3FA7C2',
+      dark: '#008080',
       contrastText: '#000',
     },
   },
@@ -34,7 +34,10 @@ const theme = createMuiTheme({
       fontWeight: '600',
     },
     body1: {
-      fontFamily: 'Lato, Nunito, san-serif',
+      fontFamily: 'Lato, san-serif',
+    },
+    body2: {
+      fontFamily: 'Nunito, sans-serif',
     },
   },
 });
