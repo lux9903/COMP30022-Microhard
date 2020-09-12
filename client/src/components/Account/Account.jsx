@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {updateUser, deleteUser, resetPassword} from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
-import {
-  CircularProgress,
-  Container,
-  Typography,
-  Button,
-} from '@material-ui/core';
+import {CircularProgress, Container, Typography} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {Formik, ErrorMessage, Field, Form} from 'formik';
 import * as Yup from 'yup';

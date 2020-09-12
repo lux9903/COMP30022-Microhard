@@ -160,6 +160,17 @@ class Profile extends Component {
             <div className={classes.biography}>
               <p>{user.bio}</p>
             </div>
+            <div className={classes.biography}>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Pellentesque habitant morbi tristique senectus et netus et
+                malesuada fames. Diam quis enim lobortis scelerisque fermentum
+                dui faucibus in ornare. Varius morbi enim nunc faucibus a
+                pellentesque sit amet. Aenean sed adipiscing diam donec
+                adipiscing tristique risus.
+              </p>
+            </div>
             <Container>
               <Grid justify="center">
                 <Grid
