@@ -10,7 +10,7 @@ import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
-import Plan from '../Dashboard/Plan';
+import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project';
 import Projectex from '../Dashboard/Project_example';
@@ -27,8 +27,8 @@ class Main extends Component {
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute
           exact
-          path="/plan"
-          component={Plan}
+          path="/experiences"
+          component={Experience}
           authed={this.props.user}
         />
         <PrivateRoute
