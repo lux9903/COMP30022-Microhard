@@ -75,7 +75,7 @@ const styles = (theme) => ({
   aboutMe: {
     margin: '1.071rem auto 1.071rem',
     fontFamily: 'Nunito',
-    maxWidth: '750px',
+    maxWidth: '800px',
     color: '#555',
     textAlign: 'center !important',
   },
@@ -106,8 +106,8 @@ class Profile extends Component {
         }
 
         const setting = {
-          width: '600px',
-          height: ['250px', '170px'],
+          width: '500px',
+          height: ['170px', '170px'],
           layout: [1, 4],
           photos: photodata,
           showNumOfRemainingPhotos: true,
