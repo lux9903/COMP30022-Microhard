@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
-import logo from '../../img/form-logo.PNG';
 
 import ReactDOM from 'react-dom';
 //import axios from 'axios';
@@ -39,7 +38,12 @@ export default class FilesUploadComponent extends Component {
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
       if (res.data.files) {
-        const imgPic = res.data.files.map((ele) => <img src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
+        const imgPic = res.data.files.map((ele) => (
+          <img
+            src={'/api/image/' + ele.filename}
+            alt={'/image/' + ele.filename}
+          />
+        ));
         ReactDOM.render(imgPic, document.getElementById('all_img'));
       }
     });

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
-import logo from '../../img/form-logo.PNG';
 import Typography from '@material-ui/core/Typography';
 
 export default function Home() {
