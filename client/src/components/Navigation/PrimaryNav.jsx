@@ -78,11 +78,17 @@ class PrimaryNav extends Component {
             <Link to="/plan" className={classes.noDecoration}>
               <Button className={classes.button}>Training Plan</Button>
             </Link>
+            <Link to="/course" className={classes.noDecoration}>
+              <Button className={classes.button}>Course</Button>
+            </Link>
+            <Link to="/experiences" className={classes.noDecoration}>
+              <Button className={classes.button}>Experiences</Button>
+            </Link>
             <Link to="/project" className={classes.noDecoration}>
-              <Button className={classes.button}>Project</Button>
+              <Button className={classes.button}>My projects</Button>
             </Link>
             <Link to="/image" className={classes.noDecoration}>
-              <Button className={classes.button}>Upload Image</Button>
+              <Button className={classes.button}>Upload image</Button>
             </Link>
           </div>
 

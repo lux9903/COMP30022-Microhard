@@ -88,7 +88,7 @@ class Profile extends Component {
         //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
         const photodata = res.data.files.map(getPhoto);
         function getPhoto(elem) {
-          return {src: "/api/image/"+elem.filename};
+          return {src: '/api/image/' + elem.filename};
         }
 
         const setting = {
@@ -144,7 +144,7 @@ class Profile extends Component {
                       <h3 className={classes.fullName}>
                         {user.firstname} {user.lastname}
                       </h3>
-                      <h6 className={classes.major}>COMPUTER SCIENCE</h6>
+                      <h6 className={classes.major}>{user.major}</h6>
                       <IconButton href={'mailto:' + user.email}>
                         <EmailIcon />
                       </IconButton>
@@ -172,6 +172,7 @@ class Profile extends Component {
                   <div id="all_img"></div>
                 </Grid>
               </Grid>
+              <br />
             </Container>
           </div>
         </div>
