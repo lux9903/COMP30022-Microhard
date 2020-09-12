@@ -5,7 +5,6 @@ import {Helmet} from 'react-helmet';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
   CircularProgress,
-  Container,
   Typography,
   Button, Grid,
 } from '@material-ui/core';
