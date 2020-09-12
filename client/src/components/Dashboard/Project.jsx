@@ -55,7 +55,7 @@ export default function Album() {
   return (
     <Fragment>
       <Helmet>
-        <title>Microhard &middot; Profile </title>
+        <title>Microhard &middot; My projects </title>
       </Helmet>
 
       <div className={classes.heroContent}>
