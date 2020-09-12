@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: '#094183',
         padding: theme.spacing(8, 0, 6),
     },
     cardGrid: {
