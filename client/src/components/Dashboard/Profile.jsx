@@ -61,11 +61,11 @@ const styles = (theme) => ({
     },
   },
   fullName: {
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Lato, sans-serif',
   },
   major: {
     margin: '20px',
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Lato, sans-serif',
     fontWeight: '300',
   },
   biography: {

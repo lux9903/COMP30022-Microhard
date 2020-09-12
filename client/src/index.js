@@ -34,7 +34,10 @@ const theme = createMuiTheme({
       fontWeight: '600',
     },
     body1: {
-      fontFamily: 'Lato, Nunito, san-serif',
+      fontFamily: 'Lato, san-serif',
+    },
+    body2: {
+      fontFamily: 'Nunito, sans-serif',
     },
   },
 });
