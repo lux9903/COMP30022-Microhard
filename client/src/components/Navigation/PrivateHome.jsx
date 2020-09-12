@@ -16,7 +16,7 @@ export default function PrivateRoute({authed, ...rest}) {
             <div className="main">
               <Profile />
             </div>
-            <Footer />
+            {/*<Footer />*/}
           </Fragment>
         ) : (
           <HomePage />

@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Route, Switch} from 'react-router-dom';
 
-import PrivateRoute from '../Navigation/PrivateRoute';
-import PrivateHome from '../Navigation/PrivateHome';
+import PrivateRoute from './PrivateRoute';
+import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
-import NoMatch from '../Navigation/NoMatch';
+import NoMatch from './NoMatch';
 import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
