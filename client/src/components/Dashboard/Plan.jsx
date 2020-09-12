@@ -1,7 +1,7 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
+import {Container, Typography} from '@material-ui/core';
 
 export default function Home() {
   return (
@@ -10,14 +10,14 @@ export default function Home() {
         <title>Microhard &middot; Welcome </title>
       </Helmet>
 
-      <div className="container-fluid">
-        <div className="form-wrap" style={{padding: '30px'}}>
+      <Container>
+        <div style={{padding: '30px'}}>
           <br />
           <Typography variant="h6">
             This is where you put your career path!
           </Typography>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
