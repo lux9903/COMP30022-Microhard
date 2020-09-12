@@ -9,7 +9,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Gravatar from 'react-gravatar';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import EditIcon from '@material-ui/icons/Edit';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
+import {Link} from 'react-router-dom';
 
 const styles = (theme) => ({
   root: {
@@ -62,22 +65,33 @@ const styles = (theme) => ({
   },
   fullName: {
     fontFamily: 'Lato, sans-serif',
+    fontWeight: '700',
   },
   major: {
-    margin: '20px',
+    marginTop: '5px',
     fontFamily: 'Lato, sans-serif',
     fontWeight: '300',
   },
-  biography: {
+  aboutMe: {
     margin: '1.071rem auto 1.071rem',
     fontFamily: 'Nunito',
-    maxWidth: '600px',
-    color: '#999',
+    maxWidth: '750px',
+    color: '#555',
     textAlign: 'center !important',
   },
   imageCollage: {
-    margin: '20px auto 50px auto',
+    margin: '0px auto 30px auto',
     textAlign: 'center',
+  },
+  graduation: {
+    marginBottom: '10px',
+    fontFamily: 'Lato, sans-serif',
+    fontWeight: '300',
+  },
+  bio: {
+    marginTop: '20px',
+    fontFamily: 'Lato, sans-serif',
+    fontWeight: '300',
   },
 });
 
@@ -106,7 +120,7 @@ class Profile extends Component {
               direction="column"
               alignItems="center"
               justify="center"
-              style={{minHeight: '90vh'}}
+              style={{minHeight: '70vh'}}
             >
               <Grid item xs={12} md={12} sm={12}>
                 <ReactPhotoCollage {...setting} />
@@ -140,11 +154,24 @@ class Profile extends Component {
                     <div>
                       <Gravatar email={user.email} size={'2048px'} />
                     </div>
-                    <div style={{marginTop: '-40px'}}>
-                      <h3 className={classes.fullName}>
+                    <div style={{marginTop: '-60px'}}>
+                      <h2 className={classes.fullName}>
                         {user.firstname} {user.lastname}
-                      </h3>
+                      </h2>
+                      <h5 className={classes.bio}>{user.bio}</h5>
                       <h6 className={classes.major}>{user.major}</h6>
+                      <br />
+                      <h6 className={classes.graduation}>
+                        Graduation: June 2020
+                      </h6>
+                      <Link to="/image">
+                        <IconButton aria-label="upload" color="secondary">
+                          <AttachFileIcon />
+                        </IconButton>
+                      </Link>
+                      <IconButton aria-label="edit" color="secondary">
+                        <EditIcon />
+                      </IconButton>
                       <IconButton href={'mailto:' + user.email}>
                         <EmailIcon />
                       </IconButton>
@@ -157,11 +184,11 @@ class Profile extends Component {
               </Grid>
             </Container>
 
-            <div className={classes.biography}>
-              <p>{user.bio}</p>
-            </div>
-            <div className={classes.biography}>
+            <div className={classes.aboutMe}>
               <p>
+                <hr />
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Pellentesque habitant morbi tristique senectus et netus et
