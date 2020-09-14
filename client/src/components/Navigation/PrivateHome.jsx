@@ -3,7 +3,6 @@ import {Route} from 'react-router-dom';
 import Profile from '../Dashboard/Profile';
 import HomePage from '../Home/HomePage';
 import PrimaryNav from './PrimaryNav';
-import Footer from './Footer';
 
 export default function PrivateRoute({authed, ...rest}) {
   return (
@@ -13,10 +12,9 @@ export default function PrivateRoute({authed, ...rest}) {
         authed !== null ? (
           <Fragment>
             <PrimaryNav />
-            <div className="main">
+            <div>
               <Profile />
             </div>
-            <Footer />
           </Fragment>
         ) : (
           <HomePage />

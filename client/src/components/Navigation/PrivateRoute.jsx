@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PrimaryNav from './PrimaryNav';
-import Footer from './Footer';
 import { Fragment } from 'react';
 
 export default function PrivateRoute({ component: Component, authed, ...rest }) {
@@ -12,10 +11,9 @@ export default function PrivateRoute({ component: Component, authed, ...rest }) 
                 authed !== null ? (
                     <Fragment>
                         <PrimaryNav />
-                        <div className='main'>
+                        <div>
                             <Component />
                         </div>
-                        <Footer />
                     </Fragment>
                 ) : (
                     <Redirect

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/userAction';
-import { Spinner } from 'react-bootstrap';
 import Main from './Navigation/Main';
+import { CircularProgress } from '@material-ui/core';
 
 class App extends Component {
     componentDidMount() {
@@ -15,9 +15,9 @@ class App extends Component {
         if (isFetching) {
             return (
                 <div className='app-loading'>
-                    <Spinner animation='border' role='status'>
-                        <span className='sr-only'>Loading...</span>
-                    </Spinner>
+                    <CircularProgress>
+                        <span>Loading...</span>
+                    </CircularProgress>
                 </div>
             );
         }

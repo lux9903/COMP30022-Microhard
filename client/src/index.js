@@ -5,7 +5,6 @@ import {ConnectedRouter} from 'connected-react-router';
 import {history} from './store';
 import configureStore from './store';
 import App from './components/App';
-import './styles/main.scss';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core';
 import './index.css';
 
