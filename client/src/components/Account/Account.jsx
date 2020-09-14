@@ -69,8 +69,8 @@ class Account extends Component {
     let content;
 
     if (error) {
-      //content = <Alert severity="error">{error}</Alert>
-      content = <Alert variant="danger">{error}</Alert>;
+      content = <Alert severity="error">{error}</Alert>
+      //content = <Alert variant="danger">{error}</Alert>;
     } else if (isAuthenticating) {
       content = (
         <CircularProgress>

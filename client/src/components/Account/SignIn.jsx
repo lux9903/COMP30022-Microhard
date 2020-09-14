@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import { signInUser } from '../../actions/userAction';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { Alert } from 'react-bootstrap';
 import { Formik, ErrorMessage, Field, Form } from 'formik';
 import logo from '../../components/Navigation/logo.png';
 import img from './form-background.jpg';
 import * as Yup from 'yup';
 import { CircularProgress } from '@material-ui/core';
-//import Alert from '@material-ui/lab/Alert';
-//import { Alert } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
 import {Grid, Button, Container, Typography} from '@material-ui/core';
 import {withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -63,8 +61,8 @@ class SignIn extends Component {
         let content;
 
         if (error) {
-            //content = <Alert severity="error">{error}</Alert>
-            content = <Alert variant='danger'>{error}</Alert>;
+            content = <Alert severity="error">{error}</Alert>
+            //content = <Alert variant='danger'>{error}</Alert>;
         } else if (isAuthenticating) {
             content = (
                 <CircularProgress>
