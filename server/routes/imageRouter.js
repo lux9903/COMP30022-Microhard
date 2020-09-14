@@ -19,6 +19,7 @@ imageRouter.post('/upload',imageController.upload.single('file'),auth.optional, 
         image.user = user;
         image.fileId = req.file.id;
         image.save();
+        return image;
       });
 });
 

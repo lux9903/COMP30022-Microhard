@@ -35,12 +35,13 @@ class FilesUploadComponent extends Component {
       },
     };
     axios
-      .post('/image/upload', formData, config)
+      .post('/image/upload', formData)
       .then((response) => {
         alert('The file is successfully uploaded');
       })
       .catch((error) => {});
   }
+
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
@@ -100,6 +101,8 @@ class FilesUploadComponent extends Component {
                     <Button type="submit" color="primary" variant="contained">
                       Upload
                     </Button>
+
+          
                   </form>
                 </div>
               </Grid>
