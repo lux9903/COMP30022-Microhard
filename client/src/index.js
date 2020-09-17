@@ -12,16 +12,16 @@ const store = configureStore();
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#ADCDF0',
-      main: '#094183',
-      dark: '#4074B2',
+      light: '#74a2e4',
+      main: '#4074b2',
+      dark: '#004982',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#7CBDCE',
+      light: '#65b8ce',
       main: '#3FA7C2',
-      dark: '#008080',
-      contrastText: '#000',
+      dark: '#2c7487',
+      contrastText: '#fff',
     },
   },
 
