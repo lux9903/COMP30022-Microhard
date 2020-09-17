@@ -121,6 +121,7 @@ class SignIn extends Component {
                         as={TextField}
                         type="email"
                         fullWidth
+                        autoFocus
                         helperText={
                           <ErrorMessage
                             name="email"
