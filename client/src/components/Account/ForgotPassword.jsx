@@ -7,9 +7,8 @@ import { Formik, ErrorMessage, Field, Form } from 'formik';
 import logo from '../../components/Navigation/logo.png';
 import * as Yup from 'yup';
 
-import {Grid, Button, Container, Typography} from '@material-ui/core';
+import { Grid, Button, Container, Typography, Paper } from '@material-ui/core';
 import {withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import img from './form-background.jpg';
 
 const validationSchema = Yup.object().shape({

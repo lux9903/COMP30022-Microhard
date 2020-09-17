@@ -2,9 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 
 import styled, {keyframes} from 'styled-components';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Container, Grid, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
