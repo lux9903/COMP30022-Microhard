@@ -8,17 +8,23 @@ import {
 } from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {CircularProgress, Typography, Button, Grid} from '@material-ui/core';
+import {
+  CircularProgress,
+  Typography,
+  Button,
+  Grid,
+  TextField,
+  Paper,
+} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {Formik, ErrorMessage, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import img from './form-background.jpg';
-import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core/styles';
 
 const validationSchema = Yup.object().shape({
-  lastname: Yup.string().required('*Lastname is required'),
-  firstname: Yup.string().required('*Firstname is required'),
+  lastname: Yup.string().required('*Last name is required'),
+  firstname: Yup.string().required('*First name is required'),
   username: Yup.string().required('*Username is required'),
   email: Yup.string().email().required('*Email is required'),
   bio: Yup.string(),
@@ -33,6 +39,7 @@ const useStyles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    textAlign: 'center',
   },
   logo: {
     maxHeight: '12rem',
@@ -69,8 +76,7 @@ class Account extends Component {
     let content;
 
     if (error) {
-      content = <Alert severity="error">{error}</Alert>
-      //content = <Alert variant="danger">{error}</Alert>;
+      content = <Alert severity="error">{error}</Alert>;
     } else if (isAuthenticating) {
       content = (
         <CircularProgress>
@@ -88,25 +94,17 @@ class Account extends Component {
         <Grid container component="main" className={classes.root}>
           <Grid item xs={12} component={Paper} elevation={6} square>
             <div className={classes.paper}>
-              <Typography
-                variant="h2"
-                fontWeight="fontWeightBold"
-                padding="10px"
-              >
+              <Typography variant="h2" padding="10px">
                 Account
               </Typography>
             </div>
           </Grid>
           <Grid item xs={4} component={Paper} elevation={6} square>
             <div className={classes.paper}>
-              <Typography
-                variant="h4"
-                fontWeight="fontWeightBold"
-                padding="10px"
-              >
+              <Typography variant="h4" padding="10px">
                 Basics
               </Typography>
-              <Typography variant="h6" fontWeight="fontWeight" padding="10px">
+              <Typography variant="h6" padding="10px">
                 This information will be shown publicly so be careful what
                 information you provide.
               </Typography>
@@ -131,132 +129,141 @@ class Account extends Component {
                 {({errors, touched}) => (
                   <Form className={classes.form}>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">First Name</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="text"
                         id="firstname"
                         name="firstname"
-                        label="Enter your firstname"
+                        label="Change your first name"
                         fullWidth
-                        className={`form-control ${
-                          touched.firstname && errors.firstname
-                            ? 'is-invalid'
-                            : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="firtname"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="firstname"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.firstname && touched.firstname}
+                        // className={`form-control ${
+                        //   touched.firstname && errors.firstname
+                        //     ? 'is-invalid'
+                        //     : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">Last Name</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="text"
                         id="lastname"
                         name="lastname"
-                        label="Enter your lastname"
+                        label="Change your last name"
                         fullWidth
-                        className={`form-control ${
-                          touched.lastname && errors.lastname
-                            ? 'is-invalid'
-                            : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="lastname"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="lastname"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.lastname && touched.lastname}
+                        // className={`form-control ${
+                        //   touched.lastname && errors.lastname
+                        //     ? 'is-invalid'
+                        //     : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">Username</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="text"
                         id="username"
                         name="username"
-                        label="Enter your username"
+                        label="Change your username"
                         fullWidth
-                        className={`form-control ${
-                          touched.username && errors.username
-                            ? 'is-invalid'
-                            : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="username"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="username"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.username && touched.username}
+                        // className={`form-control ${
+                        //   touched.username && errors.username
+                        //     ? 'is-invalid'
+                        //     : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">Email Address</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="email"
                         id="email"
                         name="email"
-                        label="Enter your email address"
-                        id="email"
+                        label="Change your email address"
                         fullWidth
-                        className={`form-control ${
-                          touched.email && errors.email ? 'is-invalid' : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="email"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="email"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.email && touched.email}
+                        // className={`form-control ${
+                        //   touched.email && errors.email ? 'is-invalid' : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">Major</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="major"
                         id="major"
                         name="major"
-                        label="Enter your major"
-                        id="major"
+                        label="Add/change your major"
                         fullWidth
-                        className={`form-control ${
-                          touched.major && errors.major ? 'is-invalid' : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="major"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="major"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.major && touched.major}
+                        // className={`form-control ${
+                        //   touched.major && errors.major ? 'is-invalid' : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">Bio</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="bio"
                         id="bio"
                         name="bio"
-                        label="Enter your bio"
-                        id="bio"
+                        label="Add/change your bio"
                         fullWidth
-                        className={`form-control ${
-                          touched.bio && errors.bio ? 'is-invalid' : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="bio"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="bio"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.bio && touched.bio}
+                        // className={`form-control ${
+                        //   touched.bio && errors.bio ? 'is-invalid' : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -307,31 +314,30 @@ class Account extends Component {
                 {({errors, touched}) => (
                   <Form className={classes.form}>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">New Password</Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
                         type="password"
                         id="password"
                         name="password"
-                        label="Enter your new password"
+                        label="New password"
                         fullWidth
-                        className={`form-control ${
-                          touched.password && errors.password
-                            ? 'is-invalid'
-                            : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="password"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="password"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.password && touched.password}
+                        // className={`form-control ${
+                        //   touched.password && errors.password
+                        //     ? 'is-invalid'
+                        //     : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
-                      <Typography variant="body2">
-                        Confirm new password
-                      </Typography>
                       <Field
                         variant="outlined"
                         margin="normal"
@@ -340,14 +346,17 @@ class Account extends Component {
                         name="confirm"
                         label="Confirm your new password"
                         fullWidth
-                        className={`form-control ${
-                          touched.confirm && errors.confirm ? 'is-invalid' : ''
-                        }`}
-                      />
-                      <ErrorMessage
-                        component="div"
-                        name="confirm"
-                        className="invalid-feedback"
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="confirm"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.confirm && touched.confirm}
+                        // className={`form-control ${
+                        //   touched.confirm && errors.confirm ? 'is-invalid' : ''
+                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
