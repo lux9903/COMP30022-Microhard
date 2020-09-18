@@ -48,11 +48,11 @@ Running Mocha tests
 | Image              | Read    | /api/image          | Image.find()                 | GET       | View all existing images       |
 | Image              | Read    | /api/image/:filename| Image.findOne()              | GET       | View an existing image         |
 | Image              | Create  | /api/image/upload   | Image.save()                 | POST      | Post a new image to server     |
-| Image              | Delete  | /api/image/:id      | Image.deleteOne() | DELETE   | Delete an existing image                   |
-| PDF                | Read    | /api/pdf            | Image.find()                 | GET       | View all existing pdfs         |
-| PDF                | Read    | /api/pdf/:filename  | Image.findOne()              | GET       | View an existing pdf           |
-| PDF                | Create  | /api/pdf/upload     | Image.save()                 | POST      | Post a new pdf to server       |  
-| PDF                | Delete  | /api/pdf/:id        | Image.deleteOne()            | DELETE    | Delete an existing pdf         |
+| Image              | Delete  | /api/image/:id      | Image.deleteOne()            | DELETE    | Delete an existing image                   |
+| PDF                | Read    | /api/pdf            | Pdf.find()                   | GET       | View all existing pdfs         |
+| PDF                | Read    | /api/pdf/:filename  | Pdf.findOne()                | GET       | View an existing pdf           |
+| PDF                | Create  | /api/pdf/upload     | Pdf.save()                   | POST      | Post a new pdf to server       |  
+| PDF                | Delete  | /api/pdf/:id        | Pdf.deleteOne()              | DELETE    | Delete an existing pdf         |
 
 ## MongoDB schemas
 
