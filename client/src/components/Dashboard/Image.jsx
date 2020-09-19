@@ -3,9 +3,9 @@ import {Helmet} from 'react-helmet';
 
 import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
-import { Container, Grid, Typography, Input, Button } from '@material-ui/core';
+import {Container} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';

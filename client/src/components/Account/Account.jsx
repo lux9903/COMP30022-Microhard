@@ -8,13 +8,19 @@ import {
 } from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import {
+  CircularProgress,
+  Typography,
+  Button,
+  Grid,
+  TextField,
+  Paper,
+} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {Formik, ErrorMessage, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import img from './form-background.jpg';
 import {withStyles} from '@material-ui/core/styles';
-import { Typography, Grid, TextField, Paper, CircularProgress, Button } from '@material-ui/core';
 
 const validationSchema = Yup.object().shape({
   lastname: Yup.string().required('*Last name is required'),

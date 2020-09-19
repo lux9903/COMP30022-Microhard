@@ -1,19 +1,17 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import {makeStyles} from '@material-ui/core/styles';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {
-  Grid,
-  Accordion,
-  AccordionDetails,
-  Typography,
-  AccordionSummary,
-  Button,
-  TextField,
-  Modal,
-  Backdrop,
-  Fade,
-} from '@material-ui/core';
+import {Grid} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {

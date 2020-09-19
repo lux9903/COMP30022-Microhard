@@ -1,8 +1,12 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import heroImage from './heroImage.png';
 import {Link} from 'react-router-dom';
-import { Grid, Typography, Button, Container, Grow } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles((theme) => ({
   root: {
