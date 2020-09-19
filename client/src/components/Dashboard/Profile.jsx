@@ -13,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
   root: {
@@ -155,15 +156,19 @@ class Profile extends Component {
                       <Gravatar email={user.email} size={'2048px'} />
                     </div>
                     <div style={{marginTop: '-60px'}}>
-                      <h2 className={classes.fullName}>
+                      <Typography variant="h4" className={classes.fullName}>
                         {user.firstname} {user.lastname}
-                      </h2>
-                      <h5 className={classes.bio}>{user.bio}</h5>
-                      <h6 className={classes.major}>{user.major}</h6>
+                      </Typography>
+                      <Typography variant="h6" className={classes.bio}>
+                        {user.bio}
+                      </Typography>
+                      <Typography variant="h6" className={classes.major}>
+                        {user.major}
+                      </Typography>
                       <br />
-                      <h6 className={classes.graduation}>
+                      <Typography variant="h6" className={classes.graduation}>
                         Graduation: June 2020
-                      </h6>
+                      </Typography>
                       <Link to="/image">
                         <IconButton aria-label="upload" color="secondary">
                           <AttachFileIcon />
