@@ -45,7 +45,7 @@ const getOnePdf = (req, res) => {
     // Check if file
     if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists',
+        err: 'No PDF file exists',
       });
     }
 
@@ -56,7 +56,7 @@ const getOnePdf = (req, res) => {
       readstream.pipe(res);
     } else {
       res.status(404).json({
-        err: 'Not an image',
+        err: 'Not a PDF',
       });
     }
   });
@@ -79,14 +79,14 @@ const getAllPdf = (req, res) => {
           }
           files.map((file) => {
             if (file.contentType === 'application/pdf') {
-              file.isImage = true;
+              file.isPDF = true;
             } else {
-              file.isImage = false;
+              file.isPDF = false;
             }
           });
           const pdfObj = [];
           for (file of files) {
-            if (file.isImage) {
+            if (file.isPDF) {
               pdfObj.push(file);
             }
           }

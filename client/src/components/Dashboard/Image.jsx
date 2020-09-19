@@ -122,15 +122,13 @@ import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 //import axios from 'axios';
 import axios from '../../helpers/axiosConfig';
-import MaterialTable from 'material-table';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 
 export default class FilesUploadComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
+      name: null,
     };
     this.ondelete = this.ondelete.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
