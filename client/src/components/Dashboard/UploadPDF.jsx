@@ -17,7 +17,7 @@ import {Container, Paper} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 
-export default class UploadImgAndPDF extends Component {
+export default class UploadPDF extends Component {
   constructor(props) {
     super(props);
     this.state = {

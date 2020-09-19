@@ -9,7 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import UploadImgAndPDF from '../Home/UploadImgAndPDF';
+import UploadPDF from './UploadPDF';
 
 const styles = (theme) => ({
   root: {
@@ -110,7 +110,7 @@ class FilesUploadComponent extends Component {
             <br />
             <br />
             <hr />
-            <UploadImgAndPDF />
+            <UploadPDF />
           </Container>
         </div>
       </Fragment>
