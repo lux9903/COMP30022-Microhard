@@ -6,6 +6,11 @@ import axios from '../../helpers/axiosConfig';
 import { Container, Grid, Typography, Input, Button } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import Typography from '@material-ui/core/Typography';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+import UploadImgAndPDF from '../Home/UploadImgAndPDF';
+
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
@@ -100,8 +105,12 @@ class FilesUploadComponent extends Component {
                 </div>
               </Grid>
               <br />
-              <div id="all_img" align="center"></div>
+              {/*<div id="all_img" align="center"></div>*/}
             </Grid>
+            <br />
+            <br />
+            <hr />
+            <UploadImgAndPDF />
           </Container>
         </div>
       </Fragment>
