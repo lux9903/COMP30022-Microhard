@@ -9,10 +9,8 @@ import img from './form-background.jpg';
 import * as Yup from 'yup';
 import {CircularProgress} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import {Grid, Button, Typography} from '@material-ui/core';
+import { Grid, Button, Typography, Paper, TextField } from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
 import '../../styles.css';
 
 const validationSchema = Yup.object().shape({
