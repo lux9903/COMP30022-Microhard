@@ -9,6 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import UploadPDF from './UploadPDF';
 
 const styles = (theme) => ({
   root: {
@@ -104,8 +105,12 @@ class FilesUploadComponent extends Component {
                 </div>
               </Grid>
               <br />
-              <div id="all_img" align="center"></div>
+              {/*<div id="all_img" align="center"></div>*/}
             </Grid>
+            <br />
+            <br />
+            <hr />
+            <UploadPDF />
           </Container>
         </div>
       </Fragment>
