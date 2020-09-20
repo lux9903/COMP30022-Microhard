@@ -122,19 +122,6 @@ export default class Document extends Component {
         </Helmet>
 
         <Container>
-          <div>
-            {/*<form onSubmit={this.onFormSubmit}>*/}
-            {/*  <input type="file" name="file" onChange={this.onChange} />*/}
-            {/*  <button type="submit">Upload</button>*/}
-            {/*</form>*/}
-
-            {/*<form onSubmit={this.onFormSubmitPDF}>*/}
-            {/*  <input type="file" name="file" onChange={this.onChange} />*/}
-            {/*  <button type="submit">Upload</button>*/}
-            {/*</form>*/}
-          </div>
-          {/*<div id="all_img"></div>*/}
-          {/*<Button onClick={() => this.onDelete()}> test Delete</Button>*/}
           <br />
           <br />
           <DocumentDialog

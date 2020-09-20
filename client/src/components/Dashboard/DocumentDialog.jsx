@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -24,7 +23,7 @@ export default function DocumentDialog(props) {
         variant="contained"
         color="primary"
         onClick={handleClickOpen}
-        style={{margin: '10px 0 10px 0'}}
+        style={{margin: '20px 0 20px 0'}}
       >
         Add a personal document
       </Button>
@@ -33,27 +32,36 @@ export default function DocumentDialog(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Create a document</DialogTitle>
-        <DialogContent>
-          <DialogContentText>PDF-type documents only</DialogContentText>
-          <form onSubmit={props.onFormSubmitPDF}>
-            <input type="file" name="file" onChange={props.onChange} />
-            <Button
-              type="submit"
-              onClick={() => window.location.reload(false)}
-              color="primary"
-              variant="outlined"
-            >
-              Upload
+        <form onSubmit={props.onFormSubmitPDF}>
+          <DialogTitle id="form-dialog-title">Create a document</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              PDF-type documents only. If document does not appear, please
+              reload the page.
+            </DialogContentText>
+            <input
+              accept="application/pdf"
+              type="file"
+              name="file"
+              onChange={props.onChange}
+            />
+            <Button onClick={() => props.onDelete}> test Delete</Button>
+          </DialogContent>
+          <DialogActions>
+            <label htmlFor="uploadPDFDocument">
+              <Button
+                type="submit"
+                onClick={() => window.location.reload(false)}
+                color="primary"
+              >
+                Upload
+              </Button>
+            </label>
+            <Button onClick={handleClose} color="primary">
+              Cancel
             </Button>
-          </form>
-          <Button onClick={() => props.onDelete}> test Delete</Button>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-        </DialogActions>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
