@@ -16,6 +16,17 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
+
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
+
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -122,21 +133,41 @@ export default function Album() {
                     </CardContent>
                     </Card>
                 </Grid>
+
+                //rating stuff
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className={classes.card}>
                     <CardContent className={classes.cardContent}>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Link Access
+                            Rating
                         </Typography>
-                        <Typography>
-                            <Link to="/projectex">'http://www.microhard.com'</Link>
-                        </Typography>
+                        <Box component="fieldset" mb={3} borderColor="transparent">
+                            <Typography component="legend">Read only</Typography>
+                            <Rating name="read-only" defaultValue={2.5} precision={0.5} readOnly />
+                        </Box>
                     </CardContent>
                     </Card>
                 </Grid>
             </Grid>
         </Container>
-
+        
+        //timeline stuff
+        <Container className={classes.timeline}>
+            <Timeline>
+                <TimelineItem>
+                    <TimelineOppositeContent>
+                        <Typography color="textSecondary">09:30 am</Typography>
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                        <TimelineDot />
+                        <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>
+                        <Typography>Eat</Typography>
+                    </TimelineContent>
+                </TimelineItem>
+            </Timeline>
+        </Container>
 
         <Container className={classes.cardGrid} maxWidth="md">
             <Typography gutterBottom variant="h5" component="h2">
