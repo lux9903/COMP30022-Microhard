@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {signOutUser} from '../../actions/userAction';
-import {Link, NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import logo from '../../components/Navigation/logo.png';
 import Gravatar from 'react-gravatar';
 import App from '../App';
@@ -75,9 +75,6 @@ class PrimaryNav extends Component {
             <Link exact={true} to="/" className={classes.noDecoration}>
               <Button className={classes.button}>Profile</Button>
             </Link>
-            {/*<Link to="/plan" className={classes.noDecoration}>*/}
-            {/*  <Button className={classes.button}>Training Plan</Button>*/}
-            {/*</Link>*/}
             <Link to="/course" className={classes.noDecoration}>
               <Button className={classes.button}>Course</Button>
             </Link>
@@ -88,7 +85,10 @@ class PrimaryNav extends Component {
               <Button className={classes.button}>My projects</Button>
             </Link>
             <Link to="/image" className={classes.noDecoration}>
-              <Button className={classes.button}>Upload image</Button>
+              <Button className={classes.button}>Images</Button>
+            </Link>
+            <Link to="/document" className={classes.noDecoration}>
+              <Button className={classes.button}>Personal documents</Button>
             </Link>
           </div>
 

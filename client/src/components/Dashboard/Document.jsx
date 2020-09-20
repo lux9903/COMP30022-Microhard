@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom';
@@ -17,7 +17,7 @@ import {Container, Paper} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 
-export default class UploadPDF extends Component {
+export default class Document extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -104,70 +104,79 @@ export default class UploadPDF extends Component {
 
   render() {
     return (
-      <Container>
-        <Typography variant="h4">Personal Documents</Typography>
-        <div>
-          {/*<form onSubmit={this.onFormSubmit}>*/}
-          {/*  <input type="file" name="file" onChange={this.onChange} />*/}
-          {/*  <button type="submit">Upload</button>*/}
-          {/*</form>*/}
-
-          <form onSubmit={this.onFormSubmitPDF}>
-            <input type="file" name="file" onChange={this.onChange} />
-            <button type="submit">Upload</button>
-          </form>
+      <Fragment>
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
+          <br />
+          <br />
+          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+            Personal Documents
+          </Typography>
         </div>
-        {/*<div id="all_img"></div>*/}
-        <Button onClick={() => this.ondelete()}> test Delete</Button>
-        <br />
-        <br />
-        <Button variant="contained" color="secondary">
-          Add a personal document
-        </Button>
 
-        <TableContainer component={Paper}>
-          <Table size="small" aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                <TableCell style={{fontWeight: '700'}}>Filename</TableCell>
-                <TableCell align="right" style={{fontWeight: '700'}}>
-                  Date Uploaded
-                </TableCell>
-                <TableCell align="right" style={{fontWeight: '700'}}>
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  {' '}
-                  <a href="#pdfFileLink">A.pdf</a>
-                </TableCell>
-                <TableCell align="right">17/09/2020</TableCell>
-                <TableCell align="right">
-                  <IconButton aria-label="delete">
-                    <DeleteIcon onClick={this.ondelete} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  {' '}
-                  <a href="#pdfFileLink">B.pdf</a>
-                </TableCell>
-                <TableCell align="right">18/01/2020</TableCell>
-                <TableCell align="right">
-                  <IconButton aria-label="delete">
-                    <DeleteIcon onClick={this.ondelete} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-              {/*<div id="all_pdf"></div>*/}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
+        <Container>
+          <div>
+            {/*<form onSubmit={this.onFormSubmit}>*/}
+            {/*  <input type="file" name="file" onChange={this.onChange} />*/}
+            {/*  <button type="submit">Upload</button>*/}
+            {/*</form>*/}
+
+            <form onSubmit={this.onFormSubmitPDF}>
+              <input type="file" name="file" onChange={this.onChange} />
+              <button type="submit">Upload</button>
+            </form>
+          </div>
+          {/*<div id="all_img"></div>*/}
+          <Button onClick={() => this.ondelete()}> test Delete</Button>
+          <br />
+          <br />
+          <Button variant="contained" color="secondary">
+            Add a personal document
+          </Button>
+
+          <TableContainer component={Paper}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{fontWeight: '700'}}>Filename</TableCell>
+                  <TableCell align="right" style={{fontWeight: '700'}}>
+                    Date Uploaded
+                  </TableCell>
+                  <TableCell align="right" style={{fontWeight: '700'}}>
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    {' '}
+                    <a href="#pdfFileLink">A.pdf</a>
+                  </TableCell>
+                  <TableCell align="right">17/09/2020</TableCell>
+                  <TableCell align="right">
+                    <IconButton aria-label="delete">
+                      <DeleteIcon onClick={this.ondelete} />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    {' '}
+                    <a href="#pdfFileLink">B.pdf</a>
+                  </TableCell>
+                  <TableCell align="right">18/01/2020</TableCell>
+                  <TableCell align="right">
+                    <IconButton aria-label="delete">
+                      <DeleteIcon onClick={this.ondelete} />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+                {/*<div id="all_pdf"></div>*/}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Fragment>
     );
   }
 }
