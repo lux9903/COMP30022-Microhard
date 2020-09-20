@@ -15,7 +15,6 @@ import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)',
     backgroundColor: '#094183',
     paddingBottom: '0px',
     color: '#fff',

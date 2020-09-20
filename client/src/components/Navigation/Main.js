@@ -14,6 +14,7 @@ import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project';
 import Projectex from '../Dashboard/Project_example';
+import Document from '../Dashboard/Document';
 
 class Main extends Component {
   render() {
@@ -47,6 +48,12 @@ class Main extends Component {
           exact
           path="/image"
           component={Image}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/document"
+          component={Document}
           authed={this.props.user}
         />
         <PrivateRoute
