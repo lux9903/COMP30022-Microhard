@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom';
@@ -10,20 +10,20 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
-import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import {Container, Paper} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
+import DocumentDialog from '../Dashboard/DocumentDialog';
 
-export default class UploadPDF extends Component {
+export default class Document extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
     };
-    this.ondelete = this.ondelete.bind(this);
+    this.onDelete = this.onDelete.bind(this);
     // this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -46,6 +46,7 @@ export default class UploadPDF extends Component {
   // }
   onFormSubmitPDF(e) {
     e.preventDefault();
+    console.log('access onFormSubmitPDF');
     const formData = new FormData();
     formData.append('file', this.state.file);
     const config = {
@@ -63,7 +64,8 @@ export default class UploadPDF extends Component {
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
-  ondelete(e) {
+  onDelete(e) {
+    console.log('onDelete function activated');
     e.preventDefault();
     const formData = new FormData();
     const config = {
@@ -95,7 +97,9 @@ export default class UploadPDF extends Component {
     const pdf = axios.get('/pdf').then((res) => {
       if (res.data.files) {
         const pdf = res.data.files.map((ele) => (
-          <a href={'/api/pdf/' + ele.filename}>{ele.filename}</a>
+          <li>
+            <a href={'/api/pdf/' + ele.filename}>{ele.filename}</a>
+          </li>
         ));
         ReactDOM.render(pdf, document.getElementById('all_pdf'));
       }
@@ -104,70 +108,74 @@ export default class UploadPDF extends Component {
 
   render() {
     return (
-      <Container>
-        <Typography variant="h4">Personal Documents</Typography>
-        <div>
-          {/*<form onSubmit={this.onFormSubmit}>*/}
-          {/*  <input type="file" name="file" onChange={this.onChange} />*/}
-          {/*  <button type="submit">Upload</button>*/}
-          {/*</form>*/}
-
-          <form onSubmit={this.onFormSubmitPDF}>
-            <input type="file" name="file" onChange={this.onChange} />
-            <button type="submit">Upload</button>
-          </form>
+      <Fragment>
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
+          <br />
+          <br />
+          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+            Personal Documents
+          </Typography>
         </div>
-        {/*<div id="all_img"></div>*/}
-        <Button onClick={() => this.ondelete()}> test Delete</Button>
-        <br />
-        <br />
-        <Button variant="contained" color="secondary">
-          Add a personal document
-        </Button>
 
-        <TableContainer component={Paper}>
-          <Table size="small" aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                <TableCell style={{fontWeight: '700'}}>Filename</TableCell>
-                <TableCell align="right" style={{fontWeight: '700'}}>
-                  Date Uploaded
-                </TableCell>
-                <TableCell align="right" style={{fontWeight: '700'}}>
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  {' '}
-                  <a href="#pdfFileLink">A.pdf</a>
-                </TableCell>
-                <TableCell align="right">17/09/2020</TableCell>
-                <TableCell align="right">
-                  <IconButton aria-label="delete">
-                    <DeleteIcon onClick={this.ondelete} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  {' '}
-                  <a href="#pdfFileLink">B.pdf</a>
-                </TableCell>
-                <TableCell align="right">18/01/2020</TableCell>
-                <TableCell align="right">
-                  <IconButton aria-label="delete">
-                    <DeleteIcon onClick={this.ondelete} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-              {/*<div id="all_pdf"></div>*/}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
+        <Helmet>
+          <title>Microhard &middot; Personal Documents </title>
+        </Helmet>
+
+        <Container>
+          <br />
+          <br />
+          <DocumentDialog
+            onFormSubmitPDF={this.onFormSubmitPDF}
+            onDelete={this.onDelete}
+            onChange={this.onChange}
+          />
+
+          <TableContainer component={Paper}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{fontWeight: '700'}}>Filename</TableCell>
+                  <TableCell align="right" style={{fontWeight: '700'}}>
+                    Date Uploaded
+                  </TableCell>
+                  <TableCell align="right" style={{fontWeight: '700'}}>
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    {' '}
+                    <a href="#pdfFileLink">A.pdf</a>
+                  </TableCell>
+                  <TableCell align="right">17/09/2020</TableCell>
+                  <TableCell align="right">
+                    <IconButton aria-label="delete">
+                      <DeleteIcon onClick={this.onDelete} />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    {' '}
+                    <a href="#pdfFileLink">B.pdf</a>
+                  </TableCell>
+                  <TableCell align="right">18/01/2020</TableCell>
+                  <TableCell align="right">
+                    <IconButton aria-label="delete">
+                      <DeleteIcon onClick={this.onDelete} />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <ul>
+            <div id="all_pdf"></div>
+          </ul>
+        </Container>
+      </Fragment>
     );
   }
 }

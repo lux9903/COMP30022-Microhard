@@ -9,7 +9,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import UploadPDF from './UploadPDF';
 
 const styles = (theme) => ({
   root: {
@@ -64,22 +63,18 @@ class FilesUploadComponent extends Component {
     const {classes} = this.props;
     return (
       <Fragment>
-        <div style={{height: '200px', backgroundColor: '#094183'}}>
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <br />
-          <h1
-            align="center"
-            style={{color: '#fff', fontFamily: 'Nunito, sans-serif'}}
-          >
-            Upload image
-          </h1>
+          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+            Images
+          </Typography>
         </div>
 
         <div className={classes.root}>
           <Container>
             <Helmet>
-              <title>Microhard &middot; Upload Image </title>
+              <title>Microhard &middot; Images </title>
             </Helmet>
 
             <Grid
@@ -105,12 +100,8 @@ class FilesUploadComponent extends Component {
                 </div>
               </Grid>
               <br />
-              {/*<div id="all_img" align="center"></div>*/}
+              <div id="all_img" align="center"></div>
             </Grid>
-            <br />
-            <br />
-            <hr />
-            <UploadPDF />
           </Container>
         </div>
       </Fragment>
