@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Helmet} from 'react-helmet';
 import {makeStyles} from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -12,9 +12,11 @@ import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import {Formik, ErrorMessage, Field, Form} from 'formik';
 
 import ReactDOM from 'react-dom';
 import Input from '@material-ui/core/Input';
+import {createExperience} from'../../actions/experienceAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,11 +50,53 @@ const useStyles = makeStyles((theme) => ({
   NunitoFont: {
     fontFamily: 'Nunito, sans-serif',
   },
+  form: {
+    width: '100%',
+  },
+  form_group: {
+    padding: '5px 5px 5px 5px',
+  },
 }));
+
+class MyAccordion extends Component {
+  render () {
+    return(
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography variant="h6">{this.props.title}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container direction="column">
+            <Grid Item>
+              <Typography variant="subtitle1">
+                {this.props.start} - {this.props.end}
+              </Typography>
+            </Grid>
+            <Grid Item>
+              <Typography variant="subtitle1">{this.props.company}</Typography>
+            </Grid>
+            <Grid Item>
+              <Typography>
+                {this.props.description}
+              </Typography>
+            </Grid>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
+    );
+  }
+
+}
+
 
 export default function Experience() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -103,117 +147,107 @@ export default function Experience() {
               <div className={classes.paper}>
                 <h2 id="transition-modal-title">Add new experience</h2>
                 <Grid container direction="row" alignItems="center" spacing={3}>
-                  <Grid item xs={8}>
-                    <TextField
-                      fullWidth
-                      id="field-position"
-                      label="Position"
-                      variant="outlined"
-                    />
-                    <Typography>
-                      <br />
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      id="field-company"
-                      label="Company"
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item xs={4} align="center">
-                    <TextField
-                      fullWidth
-                      id="field-start-date"
-                      label="Start Date"
-                      variant="outlined"
-                    />
-                    <Typography>
-                      <br />
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      id="field-end-date"
-                      label="End Date"
-                      variant="outlined"
-                    />
-                  </Grid>
                   <Grid item xs={12}>
-                    <TextField
+                <Formik
+                  initialValues={{
+                    startdate : '',
+                    enddate : '',
+                    position : '',
+                    company : '',
+                    description: '',
+                    state: '',
+                  }}
+                  onSubmit={(values) => {
+                    this.props.dispatch(createExperience({values}));
+                  }}
+                >
+
+                  <Form className={classes.form}>
+                    <div className={classes.form_group}>
+                      <Typography variant="body2">Position</Typography>
+                      <Field
+                        label="Position"
+                        variant="outlined"
+                        name="position"
+                        id="position"
+                        fullWidth
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Typography variant="body2">Start Date</Typography>
+                      <Field
+                        variant="outlined"
+                        margin="normal"
+                        type="text"
+                        id="startdate"
+                        name="startdate"
+                        label="start date"
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Typography variant="body2">End Date</Typography>
+                      <Field
+                        label="End Date"
+                        variant="outlined"
+                        name="enddate"
+                        id="enddate"
+                        fullWidth
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Typography variant="body2">Company</Typography>
+                      <Field
+                        label="Company"
+                        variant="outlined"
+                        name="company"
+                        id="company"
+                        fullWidth
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Typography variant="body2">Description</Typography>
+                      <Field
+                        label="Description"
+                        variant="outlined"
+                        name="description"
+                        id="description"
+                        fullWidth
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      variant="raised"
+                      color="primary"
                       fullWidth
-                      id="field-description"
-                      label="Description"
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item>
-                    <Button variant="contained" color="primary">
-                      Confirm
+                      onClick={handleClose}
+                    >
+                      Submit
                     </Button>
+                  </Form>
+                </Formik>
                   </Grid>
                 </Grid>
+
               </div>
             </Fade>
           </Modal>
         </Grid>
+
         <Grid item xs={9}>
           <div className={classes.body}>
             <h3 className={classes.NunitoFont}>Current position</h3>
 
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography variant="h6">Sales Assistant</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container direction="column">
-                  <Grid Item>
-                    <Typography variant="subtitle1">
-                      Start date - End date
-                    </Typography>
-                  </Grid>
-                  <Grid Item>
-                    <Typography variant="subtitle1">Company</Typography>
-                  </Grid>
-                  <Grid Item>
-                    <Typography>
-                      This is a description of my position and what experience I
-                      gained from it.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
+            <MyAccordion
+              title={'Sales manager'}
+              start = 'start date'
+              end = 'end date'
+              company = 'Company'
+              description = 'This is a description of my position and what experience I
+                                  gained from it.'
+            />
 
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography variant="h6">Sales Assistant</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container direction="column">
-                  <Grid Item>
-                    <Typography variant="subtitle1">
-                      Start date - End date
-                    </Typography>
-                  </Grid>
-                  <Grid Item>
-                    <Typography variant="subtitle1">Company</Typography>
-                  </Grid>
-                  <Grid Item>
-                    <Typography>
-                      This is a description of my position and what experience I
-                      gained from it.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
+            <MyAccordion />
 
             <Typography>
               <br />
@@ -221,33 +255,8 @@ export default function Experience() {
             </Typography>
             <h3 className={classes.NunitoFont}>Past Experience</h3>
 
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography variant="h6">Sales Assistant</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container direction="column">
-                  <Grid Item>
-                    <Typography variant="subtitle1">
-                      Start date - End date
-                    </Typography>
-                  </Grid>
-                  <Grid Item>
-                    <Typography variant="subtitle1">Company</Typography>
-                  </Grid>
-                  <Grid Item>
-                    <Typography>
-                      This is a description of my position and what experience I
-                      gained from it.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
+            <MyAccordion />
+
           </div>
         </Grid>
       </Grid>
