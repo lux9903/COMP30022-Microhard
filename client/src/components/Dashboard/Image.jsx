@@ -74,7 +74,7 @@ class FilesUploadComponent extends Component {
         <div className={classes.root}>
           <Container>
             <Helmet>
-              <title>Microhard &middot; Upload Image </title>
+              <title>Microhard &middot; Images </title>
             </Helmet>
 
             <Grid

@@ -10,12 +10,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
-import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import {Container, Paper} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
+import DocumentDialog from '../Dashboard/DocumentDialog';
 
 export default class Document extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class Document extends Component {
     this.state = {
       file: null,
     };
-    this.ondelete = this.ondelete.bind(this);
+    this.onDelete = this.onDelete.bind(this);
     // this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -46,6 +46,7 @@ export default class Document extends Component {
   // }
   onFormSubmitPDF(e) {
     e.preventDefault();
+    console.log('access onFormSubmitPDF');
     const formData = new FormData();
     formData.append('file', this.state.file);
     const config = {
@@ -63,7 +64,8 @@ export default class Document extends Component {
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
-  ondelete(e) {
+  onDelete(e) {
+    console.log('onDelete function activated');
     e.preventDefault();
     const formData = new FormData();
     const config = {
@@ -95,7 +97,9 @@ export default class Document extends Component {
     const pdf = axios.get('/pdf').then((res) => {
       if (res.data.files) {
         const pdf = res.data.files.map((ele) => (
-          <a href={'/api/pdf/' + ele.filename}>{ele.filename}</a>
+          <li>
+            <a href={'/api/pdf/' + ele.filename}>{ele.filename}</a>
+          </li>
         ));
         ReactDOM.render(pdf, document.getElementById('all_pdf'));
       }
@@ -113,6 +117,10 @@ export default class Document extends Component {
           </Typography>
         </div>
 
+        <Helmet>
+          <title>Microhard &middot; Personal Documents </title>
+        </Helmet>
+
         <Container>
           <div>
             {/*<form onSubmit={this.onFormSubmit}>*/}
@@ -120,18 +128,20 @@ export default class Document extends Component {
             {/*  <button type="submit">Upload</button>*/}
             {/*</form>*/}
 
-            <form onSubmit={this.onFormSubmitPDF}>
-              <input type="file" name="file" onChange={this.onChange} />
-              <button type="submit">Upload</button>
-            </form>
+            {/*<form onSubmit={this.onFormSubmitPDF}>*/}
+            {/*  <input type="file" name="file" onChange={this.onChange} />*/}
+            {/*  <button type="submit">Upload</button>*/}
+            {/*</form>*/}
           </div>
           {/*<div id="all_img"></div>*/}
-          <Button onClick={() => this.ondelete()}> test Delete</Button>
+          {/*<Button onClick={() => this.onDelete()}> test Delete</Button>*/}
           <br />
           <br />
-          <Button variant="contained" color="secondary">
-            Add a personal document
-          </Button>
+          <DocumentDialog
+            onFormSubmitPDF={this.onFormSubmitPDF}
+            onDelete={this.onDelete}
+            onChange={this.onChange}
+          />
 
           <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
@@ -155,7 +165,7 @@ export default class Document extends Component {
                   <TableCell align="right">17/09/2020</TableCell>
                   <TableCell align="right">
                     <IconButton aria-label="delete">
-                      <DeleteIcon onClick={this.ondelete} />
+                      <DeleteIcon onClick={this.onDelete} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -167,14 +177,16 @@ export default class Document extends Component {
                   <TableCell align="right">18/01/2020</TableCell>
                   <TableCell align="right">
                     <IconButton aria-label="delete">
-                      <DeleteIcon onClick={this.ondelete} />
+                      <DeleteIcon onClick={this.onDelete} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
-                {/*<div id="all_pdf"></div>*/}
               </TableBody>
             </Table>
           </TableContainer>
+          <ul>
+            <div id="all_pdf"></div>
+          </ul>
         </Container>
       </Fragment>
     );

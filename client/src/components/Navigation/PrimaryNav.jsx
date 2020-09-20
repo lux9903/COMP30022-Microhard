@@ -87,7 +87,7 @@ class PrimaryNav extends Component {
             <Link to="/image" className={classes.noDecoration}>
               <Button className={classes.button}>Images</Button>
             </Link>
-            <Link to="/document" className={classes.noDecoration}>
+            <Link exact={true} to="/document" className={classes.noDecoration}>
               <Button className={classes.button}>Personal documents</Button>
             </Link>
           </div>
