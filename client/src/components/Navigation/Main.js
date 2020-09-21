@@ -14,7 +14,7 @@ import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project';
 import Projectex from '../Dashboard/Project_example';
-import Document from '../Dashboard/Document';
+import Document from '../Dashboard/Document/Document';
 
 class Main extends Component {
   render() {

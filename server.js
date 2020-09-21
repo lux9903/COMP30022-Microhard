@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 
 app.use(require('method-override')());
 
-//delete request abcdefg
+//delete request
 app.use(methodOverride('_method'));
 
 app.use(
@@ -71,7 +71,7 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(require('./server/routes'));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/client/public/index.html`));
+  res.sendFile(path.join(`${__dirname}/client/build/index.html`));
 });
 
 /// catch 404 and forward to error handler
