@@ -75,6 +75,7 @@ const getAllPdf = (req, res) => {
           originalname: ele.originalName,
           getFileLink: '/api/pdf/' + ele.filename,
           deleteFileLink: '/pdf/' + ele.fileId,
+          date : ele.date
         });
       }
       return res.json({pdfs: result});

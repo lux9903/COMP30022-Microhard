@@ -24,6 +24,10 @@ pdfRouter.post(
       pdf.fileId = req.file.id;
       pdf.originalName = req.file.originalname;
       pdf.filename = req.file.filename;
+      const date = new Date();
+      console.log(date);
+      const m = date.getMonth() + 1;
+      pdf.date = date.getDate() + "/" + m + "/" + date.getFullYear();
       pdf.save();
     });
   }

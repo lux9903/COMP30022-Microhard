@@ -60,7 +60,7 @@ export default class Document extends Component {
                 {ele.originalname}
               </a>
             </TableCell>
-            <TableCell align="right">18/01/2020</TableCell>
+            <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
               <IconButton aria-label="delete">
                 <DeleteIcon

@@ -45,7 +45,6 @@ export default function DocumentDialog(props) {
               name="file"
               onChange={props.onChange}
             />
-            <Button onClick={() => props.onDelete}> test Delete</Button>
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
