@@ -19,11 +19,20 @@ export default class Document extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null,
+      file: null
     };
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getAllPdf = this.getAllPdf.bind(this);
+    this.onEdit = this.onEdit.bind(this);
+  }
+  onEdit(e){
+    e.preventDefault();
+    const url = "/pdf/title/" + document.forms.namedItem("editTitle")["id"]["value"];
+    const body = {
+      "title": document.forms.namedItem("editTitle")["title"]["value"]
+    }
+    axios.post(url,body);
   }
 
   onFormSubmitPDF(e) {
@@ -35,8 +44,15 @@ export default class Document extends Component {
         'content-type': 'multipart/form-data',
       },
     };
+    //alert(document.getElementById("title").value);
+    var url = "";
+    if(document.getElementById("title").value.trim()!==""){
+      url = '/pdf/upload/'+ document.getElementById("title").value;
+    }else{
+      url = "/pdf/upload/"+"UNKNOWN";
+    }
     axios
-      .post('/pdf/upload', formData, config)
+      .post(url, formData, config)
       .then((response) => {
         alert('The file is successfully uploaded');
       })
@@ -59,6 +75,9 @@ export default class Document extends Component {
               <a href={ele.getFileLink} target="_blank">
                 {ele.originalname}
               </a>
+            </TableCell>
+            <TableCell>
+              {ele.title}
             </TableCell>
             <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
@@ -119,6 +138,13 @@ export default class Document extends Component {
             </Table>
           </TableContainer>
         </Container>
+        <div>
+          <form name ="editTitle" onSubmit = {this.onEdit}>
+            <input type = "text" name ="id" required/>
+            <input type = "text" name = "title" required/>
+            <input type = "submit" value = "text"/>
+          </form>
+        </div>
       </Fragment>
     );
   }

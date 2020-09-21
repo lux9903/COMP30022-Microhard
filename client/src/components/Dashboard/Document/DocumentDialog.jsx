@@ -45,6 +45,8 @@ export default function DocumentDialog(props) {
               name="file"
               onChange={props.onChange}
             />
+            <label for = "title"> File Title: </label>
+            <input type = "text" name = "title" id = "title" />
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
