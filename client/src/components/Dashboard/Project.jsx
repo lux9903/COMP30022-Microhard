@@ -17,6 +17,7 @@ import Container from '@material-ui/core/Container';
 //import Link from '@material-ui/core/Link';
 import logo from '../../components/Navigation/logo.png';
 import img from './form-background.jpg';
+import axios from '../../helpers/axiosConfig';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -80,7 +81,29 @@ export default function Album() {
           </Typography>
         </Container>
       </div>
+      <div>
+      <h1> Test</h1>
 
+
+        <form action="/api/project/create" method ="post">
+          <input type = "text" name = "name"/>
+          <input type = "text" name = "description"/>
+          <select name = "status">
+            <option value="Inprogress">Inprogress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancel">Cancel</option>
+          </select>
+          <select name = "show_status">
+            <option value="public">public</option>
+            <option value="private">private</option>
+          </select>
+          <input type = "submit" value = "hahaha"/>
+        </form>
+        <button onClick = {() => axios.get('/project/').then((res) => alert(JSON.stringify(res.data['projects'])))}>
+        click me
+        </button>
+      <h1>End Test </h1>
+      </div>
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={4}>

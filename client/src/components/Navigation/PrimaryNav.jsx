@@ -90,6 +90,9 @@ class PrimaryNav extends Component {
             <Link to="/image" className={classes.noDecoration}>
               <Button className={classes.button}>Upload image</Button>
             </Link>
+            <Link to="/test" className={classes.noDecoration}>
+              <Button className={classes.button}>Test</Button>
+            </Link>
           </div>
 
           <div>
