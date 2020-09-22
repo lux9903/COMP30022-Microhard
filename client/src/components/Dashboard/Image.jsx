@@ -63,22 +63,18 @@ class FilesUploadComponent extends Component {
     const {classes} = this.props;
     return (
       <Fragment>
-        <div style={{height: '200px', backgroundColor: '#094183'}}>
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <br />
-          <h1
-            align="center"
-            style={{color: '#fff', fontFamily: 'Nunito, sans-serif'}}
-          >
-            Upload image
-          </h1>
+          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+            Images
+          </Typography>
         </div>
 
         <div className={classes.root}>
           <Container>
             <Helmet>
-              <title>Microhard &middot; Upload Image </title>
+              <title>Microhard &middot; Images </title>
             </Helmet>
 
             <Grid
