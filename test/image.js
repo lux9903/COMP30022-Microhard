@@ -5,7 +5,9 @@ const request = require('supertest');
 const chai = require('chai');
 const expect = chai.expect;
 
-describe('User', () => {
+const imageController = require('../server/controllers/imageController');
+
+describe('Image', () => {
     var token = '';
     var id = '';
 
