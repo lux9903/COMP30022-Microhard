@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 
 app.use(require('method-override')());
 
-//delete request
+// delete request
 app.use(methodOverride('_method'));
 
 app.use(

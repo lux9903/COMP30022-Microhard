@@ -47,14 +47,6 @@ export default function Appbar() {
             </Button>
 
             <Button
-              className={classes.greyText}
-              href="#outlined-buttons"
-              style={{margin: '0px 10px'}}
-            >
-              Projects
-            </Button>
-
-            <Button
               component={Link}
               to="/sign-in"
               className={classes.greyText}
