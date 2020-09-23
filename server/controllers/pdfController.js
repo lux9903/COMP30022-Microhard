@@ -68,13 +68,14 @@ const getAllPdf = (req, res) => {
       return res.sendStatus(401).send('The user does not exist.');
     }
     const result = [];
-
     Pdf.find({user: user._id}).then((pdfs) => {
       for (ele of pdfs) {
         result.push({
           originalname: ele.originalName,
           getFileLink: '/api/pdf/' + ele.filename,
           deleteFileLink: '/pdf/' + ele.fileId,
+          date : ele.date,
+          title: ele.title
         });
       }
       return res.json({pdfs: result});
@@ -101,9 +102,20 @@ const deletePdf = (req, res) => {
     });
   });
 };
+
+const updateTitle = (req, res) =>{
+  User.findById(req.payload.id).then(async function (user){
+    if (!user) {
+      return res.sendStatus(401).send('The user does not exist.');
+    }
+    const result = await Pdf.findOneAndUpdate({user: user._id, fileId: req.params.id},{'title': req.body.title});
+    return res.send(result);
+  });
+}
 module.exports = {
   upload,
   getOnePdf,
   getAllPdf,
   deletePdf,
+  updateTitle,
 };

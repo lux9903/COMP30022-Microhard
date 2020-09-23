@@ -13,6 +13,8 @@ const pdfSchema = new Schema(
     },
     originalName: String,
     filename: String,
+    date: String,
+    title: String,
   },
   {timestamps: true}
 );

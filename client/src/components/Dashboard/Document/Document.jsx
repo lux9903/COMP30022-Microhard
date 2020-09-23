@@ -13,9 +13,11 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
-import DocumentDialog from './DocumentDialog';
+import AddDocument from './AddDocument';
+import EditDocument from './EditDocument';
+import {withStyles} from '@material-ui/core/styles';
 
-export default class Document extends Component {
+class Document extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +26,16 @@ export default class Document extends Component {
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getAllPdf = this.getAllPdf.bind(this);
+    this.onEdit = this.onEdit.bind(this);
+  }
+  onEdit(e) {
+    e.preventDefault();
+    const url =
+      '/pdf/title/' + document.forms.namedItem('editTitle')['id']['value'];
+    const body = {
+      title: document.forms.namedItem('editTitle')['title']['value'],
+    };
+    axios.post(url, body);
   }
 
   onFormSubmitPDF(e) {
@@ -35,8 +47,15 @@ export default class Document extends Component {
         'content-type': 'multipart/form-data',
       },
     };
+    //alert(document.getElementById("title").value);
+    var url = '';
+    if (document.getElementById('title').value.trim() !== '') {
+      url = '/pdf/upload/' + document.getElementById('title').value;
+    } else {
+      url = '/pdf/upload/' + 'UNKNOWN';
+    }
     axios
-      .post('/pdf/upload', formData, config)
+      .post(url, formData, config)
       .then((response) => {
         alert('The file is successfully uploaded');
       })
@@ -55,13 +74,15 @@ export default class Document extends Component {
       if (res.data.pdfs) {
         const Pdfs = res.data.pdfs.map((ele) => (
           <TableRow>
-            <TableCell>
+            <TableCell>{ele.title}</TableCell>
+            <TableCell align="right">
               <a href={ele.getFileLink} target="_blank">
                 {ele.originalname}
               </a>
             </TableCell>
-            <TableCell align="right">18/01/2020</TableCell>
+            <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
+              <EditDocument />
               <IconButton aria-label="delete">
                 <DeleteIcon
                   onClick={() => {
@@ -79,6 +100,7 @@ export default class Document extends Component {
   }
 
   render() {
+    const {classes} = this.props;
     return (
       <Fragment>
         <div style={{height: '120px', backgroundColor: '#094183'}}>
@@ -96,7 +118,7 @@ export default class Document extends Component {
         <Container>
           <br />
           <br />
-          <DocumentDialog
+          <AddDocument
             onFormSubmitPDF={this.onFormSubmitPDF}
             onDelete={this.onDelete}
             onChange={this.onChange}
@@ -106,7 +128,10 @@ export default class Document extends Component {
             <Table size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell style={{fontWeight: '700'}}>Filename</TableCell>
+                  <TableCell style={{fontWeight: '700'}}>Title</TableCell>
+                  <TableCell align="right" style={{fontWeight: '700'}}>
+                    Filename
+                  </TableCell>
                   <TableCell align="right" style={{fontWeight: '700'}}>
                     Date Uploaded
                   </TableCell>
@@ -119,7 +144,16 @@ export default class Document extends Component {
             </Table>
           </TableContainer>
         </Container>
+        <div>
+          <form name="editTitle" onSubmit={this.onEdit}>
+            <input type="text" name="id" required />
+            <input type="text" name="title" required />
+            <input type="submit" value="text" />
+          </form>
+        </div>
       </Fragment>
     );
   }
 }
+
+export default Document;
