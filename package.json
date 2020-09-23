@@ -5,7 +5,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --timeout 100000",
+    "test": "mocha --timeout 100000 --exit",
     "start": "node server.js",
     "watch": "nodemon run dev",
     "client": "cd client && npm start",
