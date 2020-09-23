@@ -16,12 +16,9 @@ imageRouter.post('/upload',imageController.upload.single('file'),auth.optional, 
   User.findById(req.payload.id)
       .then(function (user) {
         const image = new Image(req.body);
-        image.filename = req.file.filename;
-        image.originalName = req.file.originalname;
         image.user = user;
         image.fileId = req.file.id;
         image.save();
-        return res.json(image);
       });
 });
 
