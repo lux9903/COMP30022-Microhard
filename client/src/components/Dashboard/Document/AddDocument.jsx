@@ -5,8 +5,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
-export default function DocumentDialog(props) {
+export default function AddDocument(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -39,14 +40,23 @@ export default function DocumentDialog(props) {
               PDF-type documents only. If document does not appear, please
               reload the page.
             </DialogContentText>
+            <TextField
+              autoFocus
+              name="title"
+              margin="dense"
+              id="title"
+              label="File Title"
+              fullWidth
+              variant="filled"
+            />
+            <br />
+            <br />
             <input
               accept="application/pdf"
               type="file"
               name="file"
               onChange={props.onChange}
             />
-            <label for = "title"> File Title: </label>
-            <input type = "text" name = "title" id = "title" />
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">

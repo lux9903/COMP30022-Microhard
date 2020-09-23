@@ -12,16 +12,37 @@ const store = configureStore();
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#74a2e4',
-      main: '#4074b2',
-      dark: '#004982',
+      light: '#6C9ED0',
+      main: '#4074B2',
+      dark: '#094183',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#65b8ce',
+      light: '#6BCBDA',
       main: '#3FA7C2',
-      dark: '#2c7487',
+      dark: '#2E85A6',
       contrastText: '#fff',
+    },
+    success: {
+      light: '#C0E395',
+      main: '#A1D172',
+      dark: '#7EB353',
+    },
+    info: {
+      light: '#6BCBDA',
+      main: '#3FA7C2',
+      dark: '#2E85A6',
+    },
+    warning: {
+      light: '#F9D9A3',
+      main: '#ECAE65',
+      dark: '#A96832',
+      contrastText: '#000',
+    },
+    danger: {
+      light: '#F1927E',
+      main: '#E77052',
+      dark: '#C64D3B',
     },
   },
 

@@ -13,26 +13,29 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
-import DocumentDialog from './DocumentDialog';
+import AddDocument from './AddDocument';
+import EditDocument from './EditDocument';
+import {withStyles} from '@material-ui/core/styles';
 
-export default class Document extends Component {
+class Document extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      file: null,
     };
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getAllPdf = this.getAllPdf.bind(this);
     this.onEdit = this.onEdit.bind(this);
   }
-  onEdit(e){
+  onEdit(e) {
     e.preventDefault();
-    const url = "/pdf/title/" + document.forms.namedItem("editTitle")["id"]["value"];
+    const url =
+      '/pdf/title/' + document.forms.namedItem('editTitle')['id']['value'];
     const body = {
-      "title": document.forms.namedItem("editTitle")["title"]["value"]
-    }
-    axios.post(url,body);
+      title: document.forms.namedItem('editTitle')['title']['value'],
+    };
+    axios.post(url, body);
   }
 
   onFormSubmitPDF(e) {
@@ -45,11 +48,11 @@ export default class Document extends Component {
       },
     };
     //alert(document.getElementById("title").value);
-    var url = "";
-    if(document.getElementById("title").value.trim()!==""){
-      url = '/pdf/upload/'+ document.getElementById("title").value;
-    }else{
-      url = "/pdf/upload/"+"UNKNOWN";
+    var url = '';
+    if (document.getElementById('title').value.trim() !== '') {
+      url = '/pdf/upload/' + document.getElementById('title').value;
+    } else {
+      url = '/pdf/upload/' + 'UNKNOWN';
     }
     axios
       .post(url, formData, config)
@@ -71,16 +74,15 @@ export default class Document extends Component {
       if (res.data.pdfs) {
         const Pdfs = res.data.pdfs.map((ele) => (
           <TableRow>
-            <TableCell>
+            <TableCell>{ele.title}</TableCell>
+            <TableCell align="right">
               <a href={ele.getFileLink} target="_blank">
                 {ele.originalname}
               </a>
             </TableCell>
-            <TableCell>
-              {ele.title}
-            </TableCell>
             <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
+              <EditDocument />
               <IconButton aria-label="delete">
                 <DeleteIcon
                   onClick={() => {
@@ -98,6 +100,7 @@ export default class Document extends Component {
   }
 
   render() {
+    const {classes} = this.props;
     return (
       <Fragment>
         <div style={{height: '120px', backgroundColor: '#094183'}}>
@@ -115,7 +118,7 @@ export default class Document extends Component {
         <Container>
           <br />
           <br />
-          <DocumentDialog
+          <AddDocument
             onFormSubmitPDF={this.onFormSubmitPDF}
             onDelete={this.onDelete}
             onChange={this.onChange}
@@ -125,7 +128,10 @@ export default class Document extends Component {
             <Table size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell style={{fontWeight: '700'}}>Filename</TableCell>
+                  <TableCell style={{fontWeight: '700'}}>Title</TableCell>
+                  <TableCell align="right" style={{fontWeight: '700'}}>
+                    Filename
+                  </TableCell>
                   <TableCell align="right" style={{fontWeight: '700'}}>
                     Date Uploaded
                   </TableCell>
@@ -139,13 +145,15 @@ export default class Document extends Component {
           </TableContainer>
         </Container>
         <div>
-          <form name ="editTitle" onSubmit = {this.onEdit}>
-            <input type = "text" name ="id" required/>
-            <input type = "text" name = "title" required/>
-            <input type = "submit" value = "text"/>
+          <form name="editTitle" onSubmit={this.onEdit}>
+            <input type="text" name="id" required />
+            <input type="text" name="title" required />
+            <input type="submit" value="text" />
           </form>
         </div>
       </Fragment>
     );
   }
 }
+
+export default Document;
