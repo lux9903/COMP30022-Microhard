@@ -43,6 +43,18 @@ const updateUser = (req, res, next) => {
       if (typeof req.body.user.headline !== 'undefined') {
         user.headline = req.body.user.headline;
       }
+      if (typeof req.body.user.aboutSection !== 'undefined') {
+        user.aboutSection = req.body.user.aboutSection;
+      }
+      if (typeof req.body.user.location !== 'undefined') {
+        user.location = req.body.user.location;
+      }
+      if (typeof req.body.user.website !== 'undefined') {
+        user.website = req.body.user.website;
+      }
+      if (typeof req.body.user.linkedin !== 'undefined') {
+        user.linkedin = req.body.user.linkedin;
+      }
       if (typeof req.body.user.image !== 'undefined') {
         user.image = req.body.user.image;
       }

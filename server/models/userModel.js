@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema(
     firstname: String,
     major: String,
     headline: String,
+    aboutSection: String,
+    location: String,
+    website: String,
+    linkedin: String,
     image: String,
     hash: String,
     salt: String,
@@ -94,6 +98,10 @@ UserSchema.methods.toAuthJSON = function () {
     email: this.email,
     token: this.generateJWT(),
     headline: this.headline,
+    aboutSection: this.aboutSection,
+    location: this.location,
+    website: this.website,
+    linkedin: this.linkedin,
     image:
       this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
   };

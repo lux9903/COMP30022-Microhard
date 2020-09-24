@@ -1,11 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import {
-  updateUser,
-  deleteUser,
-  resetPassword,
-  signUpUser,
-} from '../../actions/userAction';
+import {updateUser, deleteUser, resetPassword} from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
