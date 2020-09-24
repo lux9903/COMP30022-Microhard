@@ -83,4 +83,16 @@ experienceRouter.post('/update/:id', auth.optional, (req,res)=>{
       });
 });
 
+experienceRouter.delete('/:id',auth.optional, (req,res)=>{
+    User.findById(req.payload.id).then(async function (user){
+        let result = await Experience.deleteOne({user:req.payload.id, _id:req.params.id}, (err)=>{
+            if(err){
+                return res.status(404).json({err:'experience does not exist'});
+            }else{
+                return res.json({"deleteId":req.params.id});
+            }
+        });
+    });
+});
+
 module.exports = experienceRouter;
