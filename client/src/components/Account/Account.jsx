@@ -27,7 +27,7 @@ const validationSchema = Yup.object().shape({
   firstname: Yup.string().required('*First name is required'),
   username: Yup.string().required('*Username is required'),
   email: Yup.string().email().required('*Email is required'),
-  bio: Yup.string(),
+  headline: Yup.string(),
 });
 
 const useStyles = (theme) => ({
@@ -116,7 +116,7 @@ class Account extends Component {
                 initialValues={{
                   username: user.username,
                   email: user.email,
-                  bio: user.bio,
+                  headline: user.headline,
                   lastname: user.lastname,
                   firstname: user.firstname,
                   major: user.major,
@@ -227,19 +227,18 @@ class Account extends Component {
                       <Field
                         variant="outlined"
                         margin="normal"
-                        type="bio"
-                        id="bio"
-                        name="bio"
-                        label="Add/change your bio"
+                        id="headline"
+                        name="headline"
+                        label="Add/change your headline"
                         fullWidth
                         as={TextField}
                         helperText={
                           <ErrorMessage
-                            name="bio"
+                            name="headline"
                             className="invalid-feedback"
                           />
                         }
-                        error={errors.bio && touched.bio}
+                        error={errors.headline && touched.headline}
                       />
                     </div>
                     <div className={classes.form_group}>

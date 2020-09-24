@@ -89,7 +89,7 @@ const styles = (theme) => ({
     fontFamily: 'Lato, sans-serif',
     fontWeight: '300',
   },
-  bio: {
+  headline: {
     marginTop: '20px',
     fontFamily: 'Lato, sans-serif',
     fontWeight: '300',
@@ -159,8 +159,8 @@ class Profile extends Component {
                       <Typography variant="h3" className={classes.fullName}>
                         {user.firstname} {user.lastname}
                       </Typography>
-                      <Typography variant="h6" className={classes.bio}>
-                        {user.bio}
+                      <Typography variant="h6" className={classes.headline}>
+                        {user.headline}
                       </Typography>
                       <Typography variant="h6" className={classes.major}>
                         {user.major}

@@ -61,7 +61,7 @@ User {
     `ID`: User ID;
     `Username`: Name of user;
     `Email`: Email address;
-    `Bio`: Short description of user;
+    `Headline`: Short description of user;
     `Image`: Profile picture;
     `Password`: Secure authentication;
     `Lastname`: Lastname of user;
