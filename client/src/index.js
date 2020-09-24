@@ -52,12 +52,31 @@ const theme = createMuiTheme({
     fontFamily: 'Nunito, sans-serif',
     button: {
       fontWeight: '600',
+      fontSize: '16px',
     },
     body1: {
       fontFamily: 'Lato, san-serif',
     },
     body2: {
       fontFamily: 'Nunito, sans-serif',
+    },
+    h1: {
+      fontSize: '36px',
+    },
+    h2: {
+      fontSize: '30px',
+    },
+    h3: {
+      fontSize: '24px',
+    },
+    h4: {
+      fontSize: '20px',
+    },
+    h5: {
+      fontSize: '18px',
+    },
+    h6: {
+      fontSize: '16px',
     },
   },
 });
