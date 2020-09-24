@@ -95,7 +95,11 @@ class SignIn extends Component {
               <Typography variant="h4">Sign in to your account</Typography>
               <Typography variant="h6">
                 {'Or '}
-                <Link color="inherit" to="/sign-up">
+                <Link
+                  color="inherit"
+                  to="/sign-up"
+                  style={{textDecoration: 'none'}}
+                >
                   create a new account.
                 </Link>
               </Typography>
@@ -129,9 +133,6 @@ class SignIn extends Component {
                           />
                         }
                         error={errors.email && touched.email}
-                        // className={`form-control ${
-                        //   touched.email && errors.email ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -144,11 +145,6 @@ class SignIn extends Component {
                         type="password"
                         fullWidth
                         id="password"
-                        // className={`form-control ${
-                        //   touched.password && errors.password
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                         helperText={
                           <ErrorMessage
                             name="password"

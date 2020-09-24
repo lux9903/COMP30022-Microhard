@@ -94,7 +94,7 @@ class Account extends Component {
         <Grid container component="main" className={classes.root}>
           <Grid item xs={12} component={Paper} elevation={6} square>
             <div className={classes.paper}>
-              <Typography variant="h2" padding="10px">
+              <Typography variant="h1" padding="10px">
                 Account
               </Typography>
             </div>
@@ -145,11 +145,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.firstname && touched.firstname}
-                        // className={`form-control ${
-                        //   touched.firstname && errors.firstname
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -169,11 +164,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.lastname && touched.lastname}
-                        // className={`form-control ${
-                        //   touched.lastname && errors.lastname
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -193,11 +183,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.username && touched.username}
-                        // className={`form-control ${
-                        //   touched.username && errors.username
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -217,9 +202,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.email && touched.email}
-                        // className={`form-control ${
-                        //   touched.email && errors.email ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -239,9 +221,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.major && touched.major}
-                        // className={`form-control ${
-                        //   touched.major && errors.major ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -261,9 +240,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.bio && touched.bio}
-                        // className={`form-control ${
-                        //   touched.bio && errors.bio ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -330,11 +306,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.password && touched.password}
-                        // className={`form-control ${
-                        //   touched.password && errors.password
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -354,9 +325,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.confirm && touched.confirm}
-                        // className={`form-control ${
-                        //   touched.confirm && errors.confirm ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>

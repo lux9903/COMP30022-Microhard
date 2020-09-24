@@ -12,8 +12,8 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project';
-import Projectex from '../Dashboard/Project_example';
+import Project from '../Dashboard/Project/Project';
+import Projectex from '../Dashboard/Project/Project_example';
 import Document from '../Dashboard/Document/Document';
 
 class Main extends Component {
