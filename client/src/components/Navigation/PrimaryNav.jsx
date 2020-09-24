@@ -4,17 +4,14 @@ import {signOutUser} from '../../actions/userAction';
 import {Link} from 'react-router-dom';
 import logo from '../../components/Navigation/logo.png';
 import Gravatar from 'react-gravatar';
-import App from '../App';
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  IconButton,
-  MenuItem,
-  Popover,
-} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Popover from '@material-ui/core/Popover';
+import MenuItem from '@material-ui/core/MenuItem';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
 
 const styles = (theme) => ({
   button: {
@@ -61,6 +58,7 @@ class PrimaryNav extends Component {
 
     const signOut = (e) => {
       e.preventDefault();
+      window.location.reload(false);
       this.props.dispatch(signOutUser());
     };
 
@@ -83,10 +81,10 @@ class PrimaryNav extends Component {
               <Button className={classes.button}>Experiences</Button>
             </Link>
             <Link to="/project" className={classes.noDecoration}>
-              <Button className={classes.button}>My projects</Button>
+              <Button className={classes.button}>Projects</Button>
             </Link>
             <Link to="/image" className={classes.noDecoration}>
-              <Button className={classes.button}>Images</Button>
+              <Button className={classes.button}>Photos</Button>
             </Link>
             <Link exact={true} to="/document" className={classes.noDecoration}>
               <Button className={classes.button}>Personal documents</Button>
