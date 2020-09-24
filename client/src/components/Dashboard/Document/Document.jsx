@@ -47,7 +47,6 @@ class Document extends Component {
         'content-type': 'multipart/form-data',
       },
     };
-    //alert(document.getElementById("title").value);
     var url = '';
     if (document.getElementById('title').value.trim() !== '') {
       url = '/pdf/upload/' + document.getElementById('title').value;
@@ -106,7 +105,11 @@ class Document extends Component {
         <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+          <Typography
+            variant="h1"
+            align="center"
+            style={{color: '#fff', fontSize: '36px'}}
+          >
             Personal Documents
           </Typography>
         </div>
@@ -144,7 +147,8 @@ class Document extends Component {
             </Table>
           </TableContainer>
         </Container>
-        <div>
+        <div align="center">
+          <br />
           <form name="editTitle" onSubmit={this.onEdit}>
             <input type="text" name="id" required />
             <input type="text" name="title" required />

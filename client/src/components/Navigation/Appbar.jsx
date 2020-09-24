@@ -20,6 +20,7 @@ const useStyles = makeStyles({
   },
   greyText: {
     color: 'grey',
+    textTransform: 'none',
   },
   appbar: {
     backgroundColor: '#F4F5F7',

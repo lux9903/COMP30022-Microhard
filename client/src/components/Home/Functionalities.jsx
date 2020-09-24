@@ -49,7 +49,7 @@ export default function Functionalities() {
         <br />
         <Grid container justify="center" alignItems="center" align="center">
           <Grid item xs={12} sm={12}>
-            <Typography variant="h4">How can Microhard help you... </Typography>
+            <Typography variant="h2">How can Microhard help you... </Typography>
             <br />
             <br />
             <br />
@@ -63,7 +63,7 @@ export default function Functionalities() {
                   className={classes.icon}
                 />
               </Float>
-              <Typography variant="h6" align="center">
+              <Typography variant="h5" align="center">
                 Showcase e-portfolio to employers
               </Typography>
               <Typography variant="body1" className={classes.body}>
@@ -84,7 +84,7 @@ export default function Functionalities() {
                   className={classes.icon}
                 />
               </Float>
-              <Typography variant="h6" align="center">
+              <Typography variant="h5" align="center">
                 Monitor your skill-building progress
               </Typography>
               <Typography variant="body1" className={classes.body}>
@@ -105,7 +105,7 @@ export default function Functionalities() {
                   className={classes.icon}
                 />
               </Float>
-              <Typography variant="h6" align="center">
+              <Typography variant="h5" align="center">
                 Comment on other students' projects
               </Typography>
               <Typography variant="body1" className={classes.body}>
@@ -126,7 +126,7 @@ export default function Functionalities() {
                   className={classes.icon}
                 />
               </Float>
-              <Typography variant="h6" align="center">
+              <Typography variant="h5" align="center">
                 Layout your projects in a logical way
               </Typography>
               <Typography variant="body1" className={classes.body}>

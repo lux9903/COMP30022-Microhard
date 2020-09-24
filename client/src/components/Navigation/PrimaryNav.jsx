@@ -20,6 +20,7 @@ const styles = (theme) => ({
   button: {
     color: 'grey',
     margin: '0px 20px',
+    textTransform: 'none',
   },
   logo: {
     maxHeight: '2.7rem',
