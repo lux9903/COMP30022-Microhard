@@ -15,6 +15,7 @@ import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
 import Document from '../Dashboard/Document/Document';
+import ProfileStepper from '../Dashboard/Profile/ProfileStepper';
 
 class Main extends Component {
   render() {
@@ -36,6 +37,12 @@ class Main extends Component {
           exact
           path="/projectex"
           component={Projectex}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/editprofile"
+          component={ProfileStepper}
           authed={this.props.user}
         />
         <PrivateRoute

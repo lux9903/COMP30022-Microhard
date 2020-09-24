@@ -174,7 +174,7 @@ class Profile extends Component {
                           <AttachFileIcon />
                         </IconButton>
                       </Link>
-                      <Link to="/">
+                      <Link to="/editprofile">
                         <IconButton aria-label="edit" color="secondary">
                           <EditIcon />
                         </IconButton>
