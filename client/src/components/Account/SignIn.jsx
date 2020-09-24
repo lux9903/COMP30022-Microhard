@@ -37,7 +37,6 @@ const useStyles = (theme) => ({
   },
   image: {
     backgroundImage: 'url(' + img + ')',
-    //backgroundImage: `url(${"../../img/form-background.jpg"})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
@@ -95,11 +94,7 @@ class SignIn extends Component {
               <Typography variant="h4">Sign in to your account</Typography>
               <Typography variant="h6">
                 {'Or '}
-                <Link
-                  color="inherit"
-                  to="/sign-up"
-                  style={{textDecoration: 'none'}}
-                >
+                <Link color="inherit" to="/sign-up">
                   create a new account.
                 </Link>
               </Typography>

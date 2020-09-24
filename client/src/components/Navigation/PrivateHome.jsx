@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Route} from 'react-router-dom';
-import Profile from '../Dashboard/Profile';
+import Profile from '../Dashboard/Profile/Profile';
 import HomePage from '../Home/HomePage';
 import PrimaryNav from './PrimaryNav';
 

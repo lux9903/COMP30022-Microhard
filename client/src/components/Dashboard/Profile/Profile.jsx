@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
 import clsx from 'clsx';
 import ReactDOM from 'react-dom';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Gravatar from 'react-gravatar';
@@ -174,9 +174,11 @@ class Profile extends Component {
                           <AttachFileIcon />
                         </IconButton>
                       </Link>
-                      <IconButton aria-label="edit" color="secondary">
-                        <EditIcon />
-                      </IconButton>
+                      <Link to="/">
+                        <IconButton aria-label="edit" color="secondary">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
                       <IconButton href={'mailto:' + user.email}>
                         <EmailIcon />
                       </IconButton>
