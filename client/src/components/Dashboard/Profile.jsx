@@ -156,7 +156,7 @@ class Profile extends Component {
                       <Gravatar email={user.email} size={'2048px'} />
                     </div>
                     <div style={{marginTop: '-60px'}}>
-                      <Typography variant="h4" className={classes.fullName}>
+                      <Typography variant="h3" className={classes.fullName}>
                         {user.firstname} {user.lastname}
                       </Typography>
                       <Typography variant="h6" className={classes.bio}>

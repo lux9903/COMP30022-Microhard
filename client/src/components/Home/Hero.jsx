@@ -10,18 +10,32 @@ import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)',
-    paddingTop: '50px',
+    backgroundImage:
+      'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
+    paddingTop: '85px',
     paddingBottom: '70px',
   },
   body: {
-    color: '#595e53',
+    color: '#fff',
     textAlign: 'center',
+    fontWeight: '',
   },
   image: {
-    maxWidth: '530px',
+    maxWidth: '510px',
     [theme.breakpoints.down('xs')]: {
-      maxWidth: '420px',
+      maxWidth: '410px',
+    },
+  },
+  bigHeader: {
+    fontSize: '45px',
+    fontWeight: '600',
+    color: '#fff',
+  },
+  loginButton: {
+    color: '#fff',
+    backgroundColor: '#1C1B29',
+    '&:hover': {
+      backgroundColor: '#292841',
     },
   },
 }));
@@ -47,7 +61,11 @@ export default function Hero() {
                   <br />
                 </Typography>
                 <Grid item xs={8}>
-                  <Typography variant="h3" align="center">
+                  <Typography
+                    variant="h1"
+                    align="center"
+                    className={classes.bigHeader}
+                  >
                     Discover University of Melbourne's top talents
                   </Typography>
                 </Grid>
@@ -67,10 +85,10 @@ export default function Hero() {
                         <Button
                           component={Link}
                           to="/sign-up"
-                          color="primary"
                           variant="outlined"
                           size="large"
                           fullWidth
+                          style={{color: '#fff', borderColor: '#fff'}}
                         >
                           Get started
                         </Button>
@@ -82,10 +100,10 @@ export default function Hero() {
                         <Button
                           component={Link}
                           to="/sign-in"
-                          color="primary"
                           variant="contained"
                           size="large"
                           fullWidth
+                          className={classes.loginButton}
                         >
                           Login
                         </Button>
