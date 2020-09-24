@@ -66,7 +66,7 @@ class FilesUploadComponent extends Component {
         <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+          <Typography variant="h1" align="center" style={{color: '#fff'}}>
             Images
           </Typography>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Helmet} from 'react-helmet';
 import {makeStyles} from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -15,9 +15,8 @@ import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: '#094183',
-    paddingBottom: '0px',
-    color: '#fff',
+    height: '120px',
+    backgroundColor: theme.palette.primary.dark,
   },
   body: {
     width: '100%',
@@ -61,17 +60,17 @@ export default function Experience() {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div>
-      <container>
-        <Helmet>
-          <title>Microhard &middot; Welcome </title>
-        </Helmet>
-        <div className={classes.root}>
-          <div className={classes.formWrap}>
-            <h1 className={classes.formTitle}>My Career Experience </h1>
-          </div>
-        </div>
-      </container>
+    <Fragment>
+      <Helmet>
+        <title>Microhard &middot; Welcome </title>
+      </Helmet>
+      <div className={classes.root}>
+        <br />
+        <br />
+        <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          Career Experience
+        </Typography>
+      </div>
 
       <Typography>
         <br />
@@ -247,6 +246,6 @@ export default function Experience() {
           </div>
         </Grid>
       </Grid>
-    </div>
+    </Fragment>
   );
 }

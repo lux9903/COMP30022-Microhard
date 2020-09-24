@@ -56,9 +56,11 @@ const theme = createMuiTheme({
     },
     body1: {
       fontFamily: 'Lato, san-serif',
+      fontSize: '16px',
     },
     body2: {
       fontFamily: 'Nunito, sans-serif',
+      fontSize: '16px',
     },
     h1: {
       fontSize: '36px',
