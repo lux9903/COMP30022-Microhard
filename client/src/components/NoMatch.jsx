@@ -62,16 +62,16 @@ export default function NoMatch() {
             </Typography>
             <br />
             <br />
-            <Link to="/">
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.button}
-              >
-                Back to homepage
-              </Button>
-            </Link>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              className={classes.button}
+              to="/"
+              component={Link}
+            >
+              Back to homepage
+            </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
             <Grow in timeout={1000}>
