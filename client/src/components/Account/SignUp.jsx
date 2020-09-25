@@ -100,7 +100,7 @@ class SignUp extends Component {
               <Typography variant="h4">Create your account</Typography>
               <Typography variant="h6">
                 {'Or '}
-                <Link color="inherit" to="/sign-in">
+                <Link color="primary" to="/sign-in">
                   sign in to your account.
                 </Link>
               </Typography>
@@ -137,11 +137,6 @@ class SignUp extends Component {
                           />
                         }
                         error={errors.firstname && touched.firstname}
-                        // className={`form-control ${
-                        //   touched.firstname && errors.firstname
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -161,11 +156,6 @@ class SignUp extends Component {
                         name="lastname"
                         label="Enter your last name"
                         fullWidth
-                        // className={`form-control ${
-                        //   touched.lastname && errors.lastname
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -177,7 +167,7 @@ class SignUp extends Component {
                             className="invalid-feedback"
                           />
                         }
-                        errors={errors.username && touched.username}
+                        error={errors.username && touched.username}
                         variant="outlined"
                         margin="normal"
                         type="text"
@@ -185,11 +175,6 @@ class SignUp extends Component {
                         name="username"
                         label="Enter your username"
                         fullWidth
-                        // className={`form-control ${
-                        //   touched.username && errors.username
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -209,9 +194,6 @@ class SignUp extends Component {
                         name="email"
                         label="Enter your email address"
                         fullWidth
-                        // className={`form-control ${
-                        //   touched.email && errors.email ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -231,11 +213,6 @@ class SignUp extends Component {
                         name="password"
                         label="Enter your password"
                         fullWidth
-                        // className={`form-control ${
-                        //   touched.password && errors.password
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>

@@ -15,7 +15,6 @@ import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
-import {withStyles} from '@material-ui/core/styles';
 
 class Document extends Component {
   constructor(props) {

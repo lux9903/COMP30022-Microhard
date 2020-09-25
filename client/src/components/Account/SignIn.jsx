@@ -37,7 +37,6 @@ const useStyles = (theme) => ({
   },
   image: {
     backgroundImage: 'url(' + img + ')',
-    //backgroundImage: `url(${"../../img/form-background.jpg"})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
@@ -129,9 +128,6 @@ class SignIn extends Component {
                           />
                         }
                         error={errors.email && touched.email}
-                        // className={`form-control ${
-                        //   touched.email && errors.email ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -144,11 +140,6 @@ class SignIn extends Component {
                         type="password"
                         fullWidth
                         id="password"
-                        // className={`form-control ${
-                        //   touched.password && errors.password
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                         helperText={
                           <ErrorMessage
                             name="password"

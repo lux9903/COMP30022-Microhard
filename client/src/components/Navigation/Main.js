@@ -5,16 +5,17 @@ import {Route, Switch} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
-import NoMatch from './NoMatch';
 import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project';
-import Projectex from '../Dashboard/Project_example';
+import Project from '../Dashboard/Project/Project';
+import Projectex from '../Dashboard/Project/Project_example';
 import Document from '../Dashboard/Document/Document';
+import ProfileStepper from '../Dashboard/Profile/ProfileStepper';
+import NoMatch from '../NoMatch';
 
 class Main extends Component {
   render() {
@@ -36,6 +37,12 @@ class Main extends Component {
           exact
           path="/projectex"
           component={Projectex}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/editprofile"
+          component={ProfileStepper}
           authed={this.props.user}
         />
         <PrivateRoute
