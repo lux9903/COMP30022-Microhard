@@ -5,7 +5,6 @@ import {Route, Switch} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
-import NoMatch from './NoMatch';
 import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
@@ -16,6 +15,7 @@ import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
 import Document from '../Dashboard/Document/Document';
 import ProfileStepper from '../Dashboard/Profile/ProfileStepper';
+import NoMatch from '../NoMatch';
 
 class Main extends Component {
   render() {
