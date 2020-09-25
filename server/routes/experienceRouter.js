@@ -6,7 +6,7 @@ const experienceController = require('../controllers/experienceController');
 const Experience = require('../models/experienceModel');
 const User = mongoose.model('User');
 
-/*
+
 experienceRouter.post('/create', auth.optional, (req,res)=>{
 	User.findById(req.payload.id)
       .then(function (user) {
@@ -21,13 +21,7 @@ experienceRouter.post('/create', auth.optional, (req,res)=>{
         experience.state = "going";
         experience.save();
         return res.redirect("/");
-      });
-});
-*/
-
-experienceRouter.post('/create', auth.optional, (req,res, next)=> {
-  experienceController.createExperience(req, res, next);
-
+      }).catch();
 });
 
 
