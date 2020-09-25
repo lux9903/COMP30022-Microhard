@@ -67,6 +67,9 @@ User {
     `Lastname`: Lastname of user;
     `Firstname`: Firstname of user;
     `Major`: Major of user;
+    `Location`: Where the user is based in at the current time
+    `Website`: (Optional) Website contact
+    `Linkedin`: (Optional) Linkedin contact
     
 }
 
