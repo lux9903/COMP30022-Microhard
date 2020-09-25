@@ -16,6 +16,9 @@ import TextField from '@material-ui/core/TextField';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import clsx from 'clsx';
+import Stepper from '@material-ui/core/Stepper';
+import StepLabel from '@material-ui/core/StepLabel';
+import Step from '@material-ui/core/Step';
 
 const validationSchema = Yup.object().shape({
   lastname: Yup.string().required('*Last name is required'),
@@ -133,11 +136,6 @@ const useStyles = (theme) => ({
     alignItems: 'center',
     textAlign: 'center',
   },
-  logo: {
-    maxHeight: '12rem',
-    padding: '0px 10px',
-    margin: '0px 20px',
-  },
   form: {
     width: '100%',
   },
@@ -153,10 +151,30 @@ const useStyles = (theme) => ({
   },
 });
 
-class Stepper extends Component {
+class AddProfileContent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeStep: 1,
+    };
+    this.handleNext = this.handleNext.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+  }
+
+  handleNext(e) {
+    e.preventDefault();
+    this.setState({activeStep: this.state.activeStep + 1});
+  }
+
+  handleBack(e) {
+    e.preventDefault();
+    this.setState({activeStep: this.state.activeStep - 1});
+  }
+
   render() {
     const {error, isAuthenticating, user} = this.props.user;
     const {classes} = this.props;
+    const steps = getSteps();
 
     let content;
 
@@ -176,23 +194,62 @@ class Stepper extends Component {
           <title>Microhard &middot; Add profile content</title>
         </Helmet>
 
+        <div className={classes.root}>
+          <Stepper
+            alternativeLabel
+            activeStep={this.state.activeStep}
+            connector={<ColorlibConnector />}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel StepIconComponent={ColorlibStepIcon}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {this.state.activeStep === steps.length ? (
+              <div>
+                <Typography className={classes.instructions}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+              </div>
+            ) : (
+              <div>
+                <Typography className={classes.instructions}>
+                  {getStepContent(this.state.activeStep)}
+                </Typography>
+                <div>
+                  <Button
+                    disabled={this.state.activeStep === 0}
+                    onClick={this.handleBack}
+                    className={classes.button}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleNext}
+                    className={classes.button}
+                  >
+                    {this.state.activeStep === steps.length - 1
+                      ? 'Finish'
+                      : 'Next'}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         <Grid container component="main" className={classes.root}>
-          <Grid item xs={12} component={Paper} elevation={6} square>
-            <div className={classes.paper}>
-              <Typography variant="h1" padding="10px">
-                Add Profile Content
-              </Typography>
-            </div>
-          </Grid>
           <Grid item xs={12} component={Paper} elevation={6} square>
             <div className={classes.paper}>
               <Formik
                 initialValues={{
-                  username: user.username,
-                  email: user.email,
                   headline: user.headline,
-                  lastname: user.lastname,
-                  firstname: user.firstname,
                   major: user.major,
                 }}
                 validationSchema={validationSchema}
@@ -266,4 +323,6 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default connect(mapStateToProps)(withStyles(useStyles)(Stepper));
+export default connect(mapStateToProps)(
+  withStyles(useStyles)(AddProfileContent)
+);

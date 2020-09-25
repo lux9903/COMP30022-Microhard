@@ -14,7 +14,7 @@ import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
 import Document from '../Dashboard/Document/Document';
-import Stepper from '../Dashboard/Profile/Stepper';
+import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
 import NoMatch from '../NoMatch';
 
 class Main extends Component {
@@ -41,8 +41,8 @@ class Main extends Component {
         />
         <PrivateRoute
           exact
-          path="/stepper"
-          component={Stepper}
+          path="/addprofilecontent"
+          component={AddProfileContent}
           authed={this.props.user}
         />
         <PrivateRoute
