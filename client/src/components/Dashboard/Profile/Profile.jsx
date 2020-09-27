@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
 import clsx from 'clsx';
 import ReactDOM from 'react-dom';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Gravatar from 'react-gravatar';
@@ -13,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
   root: {
@@ -88,7 +89,7 @@ const styles = (theme) => ({
     fontFamily: 'Lato, sans-serif',
     fontWeight: '300',
   },
-  bio: {
+  headline: {
     marginTop: '20px',
     fontFamily: 'Lato, sans-serif',
     fontWeight: '300',
@@ -155,23 +156,29 @@ class Profile extends Component {
                       <Gravatar email={user.email} size={'2048px'} />
                     </div>
                     <div style={{marginTop: '-60px'}}>
-                      <h2 className={classes.fullName}>
+                      <Typography variant="h3" className={classes.fullName}>
                         {user.firstname} {user.lastname}
-                      </h2>
-                      <h5 className={classes.bio}>{user.bio}</h5>
-                      <h6 className={classes.major}>{user.major}</h6>
+                      </Typography>
+                      <Typography variant="h6" className={classes.headline}>
+                        {user.headline}
+                      </Typography>
+                      <Typography variant="h6" className={classes.major}>
+                        {user.major}
+                      </Typography>
                       <br />
-                      <h6 className={classes.graduation}>
+                      <Typography variant="h6" className={classes.graduation}>
                         Graduation: June 2020
-                      </h6>
+                      </Typography>
                       <Link to="/image">
                         <IconButton aria-label="upload" color="secondary">
                           <AttachFileIcon />
                         </IconButton>
                       </Link>
-                      <IconButton aria-label="edit" color="secondary">
-                        <EditIcon />
-                      </IconButton>
+                      <Link to="/editprofile">
+                        <IconButton aria-label="edit" color="secondary">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
                       <IconButton href={'mailto:' + user.email}>
                         <EmailIcon />
                       </IconButton>
@@ -187,15 +194,7 @@ class Profile extends Component {
             <div className={classes.aboutMe}>
               <p>
                 <hr />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Pellentesque habitant morbi tristique senectus et netus et
-                malesuada fames. Diam quis enim lobortis scelerisque fermentum
-                dui faucibus in ornare. Varius morbi enim nunc faucibus a
-                pellentesque sit amet. Aenean sed adipiscing diam donec
-                adipiscing tristique risus.
+                {user.aboutSection}
               </p>
             </div>
             <Container>

@@ -20,6 +20,7 @@ const useStyles = makeStyles({
   },
   greyText: {
     color: 'grey',
+    textTransform: 'none',
   },
   appbar: {
     backgroundColor: '#F4F5F7',
@@ -44,14 +45,6 @@ export default function Appbar() {
               style={{margin: '0px 10px'}}
             >
               About Us
-            </Button>
-
-            <Button
-              className={classes.greyText}
-              href="#outlined-buttons"
-              style={{margin: '0px 10px'}}
-            >
-              Projects
             </Button>
 
             <Button

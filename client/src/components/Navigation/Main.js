@@ -5,15 +5,18 @@ import {Route, Switch} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
-import NoMatch from './NoMatch';
 import SignIn from '../Account/SignIn';
 import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project';
-import Projectex from '../Dashboard/Project_example';
+import Project from '../Dashboard/Project/Project';
+import Projectex from '../Dashboard/Project/Project_example';
+import Document from '../Dashboard/Document/Document';
+import Course from '../Dashboard/Course/Course';
+import ProfileStepper from '../Dashboard/Profile/ProfileStepper';
+import NoMatch from '../NoMatch';
 
 class Main extends Component {
   render() {
@@ -39,6 +42,12 @@ class Main extends Component {
         />
         <PrivateRoute
           exact
+          path="/editprofile"
+          component={ProfileStepper}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
           path="/project"
           component={Project}
           authed={this.props.user}
@@ -51,10 +60,24 @@ class Main extends Component {
         />
         <PrivateRoute
           exact
+          path="/document"
+          component={Document}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
           path="/account"
           component={Account}
           authed={this.props.user}
         />
+
+        <PrivateRoute
+          exact
+          path="/course"
+          component={Course}
+          authed={this.props.user}
+        />
+
 
         <Route component={NoMatch} />
       </Switch>
