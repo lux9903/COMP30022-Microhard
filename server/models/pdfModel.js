@@ -11,6 +11,10 @@ const pdfSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    originalName: String,
+    filename: String,
+    date: String,
+    title: String,
   },
   {timestamps: true}
 );
