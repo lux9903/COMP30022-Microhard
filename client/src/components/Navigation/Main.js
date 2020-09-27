@@ -22,7 +22,7 @@ class Main extends Component {
     return (
       <Switch>
         <Route exact path="/sign-in" component={SignIn} />
-        <Route exact path="/sign-up" component={SignUp} />
+        <Route exact path="/sign-up" component={AddProfileContent} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
         <Route exact path="/reset-password/:token" component={ResetPassword} />
 
@@ -37,12 +37,6 @@ class Main extends Component {
           exact
           path="/projectex"
           component={Projectex}
-          authed={this.props.user}
-        />
-        <PrivateRoute
-          exact
-          path="/addprofilecontent"
-          component={AddProfileContent}
           authed={this.props.user}
         />
         <PrivateRoute
