@@ -280,13 +280,15 @@ class MyAccordion extends Component {
 
 
 const RadioButton = ({field, ...props}) => {
+  let defVal = props.state;
+  if(defVal === undefined) {defVal ="going"}
   return(
     <RadioGroup
       {...field}
       {...props}
       label={props.label}
       name={props.name}
-    defaultValue={props.state}
+    defaultValue={defVal}
     >
       <FormLabel component="legend">Do you currently work here?</FormLabel>
       <FormControlLabel value="going" control={<Radio />} label="Yes" />

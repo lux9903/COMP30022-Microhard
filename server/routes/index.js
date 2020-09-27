@@ -5,6 +5,7 @@ router.use('/api/image', require('./imageRouter'));
 router.use('/api/file', require('./fileRouter'));
 router.use('/api/pdf', require('./pdfRouter'));
 router.use('/api/course', require('./courseRouter'));
+router.use('/api/experience', require('./experienceRouter'));
 
 
 router.use(function (err, req, res, next) {
