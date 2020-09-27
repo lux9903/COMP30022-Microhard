@@ -44,9 +44,6 @@ const AboutSectionStep = (props) => {
           handleBlur,
           handleSubmit,
           isSubmitting,
-          validateField,
-          setFieldValue,
-          setFieldTouched,
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={0} direction="row" justify="center">

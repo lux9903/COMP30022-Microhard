@@ -23,7 +23,9 @@ const BasicDetailsSchema = Yup.object().shape({
   lastname: Yup.string().required('*Last name is required'),
   firstname: Yup.string().required('*First name is required'),
   username: Yup.string().required('*Username is required'),
-  email: Yup.string().email().required('*Email is required'),
+  email: Yup.string()
+    .email()
+    .required('*Enter an email address, like name@example.com'),
   password: Yup.string().required('*Password is required'),
 });
 
@@ -72,9 +74,6 @@ const BasicDetailsStep = (props) => {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            validateField,
-            setFieldValue,
-            setFieldTouched,
           }) => (
             <form onSubmit={handleSubmit}>
               <Grid container spacing={0} direction="row" justify="center">
@@ -126,6 +125,34 @@ const BasicDetailsStep = (props) => {
                     value={values.username}
                     error={errors.username}
                     touched={touched.username}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} className={classes.formItem}>
+                  <FormItem
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Enter your email address"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder={'email@example.com'}
+                    value={values.email}
+                    error={errors.email}
+                    touched={touched.email}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} className={classes.formItem}>
+                  <FormItem
+                    id="password"
+                    name="password"
+                    type="password"
+                    label="Enter your password"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder={'secret password'}
+                    value={values.password}
+                    error={errors.password}
+                    touched={touched.password}
                   />
                 </Grid>
               </Grid>
