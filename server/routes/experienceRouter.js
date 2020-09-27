@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const experienceRouter = require('express').Router();
 const auth = require('./authRouter');
-const experienceController = require('../controllers/experienceController');
 
 const Experience = require('../models/experienceModel');
 const User = mongoose.model('User');
@@ -18,7 +17,7 @@ experienceRouter.post('/create', auth.optional, (req,res)=>{
         experience.position = req.body.position;
         experience.company = req.body.company;
         experience.description = req.body.description;
-        experience.state = "going";
+        experience.state = req.body.state;
         experience.save();
         return res.redirect("/");
       }).catch();
@@ -70,6 +69,9 @@ experienceRouter.post('/update/:id', auth.optional, (req,res)=>{
     	}
     	if(typeof req.body.description != 'undefined'){
         	experience.description = req.body.description;
+        }
+        if(typeof req.body.state != 'undefined'){
+          experience.state = req.body.state;
         }
         return experience.save().then(function () {
                 return res.json(experience);
