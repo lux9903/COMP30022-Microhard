@@ -75,7 +75,7 @@ export default function NoMatch() {
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
             <Grow in timeout={1000}>
-              <img src={img} alt="404 image" className={classes.img} />
+              <img src={img} alt="404" className={classes.img} />
             </Grow>
           </Grid>
         </Grid>
