@@ -1,19 +1,28 @@
 import React from 'react';
 import {FormWizard} from 'react-material-formik-wizard';
-
-import aboutSectionStep from './AboutSectionStep';
+import AboutSectionStep from './AboutSectionStep';
+import BasicDetailsStep from './BasicDetailsStep';
+import ReviewStep from './ReviewStep';
 
 function AddProfileContent() {
   const steps = [
     {
-      component: aboutSectionStep,
+      component: AboutSectionStep,
       title: 'About',
+    },
+    {
+      component: BasicDetailsStep,
+      title: 'Basic details',
+    },
+    {
+      component: ReviewStep,
+      title: 'Review',
     },
   ];
 
   const doSubmit = (values) => {
     alert('submitting: ' + JSON.stringify(values));
-    console.log('submitting valuess', values);
+    console.log('submitting values', values);
   };
 
   return (
@@ -25,7 +34,7 @@ function AddProfileContent() {
           doSubmit={doSubmit}
           successTitle={'Success'}
           successTitleComponent={'h1'}
-          successMessage={'Your recipe has been submitted'}
+          successMessage={'Your user profile has been successfully made!'}
           successMessageComponent={'h5'}
         />
       </main>
