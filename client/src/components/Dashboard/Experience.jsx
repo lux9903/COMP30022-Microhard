@@ -26,7 +26,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import DatePicker from "react-datepicker";
 
 const useStyles = makeStyles((theme) => ({
   root: {
