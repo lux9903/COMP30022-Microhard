@@ -20,6 +20,11 @@ class Test extends Component{
     	this.onProcessCreate = this.onProcessCreate.bind(this);
     	this.onProcessDelete = this.onProcessDelete.bind(this);
     	this.onProcessUpdate = this.onProcessUpdate.bind(this);
+    	this.onCreateNode = this.onCreateNode.bind(this);
+    	this.onUpdateNode = this.onUpdateNode.bind(this);
+    	this.onDeleteNode = this.onDeleteNode.bind(this);
+    	this.onFinishNode = this.onFinishNode.bind(this);
+    	this.conditionalSearch = this.conditionalSearch.bind(this);
   	}
 
 	onFormSubmit(e){
@@ -113,6 +118,67 @@ class Test extends Component{
 
 		const updateUrl = 'project/process/update/' + document.forms.namedItem("processUpdate")["id"]["value"];
 		axios.post(updateUrl, formD);
+	}
+	onCreateNode(e){
+		e.preventDefault();
+		let formD = {
+			"processNum" : parseInt(document.forms.namedItem("createNode")["processNum"]["value"]),
+			"name" : document.forms.namedItem("createNode")["name"]["value"],
+			"description": document.forms.namedItem("createNode")["description"]["value"]
+		};
+		let url = '/project/process/node/' + document.forms.namedItem("createNode")["id"]["value"];
+		axios.post(url,formD);
+	}
+	onUpdateNode(e){
+		e.preventDefault();
+		let formD = {
+			"processNum" : parseInt(document.forms.namedItem("updateNode")["processNum"]["value"]),
+			"nodeIndex" : parseInt(document.forms.namedItem("updateNode")["processNum"]["value"])
+		}
+		if(document.forms.namedItem("updateNode")["name"]["value"].trim() != ""){
+			formD["name"] = document.forms.namedItem("updateNode")["name"]["value"];
+		}
+		if(document.forms.namedItem("updateNode")["description"]["value"] != ""){
+			formD["description"] = document.forms.namedItem("updateNode")["description"]["value"];
+		}
+		let url = '/project/process/node/update/' + document.forms.namedItem("updateNode")["id"]["value"];
+		axios.post(url,formD);
+	}
+	onDeleteNode(e){
+		e.preventDefault();
+		let formD = {
+			"processNum" : parseInt(document.forms.namedItem("deleteNode")["processNum"]["value"]),
+			"nodeIndex" : parseInt(document.forms.namedItem("deleteNode")["nodeIndex"]["value"])
+		}
+		let url = '/project/process/node/remove/' + document.forms.namedItem("deleteNode")["id"]["value"];
+		axios.post(url,formD);
+	}
+	onFinishNode(e){
+		e.preventDefault();
+		let formD = {
+			"processNum" : parseInt(document.forms.namedItem("finishNode")["processNum"]["value"]),
+			"nodeIndex" : parseInt(document.forms.namedItem("finishNode")["nodeIndex"]["value"])
+		}
+		let url = '/project/process/node/finish/' + document.forms.namedItem("finishNode")["id"]["value"];
+		axios.post(url,formD);
+	}
+	conditionalSearch(e){
+		e.preventDefault();
+		let formD = {
+		}
+		if(document.forms.namedItem("conditionalSearch")["byName"].checked){
+			formD.name = document.forms.namedItem("conditionalSearch")["name"]["value"];
+		}
+		if(document.forms.namedItem("conditionalSearch")["byStatus"].checked){
+			formD.status = document.forms.namedItem("conditionalSearch")["status"]["value"];
+		}
+		if(document.forms.namedItem("conditionalSearch")["sort"].checked){
+			formD.sortBy = document.forms.namedItem("conditionalSearch")["sortMethod"]["value"];
+		}
+		let url = '/project/conditional/';
+		axios.post(url,formD).then((res)=>{
+			alert(JSON.stringify(res.data.result));
+		});
 	}
 	componentDidMount(){
 
@@ -218,6 +284,63 @@ class Test extends Component{
 			            </select>
 			          	<input type = "submit" value = "test"/>
 
+		        	</form>
+		        	Create one Node
+		        	<form onSubmit = {this.onCreateNode} name = "createNode">
+		        		<input type = "text" name = "id" placeholder="projetId"/>
+		        		<input type = "number" min= "1" step="1" name="processNum" placeholder="processNum"/>
+		        		<input type = "text" name= "name" placeholder = "nodeName"/>
+		        		<input type = "text" name = "description" placeholder="nodeDescription"/>
+		        		<input type = "submit" value = "test"/>
+		        	</form>
+
+		        	Update one Node
+		        	<form onSubmit = {this.onUpdateNode} name = "updateNode">
+						<input type = "text" name = "id" placeholder="projetId"/>
+		        		<input type = "number" min= "1" step="1" name="processNum" placeholder="processNum"/>
+		        		<input type = "number" min= "1" step = "1" name = "nodeIndex" placeholder= "nodeIndex"/>
+		        		<input type = "text" name= "name" placeholder = "nodeName"/>
+		        		<input type = "text" name = "description" placeholder="nodeDescription"/>
+		        		<input type = "submit" value = "test"/>
+		        	</form>
+
+		        	Delete one Node
+		        	<form onSubmit = {this.onDeleteNode} name = "deleteNode">
+		        		<input type ="text" name ="id" placeholder="projectId"/>
+		        		<input type ="number" min ="1" step ="1" name ="processNum" placeholder="processNum"/>
+		        		<input type ="number" min ="1" step ="1" name ="nodeIndex" placeholder="nodeIndex"/>
+		        		<input type ="submit" value = "test"/>
+		        	</form>
+
+		        	Finish one Node
+		        	<form onSubmit = {this.onFinishNode} name = "finishNode">
+		        		<input type ="text" name ="id" placeholder="projectId"/>
+		        		<input type ="number" min ="1" step ="1" name ="processNum" placeholder="processNum"/>
+		        		<input type ="number" min ="1" step ="1" name ="nodeIndex" placeholder="nodeIndex"/>
+		        		<input type ="submit" value = "test"/>
+		        	</form>
+
+		        	Conditional search
+		        	<form onSubmit = {this.conditionalSearch} name = "conditionalSearch">
+		        		Search By name?
+		        		<input type ="checkbox" name = "byName"/>
+						<input type = "text" name = "name" placeholder="nameOfProject"/>
+
+						Search By Status?
+						<input type = "checkbox" name = "byStatus"/>
+						<select name = "status">
+			            <option value="Inprogress">Inprogress</option>
+			            <option value="Completed">Completed</option>
+			            <option value="Cancel">Cancel</option>
+			          	</select>
+
+			          	In ascending/descending ?
+			          	<input type="checkbox" name="sort"/>
+			          	<select name="sortMethod">
+			          		<option value="ascending"> ascending</option>
+			          		<option value="descending"> descending</option>
+			          	</select>
+		        		<input type ="submit" value = "test"/>
 		        	</form>
 			</div>
 
