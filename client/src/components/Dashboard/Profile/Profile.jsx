@@ -19,6 +19,8 @@ import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import EditAvatar from '../EditAvatar';
+import {  deepPurple } from '@material-ui/core/colors';
+
 
 const styles = (theme) => ({
   root: {
@@ -130,6 +132,10 @@ const styles = (theme) => ({
   noDecoration: {
     textDecoration: 'none !important',
   },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
+  },
 });
 
 class Profile extends Component {
@@ -198,6 +204,7 @@ class Profile extends Component {
       }
     });
     const img = axios.get('/avatar').then((res) => {
+      console.log('hahahahhaa')
       if (res.data.files) {
         const imgPic = res.data.files.map((ele) => (
             <Avatar
@@ -207,6 +214,9 @@ class Profile extends Component {
             />
         ));
         ReactDOM.render(imgPic, document.getElementById('avatar'));
+      } else{
+        const defaultAvatar = <Avatar className={classes.purple}>UK</Avatar>
+        ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
   }

@@ -44,7 +44,7 @@ const getAllImage = (req, res) => {
     if (!user){
       return res.sendStatus(401).send('The user does not exist.');
     }
-    Image.find({user: user._id}).distinct('fileId').then(function(image){
+    Image.find({user: user._id, type: { $exists: false }}).distinct('fileId').then(function(image){
       console.log(image);
       gfs.files.find({_id: {$in: image}}).toArray((err,files)=>{
         if(!files || files.length ===0){
@@ -79,7 +79,6 @@ const getAvatar = (req, res) => {
       return res.sendStatus(401).send('The user does not exist.');
     }
     Image.find({user: user._id, type: 'avatar'}).distinct('fileId').then(function(image){
-      console.log(image);
       gfs.files.find({_id: {$in: image}}).toArray((err,files)=>{
         if(!files || files.length ===0){
           return res.json({
