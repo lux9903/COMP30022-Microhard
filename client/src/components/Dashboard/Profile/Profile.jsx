@@ -14,85 +14,41 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  profileHeader: {
-    height: '280px',
-    backgroundColor: '#094183',
-    paddingTop: '45px',
-  },
-  profileText: {
-    color: '#fff',
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.secondary.main,
+  personal: {
+    margin: '32px auto',
+    padding: '30px',
+    '& h1': {
+      paddingTop: '10px',
+      paddingBottom: '10px',
     },
-  },
-  allImages: {
-    maxHeight: '300px',
-    padding: '0px 20px',
-  },
-  main: {
-    background: '#fff',
-    position: 'relative',
-    zIndex: '4',
-  },
-  mainRaised: {
-    margin: '-60px 30px 0px',
-    borderRadius: '6px',
-    boxShadow:
-      '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
-  },
-  title: {
-    display: 'inline-block',
-    position: 'relative',
-    marginTop: '30px',
-    minHeight: '32px',
-    textDecoration: 'none',
-    margin: '1.75rem 0 0 0.875rem',
-  },
-  profile: {
-    textAlign: 'center',
+    '& h4': {
+      paddingBottom: '10px',
+    },
     '& img': {
-      margin: '0 auto',
-      transform: 'translate3d(0, -50%, 0)',
-      objectFit: 'cover',
-      borderRadius: '50% !important',
-      height: '180px',
-      width: '180px',
+      display: 'block',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      borderRadius: '50%',
     },
-  },
-  fullName: {
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '700',
-  },
-  major: {
-    marginTop: '5px',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '300',
-  },
-  aboutMe: {
-    margin: '1.071rem auto 1.071rem',
-    fontFamily: 'Nunito',
-    maxWidth: '800px',
-    color: '#555',
-    textAlign: 'center !important',
-  },
-  imageCollage: {
-    margin: '0px auto 30px auto',
-    textAlign: 'center',
-  },
-  graduation: {
-    marginBottom: '10px',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '300',
-  },
-  headline: {
-    marginTop: '20px',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '300',
+    [theme.breakpoints.down('sm')]: {
+      '& h1': {
+        textAlign: 'center',
+        paddingBottom: '10px',
+      },
+      '& h4': {
+        textAlign: 'center',
+        paddingBottom: '10px',
+      },
+      '& img': {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        padding: '15px',
+      },
+    },
   },
 });
 
@@ -144,75 +100,90 @@ class Profile extends Component {
           <title>Microhard &middot; Profile </title>
         </Helmet>
 
-        <div style={{height: '250px', backgroundColor: '#094183'}} />
+        <Container maxWidth="md">
+          <Grid container component={Paper} className={classes.personal}>
+            <Grid item xs={12} sm={12} md={4}>
+              <Gravatar email={user.email} size={'150'} />
+            </Grid>
+            <Grid item xs={12} sm={12} md={8}>
+              <Typography variant="h1">
+                {user.firstname} {user.lastname}
+              </Typography>
+              <Typography variant="h4">{user.headline}</Typography>
+              <Typography variant="h4">{user.major}</Typography>
+            </Grid>
+          </Grid>
+        </Container>
 
-        <div className={clsx(classes.main, classes.mainRaised)}>
-          <div>
-            <Container fixed>
-              <Grid justify="center" alignItems="center">
-                <Grid item xs={12} sm={12} md={12}>
-                  <div className={classes.profile}>
-                    <div>
-                      <Gravatar email={user.email} size={'2048px'} />
-                    </div>
-                    <div style={{marginTop: '-60px'}}>
-                      <Typography variant="h3" className={classes.fullName}>
-                        {user.firstname} {user.lastname}
-                      </Typography>
-                      <Typography variant="h6" className={classes.headline}>
-                        {user.headline}
-                      </Typography>
-                      <Typography variant="h6" className={classes.major}>
-                        {user.major}
-                      </Typography>
-                      <br />
-                      <Typography variant="h6" className={classes.graduation}>
-                        Graduation: June 2020
-                      </Typography>
-                      <Link to="/image">
-                        <IconButton aria-label="upload" color="secondary">
-                          <AttachFileIcon />
-                        </IconButton>
-                      </Link>
-                      <Link to="/">
-                        <IconButton aria-label="edit" color="secondary">
-                          <EditIcon />
-                        </IconButton>
-                      </Link>
-                      <IconButton href={'mailto:' + user.email}>
-                        <EmailIcon />
-                      </IconButton>
-                      <IconButton href="https://www.linkedin.com/">
-                        <LinkedInIcon />
-                      </IconButton>
-                    </div>
-                  </div>
-                </Grid>
-              </Grid>
-            </Container>
+        {/*<div style={{height: '250px', backgroundColor: '#094183'}} />*/}
 
-            <div className={classes.aboutMe}>
-              <p>
-                <hr />
-                {user.aboutSection}
-              </p>
-            </div>
-            <Container>
-              <Grid justify="center">
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  className={classes.imageCollage}
-                >
-                  <div id="all_img"></div>
-                </Grid>
-              </Grid>
-              <br />
-            </Container>
-          </div>
-        </div>
+        {/*<div className={clsx(classes.main, classes.mainRaised)}>*/}
+        {/*  <div>*/}
+        {/*    <Container fixed>*/}
+        {/*      <Grid justify="center" alignItems="center">*/}
+        {/*        <Grid item xs={12} sm={12} md={12}>*/}
+        {/*          <div className={classes.profile}>*/}
+        {/*            <div>*/}
+        {/*              <Gravatar email={user.email} size={'2048px'} />*/}
+        {/*            </div>*/}
+        {/*            <div style={{marginTop: '-60px'}}>*/}
+        {/*              <Typography variant="h3" className={classes.fullName}>*/}
+        {/*                {user.firstname} {user.lastname}*/}
+        {/*              </Typography>*/}
+        {/*              <Typography variant="h6" className={classes.headline}>*/}
+        {/*                {user.headline}*/}
+        {/*              </Typography>*/}
+        {/*              <Typography variant="h6" className={classes.major}>*/}
+        {/*                {user.major}*/}
+        {/*              </Typography>*/}
+        {/*              <br />*/}
+        {/*              <Typography variant="h6" className={classes.graduation}>*/}
+        {/*                Graduation: June 2020*/}
+        {/*              </Typography>*/}
+        {/*              <Link to="/image">*/}
+        {/*                <IconButton aria-label="upload" color="secondary">*/}
+        {/*                  <AttachFileIcon />*/}
+        {/*                </IconButton>*/}
+        {/*              </Link>*/}
+        {/*              <Link to="/">*/}
+        {/*                <IconButton aria-label="edit" color="secondary">*/}
+        {/*                  <EditIcon />*/}
+        {/*                </IconButton>*/}
+        {/*              </Link>*/}
+        {/*              <IconButton href={'mailto:' + user.email}>*/}
+        {/*                <EmailIcon />*/}
+        {/*              </IconButton>*/}
+        {/*              <IconButton href="https://www.linkedin.com/">*/}
+        {/*                <LinkedInIcon />*/}
+        {/*              </IconButton>*/}
+        {/*            </div>*/}
+        {/*          </div>*/}
+        {/*        </Grid>*/}
+        {/*      </Grid>*/}
+        {/*    </Container>*/}
+
+        {/*    <div className={classes.aboutMe}>*/}
+        {/*      <p>*/}
+        {/*        <hr />*/}
+        {/*        {user.aboutSection}*/}
+        {/*      </p>*/}
+        {/*    </div>*/}
+        {/*    <Container>*/}
+        {/*      <Grid justify="center">*/}
+        {/*        <Grid*/}
+        {/*          item*/}
+        {/*          xs={12}*/}
+        {/*          sm={12}*/}
+        {/*          md={12}*/}
+        {/*          className={classes.imageCollage}*/}
+        {/*        >*/}
+        {/*          <div id="all_img"></div>*/}
+        {/*        </Grid>*/}
+        {/*      </Grid>*/}
+        {/*      <br />*/}
+        {/*    </Container>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </Fragment>
     );
   }

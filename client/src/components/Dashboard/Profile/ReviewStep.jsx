@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Grid,
-  Button,
-  List,
-  ListItem,
-  Typography,
-  CardContent,
-} from '@material-ui/core';
+import {Grid, Button, Typography, CardContent} from '@material-ui/core';
 
 const ReviewStep = (props) => {
   const [isSubmitting, setSubmitting] = useState(false);
