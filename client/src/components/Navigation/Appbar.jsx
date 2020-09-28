@@ -10,11 +10,11 @@ const useStyles = makeStyles({
   },
   logo: {
     maxHeight: '2.7rem',
-    padding: '0px 10px',
+    padding: '0px 5px',
   },
   navItem: {
     marginLeft: 'auto',
-    marginRight: '40px',
+    marginRight: '30px',
     padding: '0px 10px',
     fontWeight: '600',
   },
@@ -62,7 +62,6 @@ export default function Appbar() {
               to="/sign-up"
               variant="outlined"
               color={'primary'}
-              href="#outlined-buttons"
             >
               Join now
             </Button>
