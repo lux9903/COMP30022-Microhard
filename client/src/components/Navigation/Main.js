@@ -12,8 +12,8 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project';
-import Projectex from '../Dashboard/Project_example';
+import Project from '../Dashboard/ProjectList';
+import Project_Edit from '../Dashboard/Project_Edit';
 import Document from '../Dashboard/Document/Document';
 
 import Test from '../Dashboard/test';
@@ -36,8 +36,8 @@ class Main extends Component {
         />
         <PrivateRoute
           exact
-          path="/projectex"
-          component={Projectex}
+          path="/project/:id"
+          component={Project_Edit}
           authed={this.props.user}
         />
         <PrivateRoute

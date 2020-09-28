@@ -2,16 +2,12 @@ import React, {Component, Fragment} from 'react';
 //import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -23,75 +19,75 @@ import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const useStyles = (theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: '#094183',
-    padding: theme.spacing(8, 0, 6),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
-});
+import AddProject from './AddProject';
+
 const toggleChecked = () => {
 };
 
+
+const Project = props => (
+  <Grid item xs={12} sm={6} md={4}>
+    <Card style={{display: 'flex', flexDirection: 'column'}}>
+      <CardMedia image={img} style={{paddingTop: '56.25%'}} title="Image title"/>
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="h2">
+          {props.project.name}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Link to={"/project/"+props.project.user._id}>
+          <Button size="small" color="primary">
+            Edit
+          </Button>
+        </Link>
+        <Link to={"/project/"+ props.project.user._id}>
+          <Button size="small" color="primary">
+            Delete
+          </Button>
+        </Link>
+      </CardActions>
+    </Card>
+  </Grid>
+)
 class ProjectList extends Component{
   constructor(props) {
     super(props);
-    this.getAllProject = this.getAllProject.bind(this);
+    //this.getAllProject = this.getAllProject.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.getOneProject = this.getOneProject.bind(this);
-    this.deleteOneProject = this.deleteOneProject.bind(this);
+    //this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.pList = this.pList.bind(this);
+    this.state = {
+      projlist : [],
+    };
+  }
+  onFormSubmit(e){
+		e.preventDefault();
+		let formD = {
+      "name":document.forms.namedItem("create")["name"]["value"],
+      "description":document.forms.namedItem("create")["description"]["value"]
+		}
+		axios.post('/project/create', formD);
   }
 
-	getOneProject(e){
-		e.preventDefault();
-		const urlGetOne = '/project/' + document.forms.namedItem("testOne")["id"]["value"];
-		axios.get(urlGetOne).then((res)=>alert(JSON.stringify(res.data['project'])));
-	}
-
-	deleteOneProject(e){
-		e.preventDefault();
-		const urlDelete = '/project/' + document.forms.namedItem("deleteOne")["id"]["value"];
-		axios.delete(urlDelete);
-		alert("delete successful");
-	}
-
-	getAllProject(e){
-		e.preventDefault();
-    axios.get('/project/').then((res) => alert(JSON.stringify(res.data['projects'])));
-    alert("get all current project");
+  pList(props) {
+    return this.state.projlist.map(function(proj, i){
+      return <Project project={proj}></Project>
+    });
   }
 	componentDidMount(){
-	}
+    axios.get('/project/').then((res) => {
+      this.setState({projlist: res.data.projects});
+    })
+    .catch((error) => {});
+  }
 	render(){
-    const {classes} = this.props;
-    const {toggleChecked} = this.props;
     return(
       <Fragment>
       <Helmet>
         <title>Microhard &middot; My projects </title>
       </Helmet>
-      <div className={classes.heroContent}>
+      <div style={{padding: "10px", backgroundColor: '#094183'}}>
         <Container maxWidth="sm">
           <br />
           <Typography
@@ -109,76 +105,25 @@ class ProjectList extends Component{
             style={{color: '#fff'}}
             paragraph
           >
-            This is a place for me to showcase my current project.
+            A place for me to showcase my projects
           </Typography>
         </Container>
       </div>
-      <div>
-      <h1> YOOO</h1>
-        <form action="/api/project/create" method ="post">
-          <input type = "text" name = "name"/>
-          <input type = "text" name = "description"/>
-          <select name = "status">
-            <option value="Inprogress">Inprogress</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancel">Cancel</option>
-          </select>
-          <select name = "show_status">
-            <option value="public">public</option>
-            <option value="private">private</option>
-          </select>
-          <input type = "submit" value = "hahaha"/>
-        </form>
-        <button onClick = {() => axios.get('/project/').then((res) => alert(JSON.stringify(res.data['projects'])))}>
-        click me
-        </button>
-      <h1>End Test </h1>
-      </div>
-      <Container className={classes.cardGrid} maxWidth="md">
+      <br/>
+      <Container maxWidth="md">
+        <AddProject
+                onFormSubmit={this.onFormSubmit}
+                onChange={this.onChange}
+        />
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card className={classes.card}>
-              <CardMedia
-                className={classes.cardMedia}
-                image={img}
-                title="Image title"
-              />
-              <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Microhard
-                </Typography>
-                <Typography>
-                  IT project that i have been currently doing in my final year
-                  of bachelor.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Link to="/projectex" className={classes.noDecoration}>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                </Link>
-                <Link to="/projectex" className={classes.noDecoration}>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </Link>
-                <Link to="/projectex" className={classes.noDecoration}>
-                  <Button size="small" color="primary">
-                    Delete
-                  </Button>
-                </Link>
-              </CardActions>
-              <CardActions>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Switch size="small" checked={false} onChange={toggleChecked} />}
-                    label="Public"
-                  />
-                </FormGroup>
-              </CardActions>
-            </Card>
-          </Grid>
+            {this.state.projlist.length > 0 ? (this.pList()) : (
+            <Typography
+              variant="h5"
+              align="center"
+            >
+              Project Length : {this.state.projlist.length}
+            </Typography>
+            )}
         </Grid>
       </Container>
     </Fragment>
@@ -191,7 +136,7 @@ class ProjectList extends Component{
 
 //export default connect(mapStateToProps)(withStyles(styles)(Profile));
 
-export default(withStyles(useStyles)(ProjectList));
+export default (ProjectList);
 
 /*export default function Album() {
   const classes = useStyles();
@@ -344,3 +289,42 @@ export default(withStyles(useStyles)(ProjectList));
     </Fragment>
   );
 }*/
+
+/*
+      <h1> YOOO</h1>
+        <form action="/api/project/create" method ="post">
+          <input type = "text" name = "name"/>
+          <input type = "text" name = "description"/>
+          <select name = "status">
+            <option value="Inprogress">Inprogress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancel">Cancel</option>
+          </select>
+          <select name = "show_status">
+            <option value="public">public</option>
+            <option value="private">private</option>
+          </select>
+          <input type = "submit" value = "hahaha"/>
+        </form>
+        <button onClick = {() => axios.get('/project/').then((res) => alert(JSON.stringify(res.data['projects'])))}>
+        click me
+        </button>
+      <h1>End Test </h1>
+
+
+      <CardActions>
+     <FormGroup>
+        <FormControlLabel
+          control={<Switch size="small" checked={false} onChange={toggleChecked} />}
+          label="Public"
+        />
+      </FormGroup>
+
+
+      componentDidUpdate(){
+    axios.get('/project/').then((res) => {
+      this.setState({projlist: res.data});
+    })
+    .catch((error) => {});
+  }
+*/

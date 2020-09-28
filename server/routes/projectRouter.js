@@ -6,13 +6,22 @@ const Project = require('../models/projectModel');
 
 //const projectController = ...
 
+
+//create a project: how?, what is the input?
 projectRouter.post('/create', auth.optional, (req,res)=>{
 
 	
 	User.findById(req.payload.id).then(async function (user) {
+		//only name required?
+		//description initial = ""
+		//status intial = Inprogress
+		//show_status initial = public
         const project = new Project(req.body);
         project.user = user;
-        project.contributors = [user.username];
+		project.contributors = [user.username];
+		//project.status = 'Inprogress';
+		//project.show_status = 'public';
+		//project.description = '';
         project.skills = [];
         project.process = [];
         project.timeline = [{
@@ -24,6 +33,7 @@ projectRouter.post('/create', auth.optional, (req,res)=>{
     
 });
 
+//get all projets
 projectRouter.get('/',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function (user) {
         const projects = await Project.find({user:user._id});
@@ -31,6 +41,7 @@ projectRouter.get('/',auth.optional, (req,res)=>{
       });
 });
 
+//get one specific projects
 projectRouter.get('/:id',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function(user){
 		const project = await Project.findOne({user:user._id,_id:req.params.id});
@@ -38,6 +49,7 @@ projectRouter.get('/:id',auth.optional, (req,res)=>{
 	})
 });
 
+//delete one specific projects -> why idd??
 projectRouter.delete('/:idd',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		const deleteProject = await Project.deleteOne({user:user._id,_id:req.params.idd});
@@ -45,6 +57,7 @@ projectRouter.delete('/:idd',auth.optional, (req,res)=>{
 	});
 });
 
+//update on status? with what is param?
 projectRouter.post('/update/:id',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		const result = await Project.findOneAndUpdate({user:user._id,_id:req.params.id},req.body);
@@ -70,6 +83,9 @@ projectRouter.post('/update/:id',auth.optional, (req,res)=>{
 	});
 });
 
+//update a contributor name????
+
+//add a contributor
 projectRouter.post('/add_people/:id',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
@@ -82,6 +98,7 @@ projectRouter.post('/add_people/:id',auth.optional, (req,res)=>{
 	});
 });
 
+//remove a contributor
 projectRouter.post('/remove_people/:id',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
@@ -95,6 +112,7 @@ projectRouter.post('/remove_people/:id',auth.optional, (req,res)=>{
 	});
 });
 
+//add one step for process??
 projectRouter.post('/process/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
@@ -132,6 +150,7 @@ projectRouter.post('/process/:id',auth.optional,(req,res)=>{
 	})
 });
 
+//remove a step of process??
 projectRouter.post('/process/remove/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
@@ -152,6 +171,7 @@ projectRouter.post('/process/remove/:id',auth.optional,(req,res)=>{
 	})
 });
 
+//update a step of process???
 projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
