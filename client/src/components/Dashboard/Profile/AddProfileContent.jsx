@@ -7,12 +7,12 @@ import ReviewStep from './ReviewStep';
 function AddProfileContent() {
   const steps = [
     {
-      component: AboutSectionStep,
-      title: 'About',
-    },
-    {
       component: BasicDetailsStep,
       title: 'Basic details',
+    },
+    {
+      component: AboutSectionStep,
+      title: 'About',
     },
     {
       component: ReviewStep,

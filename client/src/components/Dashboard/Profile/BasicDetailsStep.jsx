@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Formik} from 'formik';
 import {Button, Grid, Typography} from '@material-ui/core';
 import * as Yup from 'yup';
@@ -22,8 +22,9 @@ const useStyles = makeStyles((theme) => ({
 const BasicDetailsSchema = Yup.object().shape({
   lastname: Yup.string().required('*Last name is required'),
   firstname: Yup.string().required('*First name is required'),
-  username: Yup.string().required('*Username is required'),
+  username: Yup.string().trim().required('*Username is required'),
   email: Yup.string()
+    .trim()
     .email()
     .required('*Enter an email address, like name@example.com'),
   password: Yup.string().required('*Password is required'),
@@ -90,10 +91,10 @@ const BasicDetailsStep = (props) => {
                     id="firstname"
                     name="firstname"
                     type="text"
-                    label="Enter your first name"
+                    label="First Name *"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder={'Simon'}
+                    placeholder={'Enter your first name'}
                     value={values.firstname}
                     error={errors.firstname}
                     touched={touched.firstname}
@@ -104,10 +105,10 @@ const BasicDetailsStep = (props) => {
                     id="lastname"
                     name="lastname"
                     type="text"
-                    label="Enter your last name"
+                    label="Last Name *"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder={'Jones'}
+                    placeholder={'Enter your last name'}
                     value={values.lastname}
                     error={errors.lastname}
                     touched={touched.lastname}
@@ -118,10 +119,10 @@ const BasicDetailsStep = (props) => {
                     id="username"
                     name="username"
                     type="text"
-                    label="Enter your username"
+                    label="Username *"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder={'simon9121'}
+                    placeholder={'Enter your username'}
                     value={values.username}
                     error={errors.username}
                     touched={touched.username}
@@ -132,7 +133,7 @@ const BasicDetailsStep = (props) => {
                     id="email"
                     name="email"
                     type="email"
-                    label="Enter your email address"
+                    label="Email address *"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder={'email@example.com'}
@@ -146,7 +147,7 @@ const BasicDetailsStep = (props) => {
                     id="password"
                     name="password"
                     type="password"
-                    label="Enter your password"
+                    label="Password *"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder={'secret password'}
