@@ -2,11 +2,30 @@
 /* eslint-disable react/prop-types */
 import React, {useEffect} from 'react';
 import {Formik} from 'formik';
-import {Button, Grid, Typography} from '@material-ui/core';
 import * as Yup from 'yup';
 
 // Inputs
 import {FormItem} from 'react-material-formik-wizard';
+import {makeStyles} from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+const useStyles = makeStyles((theme) => ({
+  formItem: {
+    margin: '10px 0px',
+  },
+  paperGrid: {
+    padding: '30px',
+  },
+  button: {
+    padding: '15px 30px',
+  },
+  gridItem: {
+    padding: '15px 0px',
+  },
+}));
 
 const AboutSchema = Yup.object().shape({
   major: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
@@ -15,6 +34,7 @@ const AboutSchema = Yup.object().shape({
 });
 
 const AboutSectionStep = (props) => {
+  const classes = useStyles();
   const {next, back, values} = props;
 
   useEffect(() => {
@@ -54,7 +74,15 @@ const AboutSectionStep = (props) => {
           isSubmitting,
         }) => (
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={0} direction="row" justify="center">
+            <Grid
+              container
+              spacing={0}
+              direction="row"
+              justify="center"
+              component={Paper}
+              className={classes.paperGrid}
+              elevation={3}
+            >
               <Typography
                 variant="h2"
                 type="title"
@@ -63,7 +91,7 @@ const AboutSectionStep = (props) => {
               >
                 About
               </Typography>
-              <Grid item xs={12} style={{padding: '15px 0px'}}>
+              <Grid item xs={12} className={classes.gridItem}>
                 <FormItem
                   id="headline"
                   name="headline"
@@ -79,7 +107,7 @@ const AboutSectionStep = (props) => {
                   touched={touched.headline}
                 />
               </Grid>
-              <Grid item xs={12} style={{padding: '15px 0px'}}>
+              <Grid item xs={12} className={classes.gridItem}>
                 <FormItem
                   id="major"
                   name="major"
@@ -95,7 +123,7 @@ const AboutSectionStep = (props) => {
                   touched={touched.major}
                 />
               </Grid>
-              <Grid item xs={12} style={{padding: '15px 0px'}}>
+              <Grid item xs={12} className={classes.gridItem}>
                 <FormItem
                   id="aboutSection"
                   name="aboutSection"
@@ -115,6 +143,7 @@ const AboutSectionStep = (props) => {
                 <Button
                   disabled={isSubmitting}
                   onClick={(e) => back(e, values)}
+                  className={classes.button}
                 >
                   Back
                 </Button>
@@ -123,6 +152,7 @@ const AboutSectionStep = (props) => {
                 <Button
                   disabled={isSubmitting || Object.entries(errors).length > 0}
                   type="submit"
+                  className={classes.button}
                 >
                   Next
                 </Button>

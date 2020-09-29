@@ -16,9 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
-import MenuItem from '@material-ui/core/MenuItem';
 import EditAvatar from '../EditAvatar';
-import {deepPurple} from '@material-ui/core/colors';
 import Paper from '@material-ui/core/Paper';
 
 const styles = (theme) => ({
@@ -46,6 +44,7 @@ const styles = (theme) => ({
   avatar: {
     width: '140px',
     height: '140px',
+    backgroundColor: '#F0F0F0',
   },
   primaryColor: {
     color: theme.palette.primary.contrastText,

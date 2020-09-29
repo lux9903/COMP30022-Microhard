@@ -9,13 +9,17 @@ import * as Yup from 'yup';
 import {FormItem} from 'react-material-formik-wizard';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flex: 1,
-  },
   formItem: {
-    margin: '17px 0px',
+    margin: '10px 0px',
+  },
+  paperGrid: {
+    padding: '30px',
+  },
+  button: {
+    padding: '15px 30px',
   },
 }));
 
@@ -31,7 +35,7 @@ const BasicDetailsSchema = Yup.object().shape({
 });
 
 const BasicDetailsStep = (props) => {
-  const {next, back, values} = props;
+  const {next, values} = props;
   const classes = useStyles();
 
   useEffect(() => {
@@ -77,7 +81,15 @@ const BasicDetailsStep = (props) => {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
-              <Grid container spacing={0} direction="row" justify="center">
+              <Grid
+                container
+                spacing={0}
+                direction="row"
+                justify="center"
+                component={Paper}
+                className={classes.paperGrid}
+                elevation={3}
+              >
                 <Typography
                   variant="h2"
                   type="title"
@@ -164,17 +176,13 @@ const BasicDetailsStep = (props) => {
                 justify="space-between"
               >
                 <Grid item>
-                  <Button
-                    disabled={isSubmitting}
-                    onClick={(e) => back(e, values)}
-                  >
-                    Back
-                  </Button>
+                  <br />
                 </Grid>
                 <Grid item>
                   <Button
                     disabled={isSubmitting || Object.entries(errors).length > 0}
                     type="submit"
+                    className={classes.button}
                   >
                     Next
                   </Button>
