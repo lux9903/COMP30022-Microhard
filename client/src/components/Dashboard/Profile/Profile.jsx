@@ -262,9 +262,6 @@ class Profile extends Component {
                                       horizontal: 'center',
                                     }}
                                 >
-                                  <MenuItem component={Link} to="/">
-                                    View Profile Picture
-                                  </MenuItem>
                                   <EditAvatar
                                       onFormSubmit={this.onFormSubmit}
                                       onChange={this.onChange}
