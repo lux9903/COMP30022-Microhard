@@ -14,6 +14,7 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
@@ -23,9 +24,6 @@ import {deepPurple} from '@material-ui/core/colors';
 import Paper from '@material-ui/core/Paper';
 
 const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   personal: {
     margin: '32px auto',
     padding: '30px',
@@ -199,7 +197,6 @@ class Profile extends Component {
         </Container>
 
         {/*<div style={{height: '250px', backgroundColor: '#094183'}} />*/}
-
         {/*<div className={clsx(classes.main, classes.mainRaised)}>*/}
         {/*  <div>*/}
         {/*    <Container fixed>*/}

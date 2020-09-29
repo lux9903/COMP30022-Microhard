@@ -46,7 +46,7 @@ const theme = createMuiTheme({
     },
   },
 
-  background: '#F4F5F7',
+  background: '#FFF',
 
   typography: {
     fontFamily: 'Nunito, sans-serif',

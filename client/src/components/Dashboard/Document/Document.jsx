@@ -74,7 +74,11 @@ class Document extends Component {
           <TableRow>
             <TableCell>{ele.title}</TableCell>
             <TableCell align="right">
-              <a href={ele.getFileLink} target="_blank">
+              <a
+                href={ele.getFileLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {ele.originalname}
               </a>
             </TableCell>

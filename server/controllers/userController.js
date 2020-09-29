@@ -100,6 +100,9 @@ const signUpUser = (req, res, next) => {
   user.firstname = req.body.user.firstname;
   user.username = req.body.user.username;
   user.email = req.body.user.email;
+  user.major = req.body.user.major;
+  user.headline = req.body.user.headline;
+  user.aboutSection = req.body.user.aboutSection;
   user.setPassword(req.body.user.password);
 
   user
