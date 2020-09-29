@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {signOutUser} from '../../actions/userAction';
 import {Link} from 'react-router-dom';
 import logo from '../../components/Navigation/logo.png';
-import Gravatar from 'react-gravatar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Button from '@material-ui/core/Button';
@@ -232,12 +231,6 @@ class PrimaryNav extends Component {
                       fontSize="large"
                       color="primary"
                     />
-                    {/*<Gravatar*/}
-                    {/*  email={user.email}*/}
-                    {/*  size={32}*/}
-                    {/*  className="nav-avatar"*/}
-                    {/*  {...bindTrigger(popupState)}*/}
-                    {/*/>*/}
                   </IconButton>
                   <Popover
                     {...bindPopover(popupState)}

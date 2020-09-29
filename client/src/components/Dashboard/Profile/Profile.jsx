@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import axios from '../../../helpers/axiosConfig';
 import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Gravatar from 'react-gravatar';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import EditIcon from '@material-ui/icons/Edit';
