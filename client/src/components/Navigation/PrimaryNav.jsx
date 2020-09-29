@@ -19,6 +19,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const styles = (theme) => ({
   button: {
@@ -226,12 +227,17 @@ class PrimaryNav extends Component {
                     aria-haspopup="true"
                     color="inherit"
                   >
-                    <Gravatar
-                      email={user.email}
-                      size={32}
-                      className="nav-avatar"
+                    <AccountCircleIcon
                       {...bindTrigger(popupState)}
+                      fontSize="large"
+                      color="primary"
                     />
+                    {/*<Gravatar*/}
+                    {/*  email={user.email}*/}
+                    {/*  size={32}*/}
+                    {/*  className="nav-avatar"*/}
+                    {/*  {...bindTrigger(popupState)}*/}
+                    {/*/>*/}
                   </IconButton>
                   <Popover
                     {...bindPopover(popupState)}

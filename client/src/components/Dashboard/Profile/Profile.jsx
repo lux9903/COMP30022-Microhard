@@ -14,7 +14,6 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
@@ -49,9 +48,9 @@ const styles = (theme) => ({
     width: '140px',
     height: '140px',
   },
-  purple: {
-    color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500],
+  primaryColor: {
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
   },
 });
 
@@ -133,7 +132,10 @@ class Profile extends Component {
         ReactDOM.render(imgPic, document.getElementById('avatar'));
       } else {
         const defaultAvatar = (
-          <Avatar className={classes.purple} alt="default avatar">
+          <Avatar
+            className={clsx(classes.primaryColor, classes.avatar)}
+            alt="default avatar"
+          >
             UK
           </Avatar>
         );
