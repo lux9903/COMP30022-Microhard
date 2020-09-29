@@ -103,6 +103,7 @@ const signUpUser = (req, res, next) => {
   user.major = req.body.user.major;
   user.headline = req.body.user.headline;
   user.aboutSection = req.body.user.aboutSection;
+  user.linkedin = req.body.user.linkedin;
   user.setPassword(req.body.user.password);
 
   user

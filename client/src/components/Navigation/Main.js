@@ -6,7 +6,6 @@ import PrivateRoute from './PrivateRoute';
 import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
 import SignIn from '../Account/SignIn';
-import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
@@ -71,7 +70,6 @@ class Main extends Component {
           component={Course}
           authed={this.props.user}
         />
-
 
         <Route component={NoMatch} />
       </Switch>

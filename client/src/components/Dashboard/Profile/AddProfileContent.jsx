@@ -8,6 +8,7 @@ import Alert from '@material-ui/lab/Alert';
 import {connect} from 'react-redux';
 import {CircularProgress} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
+import ContactStep from './ContactStep';
 class AddProfileContent extends Component {
   render() {
     const steps = [
@@ -18,6 +19,10 @@ class AddProfileContent extends Component {
       {
         component: AboutSectionStep,
         title: 'About',
+      },
+      {
+        component: ContactStep,
+        title: 'Contacts & Social',
       },
       {
         component: ReviewStep,

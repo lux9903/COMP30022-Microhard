@@ -18,6 +18,7 @@ import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
 import EditAvatar from '../EditAvatar';
 import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
 
 const styles = (theme) => ({
   personal: {
@@ -42,13 +43,16 @@ const styles = (theme) => ({
     },
   },
   avatar: {
-    width: '140px',
-    height: '140px',
+    width: '170px',
+    height: '170px',
     backgroundColor: '#F0F0F0',
   },
   primaryColor: {
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
+  },
+  socialIcon: {
+    marginRight: '8px',
   },
 });
 
@@ -192,6 +196,26 @@ class Profile extends Component {
               </Typography>
               <Typography variant="h4">{user.headline}</Typography>
               <Typography variant="h4">{user.major}</Typography>
+              <Fab
+                href={'mailto:' + user.email}
+                size="small"
+                color="secondary"
+                aria-label="email"
+                className={classes.socialIcon}
+              >
+                <EmailIcon />
+              </Fab>
+              {user.linkedin && (
+                <Fab
+                  color="secondary"
+                  size="small"
+                  href={user.linkedin}
+                  className={classes.socialIcon}
+                  target="_blank"
+                >
+                  <LinkedInIcon />
+                </Fab>
+              )}
             </Grid>
           </Grid>
         </Container>

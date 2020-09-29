@@ -18,11 +18,12 @@ import img from './form-background.jpg';
 import {withStyles} from '@material-ui/core/styles';
 
 const validationSchema = Yup.object().shape({
-  lastname: Yup.string().required('*Last name is required'),
-  firstname: Yup.string().required('*First name is required'),
-  username: Yup.string().required('*Username is required'),
-  email: Yup.string().email().required('*Email is required'),
+  lastname: Yup.string().required('* Last name is required'),
+  firstname: Yup.string().required('* First name is required'),
+  username: Yup.string().required('* Username is required'),
+  email: Yup.string().email().required('* Email is required'),
   headline: Yup.string(),
+  linkedin: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
 });
 
 const useStyles = (theme) => ({
@@ -115,6 +116,7 @@ class Account extends Component {
                   lastname: user.lastname,
                   firstname: user.firstname,
                   major: user.major,
+                  linkedin: user.linkedin,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
@@ -234,6 +236,25 @@ class Account extends Component {
                           />
                         }
                         error={errors.headline && touched.headline}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        type="url"
+                        variant="outlined"
+                        margin="normal"
+                        id="linkedin"
+                        name="linkedin"
+                        label="Add/change your Linkedin link"
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="linkedin"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.linkedin && touched.linkedin}
                       />
                     </div>
                     <div className={classes.form_group}>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Grid, Button, Typography, CardContent} from '@material-ui/core';
+import {Grid, Button, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
@@ -32,7 +32,7 @@ const ReviewStep = (props) => {
         container
         spacing={0}
         direction="row"
-        justify="center"
+        justify="flex-start"
         component={Paper}
         className={classes.paperGrid}
         elevation={3}
@@ -53,7 +53,7 @@ const ReviewStep = (props) => {
               Full Name:
             </Typography>
           </Grid>
-          <Grid item xs={6} sm={9} md={9}>
+          <Grid item xs={6} sm={9} md={3}>
             <Typography variant="h6" className={classes.formItem}>
               {props.values.firstname} {props.values.lastname}
             </Typography>
@@ -65,10 +65,10 @@ const ReviewStep = (props) => {
               color="primary"
               className={classes.formItem}
             >
-              Email address
+              Email address:
             </Typography>
           </Grid>
-          <Grid item xs={6} sm={9} md={9}>
+          <Grid item xs={6} sm={9} md={3}>
             <Typography variant="h6" className={classes.formItem}>
               {props.values.email}
             </Typography>
@@ -80,10 +80,10 @@ const ReviewStep = (props) => {
               color="primary"
               className={classes.formItem}
             >
-              Username
+              Username:
             </Typography>
           </Grid>
-          <Grid item xs={6} sm={9} md={9}>
+          <Grid item xs={6} sm={9} md={3}>
             <Typography variant="h6" className={classes.formItem}>
               {props.values.username}
             </Typography>
@@ -95,10 +95,10 @@ const ReviewStep = (props) => {
               color="primary"
               className={classes.formItem}
             >
-              Headline
+              Headline:
             </Typography>
           </Grid>
-          <Grid item xs={6} sm={9} md={9}>
+          <Grid item xs={6} sm={9} md={3}>
             <Typography variant="h6" className={classes.formItem}>
               {props.values.headline}
             </Typography>
@@ -110,10 +110,10 @@ const ReviewStep = (props) => {
               color="primary"
               className={classes.formItem}
             >
-              Major
+              Major:
             </Typography>
           </Grid>
-          <Grid item xs={6} sm={9} md={9}>
+          <Grid item xs={6} sm={9} md={3}>
             <Typography variant="h6" className={classes.formItem}>
               {props.values.major}
             </Typography>
@@ -125,10 +125,55 @@ const ReviewStep = (props) => {
               color="primary"
               className={classes.formItem}
             >
-              About us section
+              Location:
             </Typography>
           </Grid>
-          <Grid item xs={6} sm={9} md={9}>
+          <Grid item xs={6} sm={9} md={3}>
+            <Typography variant="h6" className={classes.formItem}>
+              {props.values.location}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={6} sm={3} md={3}>
+            <Typography
+              variant="h4"
+              color="primary"
+              className={classes.formItem}
+            >
+              Website:
+            </Typography>
+          </Grid>
+          <Grid item xs={6} sm={9} md={3}>
+            <Typography variant="h6" className={classes.formItem}>
+              {props.values.website}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={6} sm={3} md={3}>
+            <Typography
+              variant="h4"
+              color="primary"
+              className={classes.formItem}
+            >
+              LinkedIn:
+            </Typography>
+          </Grid>
+          <Grid item xs={6} sm={9} md={3}>
+            <Typography variant="h6" className={classes.formItem}>
+              {props.values.linkedin}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={6} sm={3} md={12}>
+            <Typography
+              variant="h4"
+              color="primary"
+              className={classes.formItem}
+            >
+              About us section:
+            </Typography>
+          </Grid>
+          <Grid item xs={6} sm={9} md={12}>
             <Typography variant="h6">{props.values.aboutSection}</Typography>
           </Grid>
         </Grid>
@@ -146,7 +191,7 @@ const ReviewStep = (props) => {
         <Grid item>
           <Button
             className={classes.button}
-            sdisabled={isSubmitting}
+            disabled={isSubmitting}
             onClick={(e) => handleSubmit(e)}
           >
             Submit

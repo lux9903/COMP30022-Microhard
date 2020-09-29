@@ -13,8 +13,8 @@ import Paper from '@material-ui/core/Paper';
 import img from './form-background.jpg';
 
 const validationSchema = Yup.object().shape({
-  password: Yup.string().required('*Password is required'),
-  confirm: Yup.string().required('*Confirm password is required'),
+  password: Yup.string().required('* Password is required'),
+  confirm: Yup.string().required('* Confirm password is required'),
 });
 
 const useStyles = (theme) => ({
