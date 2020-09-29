@@ -10,10 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 
+
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
-  },
+  }
 });
 
 class FilesUploadComponent extends Component {
@@ -50,8 +51,8 @@ class FilesUploadComponent extends Component {
       if (res.data.files) {
         const imgPic = res.data.files.map((ele) => (
           <img
-            src={'/api/image/' + ele.filename}
-            alt={'/image/' + ele.filename}
+              alt="Nothing Here"
+              src={'/api/image/' + ele.filename}
           />
         ));
         ReactDOM.render(imgPic, document.getElementById('all_img'));
@@ -100,7 +101,7 @@ class FilesUploadComponent extends Component {
                 </div>
               </Grid>
               <br />
-              <div id="all_img" align="center"></div>
+              <div id="all_img"></div>
             </Grid>
           </Container>
         </div>

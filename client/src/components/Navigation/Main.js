@@ -15,6 +15,7 @@ import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
 import Document from '../Dashboard/Document/Document';
 import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
+import Course from '../Dashboard/Course/Course';
 import NoMatch from '../NoMatch';
 
 class Main extends Component {
@@ -63,6 +64,14 @@ class Main extends Component {
           component={Account}
           authed={this.props.user}
         />
+
+        <PrivateRoute
+          exact
+          path="/course"
+          component={Course}
+          authed={this.props.user}
+        />
+
 
         <Route component={NoMatch} />
       </Switch>
