@@ -36,12 +36,6 @@ const styles = (theme) => ({
     '& h4': {
       paddingBottom: '10px',
     },
-    '& img': {
-      display: 'block',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      borderRadius: '50%',
-    },
     [theme.breakpoints.down('sm')]: {
       '& h1': {
         textAlign: 'center',
@@ -51,13 +45,11 @@ const styles = (theme) => ({
         textAlign: 'center',
         paddingBottom: '10px',
       },
-      '& img': {
-        display: 'block',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        padding: '15px',
-      },
     },
+  },
+  avatar: {
+    width: '140px',
+    height: '140px',
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
@@ -137,12 +129,16 @@ class Profile extends Component {
           <Avatar
             alt="Nothing Here"
             src={'/api/image/' + ele.filename}
-            style={{height: '120px', width: '120px'}}
+            className={classes.avatar}
           />
         ));
         ReactDOM.render(imgPic, document.getElementById('avatar'));
       } else {
-        const defaultAvatar = <Avatar className={classes.purple}>UK</Avatar>;
+        const defaultAvatar = (
+          <Avatar className={classes.purple} alt="default avatar">
+            UK
+          </Avatar>
+        );
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
@@ -160,43 +156,37 @@ class Profile extends Component {
 
         <Container maxWidth="md">
           <Grid container component={Paper} className={classes.personal}>
-            <Grid item xs={12} sm={12} md={4}>
-              <div>
-                <PopupState variant="popover" popupId="demo-popup-popover">
-                  {(popupState) => (
-                    <div>
-                      <IconButton
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        color="inherit"
-                      >
-                        <div
-                          id="avatar"
-                          align="center"
-                          {...bindTrigger(popupState)}
-                        ></div>
-                      </IconButton>
-                      <Popover
-                        {...bindPopover(popupState)}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'center',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'center',
-                        }}
-                      >
-                        <EditAvatar
-                          onFormSubmit={this.onFormSubmit}
-                          onChange={this.onChange}
-                        />
-                      </Popover>
-                    </div>
-                  )}
-                </PopupState>
-              </div>
+            <Grid item xs={12} sm={12} md={4} style={{textAlign: 'center'}}>
+              <PopupState variant="popover" popupId="demo-popup-popover">
+                {(popupState) => (
+                  <div>
+                    <IconButton
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <div id="avatar" {...bindTrigger(popupState)}></div>
+                    </IconButton>
+                    <Popover
+                      {...bindPopover(popupState)}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                      }}
+                    >
+                      <EditAvatar
+                        onFormSubmit={this.onFormSubmit}
+                        onChange={this.onChange}
+                      />
+                    </Popover>
+                  </div>
+                )}
+              </PopupState>
             </Grid>
             <Grid item xs={12} sm={12} md={8}>
               <Typography variant="h1">
