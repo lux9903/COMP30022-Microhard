@@ -1,3 +1,5 @@
+// Referenced https://github.com/dhruvmetha/Responsive-App-Bar
+
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {signOutUser} from '../../actions/userAction';
@@ -12,7 +14,6 @@ import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
