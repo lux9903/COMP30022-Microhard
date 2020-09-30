@@ -15,7 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
-import {Document, Page} from 'react-pdf';
+import { Document, Page, pdfjs } from "react-pdf";
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class Documents extends Component {
   constructor(props) {
