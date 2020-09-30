@@ -19,7 +19,9 @@ import EditAvatar from '../EditAvatar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
+import Grow from '@material-ui/core/Grow';
 
 const styles = (theme) => ({
   personal: {
@@ -62,13 +64,26 @@ const styles = (theme) => ({
   },
   secondSection: {
     margin: '32px auto',
-    padding: '20px',
-    textAlign: 'center',
+    padding: '20px 32px',
+    textAlign: 'left',
     color: '#657786',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
   locationIcon: {
     position: 'relative',
     top: '7px',
+  },
+  graduationIcon: {
+    position: 'relative',
+    top: '7px',
+    left: '-2px',
+  },
+  avatarSection: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
 });
 
@@ -172,95 +187,126 @@ class Profile extends Component {
           <title>Microhard &middot; Profile </title>
         </Helmet>
 
-        <Container maxWidth="md">
-          <Grid container component={Paper} className={classes.personal}>
-            <Grid item xs={12} sm={12} md={4} style={{textAlign: 'center'}}>
-              <PopupState variant="popover" popupId="demo-popup-popover">
-                {(popupState) => (
-                  <div>
-                    <IconButton
-                      aria-label="account of current user"
-                      aria-controls="menu-appbar"
-                      aria-haspopup="true"
-                      color="inherit"
-                    >
-                      <div id="avatar" {...bindTrigger(popupState)}></div>
-                    </IconButton>
-                    <Popover
-                      {...bindPopover(popupState)}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                      }}
-                    >
-                      <EditAvatar
-                        onFormSubmit={this.onFormSubmit}
-                        onChange={this.onChange}
-                      />
-                    </Popover>
-                  </div>
-                )}
-              </PopupState>
-            </Grid>
-            <Grid item xs={12} sm={12} md={8}>
-              <Typography variant="h1">
-                {user.firstname} {user.lastname}
-              </Typography>
-              <Typography variant="h4">{user.headline}</Typography>
-              <Typography variant="h4">{user.major}</Typography>
-              <Grid item xs={12} sm={12} md={8} className={classes.socialIcons}>
-                <Fab
-                  href={'mailto:' + user.email}
-                  size="small"
-                  color="secondary"
-                  aria-label="email"
-                  className={classes.socialIcon}
+        <Grow in timeout={1000}>
+          <Container maxWidth="md">
+            <Grid
+              container
+              component={Paper}
+              className={classes.personal}
+              spacing={(2, 0)}
+              elevation={3}
+            >
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={3}
+                className={classes.avatarSection}
+              >
+                <PopupState variant="popover" popupId="demo-popup-popover">
+                  {(popupState) => (
+                    <div>
+                      <IconButton
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        color="inherit"
+                      >
+                        <div id="avatar" {...bindTrigger(popupState)}></div>
+                      </IconButton>
+                      <Popover
+                        {...bindPopover(popupState)}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}
+                      >
+                        <EditAvatar
+                          onFormSubmit={this.onFormSubmit}
+                          onChange={this.onChange}
+                        />
+                      </Popover>
+                    </div>
+                  )}
+                </PopupState>
+              </Grid>
+              <Grid item xs={12} sm={12} md={9}>
+                <Typography variant="h1">
+                  {user.firstname} {user.lastname}
+                </Typography>
+                <Typography variant="h4">{user.headline}</Typography>
+                <Typography variant="h4">{user.major}</Typography>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  className={classes.socialIcons}
                 >
-                  <EmailIcon />
-                </Fab>
-                {user.website && (
                   <Fab
-                    color="secondary"
+                    href={'mailto:' + user.email}
                     size="small"
-                    href={user.website}
-                    className={classes.socialIcon}
-                    target="_blank"
-                  >
-                    <PublicIcon />
-                  </Fab>
-                )}
-                {user.linkedin && (
-                  <Fab
                     color="secondary"
-                    size="small"
-                    href={user.linkedin}
+                    aria-label="email"
                     className={classes.socialIcon}
-                    target="_blank"
                   >
-                    <LinkedInIcon />
+                    <EmailIcon />
                   </Fab>
-                )}
+                  {user.website && (
+                    <Fab
+                      color="secondary"
+                      size="small"
+                      href={user.website}
+                      className={classes.socialIcon}
+                      target="_blank"
+                    >
+                      <PublicIcon />
+                    </Fab>
+                  )}
+                  {user.linkedin && (
+                    <Fab
+                      color="secondary"
+                      size="small"
+                      href={user.linkedin}
+                      className={classes.socialIcon}
+                      target="_blank"
+                    >
+                      <LinkedInIcon />
+                    </Fab>
+                  )}
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container component={Paper} className={classes.secondSection}>
-            <Grid item xs={12} sm={12} md={4} style={{textAlign: 'center'}}>
-              <Typography variant="body1">
-                <LocationOnOutlinedIcon className={classes.locationIcon} />
-                {user.location}
-              </Typography>
-              {/*<Typography variant="body1">*/}
-              {/*  <LocationOnOutlinedIcon className={classes.locationIcon} />*/}
-              {/*  {user.website}*/}
-              {/*</Typography>*/}
-            </Grid>
-            {/*<Typography variant="h4">{user.graduation}</Typography>*/}
-          </Grid>
-        </Container>
+            {(user.location || user.graduation) && (
+              <Grid
+                container
+                component={Paper}
+                className={classes.secondSection}
+              >
+                <Grid item xs={12} sm={12} md={4}>
+                  {user.location && (
+                    <Typography variant="body1">
+                      <LocationOnOutlinedIcon
+                        className={classes.locationIcon}
+                      />{' '}
+                      {user.location}
+                    </Typography>
+                  )}
+                  {user.graduation && (
+                    <Typography variant="body1">
+                      <SchoolIcon className={classes.graduationIcon} />{' '}
+                      {user.graduation}
+                    </Typography>
+                  )}
+                </Grid>
+              </Grid>
+            )}
+          </Container>
+        </Grow>
 
         {/*<div className={clsx(classes.main, classes.mainRaised)}>*/}
         {/*  <div>*/}

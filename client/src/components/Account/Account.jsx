@@ -28,6 +28,7 @@ const validationSchema = Yup.object().shape({
   linkedin: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
   website: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
   location: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
+  graduation: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
 });
 
 const useStyles = (theme) => ({
@@ -123,6 +124,7 @@ class Account extends Component {
                   linkedin: user.linkedin,
                   location: user.location,
                   website: user.website,
+                  graduation: user.graduation,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
@@ -230,6 +232,24 @@ class Account extends Component {
                       <Field
                         variant="outlined"
                         margin="normal"
+                        id="graduation"
+                        name="graduation"
+                        label="Add/change your expected graduation date"
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="graduation"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.graduation && touched.graduation}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        variant="outlined"
+                        margin="normal"
                         id="headline"
                         name="headline"
                         label="Add/change your headline"
@@ -284,6 +304,7 @@ class Account extends Component {
                     </div>
                     <div className={classes.form_group}>
                       <Field
+                        autoComplete="off"
                         variant="outlined"
                         margin="normal"
                         id="location"

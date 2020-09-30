@@ -31,6 +31,7 @@ const AboutSchema = Yup.object().shape({
   major: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   headline: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   aboutSection: Yup.string().trim(),
+  graduation: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
 });
 
 const AboutSectionStep = (props) => {
@@ -42,6 +43,7 @@ const AboutSectionStep = (props) => {
       values.aboutSection = values.aboutSection ? values.aboutSection : '';
       values.major = values.major ? values.major : '';
       values.headline = values.headline ? values.headline : '';
+      values.graduation = values.graduation ? values.graduation : '';
     };
     mapValues();
   }, []);
@@ -54,6 +56,7 @@ const AboutSectionStep = (props) => {
           aboutSection: values.aboutSection,
           major: values.major,
           headline: values.headline,
+          graduation: values.graduation,
         }}
         validationSchema={AboutSchema}
         onSubmit={(values) => {
@@ -61,6 +64,7 @@ const AboutSectionStep = (props) => {
             aboutSection: values.aboutSection,
             major: values.major,
             headline: values.headline,
+            graduation: values.graduation,
           });
         }}
       >
@@ -121,6 +125,20 @@ const AboutSectionStep = (props) => {
                   value={values.major}
                   error={errors.major}
                   touched={touched.major}
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.gridItem}>
+                <FormItem
+                  id="graduation"
+                  name="graduation"
+                  type="text"
+                  label="Expected graduation date"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder={'Format: 6th Nov 2020'}
+                  value={values.graduation}
+                  error={errors.graduation}
+                  touched={touched.graduation}
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridItem}>

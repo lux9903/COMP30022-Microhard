@@ -140,6 +140,21 @@ const ReviewStep = (props) => {
               color="primary"
               className={classes.formItem}
             >
+              Graduation:
+            </Typography>
+          </Grid>
+          <Grid item xs={6} sm={9} md={3}>
+            <Typography variant="h6" className={classes.formItem}>
+              {props.values.graduation}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={6} sm={3} md={3}>
+            <Typography
+              variant="h4"
+              color="primary"
+              className={classes.formItem}
+            >
               Website:
             </Typography>
           </Grid>
