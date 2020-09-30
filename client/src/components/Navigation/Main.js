@@ -12,7 +12,7 @@ import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
-import Document from '../Dashboard/Document/Document';
+import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
 import Course from '../Dashboard/Course/Course';
 import NoMatch from '../NoMatch';
@@ -54,7 +54,7 @@ class Main extends Component {
         <PrivateRoute
           exact
           path="/document"
-          component={Document}
+          component={Documents}
           authed={this.props.user}
         />
         <PrivateRoute

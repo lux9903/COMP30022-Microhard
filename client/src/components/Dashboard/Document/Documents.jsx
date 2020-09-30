@@ -15,8 +15,9 @@ import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
+import {Document, Page} from 'react-pdf';
 
-class Document extends Component {
+class Documents extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,30 +72,33 @@ class Document extends Component {
     const pdf = axios.get('/pdf').then((res) => {
       if (res.data.pdfs) {
         const Pdfs = res.data.pdfs.map((ele) => (
-          <TableRow>
-            <TableCell>{ele.title}</TableCell>
-            <TableCell align="right">
-              <a
-                href={ele.getFileLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {ele.originalname}
-              </a>
-            </TableCell>
-            <TableCell align="right">{ele.date}</TableCell>
-            <TableCell align="right">
-              <EditDocument />
-              <IconButton aria-label="delete">
-                <DeleteIcon
-                  onClick={() => {
-                    axios.delete(ele.deleteFileLink);
-                    window.location.reload();
-                  }}
-                />
-              </IconButton>
-            </TableCell>
-          </TableRow>
+          <Document file={ele.getFileLink}>
+            <Page pageNumber={1} />
+          </Document>
+          // <TableRow>
+          //   <TableCell>{ele.title}</TableCell>
+          //   <TableCell align="right">
+          //     <a
+          //       href={ele.getFileLink}
+          //       target="_blank"
+          //       rel="noopener noreferrer"
+          //     >
+          //       {ele.originalname}
+          //     </a>
+          //   </TableCell>
+          //   <TableCell align="right">{ele.date}</TableCell>
+          //   <TableCell align="right">
+          //     <EditDocument />
+          //     <IconButton aria-label="delete">
+          //       <DeleteIcon
+          //         onClick={() => {
+          //           axios.delete(ele.deleteFileLink);
+          //           window.location.reload();
+          //         }}
+          //       />
+          //     </IconButton>
+          //   </TableCell>
+          // </TableRow>
         ));
         ReactDOM.render(Pdfs, document.getElementById('changeLater'));
       }
@@ -146,21 +150,15 @@ class Document extends Component {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody id="changeLater"></TableBody>
+              {/*<TableBody id="changeLater"></TableBody>*/}
             </Table>
           </TableContainer>
+
+          <div id="changeLater"></div>
         </Container>
-        <div align="center">
-          <br />
-          <form name="editTitle" onSubmit={this.onEdit}>
-            <input type="text" name="id" required />
-            <input type="text" name="title" required />
-            <input type="submit" value="text" />
-          </form>
-        </div>
       </Fragment>
     );
   }
 }
 
-export default Document;
+export default Documents;
