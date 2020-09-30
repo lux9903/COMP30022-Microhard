@@ -5,17 +5,15 @@ import {Document, Page, pdfjs} from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class PDFPreview extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: null,
-      numPages: null,
-      pageNumber: 1,
-    };
-  }
+  state = {
+    file: null,
+    numPages: null,
+    pageNumber: 1,
+  };
+
   onDocumentLoadSuccess = ({numPages}) => {
     this.setState({numPages});
-    console.log('numPages: ' + {numPages});
+    console.log({numPages});
   };
   previousPage = () =>
     this.setState((state) => ({pageNumber: state.pageNumber - 1}));
