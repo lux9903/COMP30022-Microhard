@@ -23,7 +23,8 @@ const projectSchema = new Schema(
 			default: 'public'
 		},
 		process: Array,
-		timeline: Array
+		timeline: Array,
+		rating: Number
 	}
 	,{timestamps: true}
 	

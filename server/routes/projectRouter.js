@@ -8,19 +8,22 @@ const Project = require('../models/projectModel');
 
 projectRouter.post('/create', auth.optional, (req,res)=>{
 
-	
-	User.findById(req.payload.id).then(async function (user) {
-        const project = new Project(req.body);
-        project.user = user;
-        project.contributors = [user.username];
-        project.skills = [];
-        project.process = [];
-        project.timeline = [{
-        	"date": new Date(),
-        	"description": "Project created"
-        }];
-        await project.save();
-      });
+	if(req.body.name){
+		User.findById(req.payload.id).then(async function (user) {
+	        const project = new Project(req.body);
+	        project.user = user;
+	        project.contributors = [user.username];
+	        project.skills = [];
+	        project.process = [];
+	        project.timeline = [{
+	        	"date": new Date(),
+	        	"description": "Project created"
+	        }];
+	        await project.save();
+	      });
+	}else{
+		return res.send("Project Name not Provided.");
+	}
     
 });
 
