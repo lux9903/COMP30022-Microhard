@@ -142,8 +142,7 @@ class Project_Edit extends Component{
                             </Typography>
                             <FormControl>
                                 <Select
-                                    labelId="demo-controlled-open-select-label"
-                                    id="demo-controlled-open-select"
+                                    disableUnderline
                                     open={this.state.open}
                                     onClose={this.handleClose}
                                     onOpen={this.handleOpen}

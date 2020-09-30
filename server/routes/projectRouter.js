@@ -10,6 +10,7 @@ const Project = require('../models/projectModel');
 //create a project: how?, what is the input?
 projectRouter.post('/create', auth.optional, (req,res)=>{
 
+<<<<<<< HEAD
 	
 	User.findById(req.payload.id).then(async function (user) {
 		//only name required?
@@ -30,6 +31,25 @@ projectRouter.post('/create', auth.optional, (req,res)=>{
         }];
         await project.save();
       });
+=======
+	if(req.body.name){
+		User.findById(req.payload.id).then(async function (user) {
+	        const project = new Project(req.body);
+	        project.user = user;
+	        project.contributors = [user.username];
+	        project.skills = [];
+	        project.process = [];
+	        project.timeline = [{
+	        	"date": new Date(),
+	        	"description": "Project created"
+	        }];
+	        project.rating = 0;
+	        await project.save();
+	      });
+	}else{
+		return res.send("Project Name not Provided.");
+	}
+>>>>>>> 4f62757ea06488b6e7807ce6fd7aaa68fa5dfaf5
     
 });
 
@@ -119,7 +139,8 @@ projectRouter.post('/process/:id',auth.optional,(req,res)=>{
 		const newProcess = {
 			"processNum":parseInt(req.body.process.processNum),
 			"description": req.body.process.description,
-			"status": req.body.process.status
+			"status": req.body.process.status,
+			"nodes": []
 		};
 		if(newProcess.processNum > (project.process.length + 1)){
 			newProcess.processNum = project.process.length + 1;
@@ -204,4 +225,155 @@ projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 		}
 	});
 });
+
+//c nodes
+projectRouter.post('/process/node/:id',auth.optional,(req,res)=>{
+	User.findById(req.payload.id).then(async function(user){
+		var project = await Project.findOne({user:user._id,_id:req.params.id});
+		if(req.body.processNum && (req.body.processNum <= project.process.length)){
+			
+			project.process[req.body.processNum - 1].nodes.push({
+				"name": req.body.name,
+				"description": req.body.description,
+				"state": false,
+				"index": project.process[req.body.processNum - 1].nodes.length + 1
+			});
+			project.markModified('process');
+			project.save();
+		}else{
+			console.log("Index invalid");
+			return res.send("Invalid Index");
+		}
+	});
+});
+//r nodes
+//already there in get project
+
+//u nodes
+projectRouter.post('/process/node/update/:id',auth.optional,(req,res)=>{
+	User.findById(req.payload.id).then(async function(user){
+		var project = await Project.findOne({user:user._id,_id:req.params.id});
+		if(req.body.processNum && (req.body.processNum <= project.process.length)){
+			if(req.body.name){
+				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).name = req.body.name;
+			}
+			if(req.body.description){
+				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).description = req.body.description;	
+			}
+			project.markModified('process');
+			project.save();
+		}else{
+			console.log("Index invalid");
+			return res.send("Invalid Index");
+		}
+	});
+});
+//d nodes
+projectRouter.post('/process/node/remove/:id',auth.optional,(req,res)=>{
+	User.findById(req.payload.id).then(async function(user){
+		var project = await Project.findOne({user:user._id,_id:req.params.id});
+		if(req.body.processNum && (req.body.processNum <= project.process.length)){
+			if(req.body.nodeIndex && req.body.nodeIndex <= project.process[req.body.processNum-1].nodes.length){
+				for(index in project.process[req.body.processNum-1].nodes){
+					if(project.process[req.body.processNum-1].nodes[index].index == req.body.nodeIndex){
+						project.process[req.body.processNum-1].nodes.splice(index,1);
+					}
+					
+				}
+				for(index in project.process[req.body.processNum-1].nodes){
+					if (project.process[req.body.processNum-1].nodes[index].index > req.body.nodeIndex){
+						project.process[req.body.processNum-1].nodes[index].index = project.process[req.body.processNum-1].nodes[index].index -1;
+					}
+				}
+				project.markModified('process');
+				project.save();
+			}
+		}
+	});
+});
+
+//finish nodes
+projectRouter.post('/process/node/finish/:id',auth.optional,(req,res)=>{
+	User.findById(req.payload.id).then(async function(user){
+		var project = await Project.findOne({user:user._id,_id:req.params.id});
+		if(req.body.processNum && (req.body.processNum <= project.process.length)){
+			if(req.body.nodeIndex && req.body.nodeIndex <= project.process[req.body.processNum-1].nodes.length){
+				for(index in project.process[req.body.processNum-1].nodes){
+					if(project.process[req.body.processNum-1].nodes[index].index == req.body.nodeIndex){
+						project.process[req.body.processNum-1].nodes[index].state = true;
+					}
+					
+				}
+				var allDone = true;
+				for(index in project.process[req.body.processNum-1].nodes){
+					if(!project.process[req.body.processNum-1].nodes[index].state){
+						allDone = false;
+						break;
+					}
+				}
+				if(allDone){
+					project.process[req.body.processNum-1].status = "complete";
+					project.timeline.push({
+					"date" : new Date(),
+					"description": "Process " + req.body.processNum + " completed."
+				});	
+				}
+				project.markModified('process');
+				project.markModified('timeline');
+				project.save();
+			}
+		}
+	});
+})
+
+//project name/ status search
+projectRouter.post('/conditional',auth.optional,(req,res)=>{
+	User.findById(req.payload.id).then(async function(user){
+		var sql = {}
+		sql.user = user;
+		if(req.body.name){
+			sql.name = req.body.name;
+		}
+		if(req.body.status){
+			sql.status = req.body.status;
+		}
+		var projects = await Project.find(sql);
+		if(req.body.sortBy){
+			if(req.body.sortBy == "ascending"){
+				projects.sort((a,b)=>a.updatedAt - b.updatedAt);
+			}else{
+				projects.sort((a,b)=>b.updatedAt - a.updatedAt);
+			}
+		}
+		//console.log(projects);
+		return res.json({"result":projects});
+	});
+});
+
+projectRouter.post('/like/:id',auth.optional,async (req,res)=>{
+		var project = await Project.findOne({_id:req.params.id});
+
+		var user = await User.findById(req.payload.id);
+		if(project && user){
+			if(project.user.equals(user._id)){
+				console.log("Can't rate yourself");
+				return res.send("Can't rate yourself");
+			} else{
+				project.rating = project.rating + 1;
+				project.save();
+			}
+			return;
+		}
+	
+		
+});
+projectRouter.post('/like/anoymous/:id',async (req,res)=>{
+	var project = await Project.findOne({_id:req.params.id});
+	if(project){
+		project.rating = project.rating + 1;
+		project.save();
+		return;
+	}
+});
+//sort by last update
 module.exports = projectRouter;
