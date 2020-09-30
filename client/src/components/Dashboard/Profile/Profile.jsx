@@ -19,11 +19,12 @@ import EditAvatar from '../EditAvatar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import PublicIcon from '@material-ui/icons/Public';
 
 const styles = (theme) => ({
   personal: {
     margin: '32px auto',
-    padding: '30px',
+    padding: '20px',
     '& h1': {
       paddingTop: '10px',
       paddingBottom: '10px',
@@ -54,15 +55,20 @@ const styles = (theme) => ({
   socialIcon: {
     marginRight: '8px',
   },
+  socialIcons: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
+  },
   secondSection: {
     margin: '32px auto',
-    padding: '30px',
+    padding: '20px',
     textAlign: 'center',
     color: '#657786',
   },
   locationIcon: {
     position: 'relative',
-    top: '5px',
+    top: '7px',
   },
 });
 
@@ -206,26 +212,39 @@ class Profile extends Component {
               </Typography>
               <Typography variant="h4">{user.headline}</Typography>
               <Typography variant="h4">{user.major}</Typography>
-              <Fab
-                href={'mailto:' + user.email}
-                size="small"
-                color="secondary"
-                aria-label="email"
-                className={classes.socialIcon}
-              >
-                <EmailIcon />
-              </Fab>
-              {user.linkedin && (
+              <Grid item xs={12} sm={12} md={8} className={classes.socialIcons}>
                 <Fab
-                  color="secondary"
+                  href={'mailto:' + user.email}
                   size="small"
-                  href={user.linkedin}
+                  color="secondary"
+                  aria-label="email"
                   className={classes.socialIcon}
-                  target="_blank"
                 >
-                  <LinkedInIcon />
+                  <EmailIcon />
                 </Fab>
-              )}
+                {user.website && (
+                  <Fab
+                    color="secondary"
+                    size="small"
+                    href={user.website}
+                    className={classes.socialIcon}
+                    target="_blank"
+                  >
+                    <PublicIcon />
+                  </Fab>
+                )}
+                {user.linkedin && (
+                  <Fab
+                    color="secondary"
+                    size="small"
+                    href={user.linkedin}
+                    className={classes.socialIcon}
+                    target="_blank"
+                  >
+                    <LinkedInIcon />
+                  </Fab>
+                )}
+              </Grid>
             </Grid>
           </Grid>
           <Grid container component={Paper} className={classes.secondSection}>
@@ -234,6 +253,10 @@ class Profile extends Component {
                 <LocationOnOutlinedIcon className={classes.locationIcon} />
                 {user.location}
               </Typography>
+              {/*<Typography variant="body1">*/}
+              {/*  <LocationOnOutlinedIcon className={classes.locationIcon} />*/}
+              {/*  {user.website}*/}
+              {/*</Typography>*/}
             </Grid>
             {/*<Typography variant="h4">{user.graduation}</Typography>*/}
           </Grid>

@@ -265,6 +265,25 @@ class Account extends Component {
                     </div>
                     <div className={classes.form_group}>
                       <Field
+                        type="url"
+                        variant="outlined"
+                        margin="normal"
+                        id="website"
+                        name="website"
+                        label="Add/change your personal website"
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="website"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.website && touched.website}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
                         variant="outlined"
                         margin="normal"
                         id="location"
