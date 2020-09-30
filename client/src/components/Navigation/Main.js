@@ -17,6 +17,9 @@ import Document from '../Dashboard/Document/Document';
 import Course from '../Dashboard/Course/Course';
 import ProfileStepper from '../Dashboard/Profile/ProfileStepper';
 import NoMatch from '../NoMatch';
+import View from  '../View/view'
+import ViewImage from '../View/ViewImage'
+import ViewDocument from '../View/ViewDocument'
 
 class Main extends Component {
   render() {
@@ -26,6 +29,10 @@ class Main extends Component {
         <Route exact path="/sign-up" component={SignUp} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
         <Route exact path="/reset-password/:token" component={ResetPassword} />
+        <Route exact path ="/view/:id" component = {View} />
+        <Route exact path ="/view/:id/image" component = {ViewImage} />
+        <Route exact path ="/view/:id/document" component = {ViewDocument} />
+
 
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute
