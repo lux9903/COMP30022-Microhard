@@ -104,6 +104,8 @@ const signUpUser = (req, res, next) => {
   user.headline = req.body.user.headline;
   user.aboutSection = req.body.user.aboutSection;
   user.linkedin = req.body.user.linkedin;
+  user.location = req.body.user.location;
+  user.website = req.body.user.website;
   user.setPassword(req.body.user.password);
 
   user

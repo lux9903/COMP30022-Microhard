@@ -8,7 +8,6 @@ import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import EditIcon from '@material-ui/icons/Edit';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
@@ -19,6 +18,7 @@ import Popover from '@material-ui/core/Popover';
 import EditAvatar from '../EditAvatar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 
 const styles = (theme) => ({
   personal: {
@@ -53,6 +53,16 @@ const styles = (theme) => ({
   },
   socialIcon: {
     marginRight: '8px',
+  },
+  secondSection: {
+    margin: '32px auto',
+    padding: '30px',
+    textAlign: 'center',
+    color: '#657786',
+  },
+  locationIcon: {
+    position: 'relative',
+    top: '5px',
   },
 });
 
@@ -218,9 +228,17 @@ class Profile extends Component {
               )}
             </Grid>
           </Grid>
+          <Grid container component={Paper} className={classes.secondSection}>
+            <Grid item xs={12} sm={12} md={4} style={{textAlign: 'center'}}>
+              <Typography variant="body1">
+                <LocationOnOutlinedIcon className={classes.locationIcon} />
+                {user.location}
+              </Typography>
+            </Grid>
+            {/*<Typography variant="h4">{user.graduation}</Typography>*/}
+          </Grid>
         </Container>
 
-        {/*<div style={{height: '250px', backgroundColor: '#094183'}} />*/}
         {/*<div className={clsx(classes.main, classes.mainRaised)}>*/}
         {/*  <div>*/}
         {/*    <Container fixed>*/}

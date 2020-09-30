@@ -21,9 +21,13 @@ const validationSchema = Yup.object().shape({
   lastname: Yup.string().required('* Last name is required'),
   firstname: Yup.string().required('* First name is required'),
   username: Yup.string().required('* Username is required'),
-  email: Yup.string().email().required('* Email is required'),
-  headline: Yup.string(),
+  email: Yup.string()
+    .email()
+    .required('* Email is required, like name@example.com'),
+  headline: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   linkedin: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
+  website: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
+  location: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
 });
 
 const useStyles = (theme) => ({
@@ -31,7 +35,7 @@ const useStyles = (theme) => ({
     height: '100vh',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(5, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -52,7 +56,7 @@ const useStyles = (theme) => ({
     width: '100%',
   },
   form_group: {
-    padding: '5px 5px 5px 5px',
+    padding: theme.spacing(1),
   },
 });
 
@@ -117,6 +121,8 @@ class Account extends Component {
                   firstname: user.firstname,
                   major: user.major,
                   linkedin: user.linkedin,
+                  location: user.location,
+                  website: user.website,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
@@ -255,6 +261,24 @@ class Account extends Component {
                           />
                         }
                         error={errors.linkedin && touched.linkedin}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        variant="outlined"
+                        margin="normal"
+                        id="location"
+                        name="location"
+                        label="Add/change your current location "
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="location"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.location && touched.location}
                       />
                     </div>
                     <div className={classes.form_group}>

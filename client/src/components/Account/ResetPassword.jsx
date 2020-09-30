@@ -2,12 +2,12 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {resetPassword} from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Formik, ErrorMessage, Field, Form} from 'formik';
 import logo from '../Navigation/logo.png';
 import * as Yup from 'yup';
 
-import {Grid, Button, Container, Typography} from '@material-ui/core';
+import {Grid, Button, Typography} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import img from './form-background.jpg';
