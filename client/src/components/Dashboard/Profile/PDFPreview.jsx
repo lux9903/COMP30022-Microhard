@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import axios from '../../../helpers/axiosConfig';
-import Container from '@material-ui/core/Container';
 import {Document, Page, pdfjs} from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -10,25 +9,43 @@ class PDFPreview extends Component {
     super(props);
     this.state = {
       file: null,
+      numPages: null,
+      pageNumber: 1,
     };
-    this.onChange = this.onChange.bind(this);
-    this.getAllPdf = this.getAllPdf.bind(this);
   }
-  onChange(e) {
-    this.setState({file: e.target.files[0]});
-  }
-  getAllPdf(e) {
-    e.preventDefault();
-    const show = axios.get('/pdf/');
-  }
+  onDocumentLoadSuccess = ({numPages}) => {
+    this.setState({numPages});
+    console.log('numPages: ' + {numPages});
+  };
+  previousPage = () =>
+    this.setState((state) => ({pageNumber: state.pageNumber - 1}));
+  nextPage = () =>
+    this.setState((state) => ({pageNumber: state.pageNumber + 1}));
 
   componentDidMount() {
+    const {pageNumber, numPages} = this.state;
     const pdf = axios.get('/pdf').then((res) => {
       if (res.data.pdfs) {
         const Pdfs = res.data.pdfs.map((ele) => (
-          <Document file={ele.getFileLink}>
-            <Page pageNumber={1} />
-          </Document>
+          <div>
+            <nav>
+              <button onClick={this.previousPage}>Prev</button>
+              <button onClick={this.nextPage}>Next</button>
+            </nav>
+
+            <div style={{width: 400}}>
+              <Document
+                file={ele.getFileLink}
+                onLoadSuccess={this.onDocumentLoadSuccess}
+              >
+                <Page pageNumber={pageNumber} width={600} />
+              </Document>
+            </div>
+
+            <p>
+              Page {pageNumber} of {numPages}
+            </p>
+          </div>
         ));
         ReactDOM.render(Pdfs, document.getElementById('changeLater'));
       }
