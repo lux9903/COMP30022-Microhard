@@ -22,6 +22,7 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
+import EditIcon from '@material-ui/icons/Edit';
 
 const styles = (theme) => ({
   personal: {
@@ -84,6 +85,10 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
+  },
+  aboutSection: {
+    margin: '32px auto',
+    padding: '20px 32px',
   },
 });
 
@@ -187,7 +192,7 @@ class Profile extends Component {
           <title>Microhard &middot; Profile </title>
         </Helmet>
 
-        <Grow in timeout={1000}>
+        <Grow in timeout={800}>
           <Container maxWidth="md">
             <Grid
               container
@@ -305,6 +310,27 @@ class Profile extends Component {
                 </Grid>
               </Grid>
             )}
+            <Grid
+              container
+              component={Paper}
+              elevation={3}
+              className={classes.aboutSection}
+            >
+              <Grid item xs={12} sm={11} md={11}>
+                <Typography variant="h2" style={{paddingBottom: '10px'}}>
+                  About Me
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                style={{whiteSpace: 'pre-wrap'}}
+              >
+                <Typography variant="body1">{user.aboutSection}</Typography>
+              </Grid>
+            </Grid>
           </Container>
         </Grow>
 

@@ -29,6 +29,7 @@ const validationSchema = Yup.object().shape({
   website: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
   location: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   graduation: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
+  aboutSection: Yup.string(),
 });
 
 const useStyles = (theme) => ({
@@ -57,7 +58,7 @@ const useStyles = (theme) => ({
     width: '100%',
   },
   form_group: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(0.5),
   },
 });
 
@@ -125,6 +126,7 @@ class Account extends Component {
                   location: user.location,
                   website: user.website,
                   graduation: user.graduation,
+                  aboutSection: user.aboutSection,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
@@ -319,6 +321,27 @@ class Account extends Component {
                           />
                         }
                         error={errors.location && touched.location}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        autoComplete="off"
+                        variant="outlined"
+                        id="aboutSection"
+                        name="aboutSection"
+                        label="Describe yourself"
+                        margin="normal"
+                        multiline
+                        rows={10}
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="aboutSection"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.aboutSection && touched.aboutSection}
                       />
                     </div>
                     <div className={classes.form_group}>
