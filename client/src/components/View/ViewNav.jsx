@@ -11,7 +11,8 @@ import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import axios from '../../helpers/axiosConfig';
+import Typography from '@material-ui/core/Typography';
+import {signOutUser} from '../../actions/userAction';
 
 const styles = (theme) => ({
     button: {
@@ -50,19 +51,85 @@ class ViewNav extends Component {
         this.state = {
             anchorEl: null,
         };
-    }/*
-    componentDidMount() {
-        const user_id = this.props.match.params.id
-
-        const view_user = axios.get(`/view/${user_id}`).then((res) => {
-            this.setState({data: res.data});
-        })
-    }*/
+    }
     render() {
         const {classes} = this.props;
         const {user} = this.props.user;
-        const user_id = this.props.view_user.id;
+        console.log(user);
+        const signOut = (e) => {
+            e.preventDefault();
+            window.location.reload(false);
+            this.props.dispatch(signOutUser());
+        };
+
         let content;
+
+        if (!user) {
+            content =
+            <div>
+                <Button
+                    component={Link}
+                    to="/sign-in"
+                    className={classes.greyText}
+                    href="#outlined-buttons"
+                    style={{margin: '0px 10px 0px 5px'}}
+                >
+                    Sign in
+                </Button>
+
+                <Button
+                    component={Link}
+                    to="/sign-up"
+                    variant="outlined"
+                    color={'primary'}
+                    href="#outlined-buttons"
+                >
+                    Join now
+                </Button>
+            </div>
+        } else {
+            content =
+            <div>
+                <PopupState variant="popover" popupId="demo-popup-popover">
+                    {(popupState) => (
+                        <div>
+                            <IconButton
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                color="inherit"
+                            >
+                                <Gravatar
+                                    email={user.email}
+                                    size={32}
+                                    className="nav-avatar"
+                                    {...bindTrigger(popupState)}
+                                />
+                            </IconButton>
+                            <Popover
+                                {...bindPopover(popupState)}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <MenuItem component={Link} to="/account">
+                                    Account
+                                </MenuItem>
+                                <MenuItem href="/" onClick={signOut}>
+                                    Sign out
+                                </MenuItem>
+                            </Popover>
+                        </div>
+                    )}
+                </PopupState>
+            </div>
+        }
+        const user_id = this.props.view_user.id;
 
         return (
             <AppBar position="sticky" className={classes.appbar}>
