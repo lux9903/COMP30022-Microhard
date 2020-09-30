@@ -4,6 +4,8 @@ import Hero from '../Home/Hero';
 import Functionalities from './Functionalities';
 import Appbar from '../Navigation/Appbar';
 
+import axios from 'axios';
+
 export default function HomePage() {
   return (
     <Fragment>
@@ -13,6 +15,9 @@ export default function HomePage() {
       <Appbar />
       <Hero />
       <Functionalities />
+      <form onSubmit = {() => axios.post('/api/project/like/anoymous/5f74529cdafcc42aecf374fb')}>
+        <input type = "submit" value = "test"/>
+      </form>
     </Fragment>
   );
 }

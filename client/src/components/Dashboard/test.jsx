@@ -25,6 +25,8 @@ class Test extends Component{
     	this.onDeleteNode = this.onDeleteNode.bind(this);
     	this.onFinishNode = this.onFinishNode.bind(this);
     	this.conditionalSearch = this.conditionalSearch.bind(this);
+
+    	this.likeOtherProject = this.likeOtherProject.bind(this);
   	}
 
 	onFormSubmit(e){
@@ -179,6 +181,11 @@ class Test extends Component{
 		axios.post(url,formD).then((res)=>{
 			alert(JSON.stringify(res.data.result));
 		});
+	}
+	likeOtherProject(e){
+		e.preventDefault();
+		let url = "/project/like/" + document.forms.namedItem("like")["id"]["value"];
+		axios.post(url);
 	}
 	componentDidMount(){
 
@@ -341,6 +348,12 @@ class Test extends Component{
 			          		<option value="descending"> descending</option>
 			          	</select>
 		        		<input type ="submit" value = "test"/>
+		        	</form>
+
+		        	Like one project
+		        	<form onSubmit = {this.likeOtherProject} name = "like">
+		        		<input type ="text" name = "id" placeholder = "projectId"/>
+		        		<input type = "submit" value = "test"/>
 		        	</form>
 			</div>
 

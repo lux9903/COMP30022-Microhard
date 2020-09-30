@@ -19,6 +19,7 @@ projectRouter.post('/create', auth.optional, (req,res)=>{
 	        	"date": new Date(),
 	        	"description": "Project created"
 	        }];
+	        project.rating = 0;
 	        await project.save();
 	      });
 	}else{
@@ -311,6 +312,32 @@ projectRouter.post('/conditional',auth.optional,(req,res)=>{
 		//console.log(projects);
 		return res.json({"result":projects});
 	});
+});
+
+projectRouter.post('/like/:id',auth.optional,async (req,res)=>{
+		var project = await Project.findOne({_id:req.params.id});
+
+		var user = await User.findById(req.payload.id);
+		if(project && user){
+			if(project.user.equals(user._id)){
+				console.log("Can't rate yourself");
+				return res.send("Can't rate yourself");
+			} else{
+				project.rating = project.rating + 1;
+				project.save();
+			}
+			return;
+		}
+	
+		
+});
+projectRouter.post('/like/anoymous/:id',async (req,res)=>{
+	var project = await Project.findOne({_id:req.params.id});
+	if(project){
+		project.rating = project.rating + 1;
+		project.save();
+		return;
+	}
 });
 //sort by last update
 module.exports = projectRouter;
