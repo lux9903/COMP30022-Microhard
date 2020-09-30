@@ -14,6 +14,9 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Alert from '@material-ui/lab/Alert';
+import ShareIcon from '@material-ui/icons/Share';
 
 const styles = (theme) => ({
   root: {
@@ -97,6 +100,13 @@ const styles = (theme) => ({
 });
 
 class Profile extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      copied: false,
+    };
+  }
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
       if (res.data.files) {
@@ -185,6 +195,13 @@ class Profile extends Component {
                       <IconButton href="https://www.linkedin.com/">
                         <LinkedInIcon />
                       </IconButton>
+                      <CopyToClipboard text={`http://localhost:3000/view/${user.id}`}
+                                       onCopy={() => this.setState({copied: true})}>
+                        <IconButton>
+                          <ShareIcon />
+                        </IconButton>
+                      </CopyToClipboard>
+                      {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
                     </div>
                   </div>
                 </Grid>

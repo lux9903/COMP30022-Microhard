@@ -15,6 +15,9 @@ import {ReactPhotoCollage} from 'react-photo-collage';
 import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ViewNav from './ViewNav';
+import ShareIcon from '@material-ui/icons/Share';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Alert from '@material-ui/lab/Alert';
 
 const styles = (theme) => ({
     root: {
@@ -103,6 +106,7 @@ class View extends Component {
 
         this.state = {
             view_user :"default",
+            copied: false,
         };
     }
     componentDidMount() {
@@ -182,14 +186,9 @@ class View extends Component {
                                             <Typography variant="h6" className={classes.graduation}>
                                                 Graduation: June 2020
                                             </Typography>
-                                            <Link to="/image">
+                                            <Link to={`/view/${view_user.id}/image`}>
                                                 <IconButton aria-label="upload" color="secondary">
                                                     <AttachFileIcon />
-                                                </IconButton>
-                                            </Link>
-                                            <Link to="/editprofile">
-                                                <IconButton aria-label="edit" color="secondary">
-                                                    <EditIcon />
                                                 </IconButton>
                                             </Link>
                                             <IconButton href={'mailto:' + view_user.email}>
@@ -198,6 +197,15 @@ class View extends Component {
                                             <IconButton href="https://www.linkedin.com/">
                                                 <LinkedInIcon />
                                             </IconButton>
+                                            <CopyToClipboard text={`http://localhost:3000/view/${view_user.id}`}
+                                                             onCopy={() => this.setState({copied: true})}>
+                                                <IconButton>
+                                                    <ShareIcon />
+                                                </IconButton>
+                                            </CopyToClipboard>
+                                            {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
+
+
                                         </div>
                                     </div>
                                 </Grid>
