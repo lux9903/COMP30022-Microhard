@@ -9,7 +9,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import {ReactPhotoCollage} from 'react-photo-collage';
-import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
@@ -21,6 +20,7 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
+import PDFPreview from './PDFPreview';
 
 const styles = (theme) => ({
   root: {
@@ -332,6 +332,16 @@ class Profile extends Component {
                   style={{whiteSpace: 'pre-wrap'}}
                 >
                   <Typography variant="body1">{user.aboutSection}</Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={11}>
+                  <PDFPreview />
                 </Grid>
               </Grid>
             </Container>
