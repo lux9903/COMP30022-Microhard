@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
-
 import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
@@ -9,19 +8,22 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-
+import ImageGrid from './ImageGrid';
 
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
-  }
+  },
 });
 
-class FilesUploadComponent extends Component {
+// Photo page that contains upload button to upload and preview images in grid
+class Image extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
+      deleteImageLink: null,
+      currentImage: 0,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -44,20 +46,6 @@ class FilesUploadComponent extends Component {
   }
   onChange(e) {
     this.setState({file: e.target.files[0]});
-  }
-
-  componentDidMount() {
-    const imgs = axios.get('/image').then((res) => {
-      if (res.data.files) {
-        const imgPic = res.data.files.map((ele) => (
-          <img
-              alt="Nothing Here"
-              src={'/api/image/' + ele.filename}
-          />
-        ));
-        ReactDOM.render(imgPic, document.getElementById('all_img'));
-      }
-    });
   }
 
   render() {
@@ -91,6 +79,7 @@ class FilesUploadComponent extends Component {
                     <Input
                       type="file"
                       name="file"
+                      inputProps={{accept: 'image/*'}}
                       onChange={this.onChange}
                       color="primary"
                     />
@@ -101,8 +90,8 @@ class FilesUploadComponent extends Component {
                 </div>
               </Grid>
               <br />
-              <div id="all_img"></div>
             </Grid>
+            <ImageGrid />
           </Container>
         </div>
       </Fragment>
@@ -110,4 +99,4 @@ class FilesUploadComponent extends Component {
   }
 }
 
-export default withStyles(styles)(FilesUploadComponent);
+export default withStyles(styles)(Image);

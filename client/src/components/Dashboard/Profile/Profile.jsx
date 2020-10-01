@@ -8,7 +8,6 @@ import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import {ReactPhotoCollage} from 'react-photo-collage';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
@@ -21,6 +20,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import PDFPreview from './PDFPreview';
+import ImageGrid from '../ImageGrid';
 
 const styles = (theme) => ({
   root: {
@@ -104,6 +104,7 @@ class Profile extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+
   onFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
@@ -126,40 +127,6 @@ class Profile extends Component {
 
   componentDidMount() {
     const {classes} = this.props;
-    const imgs = axios.get('/image').then((res) => {
-      if (res.data.files) {
-        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
-        const photodata = res.data.files.map(getPhoto);
-        function getPhoto(elem) {
-          return {src: '/api/image/' + elem.filename};
-        }
-
-        const setting = {
-          width: '500px',
-          height: ['170px', '170px'],
-          layout: [1, 4],
-          photos: photodata,
-          showNumOfRemainingPhotos: true,
-        };
-        let photogrid = (
-          <Container>
-            <Grid
-              container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justify="center"
-              style={{minHeight: '70vh'}}
-            >
-              <Grid item xs={12} md={12} sm={12}>
-                <ReactPhotoCollage {...setting} />
-              </Grid>
-            </Grid>
-          </Container>
-        );
-        ReactDOM.render(photogrid, document.getElementById('all_img'));
-      }
-    });
     // Retrieve avatar image
     const img = axios.get('/avatar').then((res) => {
       if (res.data.files) {
@@ -188,7 +155,6 @@ class Profile extends Component {
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
-
     return (
       <Fragment>
         <Helmet>
@@ -334,16 +300,29 @@ class Profile extends Component {
                   <Typography variant="body1">{user.aboutSection}</Typography>
                 </Grid>
               </Grid>
-              {/*<Grid*/}
-              {/*  container*/}
-              {/*  component={Paper}*/}
-              {/*  elevation={3}*/}
-              {/*  className={classes.aboutSection}*/}
-              {/*>*/}
-              {/*  <Grid item xs={12} sm={11} md={11}>*/}
-              {/*    <PDFPreview />*/}
-              {/*  </Grid>*/}
-              {/*</Grid>*/}
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={12}>
+                  <Typography variant="h2">Photos</Typography>
+                </Grid>
+                <Grid item xs={12} sm={11} md={11}>
+                  <ImageGrid />
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={11}>
+                  <PDFPreview />
+                </Grid>
+              </Grid>
             </Container>
           </Grow>
         </div>
