@@ -66,7 +66,7 @@ projectRouter.post('/update/:id',auth.optional, (req,res)=>{
 		}else if(project.status = "Cancel"){
 			project.timeline.push({
 				"date" : new Date(),
-				"description": "Project cenceled."
+				"description": "Project canceled."
 			});
 		}else{
 			project.timeline.push({
@@ -78,6 +78,8 @@ projectRouter.post('/update/:id',auth.optional, (req,res)=>{
 		return res.json({"result":result});
 	});
 });
+
+//"<YYYY-mm-dd>"
 
 //update a contributor name????
 
