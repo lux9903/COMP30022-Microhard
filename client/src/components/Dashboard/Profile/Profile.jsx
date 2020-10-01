@@ -157,7 +157,7 @@ class Profile extends Component {
             </Grid>
           </Container>
         );
-        ReactDOM.render(photogrid, document.getElementById('all_img'));
+        //ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
     });
     // Retrieve avatar image
