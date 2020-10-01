@@ -161,8 +161,8 @@ class Profile extends Component {
           <title>Microhard &middot; Profile </title>
         </Helmet>
         <div className={classes.root}>
-          <Grow in timeout={800}>
-            <Container maxWidth="md">
+          <Container maxWidth="md">
+            <Grow in timeout={900}>
               <Grid
                 container
                 component={Paper}
@@ -255,6 +255,8 @@ class Profile extends Component {
                   </Grid>
                 </Grid>
               </Grid>
+            </Grow>
+            <Grow in timeout={1100}>
               {(user.location || user.graduation) && (
                 <Grid
                   container
@@ -279,6 +281,8 @@ class Profile extends Component {
                   </Grid>
                 </Grid>
               )}
+            </Grow>
+            <Grow in timeout={1300}>
               <Grid
                 container
                 component={Paper}
@@ -300,6 +304,8 @@ class Profile extends Component {
                   <Typography variant="body1">{user.aboutSection}</Typography>
                 </Grid>
               </Grid>
+            </Grow>
+            <Grow in timeout={1500}>
               <Grid
                 container
                 component={Paper}
@@ -313,6 +319,8 @@ class Profile extends Component {
                   <ImageGrid />
                 </Grid>
               </Grid>
+            </Grow>
+            <Grow in timeout={1700}>
               <Grid
                 container
                 component={Paper}
@@ -323,106 +331,9 @@ class Profile extends Component {
                   <PDFPreview />
                 </Grid>
               </Grid>
-            </Container>
-          </Grow>
+            </Grow>
+          </Container>
         </div>
-
-        {/*<div className={clsx(classes.main, classes.mainRaised)}>*/}
-        {/*  <div>*/}
-        {/*    <Container fixed>*/}
-        {/*      <Grid justify="center" alignItems="center">*/}
-        {/*        <Grid item xs={12} sm={12} md={12}>*/}
-        {/*          <div className={classes.profile}>*/}
-        {/*            <div>*/}
-        {/*                <PopupState variant="popover" popupId="demo-popup-popover">*/}
-        {/*                  {(popupState) => (*/}
-        {/*                      <div>*/}
-        {/*                        <IconButton*/}
-        {/*                            aria-label="account of current user"*/}
-        {/*                            aria-controls="menu-appbar"*/}
-        {/*                            aria-haspopup="true"*/}
-        {/*                            color="inherit"*/}
-        {/*                        >*/}
-        {/*                          <div id="avatar" align="center" {...bindTrigger(popupState)} ></div>*/}
-        {/*                        </IconButton>*/}
-        {/*                        <Popover*/}
-        {/*                            {...bindPopover(popupState)}*/}
-        {/*                            anchorOrigin={{*/}
-        {/*                              vertical: 'bottom',*/}
-        {/*                              horizontal: 'center',*/}
-        {/*                            }}*/}
-        {/*                            transformOrigin={{*/}
-        {/*                              vertical: 'top',*/}
-        {/*                              horizontal: 'center',*/}
-        {/*                            }}*/}
-        {/*                        >*/}
-        {/*                          <EditAvatar*/}
-        {/*                              onFormSubmit={this.onFormSubmit}*/}
-        {/*                              onChange={this.onChange}*/}
-        {/*                          />*/}
-        {/*                        </Popover>*/}
-        {/*                      </div>*/}
-        {/*                  )}*/}
-        {/*                </PopupState>*/}
-        {/*            </div>*/}
-        {/*            <div style={{marginTop: '-60px'}}>*/}
-        {/*              <Typography variant="h3" className={classes.fullName}>*/}
-        {/*                {user.firstname} {user.lastname}*/}
-        {/*              </Typography>*/}
-        {/*              <Typography variant="h6" className={classes.headline}>*/}
-        {/*                {user.headline}*/}
-        {/*              </Typography>*/}
-        {/*              <Typography variant="h6" className={classes.major}>*/}
-        {/*                {user.major}*/}
-        {/*              </Typography>*/}
-        {/*              <br />*/}
-        {/*              <Typography variant="h6" className={classes.graduation}>*/}
-        {/*                Graduation: June 2020*/}
-        {/*              </Typography>*/}
-        {/*              <Link to="/image">*/}
-        {/*                <IconButton aria-label="upload" color="secondary">*/}
-        {/*                  <AttachFileIcon />*/}
-        {/*                </IconButton>*/}
-        {/*              </Link>*/}
-        {/*              <Link to="/editprofile">*/}
-        {/*                <IconButton aria-label="edit" color="secondary">*/}
-        {/*                  <EditIcon />*/}
-        {/*                </IconButton>*/}
-        {/*              </Link>*/}
-        {/*              <IconButton href={'mailto:' + user.email}>*/}
-        {/*                <EmailIcon />*/}
-        {/*              </IconButton>*/}
-        {/*              <IconButton href="https://www.linkedin.com/">*/}
-        {/*                <LinkedInIcon />*/}
-        {/*              </IconButton>*/}
-        {/*            </div>*/}
-        {/*          </div>*/}
-        {/*        </Grid>*/}
-        {/*      </Grid>*/}
-        {/*    </Container>*/}
-
-        {/*    <div className={classes.aboutMe}>*/}
-        {/*      <p>*/}
-        {/*        <hr />*/}
-        {/*        {user.aboutSection}*/}
-        {/*      </p>*/}
-        {/*    </div>*/}
-        {/*    <Container>*/}
-        {/*      <Grid justify="center">*/}
-        {/*        <Grid*/}
-        {/*          item*/}
-        {/*          xs={12}*/}
-        {/*          sm={12}*/}
-        {/*          md={12}*/}
-        {/*          className={classes.imageCollage}*/}
-        {/*        >*/}
-        {/*          <div id="all_img"></div>*/}
-        {/*        </Grid>*/}
-        {/*      </Grid>*/}
-        {/*      <br />*/}
-        {/*    </Container>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
       </Fragment>
     );
   }

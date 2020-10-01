@@ -70,7 +70,12 @@ class ForgotPassword extends Component {
             <div className={classes.paper}>
               <Link to="/">
                 <Button>
-                  <img src={logo} alt="Microhard" className={classes.logo} />
+                  <img
+                    src={logo}
+                    alt="Microhard"
+                    className={classes.logo}
+                    loading="lazy"
+                  />
                 </Button>
               </Link>
               <Typography
