@@ -132,7 +132,11 @@ class Profile extends Component {
         //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
         const photodata = res.data.files.map(getPhoto);
         function getPhoto(elem) {
-          return {src: '/api/image/' + elem.filename};
+          return {src: '/api/image/' + elem.filename,
+                  thumbnail: '/api/image/' + elem.filename,
+                  thumbnailWidth: 320,
+                  thumbnailHeight: 174,
+          };
         }
 
         // const setting = {
