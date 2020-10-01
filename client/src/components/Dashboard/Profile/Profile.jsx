@@ -25,8 +25,8 @@ import PDFPreview from './PDFPreview';
 const styles = (theme) => ({
   root: {
     backgroundColor: theme.palette.primary.main,
-    marginTop: '-20px',
-    padding: '25px 0',
+    marginTop: '-15px',
+    padding: '25px 0 150px 0',
   },
   personal: {
     margin: '32px auto',
@@ -334,16 +334,16 @@ class Profile extends Component {
                   <Typography variant="body1">{user.aboutSection}</Typography>
                 </Grid>
               </Grid>
-              <Grid
-                container
-                component={Paper}
-                elevation={3}
-                className={classes.aboutSection}
-              >
-                <Grid item xs={12} sm={11} md={11}>
-                  <PDFPreview />
-                </Grid>
-              </Grid>
+              {/*<Grid*/}
+              {/*  container*/}
+              {/*  component={Paper}*/}
+              {/*  elevation={3}*/}
+              {/*  className={classes.aboutSection}*/}
+              {/*>*/}
+              {/*  <Grid item xs={12} sm={11} md={11}>*/}
+              {/*    <PDFPreview />*/}
+              {/*  </Grid>*/}
+              {/*</Grid>*/}
             </Container>
           </Grow>
         </div>

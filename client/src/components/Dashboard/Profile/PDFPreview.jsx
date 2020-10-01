@@ -21,8 +21,9 @@ class PDFPreview extends Component {
     this.setState((state) => ({pageNumber: state.pageNumber + 1}));
 
   componentDidMount() {
-    const {pageNumber, numPages} = this.state;
+    // const {pageNumber, numPages} = this.state;
     const pdf = axios.get('/pdf').then((res) => {
+      const {numPages, pageNumber} = this.state;
       if (res.data.pdfs) {
         const Pdfs = res.data.pdfs.map((ele) => (
           <div>
