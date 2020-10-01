@@ -186,7 +186,7 @@ class View extends Component {
                                             <Typography variant="h6" className={classes.graduation}>
                                                 Graduation: June 2020
                                             </Typography>
-                                            <Link to={`/view/${view_user.id}/image`}>
+                                            <Link to={`/view/${view_user._id}/image`}>
                                                 <IconButton aria-label="upload" color="secondary">
                                                     <AttachFileIcon />
                                                 </IconButton>
@@ -197,7 +197,7 @@ class View extends Component {
                                             <IconButton href="https://www.linkedin.com/">
                                                 <LinkedInIcon />
                                             </IconButton>
-                                            <CopyToClipboard text={`http://localhost:3000/view/${view_user.id}`}
+                                            <CopyToClipboard text={`http://localhost:3000/view/${view_user._id}`}
                                                              onCopy={() => this.setState({copied: true})}>
                                                 <IconButton>
                                                     <ShareIcon />

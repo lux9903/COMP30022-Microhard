@@ -129,7 +129,7 @@ class ViewNav extends Component {
                 </PopupState>
             </div>
         }
-        const user_id = this.props.view_user.id;
+        const user_id = this.props.view_user._id;
 
         return (
             <AppBar position="sticky" className={classes.appbar}>

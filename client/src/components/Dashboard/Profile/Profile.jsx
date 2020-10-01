@@ -147,6 +147,7 @@ class Profile extends Component {
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
+    console.log(user);
 
     return (
       <Fragment>
@@ -195,7 +196,7 @@ class Profile extends Component {
                       <IconButton href="https://www.linkedin.com/">
                         <LinkedInIcon />
                       </IconButton>
-                      <CopyToClipboard text={`http://localhost:3000/view/${user.id}`}
+                      <CopyToClipboard text={`http://localhost:3000/view/${user._id}`}
                                        onCopy={() => this.setState({copied: true})}>
                         <IconButton>
                           <ShareIcon />
