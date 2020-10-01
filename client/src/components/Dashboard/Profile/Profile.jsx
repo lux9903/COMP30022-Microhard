@@ -21,6 +21,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import PDFPreview from './PDFPreview';
+import Gallery from 'react-grid-gallery';
 
 const styles = (theme) => ({
   root: {
@@ -134,30 +135,36 @@ class Profile extends Component {
           return {src: '/api/image/' + elem.filename};
         }
 
-        const setting = {
-          width: '500px',
-          height: ['170px', '170px'],
-          layout: [1, 4],
-          photos: photodata,
-          showNumOfRemainingPhotos: true,
-        };
+        // const setting = {
+        //   width: '500px',
+        //   height: ['170px', '170px'],
+        //   layout: [1, 4],
+        //   photos: photodata,
+        //   showNumOfRemainingPhotos: true,
+        // };
         let photogrid = (
           <Container>
-            <Grid
-              container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justify="center"
-              style={{minHeight: '70vh'}}
-            >
-              <Grid item xs={12} md={12} sm={12}>
-                <ReactPhotoCollage {...setting} />
-              </Grid>
-            </Grid>
+            <Gallery
+              images={photodata}
+              enableLightbox={false}
+              enableImageSelection={false}
+            />
+            {/*<Grid*/}
+            {/*  container*/}
+            {/*  spacing={0}*/}
+            {/*  direction="column"*/}
+            {/*  alignItems="center"*/}
+            {/*  justify="center"*/}
+            {/*  style={{minHeight: '70vh'}}*/}
+            {/*>*/}
+            {/*  <Grid item xs={12} md={12} sm={12}>*/}
+            {/*    <ReactPhotoCollage {...setting} />*/}
+            {/*  </Grid>*/}
+            {/*</Grid>*/}
           </Container>
         );
-        //ReactDOM.render(photogrid, document.getElementById('all_img'));
+        // ReactDOM.render(photogrid, document.getElementById('all_img'));
+        ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
     });
     // Retrieve avatar image
@@ -342,6 +349,16 @@ class Profile extends Component {
               >
                 <Grid item xs={12} sm={11} md={11}>
                   <PDFPreview />
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={11}>
+                  <div id="all_img"></div>
                 </Grid>
               </Grid>
             </Container>
