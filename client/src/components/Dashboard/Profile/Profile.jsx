@@ -8,7 +8,6 @@ import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import {ReactPhotoCollage} from 'react-photo-collage';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
@@ -103,7 +102,7 @@ class Profile extends Component {
       file: null,
       images: null,
       deleteImageLink: null,
-      currentImage: 0
+      currentImage: 0,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -113,16 +112,19 @@ class Profile extends Component {
   }
 
   onCurrentImageChange(index) {
-    this.setState({ currentImage: index });
+    this.setState({currentImage: index});
   }
 
-
   deleteImage() {
-      if (window.confirm(`Are you sure you want to delete image number ${this.state.currentImage}?`)) {
-        axios.delete(this.state.deleteImageLink[this.state.currentImage]);
-        window.location.reload();
-      }
+    if (
+      window.confirm(
+        `Are you sure you want to delete image number ${this.state.currentImage}?`
+      )
+    ) {
+      axios.delete(this.state.deleteImageLink[this.state.currentImage]);
+      window.location.reload();
     }
+  }
   onFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
@@ -143,8 +145,6 @@ class Profile extends Component {
     this.setState({file: e.target.files[0]});
   }
 
-
-
   componentDidMount() {
     const {classes} = this.props;
     const imgs = axios.get('/image').then((res) => {
@@ -152,46 +152,41 @@ class Profile extends Component {
         //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
         const photodata = res.data.files.map(getPhoto);
         function getPhoto(elem) {
-          return {src: '/api/image/' + elem.filename,
-                  thumbnail: '/api/image/' + elem.filename,
-                  thumbnailWidth: 320,
-                  thumbnailHeight: 174,
+          return {
+            src: '/api/image/' + elem.filename,
+            thumbnail: '/api/image/' + elem.filename,
+            thumbnailWidth: 320,
+            thumbnailHeight: 213,
           };
         }
-        this.setState({images: photodata })
-        const deleteLink = res.data.files.map((ele)=> '/image/'+ ele._id)
+        this.setState({images: photodata});
+        const deleteLink = res.data.files.map((ele) => '/image/' + ele._id);
         this.setState({deleteImageLink: deleteLink});
-        // const setting = {
-        //   width: '500px',
-        //   height: ['170px', '170px'],
-        //   layout: [1, 4],
-        //   photos: photodata,
-        //   showNumOfRemainingPhotos: true,
-        // };
+
         let photogrid = (
           <Container>
-            <Gallery
-              images={photodata}
-              enableLightbox={true}
-              enableImageSelection={false}
-              currentImageWillChange={this.onCurrentImageChange}
-
-              customControls={[
-                <button key="deleteImage" onClick={this.deleteImage}>Delete Image</button>
-              ]}
-            />
-            {/*<Grid*/}
-            {/*  container*/}
-            {/*  spacing={0}*/}
-            {/*  direction="column"*/}
-            {/*  alignItems="center"*/}
-            {/*  justify="center"*/}
-            {/*  style={{minHeight: '70vh'}}*/}
-            {/*>*/}
-            {/*  <Grid item xs={12} md={12} sm={12}>*/}
-            {/*    <ReactPhotoCollage {...setting} />*/}
-            {/*  </Grid>*/}
-            {/*</Grid>*/}
+            <div
+              style={{
+                display: 'block',
+                minHeight: '1px',
+                width: '100%',
+                border: '1px solid #ddd',
+                overflow: 'auto',
+              }}
+            >
+              <Gallery
+                maxRows={5}
+                images={photodata}
+                enableLightbox={true}
+                enableImageSelection={false}
+                currentImageWillChange={this.onCurrentImageChange}
+                customControls={[
+                  <button key="deleteImage" onClick={this.deleteImage}>
+                    Delete Image
+                  </button>,
+                ]}
+              />
+            </div>
           </Container>
         );
         ReactDOM.render(photogrid, document.getElementById('all_img'));
@@ -376,8 +371,11 @@ class Profile extends Component {
                 elevation={3}
                 className={classes.aboutSection}
               >
+                <Grid item xs={12} sm={11} md={12}>
+                  <Typography variant="h2">Photos</Typography>
+                </Grid>
                 <Grid item xs={12} sm={11} md={11}>
-                  <PDFPreview />
+                  <div id="all_img"></div>
                 </Grid>
               </Grid>
               <Grid
@@ -387,7 +385,7 @@ class Profile extends Component {
                 className={classes.aboutSection}
               >
                 <Grid item xs={12} sm={11} md={11}>
-                  <div id="all_img"></div>
+                  <PDFPreview />
                 </Grid>
               </Grid>
             </Container>
