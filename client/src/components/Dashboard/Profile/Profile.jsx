@@ -25,8 +25,8 @@ import ImageGrid from '../ImageGrid';
 const styles = (theme) => ({
   root: {
     backgroundColor: theme.palette.primary.main,
-    marginTop: '-20px',
-    padding: '25px 0',
+    marginTop: '-15px',
+    padding: '25px 0 150px 0',
   },
   personal: {
     margin: '32px auto',
