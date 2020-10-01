@@ -101,10 +101,28 @@ class Profile extends Component {
     super(props);
     this.state = {
       file: null,
+      images: null,
+      deleteImageLink: null,
+      currentImage: 0
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+
+    this.onCurrentImageChange = this.onCurrentImageChange.bind(this);
+    this.deleteImage = this.deleteImage.bind(this);
   }
+
+  onCurrentImageChange(index) {
+    this.setState({ currentImage: index });
+  }
+
+
+  deleteImage() {
+      if (window.confirm(`Are you sure you want to delete image number ${this.state.currentImage}?`)) {
+        axios.delete(this.state.deleteImageLink[this.state.currentImage]);
+        window.location.reload();
+      }
+    }
   onFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
@@ -125,6 +143,8 @@ class Profile extends Component {
     this.setState({file: e.target.files[0]});
   }
 
+
+
   componentDidMount() {
     const {classes} = this.props;
     const imgs = axios.get('/image').then((res) => {
@@ -138,7 +158,9 @@ class Profile extends Component {
                   thumbnailHeight: 174,
           };
         }
-
+        this.setState({images: photodata })
+        const deleteLink = res.data.files.map((ele)=> '/image/'+ ele._id)
+        this.setState({deleteImageLink: deleteLink});
         // const setting = {
         //   width: '500px',
         //   height: ['170px', '170px'],
@@ -150,8 +172,13 @@ class Profile extends Component {
           <Container>
             <Gallery
               images={photodata}
-              enableLightbox={false}
+              enableLightbox={true}
               enableImageSelection={false}
+              currentImageWillChange={this.onCurrentImageChange}
+
+              customControls={[
+                <button key="deleteImage" onClick={this.deleteImage}>Delete Image</button>
+              ]}
             />
             {/*<Grid*/}
             {/*  container*/}
@@ -167,7 +194,6 @@ class Profile extends Component {
             {/*</Grid>*/}
           </Container>
         );
-        // ReactDOM.render(photogrid, document.getElementById('all_img'));
         ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
     });
@@ -199,7 +225,6 @@ class Profile extends Component {
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
-
     return (
       <Fragment>
         <Helmet>
