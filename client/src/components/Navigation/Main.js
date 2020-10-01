@@ -6,14 +6,13 @@ import PrivateRoute from './PrivateRoute';
 import PrivateHome from './PrivateHome';
 import Account from '../Account/Account';
 import SignIn from '../Account/SignIn';
-import SignUp from '../Account/SignUp';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
-import Document from '../Dashboard/Document/Document';
+import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
 import Course from '../Dashboard/Course/Course';
 import NoMatch from '../NoMatch';
@@ -55,7 +54,7 @@ class Main extends Component {
         <PrivateRoute
           exact
           path="/document"
-          component={Document}
+          component={Documents}
           authed={this.props.user}
         />
         <PrivateRoute
@@ -71,7 +70,6 @@ class Main extends Component {
           component={Course}
           authed={this.props.user}
         />
-
 
         <Route component={NoMatch} />
       </Switch>

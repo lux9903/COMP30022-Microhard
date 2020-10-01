@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {FormWizard} from 'react-material-formik-wizard';
 import AboutSectionStep from './AboutSectionStep';
 import BasicDetailsStep from './BasicDetailsStep';
@@ -6,12 +6,11 @@ import ReviewStep from './ReviewStep';
 import {signUpUser} from '../../../actions/userAction';
 import Alert from '@material-ui/lab/Alert';
 import {connect} from 'react-redux';
-import {CircularProgress,} from '@material-ui/core';
+import {CircularProgress} from '@material-ui/core';
+import {Helmet} from 'react-helmet';
+import ContactStep from './ContactStep';
 class AddProfileContent extends Component {
-
-
-  render()
-  {
+  render() {
     const steps = [
       {
         component: BasicDetailsStep,
@@ -20,6 +19,10 @@ class AddProfileContent extends Component {
       {
         component: AboutSectionStep,
         title: 'About',
+      },
+      {
+        component: ContactStep,
+        title: 'Contacts & Social',
       },
       {
         component: ReviewStep,
@@ -38,25 +41,28 @@ class AddProfileContent extends Component {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isAuthenticating) {
       content = (
-          <CircularProgress>
-            <span>Loading...</span>
-          </CircularProgress>
+        <CircularProgress>
+          <span>Loading...</span>
+        </CircularProgress>
       );
     }
     return (
-        <React.Fragment>
-          <main>
-            <FormWizard
-                displayProgress={true}
-                formComponents={steps}
-                doSubmit={doSubmit}
-                successTitle={'Success'}
-                successTitleComponent={'h1'}
-                successMessage={'Your user profile has been successfully made!'}
-                successMessageComponent={'h5'}
-            />
-          </main>
-        </React.Fragment>
+      <React.Fragment>
+        <Helmet>
+          <title>Microhard &middot; Sign Up </title>
+        </Helmet>
+        <main>
+          <FormWizard
+            displayProgress={true}
+            formComponents={steps}
+            doSubmit={doSubmit}
+            successTitle={'Success'}
+            successTitleComponent={'h1'}
+            successMessage={'Your user profile has been successfully made!'}
+            successMessageComponent={'h5'}
+          />
+        </main>
+      </React.Fragment>
     );
   }
 }

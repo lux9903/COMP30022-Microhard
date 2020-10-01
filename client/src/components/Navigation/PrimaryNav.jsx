@@ -61,6 +61,9 @@ const styles = (theme) => ({
     color: 'black',
     cursor: 'pointer',
   },
+  icon: {
+    color: theme.palette.primary.main,
+  },
 });
 
 // This is the navigation bar after a successful login
@@ -229,7 +232,7 @@ class PrimaryNav extends Component {
                     <AccountCircleIcon
                       {...bindTrigger(popupState)}
                       fontSize="large"
-                      color="primary"
+                      className={classes.icon}
                     />
                   </IconButton>
                   <Popover
