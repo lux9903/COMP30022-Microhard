@@ -9,29 +9,6 @@ const Project = require('../models/projectModel');
 
 //create a project: how?, what is the input?
 projectRouter.post('/create', auth.optional, (req,res)=>{
-
-<<<<<<< HEAD
-	
-	User.findById(req.payload.id).then(async function (user) {
-		//only name required?
-		//description initial = ""
-		//status intial = Inprogress
-		//show_status initial = public
-        const project = new Project(req.body);
-        project.user = user;
-		project.contributors = [user.username];
-		//project.status = 'Inprogress';
-		//project.show_status = 'public';
-		//project.description = '';
-        project.skills = [];
-        project.process = [];
-        project.timeline = [{
-        	"date": new Date(),
-        	"description": "Project created"
-        }];
-        await project.save();
-      });
-=======
 	if(req.body.name){
 		User.findById(req.payload.id).then(async function (user) {
 	        const project = new Project(req.body);
@@ -49,7 +26,6 @@ projectRouter.post('/create', auth.optional, (req,res)=>{
 	}else{
 		return res.send("Project Name not Provided.");
 	}
->>>>>>> 4f62757ea06488b6e7807ce6fd7aaa68fa5dfaf5
     
 });
 

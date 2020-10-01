@@ -16,120 +16,26 @@ import axios from '../../helpers/axiosConfig';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Dialog from '@material-ui/core/Dialog';
+
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import SearchIcon from '@material-ui/icons/Search';
+import Pagination from '@material-ui/lab/Pagination';
+import InputBase from '@material-ui/core/InputBase';
+import TextField from '@material-ui/core/TextField';
+
+import Switch from '@material-ui/core/Switch';
+
+import {Formik, Field, Form} from 'formik';
 //when useEffecr trigger? when the useState attribute is being changed
-
-
-function DeleteButton() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleDelete = () => {
-    setOpen(false);
-    axios.get('/project/'+ props.id).catch((error)=>{});
-  }
-
-  return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this project? 
-            The project will be permanently delete and unable to recover.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDelete} color="primary">
-            Yes
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-}
-
-//adding form
-function MyForm(props) {
-  return (
-    <Dialog
-      onClose={props.handleClose}
-      closeAfterTransition
-    >
-      <DialogContent>
-        <div>
-          <h2>Create a new project</h2>
-          <Formik
-            initialValues={{
-              name: ""
-            }}
-            onSubmit = {(values) => {
-              props.submit(values); 
-              //props.handleClose();
-            }}
-          >
-            <Form width='100%'>
-              <Field as={TextField}
-                label="Project Name"
-                variant="outlined"
-                //name="name"
-                id="name"
-                fullWidth
-              />
-              <Button
-                type="submit"
-                variant="raised"
-                color="primary"
-                fullWidth
-              >
-                Submit
-              </Button>
-            </Form>
-          </Formik>
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-//add new project button
-function AddButton(props) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const addSubmit = (props) => {
-    axios.post('/project/create', props.values).then(() => setOpen(false))
-      .catch((error)=>{});
-  };
-
-  return (
-    <div>
-      <IconButton>
-        <AddCircleOutlineIcon size="small" onClick={handleOpen}>
-          <AddForm open={open} handleClose={handleClose} submit={addSubmit} />
-        </AddCircleOutlineIcon>
-      </IconButton>
-    </div>
-  )
-}
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -163,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
+    //vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -173,60 +79,173 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function ProjectList() {
   const [projlist, setProjlist] = useState([]);
-  const [search, setSearch] = useState("");
-  const [upsort, setUpsort] = useState["ascending"];
-  const [statsort, setStatsort] = useState[""];
-  const [curpage, setCurpage] = useState(0);
-  const [totalPage, setTotalPage] = useState(0);
+  //const [search, setSearch] = useState("");
+  //const [upsort, setUpsort] = useState["ascending"];
+  //const [statsort, setStatsort] = useState[""];
+  
+  const [curpage, setCurpage] = useState(1);
 
   //css
   const classes = useStyles();
-  
-  //render the project list
-  const Projects = (props) => {
-    setCurpage(1);
-    setTotalPage(countPage());
 
-    //slice (inclusive, exclusive)
-    if(curpage==1){
-      let subset = projlist.slice(1,10);
-    }else if(curpage==totalPage){
-      let subset = projlist.slice(curpage*9+1, projlist.length);
-    }else{
-      let subset = projlist.slice(curpage*9+1, (curpage+1)*9 +1)
+  //delete button in each card -> sent a delete form
+  function DeleteButton(props) {
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {setOpen(true);};
+    const handleClose = () => {setOpen(false);};
+    const handleDelete = () => {
+      setOpen(false);
+      axios.delete('/project/'+ props.id).catch((error)=>{});
+      axios.post('/project/condition', {sortBy:"ascending"}).then((res) => setProjlist(res.data.projects))
+        .catch((error) => {});
+      setCurpage(1);
     }
-    subset.map(function (proj,i){
-      return (
-        <Grid item xs={12} sm={6} md={4}>
-          <Card style={{display: 'flex', flexDirection: 'column'}}>
-            <CardMedia image={img} style={{paddingTop: '56.25%'}} title="Image title"/>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {proj.name}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Link to={"/project/"+ proj.user._id}>
-                <Button size="small" color="primary">
-                  Edit
+    return (
+      <div>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          Open form dialog
+        </Button>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this project? 
+              The project will be permanently delete and unable to recover.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDelete} color="primary">
+              Yes
+            </Button>
+            <Button onClick={handleClose} color="primary">
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+
+  //add new project button in each card 
+  function AddButton(props) {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {setOpen(true);};
+    const handleClose = () => {setOpen(false);};
+    const addSubmit = (name) => {
+      axios.post('/project/create', {"name": name}).then(() => setOpen(false))
+        .catch((error)=>{});
+      axios.post('/project/condition', {sortBy:"ascending"}).then((res) => setProjlist(res.data.projects))
+        .catch((error) => {});
+      setCurpage(1);
+    };
+    return (
+      <div>
+        <IconButton>
+          <AddCircleOutlineIcon size="small" onClick={handleOpen}>
+            <AddForm open={open} handleClose={handleClose} submit={addSubmit} />
+          </AddCircleOutlineIcon>
+        </IconButton>
+      </div>
+    )
+  }
+
+  //adding form
+  function AddForm(props) {
+    return (
+      <Dialog
+        onClose={props.handleClose}
+        closeAfterTransition
+      >
+        <DialogContent>
+            <h2>Create a new project</h2>
+            <Formik
+              initialValues={{
+                name: ""
+              }}
+              onSubmit = {(values) => {
+                props.submit(values); 
+                //props.handleClose();
+              }}
+            >
+              <Form width='100%'>
+                <Field as={TextField}
+                  label="Project Name"
+                  variant="outlined"
+                  id="name"
+                  fullWidth
+                />
+                <Button
+                  type="submit"
+                  variant="raised"
+                  color="primary"
+                  fullWidth
+                >
+                  Submit
                 </Button>
-              </Link>
-              <DeleteButton id={proj.user._id}>
-                Delete
-              </DeleteButton>
-            </CardActions>
-          </Card>
-        </Grid>
-      )});
+              </Form>
+            </Formik>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  //render the project list should it be a class instead???
+  function Project(props){
+    const [status, setStatus] = useState(props.project.status);
+    const handleToggle = () => {};
+    return (
+      <Grid item xs={12} sm={6} md={4}>
+        <Card style={{display: 'flex', flexDirection: 'column'}}>
+          <CardMedia image={img} style={{paddingTop: '56.25%'}} title="Image title"/>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {props.project.name}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Link to={"/project/"+ props.project.user._id}>
+              <Button size="small" color="primary">
+                Edit
+              </Button>
+            </Link>
+            <DeleteButton id={props.project.user._id}>
+              Delete
+            </DeleteButton>
+            <Switch
+              onChange={handleToggle}
+              label="Public"
+            />
+          </CardActions>
+        </Card>
+      </Grid>
+    );
+  }
+
+  function updatelist(){
+    //slice (inclusive, exclusive)
+    const subset = projlist.slice();
+    const totalpage = countPage();
+    if(curpage == 1){
+      subset.slice(1,10);
+    }else if(curpage==totalpage){
+      subset.slice(curpage*9+1, projlist.length);
+    }else{
+      subset.slice(curpage*9+1, (curpage+1)*9 +1);
+    }
+    return subset.map(function (proj,i){
+      return <Project project={proj}/>;
+    })
   }
 
   //sorting button: based on projects' status
   function SortByStatus() {
     const handleChange = (event) => {
-      setStatsort(event.target.value);
-      //Projects();
+      axios.post('/project/condition', {status:event.target.value}).then((res) => setProjlist(res.data.projects))
+      .catch((error) => {});
+      setCurpage(1);
     };
     return (
       <div>
@@ -234,7 +253,6 @@ export default function ProjectList() {
         <FormControl>
           <Select
             disableUnderline
-            value={statsort}
             onChange={handleChange}
           >
             <MenuItem value={""}>
@@ -251,8 +269,9 @@ export default function ProjectList() {
   //sorting button: based on projects' updating time
   function SortByUpdate() {
     const handleChange = (event) => {
-      setUpsort(event.target.value);
-      //Project();
+      axios.post('/project/condition', {"sortBy":event.target.value}).then((res) => setProjlist(res.data.projects))
+      .catch((error) => {});
+      setCurpage(1);
     };
     return (
       <div>
@@ -260,13 +279,12 @@ export default function ProjectList() {
         <FormControl>
           <Select
             disableUnderline
-            value={upsort}
             onChange={handleChange}
           >
-            <MenuItem value={"ascending"}>
+            <MenuItem value={'ascending'}>
               <em>Lastest</em>
             </MenuItem>
-            <MenuItem value={"descending"}>Oldest</MenuItem>
+            <MenuItem value={'descending'}>Oldest</MenuItem>
           </Select>
         </FormControl>
       </div>
@@ -275,26 +293,10 @@ export default function ProjectList() {
 
   //axios to get all the project
   const getAll = () =>{
-    if(search == "" && statsort == ""){
-      axios.post('/project/condition', {sortBy:upsort}).then((res) => setProjlist(res.data.projects))
-      .catch((error) => {});
-    }else{
-      if(search == ""){
-        if(statsort == ""){
-          values = {sortBy: upsort}
-        }else{
-          values = {sortBy: upsort, status: statsort}
-        }
-      }else{
-        if(statsort == ""){
-          values = {name: search, sortBy: upsort}
-        }else{
-          values = {name: search, sortBy: upsort, status: statsort}
-        }
-      }
-      axios.post('/project/condition', values).then((res) => setProjlist(res.data.projects))
-      .catch((error) => {});
-    }
+    //axios.post('/project/condition', {sortBy:"ascending"}).then((res) => setProjlist(res.data.projects))
+    //.catch((error) => {});
+    axios.get('/project/').then((res) => setProjlist(res.data.projects))
+    .catch((error) => {});
   }
 
   //calculating pagination
@@ -309,21 +311,16 @@ export default function ProjectList() {
 
   //updating function
   useEffect(()=>{
-    getAll().then(() => Project(1));
-  });
+    {projlist.length===0 ? (getAll()) : (updatelist())}});
 
   const handlePageClick =  (event, value) => {
     setCurpage(event.target.value);
-    Projects(event.target.value);
+    updatelist();
   }
 
   const handleSearch = (event, value) => {
-    setSearch(event.target.value);
-    //update???
-  }
-
-  const handleDelete = () => {
-
+    axios.post('/project/condition', {"name":event.target.value}).then((res) => setProjlist(res.data.projects))
+    setCurpage(1);
   }
 
   return(
@@ -371,7 +368,6 @@ export default function ProjectList() {
             root: classes.inputRoot,
             input: classes.inputInput,
           }}
-          value = {search}
           onChange = {handleSearch}
         />
       </div>
@@ -381,7 +377,7 @@ export default function ProjectList() {
 
       {/* List */}
       <Grid container spacing={4}>
-          {this.state.projlist.length > 0 ? (this.pList()) : (
+          {projlist.length > 0 ? (this.pList()) : (
           <Typography
             variant="h5"
             align="center"
@@ -395,7 +391,7 @@ export default function ProjectList() {
 
     <Container maxWidth="md">
       <Pagination 
-          count={totalPage}
+          count = {countPage()}
           page={curpage}
           hidePrevButton
           hideNextButton
@@ -409,8 +405,8 @@ export default function ProjectList() {
 
 /*const mapStateToProps = (state) => ({
   ...state,
-});*/
+});
 
 //export default connect(mapStateToProps)(withStyles(styles)(Profile));
 
-//export default (ProjectList);
+//export default (ProjectList); */
