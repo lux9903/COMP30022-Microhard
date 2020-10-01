@@ -94,7 +94,6 @@ function MyForm(props) {
                 state: props.state,
               }}
               onSubmit = {(values) => {props.submit(values); props.handleClose();}}
-
             >
               <Form width='100%'>
                 <Typography variant="body2"><br /></Typography>
@@ -114,7 +113,6 @@ function MyForm(props) {
                 <Typography variant="body2"><br /></Typography>
                 <Field as={TextField}
                        label="Position"
-                       variant="outlined"
                        name="position"
                        id="position"
                        fullWidth
@@ -122,7 +120,6 @@ function MyForm(props) {
                 <Typography variant="body2"><br /></Typography>
                 <Field as={TextField}
                        label="Company"
-                       variant="outlined"
                        name="company"
                        id="company"
                        fullWidth
@@ -130,7 +127,6 @@ function MyForm(props) {
                 <Typography variant="body2"><br /></Typography>
                 <Field as={TextField}
                        label="Description"
-                       variant="outlined"
                        name="description"
                        id="description"
                        fullWidth
@@ -147,7 +143,6 @@ function MyForm(props) {
                   variant="raised"
                   color="primary"
                   fullWidth
-
                 >
                   Submit
                 </Button>
@@ -237,8 +232,6 @@ function DeleteButton(props) {
 
 
 class MyAccordion extends Component {
-  handleEdit(e) {
-  }
   render() {
     return (
       <Accordion>
@@ -365,9 +358,12 @@ export default function Experience() {
     });
   }
 
+
+
   useEffect(() => {
     getExp().then(() => update());
   }, []);
+
 
   const onAddNewSubmit = (values) => {
     axios.post('/experience/create', values)
