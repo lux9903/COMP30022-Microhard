@@ -3,7 +3,7 @@ import {FormWizard} from 'react-material-formik-wizard';
 import AboutSectionStep from './AboutSectionStep';
 import BasicDetailsStep from './BasicDetailsStep';
 import ReviewStep from './ReviewStep';
-import {signUpUser} from '../../actions/userAction';
+import {signUpUser} from '../../../actions/userAction';
 import Alert from '@material-ui/lab/Alert';
 import {connect} from 'react-redux';
 import {CircularProgress} from '@material-ui/core';
