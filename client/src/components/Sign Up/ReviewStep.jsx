@@ -179,7 +179,7 @@ const ReviewStep = (props) => {
             </Typography>
           </Grid>
 
-          <Grid item xs={6} sm={3} md={12}>
+          <Grid item xs={6} sm={3} md={12} style={{whiteSpace: 'pre-wrap'}}>
             <Typography
               variant="h4"
               color="primary"

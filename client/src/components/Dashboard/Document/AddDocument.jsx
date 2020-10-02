@@ -57,6 +57,8 @@ export default function AddDocument(props) {
               name="file"
               onChange={props.onChange}
             />
+            Is Resume?
+            <input type="checkbox" id = "isResume"/>
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
