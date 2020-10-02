@@ -140,14 +140,7 @@ class ProjectList extends Component{
       <br/>
       <Container maxWidth="md">
         <Grid container spacing={4}>
-            {this.state.projlist.length > 0 ? (this.pList()) : (
-            <Typography
-              variant="h5"
-              align="center"
-            >
-              Loading...
-            </Typography>
-            )}
+          {this.pList()}
         </Grid>
       </Container>
     </Fragment>

@@ -260,14 +260,7 @@ class ProjectList extends Component{
         <AddButton/>
         <br/>
         <Grid container spacing={4}>
-            {this.state.projlist.length > 0 ? (this.pList()) : (
-            <Typography
-              variant="h5"
-              align="center"
-            >
-              No project yet
-            </Typography>
-            )}
+          {this.pList()}
         </Grid>
       </Container>
     </Fragment>
