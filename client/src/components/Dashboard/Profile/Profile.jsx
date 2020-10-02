@@ -290,7 +290,7 @@ class Profile extends Component {
                             className={classes.socialIcon}
                             target="_blank"
                         >
-                          <CopyToClipboard text={`http://localhost:3000/view/${user._id}`}
+                          <CopyToClipboard text={process.env.SHARE_LINK+`/view/${user._id}`}
                                            onCopy={() => this.setState({copied: true})}>
                             <ShareIcon />
                           </CopyToClipboard>

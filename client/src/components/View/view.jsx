@@ -305,7 +305,7 @@ class View extends Component {
                                                 className={classes.socialIcon}
                                                 target="_blank"
                                             >
-                                                <CopyToClipboard text={`http://localhost:3000/view/${view_user._id}`}
+                                                <CopyToClipboard text={process.env.SHARE_LINK+`/view/${view_user._id}`}
                                                                  onCopy={() => this.setState({copied: true})}>
                                                     <ShareIcon />
                                                 </CopyToClipboard>
