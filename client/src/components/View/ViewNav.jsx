@@ -58,7 +58,6 @@ class ViewNav extends Component {
     render() {
         const {classes} = this.props;
         const {user} = this.props.user;
-        console.log(user);
         const signOut = (e) => {
             e.preventDefault();
             window.location.reload(false);

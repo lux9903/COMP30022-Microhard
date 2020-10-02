@@ -19,6 +19,7 @@ import NoMatch from '../NoMatch';
 import View from  '../View/view'
 import ViewImage from '../View/ViewImage'
 import ViewDocument from '../View/ViewDocument'
+import ViewExperience from '../View/ViewExperience'
 
 class Main extends Component {
   render() {
@@ -31,6 +32,8 @@ class Main extends Component {
         <Route exact path ="/view/:id" component = {View} />
         <Route exact path ="/view/:id/image" component = {ViewImage} />
         <Route exact path ="/view/:id/document" component = {ViewDocument} />
+        <Route exact path ="/view/:id/course" component = {ViewDocument} />
+        <Route exact path ="/view/:id/experiences" component = {ViewExperience} />
 
 
         <PrivateHome exact path="/" authed={this.props.user} />

@@ -2,6 +2,7 @@ const viewRouter = require('express').Router();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Image = mongoose.model('Image');
+const Experience = require('../models/experienceModel');
 const conn = mongoose.createConnection(process.env.DATABASE);
 let gfs;
 const GridFsStorage = require('multer-gridfs-storage');
@@ -118,6 +119,17 @@ viewRouter.get('/:id/avatar',function(req,res){
         });
     });
 })
+
+viewRouter.get("/:id/experience", async (req,res)=>{
+    User.findById(req.params.id).then(async function(theuser){
+        const experiences = await Experience.find({user:theuser._id});
+        if(experiences){
+            return res.send(experiences);
+        }else{
+            return res.send("no");
+        }
+    });
+});
 
 
 module.exports = viewRouter;
