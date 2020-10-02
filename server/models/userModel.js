@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema(
     location: String,
     website: String,
     linkedin: String,
+    graduation: String,
     image: String,
     hash: String,
     salt: String,
@@ -103,6 +104,7 @@ UserSchema.methods.toAuthJSON = function () {
     location: this.location,
     website: this.website,
     linkedin: this.linkedin,
+    graduation: this.graduation,
     image:
       this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
   };

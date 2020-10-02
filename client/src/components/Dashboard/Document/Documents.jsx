@@ -16,7 +16,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
 
-class Document extends Component {
+class Documents extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +74,11 @@ class Document extends Component {
           <TableRow>
             <TableCell>{ele.title}</TableCell>
             <TableCell align="right">
-              <a href={ele.getFileLink} target="_blank">
+              <a
+                href={ele.getFileLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {ele.originalname}
               </a>
             </TableCell>
@@ -146,17 +150,9 @@ class Document extends Component {
             </Table>
           </TableContainer>
         </Container>
-        <div align="center">
-          <br />
-          <form name="editTitle" onSubmit={this.onEdit}>
-            <input type="text" name="id" required />
-            <input type="text" name="title" required />
-            <input type="submit" value="text" />
-          </form>
-        </div>
       </Fragment>
     );
   }
 }
 
-export default Document;
+export default Documents;

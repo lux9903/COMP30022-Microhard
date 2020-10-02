@@ -55,6 +55,9 @@ const updateUser = (req, res, next) => {
       if (typeof req.body.user.linkedin !== 'undefined') {
         user.linkedin = req.body.user.linkedin;
       }
+      if (typeof req.body.user.graduation !== 'undefined') {
+        user.graduation = req.body.user.graduation;
+      }
       if (typeof req.body.user.image !== 'undefined') {
         user.image = req.body.user.image;
       }
@@ -100,6 +103,13 @@ const signUpUser = (req, res, next) => {
   user.firstname = req.body.user.firstname;
   user.username = req.body.user.username;
   user.email = req.body.user.email;
+  user.major = req.body.user.major;
+  user.headline = req.body.user.headline;
+  user.aboutSection = req.body.user.aboutSection;
+  user.linkedin = req.body.user.linkedin;
+  user.location = req.body.user.location;
+  user.website = req.body.user.website;
+  user.graduation = req.body.user.graduation;
   user.setPassword(req.body.user.password);
 
   user

@@ -15,6 +15,7 @@ const pdfSchema = new Schema(
     filename: String,
     date: String,
     title: String,
+    isResume: Boolean,
   },
   {timestamps: true}
 );

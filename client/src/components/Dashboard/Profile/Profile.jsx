@@ -6,140 +6,153 @@ import ReactDOM from 'react-dom';
 import axios from '../../../helpers/axiosConfig';
 import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Gravatar from 'react-gravatar';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import EditIcon from '@material-ui/icons/Edit';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import {ReactPhotoCollage} from 'react-photo-collage';
-import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Alert from '@material-ui/lab/Alert';
 import ShareIcon from '@material-ui/icons/Share';
+import Avatar from '@material-ui/core/Avatar';
+import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
+import Popover from '@material-ui/core/Popover';
+import EditAvatar from '../EditAvatar';
+import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import SchoolIcon from '@material-ui/icons/School';
+import PublicIcon from '@material-ui/icons/Public';
+import Grow from '@material-ui/core/Grow';
+import PDFPreview from './PDFPreview';
+import ImageGrid from '../ImageGrid';
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
+    backgroundColor: theme.palette.primary.main,
+    marginTop: '-15px',
+    padding: '25px 0 150px 0',
   },
-  profileHeader: {
-    height: '280px',
-    backgroundColor: '#094183',
-    paddingTop: '45px',
-  },
-  profileText: {
-    color: '#fff',
+  personal: {
+    margin: '32px auto',
+    padding: '20px',
+    '& h1': {
+      paddingTop: '10px',
+      paddingBottom: '10px',
+    },
+    '& h4': {
+      paddingBottom: '10px',
+    },
     [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.secondary.main,
+      '& h1': {
+        textAlign: 'center',
+        paddingBottom: '10px',
+      },
+      '& h4': {
+        textAlign: 'center',
+        paddingBottom: '10px',
+      },
     },
   },
-  allImages: {
-    maxHeight: '300px',
-    padding: '0px 20px',
+  avatar: {
+    width: '170px',
+    height: '170px',
+    backgroundColor: '#F0F0F0',
   },
-  main: {
-    background: '#fff',
-    position: 'relative',
-    zIndex: '4',
+  primaryColor: {
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
   },
-  mainRaised: {
-    margin: '-60px 30px 0px',
-    borderRadius: '6px',
-    boxShadow:
-      '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
+  socialIcon: {
+    marginRight: '8px',
   },
-  title: {
-    display: 'inline-block',
-    position: 'relative',
-    marginTop: '30px',
-    minHeight: '32px',
-    textDecoration: 'none',
-    margin: '1.75rem 0 0 0.875rem',
-  },
-  profile: {
-    textAlign: 'center',
-    '& img': {
-      margin: '0 auto',
-      transform: 'translate3d(0, -50%, 0)',
-      objectFit: 'cover',
-      borderRadius: '50% !important',
-      height: '180px',
-      width: '180px',
+  socialIcons: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
     },
   },
-  fullName: {
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '700',
+  secondSection: {
+    margin: '32px auto',
+    padding: '20px 32px',
+    textAlign: 'left',
+    color: '#657786',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
-  major: {
-    marginTop: '5px',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '300',
+  locationIcon: {
+    position: 'relative',
+    top: '7px',
   },
-  aboutMe: {
-    margin: '1.071rem auto 1.071rem',
-    fontFamily: 'Nunito',
-    maxWidth: '800px',
-    color: '#555',
-    textAlign: 'center !important',
+  graduationIcon: {
+    position: 'relative',
+    top: '7px',
+    left: '-2px',
   },
-  imageCollage: {
-    margin: '0px auto 30px auto',
-    textAlign: 'center',
+  avatarSection: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
-  graduation: {
-    marginBottom: '10px',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '300',
-  },
-  headline: {
-    marginTop: '20px',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '300',
+  aboutSection: {
+    margin: '32px auto',
+    padding: '20px 32px',
   },
 });
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      file: null,
       copied: false,
     };
-  }
-  componentDidMount() {
-    const imgs = axios.get('/image').then((res) => {
-      if (res.data.files) {
-        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
-        const photodata = res.data.files.map(getPhoto);
-        function getPhoto(elem) {
-          return {src: '/api/image/' + elem.filename};
-        }
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
 
-        const setting = {
-          width: '500px',
-          height: ['170px', '170px'],
-          layout: [1, 4],
-          photos: photodata,
-          showNumOfRemainingPhotos: true,
-        };
-        let photogrid = (
-          <Container>
-            <Grid
-              container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justify="center"
-              style={{minHeight: '70vh'}}
-            >
-              <Grid item xs={12} md={12} sm={12}>
-                <ReactPhotoCollage {...setting} />
-              </Grid>
-            </Grid>
-          </Container>
+  }
+
+  onFormSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', this.state.file);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post('/avatar/upload', formData, config)
+      .then((response) => {
+        alert('The file is successfully uploaded');
+      })
+      .catch((error) => {});
+  }
+  onChange(e) {
+    this.setState({file: e.target.files[0]});
+  }
+
+  componentDidMount() {
+    const {classes} = this.props;
+    // Retrieve avatar image
+    const img = axios.get('/avatar').then((res) => {
+      if (res.data.files) {
+        const imgPic = res.data.files.map((ele) => (
+          <Avatar
+            alt="Nothing Here"
+            src={'/api/image/' + ele.filename}
+            className={classes.avatar}
+          />
+        ));
+        ReactDOM.render(imgPic, document.getElementById('avatar'));
+      } else {
+        const defaultAvatar = (
+          <Avatar
+            className={clsx(classes.primaryColor, classes.avatar)}
+            alt="default avatar"
+          >
+            UK
+          </Avatar>
         );
-        ReactDOM.render(photogrid, document.getElementById('all_img'));
+        ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
   }
@@ -147,53 +160,101 @@ class Profile extends Component {
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
-    console.log(user);
 
     return (
       <Fragment>
         <Helmet>
           <title>Microhard &middot; Profile </title>
         </Helmet>
-
-        <div style={{height: '250px', backgroundColor: '#094183'}} />
-
-        <div className={clsx(classes.main, classes.mainRaised)}>
-          <div>
-            <Container fixed>
-              <Grid justify="center" alignItems="center">
-                <Grid item xs={12} sm={12} md={12}>
-                  <div className={classes.profile}>
-                    <div>
-                      <Gravatar email={user.email} size={'2048px'} />
-                    </div>
-                    <div style={{marginTop: '-60px'}}>
-                      <Typography variant="h3" className={classes.fullName}>
-                        {user.firstname} {user.lastname}
-                      </Typography>
-                      <Typography variant="h6" className={classes.headline}>
-                        {user.headline}
-                      </Typography>
-                      <Typography variant="h6" className={classes.major}>
-                        {user.major}
-                      </Typography>
-                      <br />
-                      <Typography variant="h6" className={classes.graduation}>
-                        Graduation: June 2020
-                      </Typography>
-                      <Link to="/image">
-                        <IconButton aria-label="upload" color="secondary">
-                          <AttachFileIcon />
+        <div className={classes.root}>
+          <Container maxWidth="md">
+            <Grow in timeout={900}>
+              <Grid
+                container
+                component={Paper}
+                className={classes.personal}
+                spacing={(2, 0)}
+                elevation={3}
+              >
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={3}
+                  className={classes.avatarSection}
+                >
+                  <PopupState variant="popover" popupId="demo-popup-popover">
+                    {(popupState) => (
+                      <div>
+                        <IconButton
+                          aria-label="account of current user"
+                          aria-controls="menu-appbar"
+                          aria-haspopup="true"
+                          color="inherit"
+                        >
+                          <div id="avatar" {...bindTrigger(popupState)}></div>
                         </IconButton>
-                      </Link>
-                      <Link to="/editprofile">
-                        <IconButton aria-label="edit" color="secondary">
-                          <EditIcon />
-                        </IconButton>
-                      </Link>
-                      <IconButton href={'mailto:' + user.email}>
-                        <EmailIcon />
-                      </IconButton>
-                      <IconButton href="https://www.linkedin.com/">
+                        <Popover
+                          {...bindPopover(popupState)}
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                          }}
+                        >
+                          <EditAvatar
+                            onFormSubmit={this.onFormSubmit}
+                            onChange={this.onChange}
+                          />
+                        </Popover>
+                      </div>
+                    )}
+                  </PopupState>
+                </Grid>
+                <Grid item xs={12} sm={12} md={9}>
+                  <Typography variant="h1">
+                    {user.firstname} {user.lastname}
+                  </Typography>
+                  <Typography variant="h4">{user.headline}</Typography>
+                  <Typography variant="h4">{user.major}</Typography>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.socialIcons}
+                  >
+                    <Fab
+                      href={'mailto:' + user.email}
+                      size="small"
+                      color="secondary"
+                      aria-label="email"
+                      className={classes.socialIcon}
+                    >
+                      <EmailIcon />
+                    </Fab>
+                    {user.website && (
+                      <Fab
+                        color="secondary"
+                        size="small"
+                        href={user.website}
+                        className={classes.socialIcon}
+                        target="_blank"
+                      >
+                        <PublicIcon />
+                      </Fab>
+                    )}
+                    {user.linkedin && (
+                      <Fab
+                        color="secondary"
+                        size="small"
+                        href={user.linkedin}
+                        className={classes.socialIcon}
+                        target="_blank"
+                      >
                         <LinkedInIcon />
                       </IconButton>
                       <CopyToClipboard text={`http://localhost:3000/view/${user._id}`}
@@ -205,31 +266,89 @@ class Profile extends Component {
                       {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
                     </div>
                   </div>
+                      </Fab>
+                    )}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Container>
-
-            <div className={classes.aboutMe}>
-              <p>
-                <hr />
-                {user.aboutSection}
-              </p>
-            </div>
-            <Container>
-              <Grid justify="center">
+            </Grow>
+            <Grow in timeout={1100}>
+              {(user.location || user.graduation) && (
+                <Grid
+                  container
+                  component={Paper}
+                  className={classes.secondSection}
+                >
+                  <Grid item xs={12} sm={12} md={4}>
+                    {user.location && (
+                      <Typography variant="body1">
+                        <LocationOnOutlinedIcon
+                          className={classes.locationIcon}
+                        />{' '}
+                        {user.location}
+                      </Typography>
+                    )}
+                    {user.graduation && (
+                      <Typography variant="body1">
+                        <SchoolIcon className={classes.graduationIcon} />{' '}
+                        {user.graduation}
+                      </Typography>
+                    )}
+                  </Grid>
+                </Grid>
+              )}
+            </Grow>
+            <Grow in timeout={1300}>
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={11}>
+                  <Typography variant="h2" style={{paddingBottom: '10px'}}>
+                    About Me
+                  </Typography>
+                </Grid>
                 <Grid
                   item
                   xs={12}
                   sm={12}
                   md={12}
-                  className={classes.imageCollage}
+                  style={{whiteSpace: 'pre-wrap'}}
                 >
-                  <div id="all_img"></div>
+                  <Typography variant="body1">{user.aboutSection}</Typography>
                 </Grid>
               </Grid>
-              <br />
-            </Container>
-          </div>
+            </Grow>
+            <Grow in timeout={1500}>
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={12}>
+                  <Typography variant="h2">Photos</Typography>
+                </Grid>
+                <Grid item xs={12} sm={11} md={11}>
+                  <ImageGrid />
+                </Grid>
+              </Grid>
+            </Grow>
+            <Grow in timeout={1700}>
+              <Grid
+                container
+                component={Paper}
+                elevation={3}
+                className={classes.aboutSection}
+              >
+                <Grid item xs={12} sm={11} md={11}>
+                  <PDFPreview />
+                </Grid>
+              </Grid>
+            </Grow>
+          </Container>
         </div>
       </Fragment>
     );
