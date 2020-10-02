@@ -9,11 +9,11 @@ import SignIn from '../Account/SignIn';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
-import Image from '../Dashboard/Image';
+import Image from '../Dashboard/Photos/Image';
 import Project from '../Dashboard/Project/Project';
 import Projectex from '../Dashboard/Project/Project_example';
 import Documents from '../Dashboard/Document/Documents';
-import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
+import AddProfileContent from '../Sign Up/AddProfileContent';
 import Course from '../Dashboard/Course/Course';
 import NoMatch from '../NoMatch';
 

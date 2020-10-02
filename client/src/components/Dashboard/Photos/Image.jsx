@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
 import ReactDOM from 'react-dom';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -57,14 +57,14 @@ class Image extends Component {
           <br />
           <br />
           <Typography variant="h1" align="center" style={{color: '#fff'}}>
-            Images
+            Photos
           </Typography>
         </div>
 
         <div className={classes.root}>
           <Container>
             <Helmet>
-              <title>Microhard &middot; Images </title>
+              <title>Microhard &middot; Photos </title>
             </Helmet>
 
             <Grid
@@ -87,8 +87,6 @@ class Image extends Component {
                     <Button type="submit" color="primary" variant="contained">
                       Upload
                     </Button>
-
-          
                   </form>
                 </div>
               </Grid>

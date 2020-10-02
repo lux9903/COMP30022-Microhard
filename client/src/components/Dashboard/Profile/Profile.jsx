@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
-import EditAvatar from '../EditAvatar';
+import EditAvatar from './EditAvatar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
@@ -20,7 +20,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import PDFPreview from './PDFPreview';
-import ImageGrid from '../ImageGrid';
+import ImageGrid from '../Photos/ImageGrid';
 
 const styles = (theme) => ({
   root: {
@@ -151,19 +151,24 @@ class Profile extends Component {
       }
     });
 
-    const resume = axios.get('/pdf/').then((res)=>{
-      if(res.data.pdfs){
-        var resumeUrl = {getFileLink:"#"};
+    const resume = axios.get('/pdf/').then((res) => {
+      if (res.data.pdfs) {
+        var resumeUrl = {getFileLink: '#'};
         var ele;
-        for(ele of res.data.pdfs){
-          if(ele.isResume){
+        for (ele of res.data.pdfs) {
+          if (ele.isResume) {
             resumeUrl = ele;
             break;
           }
         }
-        if(resumeUrl){
-          const resumeLink = <a href = {resumeUrl.getFileLink} target="_blank"> resume </a>
-          ReactDOM.render(resumeLink, document.getElementById("resume"));
+        if (resumeUrl) {
+          const resumeLink = (
+            <a href={resumeUrl.getFileLink} target="_blank">
+              {' '}
+              resume{' '}
+            </a>
+          );
+          ReactDOM.render(resumeLink, document.getElementById('resume'));
         }
       }
     });
@@ -351,11 +356,8 @@ class Profile extends Component {
             </Grow>
           </Container>
         </div>
-        <h1>
-        Here
-        </h1>
-        <div id ="resume">
-        </div>
+        <h1>Here</h1>
+        <div id="resume"></div>
       </Fragment>
     );
   }
