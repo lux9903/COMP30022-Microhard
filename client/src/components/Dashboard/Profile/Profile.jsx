@@ -290,7 +290,7 @@ class Profile extends Component {
                             className={classes.socialIcon}
                             target="_blank"
                         >
-                          <CopyToClipboard text={process.env.SHARE_LINK+`/view/${user._id}`}
+                          <CopyToClipboard text={`https://comp30022-microhard.herokuapp.com`+`/view/${user._id}`}
                                            onCopy={() => this.setState({copied: true})}>
                             <ShareIcon />
                           </CopyToClipboard>
