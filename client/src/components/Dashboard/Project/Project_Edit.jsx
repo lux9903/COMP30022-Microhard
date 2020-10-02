@@ -1,8 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router";
 import {Helmet} from 'react-helmet';
-import axios from '../../helpers/axiosConfig';
-import { Link } from 'react-router-dom';
+import axios from '../../../helpers/axiosConfig';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
