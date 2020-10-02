@@ -101,14 +101,16 @@ function AddButton(props) {
     setOpen(false);
   };
   const onSubmit = (values) => {
-    axios.post('/project/create', values).then(() => setOpen(false)).catch(() => {});
+    let url= '/project/create';
+    axios.post(url, values).then(() => setOpen(false))
+      .catch(() => {});
   };
   return (
     <div>
       <Button size="small" variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>
         <MyForm open={open} update={props.update} handleClose={handleClose}
                 title='Add a project' submit={onSubmit} 
-        />
+      />
     </div>
   )
 }
@@ -187,11 +189,20 @@ class ProjectList extends Component{
     super(props);
     //this.getAllProject = this.getAllProject.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
+    //this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
     this.pList = this.pList.bind(this);
     this.state = {
       projlist : [],
     };
+  }
+  onFormSubmit(e){
+		e.preventDefault();
+		let formD = {
+      "name":document.forms.namedItem("create")["name"]["value"],
+      "description":document.forms.namedItem("create")["description"]["value"]
+		}
+		axios.post('/project/create', formD);
   }
 
   handleStatusChange = (stat) => {
@@ -211,7 +222,9 @@ class ProjectList extends Component{
     .catch((error) => {});
   }
 	componentDidMount(){
-    axios.get('/project/').then((res) => {this.setState({projlist: res.data.projects});})
+    axios.get('/project/').then((res) => {
+      this.setState({projlist: res.data.projects});
+    })
     .catch((error) => {});
   }
 	render(){
