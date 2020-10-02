@@ -75,8 +75,7 @@ const getAllPdf = (req, res) => {
           getFileLink: '/api/pdf/' + ele.filename,
           deleteFileLink: '/pdf/' + ele.fileId,
           date : ele.date,
-          title: ele.title,
-          isResume: ele.isResume,
+          title: ele.title
         });
       }
       return res.json({pdfs: result});
@@ -119,5 +118,4 @@ module.exports = {
   getAllPdf,
   deletePdf,
   updateTitle,
-  gfs,
 };

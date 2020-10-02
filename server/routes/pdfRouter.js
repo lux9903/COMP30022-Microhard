@@ -10,15 +10,6 @@ const Pdf = require('../models/pdfModel');
 
 const User = mongoose.model('User');
 
-const Grid = require('gridfs-stream');
-const conn = mongoose.createConnection(process.env.DATABASE);
-let gfs;
-conn.once('open', () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads');
-});
-
 // : /api/pdf
 
 // upload a single pdf to the database :/upload
@@ -51,10 +42,9 @@ pdfRouter.post(
   auth.optional,
   pdfController.upload.single('file'),
   (req, res) => {
-    User.findById(req.payload.id).then(async function (user) {
-      console.log(req.name);
+    User.findById(req.payload.id).then( async function (user) {
+      //console.log(req.name);
       const resume = await Pdf.findOne({user: user,isResume:true});
-      
       if(resume){
         Pdf.deleteOne({_id:resume._id}, (err) => {
           if (err) {
@@ -67,6 +57,9 @@ pdfRouter.post(
           });
       });
       }
+
+
+
 
       const pdf = new Pdf();
       pdf.user = user;
