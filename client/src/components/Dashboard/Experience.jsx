@@ -274,7 +274,7 @@ class MyAccordion extends Component {
 
 const RadioButton = ({field, ...props}) => {
   let defVal = props.state;
-  if(defVal === undefined) {defVal ="going"}
+  //if(defVal === undefined) {defVal ="going"}
   return(
     <RadioGroup
       {...field}
