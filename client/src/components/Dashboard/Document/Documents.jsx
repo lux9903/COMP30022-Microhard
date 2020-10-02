@@ -46,12 +46,20 @@ class Documents extends Component {
         'content-type': 'multipart/form-data',
       },
     };
+    
+    var base = '';
     var url = '';
-    if (document.getElementById('title').value.trim() !== '') {
-      url = '/pdf/upload/' + document.getElementById('title').value;
-    } else {
-      url = '/pdf/upload/' + 'UNKNOWN';
+    if(document.getElementById('isResume').checked){
+      base = '/pdf/upload/resume/';
+    }else{
+      base = '/pdf/upload/';
     }
+    if (document.getElementById('title').value.trim() !== '') {
+      url = base + document.getElementById('title').value;
+    } else {
+      url = base + 'UNKNOWN';
+    }
+    
     axios
       .post(url, formData, config)
       .then((response) => {

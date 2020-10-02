@@ -118,4 +118,5 @@ module.exports = {
   getAllPdf,
   deletePdf,
   updateTitle,
+  gfs,
 };
