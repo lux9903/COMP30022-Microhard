@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
-
 import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';

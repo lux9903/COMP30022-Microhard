@@ -292,12 +292,19 @@ class View extends Component {
                                                 <LinkedInIcon />
                                             </Fab>
                                         )}
-                                        <CopyToClipboard text={`http://localhost:3000/view/${view_user._id}`}
-                                                         onCopy={() => this.setState({copied: true})}>
-                                            <IconButton>
-                                                <ShareIcon />
-                                            </IconButton>
-                                        </CopyToClipboard>
+                                        {view_user._id && (
+                                            <Fab
+                                                color="secondary"
+                                                size="small"
+                                                className={classes.socialIcon}
+                                                target="_blank"
+                                            >
+                                                <CopyToClipboard text={`http://localhost:3000/view/${view_user._id}`}
+                                                                 onCopy={() => this.setState({copied: true})}>
+                                                    <ShareIcon />
+                                                </CopyToClipboard>
+                                            </Fab>
+                                        )}
                                         {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
                                     </Grid>
                                 </Grid>
