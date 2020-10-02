@@ -19,8 +19,8 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
-import PDFPreview from './PDFPreview';
 import ImageGrid from '../Photos/ImageGrid';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 const styles = (theme) => ({
   root: {
@@ -342,22 +342,23 @@ class Profile extends Component {
                 </Grid>
               </Grid>
             </Grow>
-            <Grow in timeout={1700}>
+            <Grow in timeout={1500}>
               <Grid
                 container
                 component={Paper}
                 elevation={3}
                 className={classes.aboutSection}
               >
+                <Grid item xs={12} sm={11} md={12}>
+                  <Typography variant="h2">Resume</Typography>
+                </Grid>
                 <Grid item xs={12} sm={11} md={11}>
-                  <PDFPreview />
+                  <div id="resume"></div>
                 </Grid>
               </Grid>
             </Grow>
           </Container>
         </div>
-        <h1>Here</h1>
-        <div id="resume"></div>
       </Fragment>
     );
   }
