@@ -10,7 +10,7 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project/ProjectList_Edit';
+import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/Project_Edit';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
