@@ -14,16 +14,14 @@ import Alert from '@material-ui/lab/Alert';
 import ShareIcon from '@material-ui/icons/Share';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
-import Popover from '@material-ui/core/Popover';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Gallery from 'react-grid-gallery';
-import {Document, Page, pdfjs} from 'react-pdf';
 import ViewNav from './ViewNav';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
     root: {
@@ -189,21 +187,29 @@ class View extends Component {
                 ReactDOM.render(photogrid, document.getElementById('all_img'));
             }
         });
-
-        const pdf = axios.get(`/view/${user_id}/pdf`).then((res) => {
-            const {numPages, pageNumber} = this.state;
+        const resume = axios.get(`/view/${user_id}/pdf`).then((res) => {
             if (res.data.pdfs) {
-                if (res.data.pdfs[0]){
-                    this.setState({fileLink:res.data.pdfs[0].getFileLink})
-                    const links = res.data.pdfs.map((ele)=>(
-                        <div>
-                            <h1> Switch to : {ele.title} </h1>
-                            <button onClick = {()=> this.setState({fileLink:ele.getFileLink})}> click to switch </button>
-                        </div>
-                    ));
-                    ReactDOM.render(links,document.getElementById('links'));
+                var resumeUrl = {getFileLink: '#'};
+                var ele;
+                for (ele of res.data.pdfs) {
+                    if (ele.isResume) {
+                        resumeUrl = ele;
+                        break;
+                    }
                 }
-
+                console.log(resumeUrl);
+                if (resumeUrl) {
+                    const resumeLink = (
+                        <a
+                            href={resumeUrl.getFileLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Resume
+                        </a>
+                    );
+                    ReactDOM.render(resumeLink, document.getElementById('resume'));
+                }
             }
         });
     }
@@ -331,6 +337,11 @@ class View extends Component {
                                             </Typography>
                                         )}
                                     </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <Button variant="outlined" color="primary" fullWidth>
+                                            <div id="resume"></div>
+                                        </Button>
+                                    </Grid>
                                 </Grid>
                             )}
                             <Grid
@@ -365,34 +376,6 @@ class View extends Component {
                                 </Grid>
                                 <Grid item xs={12} sm={11} md={11}>
                                     <div id="all_img"></div>
-                                </Grid>
-                            </Grid>
-                            <Grid
-                                container
-                                component={Paper}
-                                elevation={3}
-                                className={classes.aboutSection}
-                            >
-                                <Grid item xs={12} sm={11} md={11}>
-                                    <div id ="links">
-                                    </div>
-                                    <nav>
-                                        <button onClick={this.previousPage}>Prev</button>
-                                        <button onClick={this.nextPage}>Next</button>
-                                    </nav>
-
-                                    <div style={{width: 400}}>
-                                        <Document
-                                            file={this.state.fileLink}
-                                            onLoadSuccess={this.onDocumentLoadSuccess}
-                                        >
-                                            <Page pageNumber={this.state.pageNumber} width={600} />
-
-                                            <p>
-                                                Page {this.state.pageNumber} of {this.state.numPages}
-                                            </p>
-                                        </Document>
-                                    </div>
                                 </Grid>
                             </Grid>
                     </Container>
