@@ -100,6 +100,8 @@ function AddButton(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  
   const onSubmit = (values) => {
     axios.post('/project/create', values).then(() => setOpen(false)).catch(() => {});
   };
