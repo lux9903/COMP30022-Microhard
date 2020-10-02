@@ -29,6 +29,48 @@ pdfRouter.post(
       const m = date.getMonth() + 1;
       pdf.date = date.getDate() + "/" + m + "/" + date.getFullYear();
       pdf.title = req.params.title;
+      pdf.isResume = false;
+      pdf.save();
+      return res.send(pdf.fileId);
+    });
+  }
+);
+
+//upload resume
+pdfRouter.post(
+  '/upload/resume/:title',
+  auth.optional,
+  pdfController.upload.single('file'),
+  (req, res) => {
+    User.findById(req.payload.id).then( async function (user) {
+      //console.log(req.name);
+      const resume = await Pdf.findOne({user: user._id,isResume:true});
+      if(resume){
+        Pdf.deleteOne({_id:resume._id}, (err) => {
+          if (err) {
+            return res.status(404).json({err: 'Relation does not exist'});
+          }
+          gfs.remove({_id: resume.fileId, root: 'uploads'}, (err, gridsStore) => {
+          if (err) {
+            return res.status(404).json({err});
+          }
+          });
+      });
+      }
+
+
+
+
+      const pdf = new Pdf();
+      pdf.user = user;
+      pdf.fileId = req.file.id;
+      pdf.originalName = req.file.originalname;
+      pdf.filename = req.file.filename;
+      const date = new Date();
+      const m = date.getMonth() + 1;
+      pdf.date = date.getDate() + "/" + m + "/" + date.getFullYear();
+      pdf.title = req.params.title;
+      pdf.isResume = true;
       pdf.save();
       return res.send(pdf.fileId);
     });
