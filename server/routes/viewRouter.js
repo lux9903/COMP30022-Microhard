@@ -8,6 +8,7 @@ let gfs;
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const Pdf = require('../models/pdfModel');
+const Course = require('../models/courseModel');
 conn.once('open',() => {
     //Init stream
     gfs = Grid(conn.db, mongoose.mongo);
@@ -129,6 +130,14 @@ viewRouter.get("/:id/experience", async (req,res)=>{
             return res.send("no");
         }
     });
+});
+var _ = require('underscore');
+viewRouter.get('/:id/course',(req,res)=>{
+    User.findById(req.params.id).then(async (user)=>{
+        const course = await Course.find({user:user});
+        //console.log(_.groupBy(course,"year"));
+        return res.json({"course":_.groupBy(course,"year")});
+    })
 });
 
 
