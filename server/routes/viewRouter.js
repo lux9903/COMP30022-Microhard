@@ -34,7 +34,7 @@ viewRouter.get('/:id/image',function(req,res,next){
         if (!user){
             return res.sendStatus(401).send('The user does not exist.');
         }
-        Image.find({user: user._id}).distinct('fileId').then(function(image){
+        Image.find({user: user._id, type: { $exists: false }}).distinct('fileId').then(function(image){
             console.log(image);
             gfs.files.find({_id: {$in: image}}).toArray((err,files)=>{
                 if(!files || files.length ===0){
@@ -81,6 +81,40 @@ viewRouter.get('/:id/pdf',function(req,res){
                 });
             }
             return res.json({pdfs: result});
+        });
+    });
+})
+
+
+viewRouter.get('/:id/avatar',function(req,res){
+    User.findById(req.params.id).then(function(user){
+        if (!user){
+            return res.sendStatus(401).send('The user does not exist.');
+        }
+        Image.find({user: user._id, type: 'avatar'}).distinct('fileId').then(function(image){
+            gfs.files.find({_id: {$in: image}}).toArray((err,files)=>{
+                if(!files || files.length ===0){
+                    return res.json({
+                        files: false
+                    });
+                }else{
+                    files.map(file=>{
+                        if(file.contentType ==="image/jpeg" || file.contentType === 'image/png')
+                        {
+                            file.isImage = true;
+                        } else {
+                            file.isImage = false;
+                        }
+                    });
+                    var imgObj = [];
+                    for(file of files){
+                        if(file.isImage){
+                            imgObj.push(file);
+                        }
+                    }
+                    return res.json({'files':imgObj});
+                }
+            });
         });
     });
 })

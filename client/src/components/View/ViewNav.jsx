@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import logo from '../../components/Navigation/logo.png';
-import Gravatar from 'react-gravatar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Button from '@material-ui/core/Button';
@@ -13,6 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import {signOutUser} from '../../actions/userAction';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const styles = (theme) => ({
     button: {
@@ -38,6 +38,9 @@ const styles = (theme) => ({
     },
     title: {
         flexGrow: 1,
+    },
+    icon: {
+        color: theme.palette.primary.main,
     },
     noDecoration: {
         textDecoration: 'none !important',
@@ -93,19 +96,11 @@ class ViewNav extends Component {
                 <PopupState variant="popover" popupId="demo-popup-popover">
                     {(popupState) => (
                         <div>
-                            <IconButton
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                color="inherit"
-                            >
-                                <Gravatar
-                                    email={user.email}
-                                    size={32}
-                                    className="nav-avatar"
-                                    {...bindTrigger(popupState)}
-                                />
-                            </IconButton>
+                            <AccountCircleIcon
+                                {...bindTrigger(popupState)}
+                                fontSize="large"
+                                className={classes.icon}
+                            />
                             <Popover
                                 {...bindPopover(popupState)}
                                 anchorOrigin={{

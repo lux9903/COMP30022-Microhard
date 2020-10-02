@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import ViewNav from './ViewNav';
+import Gallery from 'react-grid-gallery';
 
 const styles = (theme) => ({
     root: {
@@ -32,17 +33,42 @@ class ViewImage extends Component {
         const view_user = axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
-        const imgs = axios.get(`/view/${user_id}/image`).then((res) => {
-            if (res.data.files) {
-                const imgPic = res.data.files.map((ele) => (
-                    <img
-                        src={'/api/image/' + ele.filename}
-                        alt={'/image/' + ele.filename}
-                    />
-                ));
-                ReactDOM.render(imgPic, document.getElementById('all_img'));
-            }
-        });
+                const imgs = axios.get(`/view/${user_id}/image`).then((res) => {
+                    if (res.data.files) {
+                        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
+                        const photodata = res.data.files.map(getPhoto);
+                        function getPhoto(elem) {
+                            return {
+                                src: '/api/image/' + elem.filename,
+                                thumbnail: '/api/image/' + elem.filename,
+                                thumbnailWidth: 340,
+                                thumbnailHeight: 250,
+                            };
+                        }
+
+                        let photogrid = (
+                            <Container>
+                                <div
+                                    style={{
+                                        display: 'block',
+                                        minHeight: '1px',
+                                        width: '100%',
+                                        border: '1px solid #ddd',
+                                        overflow: 'auto',
+                                    }}
+                                >
+                                    <Gallery
+                                        maxRows={5}
+                                        images={photodata}
+                                        enableLightbox={true}
+                                        enableImageSelection={false}
+                                    />
+                                </div>
+                            </Container>
+                        );
+                        ReactDOM.render(photogrid, document.getElementById('all_img'));
+                    }
+                });
     }
 
     render() {

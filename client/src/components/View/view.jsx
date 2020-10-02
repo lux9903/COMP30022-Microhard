@@ -6,97 +6,95 @@ import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
 import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Gravatar from 'react-gravatar';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import EditIcon from '@material-ui/icons/Edit';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import {ReactPhotoCollage} from 'react-photo-collage';
-import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import ViewNav from './ViewNav';
-import ShareIcon from '@material-ui/icons/Share';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Alert from '@material-ui/lab/Alert';
+import ShareIcon from '@material-ui/icons/Share';
+import Avatar from '@material-ui/core/Avatar';
+import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
+import Popover from '@material-ui/core/Popover';
+import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import SchoolIcon from '@material-ui/icons/School';
+import PublicIcon from '@material-ui/icons/Public';
+import Gallery from 'react-grid-gallery';
+import {Document, Page, pdfjs} from 'react-pdf';
+import ViewNav from './ViewNav';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const styles = (theme) => ({
     root: {
-        flexGrow: 1,
+        backgroundColor: theme.palette.primary.main,
+        marginTop: '-15px',
+        padding: '25px 0 150px 0',
     },
-    profileHeader: {
-        height: '280px',
-        backgroundColor: '#094183',
-        paddingTop: '45px',
-    },
-    profileText: {
-        color: '#fff',
+    personal: {
+        margin: '32px auto',
+        padding: '20px',
+        '& h1': {
+            paddingTop: '10px',
+            paddingBottom: '10px',
+        },
+        '& h4': {
+            paddingBottom: '10px',
+        },
         [theme.breakpoints.down('sm')]: {
-            backgroundColor: theme.palette.secondary.main,
+            '& h1': {
+                textAlign: 'center',
+                paddingBottom: '10px',
+            },
+            '& h4': {
+                textAlign: 'center',
+                paddingBottom: '10px',
+            },
         },
     },
-    allImages: {
-        maxHeight: '300px',
-        padding: '0px 20px',
+    avatar: {
+        width: '170px',
+        height: '170px',
+        backgroundColor: '#F0F0F0',
     },
-    main: {
-        background: '#fff',
-        position: 'relative',
-        zIndex: '4',
+    primaryColor: {
+        color: theme.palette.primary.contrastText,
+        backgroundColor: theme.palette.primary.main,
     },
-    mainRaised: {
-        margin: '-60px 30px 0px',
-        borderRadius: '6px',
-        boxShadow:
-            '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
+    socialIcon: {
+        marginRight: '8px',
     },
-    title: {
-        display: 'inline-block',
-        position: 'relative',
-        marginTop: '30px',
-        minHeight: '32px',
-        textDecoration: 'none',
-        margin: '1.75rem 0 0 0.875rem',
-    },
-    profile: {
-        textAlign: 'center',
-        '& img': {
-            margin: '0 auto',
-            transform: 'translate3d(0, -50%, 0)',
-            objectFit: 'cover',
-            borderRadius: '50% !important',
-            height: '180px',
-            width: '180px',
+    socialIcons: {
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
         },
     },
-    fullName: {
-        fontFamily: 'Lato, sans-serif',
-        fontWeight: '700',
+    secondSection: {
+        margin: '32px auto',
+        padding: '20px 32px',
+        textAlign: 'left',
+        color: '#657786',
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        },
     },
-    major: {
-        marginTop: '5px',
-        fontFamily: 'Lato, sans-serif',
-        fontWeight: '300',
+    locationIcon: {
+        position: 'relative',
+        top: '7px',
     },
-    aboutMe: {
-        margin: '1.071rem auto 1.071rem',
-        fontFamily: 'Nunito',
-        maxWidth: '800px',
-        color: '#555',
-        textAlign: 'center !important',
+    graduationIcon: {
+        position: 'relative',
+        top: '7px',
+        left: '-2px',
     },
-    imageCollage: {
-        margin: '0px auto 30px auto',
-        textAlign: 'center',
+    avatarSection: {
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        },
     },
-    graduation: {
-        marginBottom: '10px',
-        fontFamily: 'Lato, sans-serif',
-        fontWeight: '300',
-    },
-    headline: {
-        marginTop: '20px',
-        fontFamily: 'Lato, sans-serif',
-        fontWeight: '300',
+    aboutSection: {
+        margin: '32px auto',
+        padding: '20px 32px',
     },
 });
 
@@ -107,46 +105,105 @@ class View extends Component {
         this.state = {
             view_user :"default",
             copied: false,
+            file: null,
+            numPages: null,
+            pageNumber: 1,
+            fileLink: ""
         };
     }
+    onDocumentLoadSuccess = async ({ numPages }) => {
+
+        await this.setState({numPages:numPages});
+        await this.setState({pageNumber:1});
+    };
+
+    previousPage = () =>
+        this.setState((state) => ({pageNumber: state.pageNumber - 1}));
+    nextPage = () =>
+        this.setState((state) => ({pageNumber: state.pageNumber + 1}));
+
+
     componentDidMount() {
+        const {classes} = this.props;
         const user_id = this.props.match.params.id
 
         const view_user = axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
 
+        const avatar = axios.get(`/view/${user_id}/avatar`).then((res) => {
+            if (res.data.files) {
+                const imgPic = res.data.files.map((ele) => (
+                    <Avatar
+                        alt="Nothing Here"
+                        src={'/api/image/' + ele.filename}
+                        className={classes.avatar}
+                    />
+                ));
+                ReactDOM.render(imgPic, document.getElementById('avatar'));
+            } else {
+                const defaultAvatar = (
+                    <Avatar
+                        className={clsx(classes.primaryColor, classes.avatar)}
+                        alt="default avatar"
+                    >
+                        UK
+                    </Avatar>
+                );
+                ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
+            }
+        });
         const imgs = axios.get(`/view/${user_id}/image`).then((res) => {
             if (res.data.files) {
+                //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
                 const photodata = res.data.files.map(getPhoto);
                 function getPhoto(elem) {
-                    return {src: '/api/image/' + elem.filename};
+                    return {
+                        src: '/api/image/' + elem.filename,
+                        thumbnail: '/api/image/' + elem.filename,
+                        thumbnailWidth: 340,
+                        thumbnailHeight: 250,
+                    };
                 }
 
-                const setting = {
-                    width: '500px',
-                    height: ['170px', '170px'],
-                    layout: [1, 4],
-                    photos: photodata,
-                    showNumOfRemainingPhotos: true,
-                };
                 let photogrid = (
                     <Container>
-                        <Grid
-                            container
-                            spacing={0}
-                            direction="column"
-                            alignItems="center"
-                            justify="center"
-                            style={{minHeight: '70vh'}}
+                        <div
+                            style={{
+                                display: 'block',
+                                minHeight: '1px',
+                                width: '100%',
+                                border: '1px solid #ddd',
+                                overflow: 'auto',
+                            }}
                         >
-                            <Grid item xs={12} md={12} sm={12}>
-                                <ReactPhotoCollage {...setting} />
-                            </Grid>
-                        </Grid>
+                            <Gallery
+                                maxRows={5}
+                                images={photodata}
+                                enableLightbox={true}
+                                enableImageSelection={false}
+                            />
+                        </div>
                     </Container>
                 );
                 ReactDOM.render(photogrid, document.getElementById('all_img'));
+            }
+        });
+
+        const pdf = axios.get(`/view/${user_id}/pdf`).then((res) => {
+            const {numPages, pageNumber} = this.state;
+            if (res.data.pdfs) {
+                if (res.data.pdfs[0]){
+                    this.setState({fileLink:res.data.pdfs[0].getFileLink})
+                    const links = res.data.pdfs.map((ele)=>(
+                        <div>
+                            <h1> Switch to : {ele.title} </h1>
+                            <button onClick = {()=> this.setState({fileLink:ele.getFileLink})}> click to switch </button>
+                        </div>
+                    ));
+                    ReactDOM.render(links,document.getElementById('links'));
+                }
+
             }
         });
     }
@@ -160,79 +217,178 @@ class View extends Component {
                 <Helmet>
                     <title>Microhard &middot; Profile </title>
                 </Helmet>
-
-                <div style={{height: '250px', backgroundColor: '#094183'}} />
-
-                <div className={clsx(classes.main, classes.mainRaised)}>
-                    <div>
-                        <Container fixed>
-                            <Grid justify="center" alignItems="center">
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <div className={classes.profile}>
-                                        <div>
-                                            <Gravatar email={view_user.email} size={'2048px'} />
-                                        </div>
-                                        <div style={{marginTop: '-60px'}}>
-                                            <Typography variant="h3" className={classes.fullName}>
-                                                {view_user.firstname} {view_user.lastname}
-                                            </Typography>
-                                            <Typography variant="h6" className={classes.headline}>
-                                                {view_user.headline}
-                                            </Typography>
-                                            <Typography variant="h6" className={classes.major}>
-                                                {view_user.major}
-                                            </Typography>
-                                            <br />
-                                            <Typography variant="h6" className={classes.graduation}>
-                                                Graduation: June 2020
-                                            </Typography>
-                                            <Link to={`/view/${view_user._id}/image`}>
-                                                <IconButton aria-label="upload" color="secondary">
-                                                    <AttachFileIcon />
+                <div className={classes.root}>
+                    <Container maxWidth="md">
+                            <Grid
+                                container
+                                component={Paper}
+                                className={classes.personal}
+                                spacing={(2, 0)}
+                                elevation={3}
+                            >
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={3}
+                                    className={classes.avatarSection}
+                                >
+                                    <PopupState variant="popover" popupId="demo-popup-popover">
+                                        {(popupState) => (
+                                            <div>
+                                                <IconButton
+                                                    aria-label="account of current user"
+                                                    aria-controls="menu-appbar"
+                                                    aria-haspopup="true"
+                                                    color="inherit"
+                                                >
+                                                    <div id="avatar" {...bindTrigger(popupState)}></div>
                                                 </IconButton>
-                                            </Link>
-                                            <IconButton href={'mailto:' + view_user.email}>
-                                                <EmailIcon />
-                                            </IconButton>
-                                            <IconButton href="https://www.linkedin.com/">
+                                            </div>
+                                        )}
+                                    </PopupState>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={9}>
+                                    <Typography variant="h1">
+                                        {view_user.firstname} {view_user.lastname}
+                                    </Typography>
+                                    <Typography variant="h4">{view_user.headline}</Typography>
+                                    <Typography variant="h4">{view_user.major}</Typography>
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        className={classes.socialIcons}
+                                    >
+                                        <Fab
+                                            href={'mailto:' + view_user.email}
+                                            size="small"
+                                            color="secondary"
+                                            aria-label="email"
+                                            className={classes.socialIcon}
+                                        >
+                                            <EmailIcon />
+                                        </Fab>
+                                        {view_user.website && (
+                                            <Fab
+                                                color="secondary"
+                                                size="small"
+                                                href={view_user.website}
+                                                className={classes.socialIcon}
+                                                target="_blank"
+                                            >
+                                                <PublicIcon />
+                                            </Fab>
+                                        )}
+                                        {view_user.linkedin && (
+                                            <Fab
+                                                color="secondary"
+                                                size="small"
+                                                href={view_user.linkedin}
+                                                className={classes.socialIcon}
+                                                target="_blank"
+                                            >
                                                 <LinkedInIcon />
+                                            </Fab>
+                                        )}
+                                        <CopyToClipboard text={`http://localhost:3000/view/${view_user._id}`}
+                                                         onCopy={() => this.setState({copied: true})}>
+                                            <IconButton>
+                                                <ShareIcon />
                                             </IconButton>
-                                            <CopyToClipboard text={`http://localhost:3000/view/${view_user._id}`}
-                                                             onCopy={() => this.setState({copied: true})}>
-                                                <IconButton>
-                                                    <ShareIcon />
-                                                </IconButton>
-                                            </CopyToClipboard>
-                                            {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
-
-
-                                        </div>
-                                    </div>
+                                        </CopyToClipboard>
+                                        {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Container>
-
-                        <div className={classes.aboutMe}>
-                            <p>
-                                <hr />
-                                {view_user.aboutSection}
-                            </p>
-                        </div>
-                        <Container>
-                            <Grid justify="center">
+                            {(view_user.location || view_user.graduation) && (
+                                <Grid
+                                    container
+                                    component={Paper}
+                                    className={classes.secondSection}
+                                >
+                                    <Grid item xs={12} sm={12} md={4}>
+                                        {view_user.location && (
+                                            <Typography variant="body1">
+                                                <LocationOnOutlinedIcon
+                                                    className={classes.locationIcon}
+                                                />{' '}
+                                                {view_user.location}
+                                            </Typography>
+                                        )}
+                                        {view_user.graduation && (
+                                            <Typography variant="body1">
+                                                <SchoolIcon className={classes.graduationIcon} />{' '}
+                                                {view_user.graduation}
+                                            </Typography>
+                                        )}
+                                    </Grid>
+                                </Grid>
+                            )}
+                            <Grid
+                                container
+                                component={Paper}
+                                elevation={3}
+                                className={classes.aboutSection}
+                            >
+                                <Grid item xs={12} sm={11} md={11}>
+                                    <Typography variant="h2" style={{paddingBottom: '10px'}}>
+                                        About Me
+                                    </Typography>
+                                </Grid>
                                 <Grid
                                     item
                                     xs={12}
                                     sm={12}
                                     md={12}
-                                    className={classes.imageCollage}
+                                    style={{whiteSpace: 'pre-wrap'}}
                                 >
+                                    <Typography variant="body1">{view_user.aboutSection}</Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid
+                                container
+                                component={Paper}
+                                elevation={3}
+                                className={classes.aboutSection}
+                            >
+                                <Grid item xs={12} sm={11} md={12}>
+                                    <Typography variant="h2">Photos</Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={11} md={11}>
                                     <div id="all_img"></div>
                                 </Grid>
                             </Grid>
-                            <br />
-                        </Container>
-                    </div>
+                            <Grid
+                                container
+                                component={Paper}
+                                elevation={3}
+                                className={classes.aboutSection}
+                            >
+                                <Grid item xs={12} sm={11} md={11}>
+                                    <div id ="links">
+                                    </div>
+                                    <nav>
+                                        <button onClick={this.previousPage}>Prev</button>
+                                        <button onClick={this.nextPage}>Next</button>
+                                    </nav>
+
+                                    <div style={{width: 400}}>
+                                        <Document
+                                            file={this.state.fileLink}
+                                            onLoadSuccess={this.onDocumentLoadSuccess}
+                                        >
+                                            <Page pageNumber={this.state.pageNumber} width={600} />
+
+                                            <p>
+                                                Page {this.state.pageNumber} of {this.state.numPages}
+                                            </p>
+                                        </Document>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                    </Container>
                 </div>
             </Fragment>
         );

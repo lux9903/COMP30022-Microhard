@@ -256,7 +256,8 @@ class Profile extends Component {
                         target="_blank"
                       >
                         <LinkedInIcon />
-                      </IconButton>
+                      </Fab>
+                    )}
                       <CopyToClipboard text={`http://localhost:3000/view/${user._id}`}
                                        onCopy={() => this.setState({copied: true})}>
                         <IconButton>
@@ -264,10 +265,6 @@ class Profile extends Component {
                         </IconButton>
                       </CopyToClipboard>
                       {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
-                    </div>
-                  </div>
-                      </Fab>
-                    )}
                   </Grid>
                 </Grid>
               </Grid>
