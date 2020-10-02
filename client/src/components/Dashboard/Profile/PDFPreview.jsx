@@ -29,14 +29,17 @@ class PDFPreview extends Component {
     const pdf = axios.get('/pdf').then((res) => {
       const {numPages, pageNumber} = this.state;
       if (res.data.pdfs) {
-        this.setState({fileLink:res.data.pdfs[0].getFileLink})
-        const links = res.data.pdfs.map((ele)=>(
-          <div>
-          <h1> Switch to : {ele.title} </h1>
-          <button onClick = {()=> this.setState({fileLink:ele.getFileLink})}> click to switch </button> 
-          </div>
-        ));
-        ReactDOM.render(links,document.getElementById('links'));
+        if (res.data.pdfs[0]){
+          this.setState({fileLink:res.data.pdfs[0].getFileLink})
+          const links = res.data.pdfs.map((ele)=>(
+              <div>
+                <h1> Switch to : {ele.title} </h1>
+                <button onClick = {()=> this.setState({fileLink:ele.getFileLink})}> click to switch </button>
+              </div>
+          ));
+          ReactDOM.render(links,document.getElementById('links'));
+        }
+
       }
     });
   }
