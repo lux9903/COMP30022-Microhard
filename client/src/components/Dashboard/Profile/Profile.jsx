@@ -21,6 +21,7 @@ import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import ImageGrid from '../Photos/ImageGrid';
 import DescriptionIcon from '@material-ui/icons/Description';
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
   root: {
@@ -163,9 +164,12 @@ class Profile extends Component {
         }
         if (resumeUrl) {
           const resumeLink = (
-            <a href={resumeUrl.getFileLink} target="_blank">
-              {' '}
-              resume{' '}
+            <a
+              href={resumeUrl.getFileLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume
             </a>
           );
           ReactDOM.render(resumeLink, document.getElementById('resume'));
@@ -285,7 +289,7 @@ class Profile extends Component {
                   component={Paper}
                   className={classes.secondSection}
                 >
-                  <Grid item xs={12} sm={12} md={4}>
+                  <Grid item xs={12} sm={12} md={3}>
                     {user.location && (
                       <Typography variant="body1">
                         <LocationOnOutlinedIcon
@@ -300,6 +304,16 @@ class Profile extends Component {
                         {user.graduation}
                       </Typography>
                     )}
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={5}>
+                    {/*  <Button variant="outlined" color="primary" fullWidth>*/}
+                    {/*    <div id="resume"></div>*/}
+                    {/*  </Button>*/}
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <Button variant="outlined" color="primary" fullWidth>
+                      <div id="resume"></div>
+                    </Button>
                   </Grid>
                 </Grid>
               )}
@@ -337,23 +351,8 @@ class Profile extends Component {
                 <Grid item xs={12} sm={11} md={12}>
                   <Typography variant="h2">Photos</Typography>
                 </Grid>
-                <Grid item xs={12} sm={11} md={11}>
-                  <ImageGrid />
-                </Grid>
-              </Grid>
-            </Grow>
-            <Grow in timeout={1500}>
-              <Grid
-                container
-                component={Paper}
-                elevation={3}
-                className={classes.aboutSection}
-              >
                 <Grid item xs={12} sm={11} md={12}>
-                  <Typography variant="h2">Resume</Typography>
-                </Grid>
-                <Grid item xs={12} sm={11} md={11}>
-                  <div id="resume"></div>
+                  <ImageGrid />
                 </Grid>
               </Grid>
             </Grow>
