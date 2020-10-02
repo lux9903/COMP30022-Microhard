@@ -9,13 +9,15 @@ import SignIn from '../Account/SignIn';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
-import Image from '../Dashboard/Photos/Image';
+import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/Project_Edit';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Dashboard/Profile/AddProfileContent';
 import Course from '../Dashboard/Course/Course';
 import NoMatch from '../NoMatch';
+
+import Test from '../Dashboard/test';
 
 class Main extends Component {
   render() {
@@ -35,8 +37,8 @@ class Main extends Component {
         />
         <PrivateRoute
           exact
-          path="/projectex"
-          component={Projectex}
+          path="/project/:id"
+          component={Project_Edit}
           authed={this.props.user}
         />
         <PrivateRoute
