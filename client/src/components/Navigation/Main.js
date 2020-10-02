@@ -12,8 +12,8 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 import Image from '../Dashboard/Image';
-import Project from '../Dashboard/ProjectList';
-import Project_Edit from '../Dashboard/Project_example_2';
+import Project from '../Dashboard/ProjectList_edit';
+import Project_Edit from '../Dashboard/Project_edit';
 import Document from '../Dashboard/Document/Document';
 
 import Test from '../Dashboard/test';

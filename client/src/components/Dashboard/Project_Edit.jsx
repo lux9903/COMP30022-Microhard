@@ -2,11 +2,13 @@ import React, { Component, Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router";
 import {Helmet} from 'react-helmet';
 import axios from '../../helpers/axiosConfig';
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 //import Link from '@material-ui/core/Link';
 import Select from '@material-ui/core/Select';
@@ -18,8 +20,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import InputLabel from '@material-ui/core/InputLabel';
-
-import AddIcon from '@material-ui/icons/Add';
+import CardActions from '@material-ui/core/CardActions';
+import Rating from '@material-ui/lab/Rating';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -29,19 +32,28 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import {Formik, Field, Form} from 'formik';
 import IconButton from '@material-ui/core/IconButton';
-import DoneIcon from '@material-ui/icons/Done';
-import CloseIcon from '@material-ui/icons/Close';
-import { TextField } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionActions from '@material-ui/core/AccordionActions';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import TextField from '@material-ui/core/TextField';
 
+import Divider from '@material-ui/core/Divider';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import ClearIcon from '@material-ui/icons/Clear';
 
-const useStyles = makeStyles((theme) => ({
+import Con_items from './Contributors';
+//import { update } from '../../../../server/models/projectModel';
+
+const styles = (theme) => ({
     icon: {
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: '#094183',
         padding: theme.spacing(8, 0, 6),
     },
     cardGrid: {
@@ -55,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
     cardContent: {
         flexGrow: 1,
     },
+    input: {
+        color: "white",
+        fontSize:50,
+    },
     margin: {
         margin: theme.spacing(1),
     },
@@ -65,208 +81,37 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: 100,
         overflow: 'auto',
     },
-}));
+});
 
-class Edit_Form extends Component{
-    render(){
-        return(
-            <Fragment>
-            <Helmet>
-                <title>Microhard &middot; Edit Form</title>
-            </Helmet>
-                <Formik
-                    initialValues={{
-                        start_date: props.input,
-                    }}
-                    onSubmit = {(values) => {props.processChange(values); props.handleCancle();}}
-                    >
-                    <Form>
-                        <Field as={TextField}
-                            label="Description"
-                            variant="outlined"
-                            name="description"
-                            id="description"
-                            multiline
-                        />
-                        <IconButton>
-                            <DoneIcon type="submit"/>
-                        </IconButton>
-                        <IconButton>
-                            <CloseIcon onclick={this.props.handleCancel}/>
-                        </IconButton>
-
-                    </Form>
-                </Formik>
-            </Fragment>
-        );
-    }
-}
-
-class Con_Items extends Component{
+class Project_Edit extends Component{
     constructor(props) {
       super(props);
+      this.componentDidMount = this.componentDidMount.bind(this);
+      this.update = this.update.bind(this);
+      this.handleNameChange = this.handleNameChange.bind(this);
+      this.handleNameOnChange = this.handleNameOnChange.bind(this);
+      this.handleDescChange = this.handleDescChange.bind(this);
+      this.handleDescOnChange = this.handleDescOnChange.bind(this);
+      this.handleContributorAdd = this.handleContributorAdd.bind(this);
+      this.handleContributorOnChange = this.handleContributorOnChange.bind(this);
       this.state = {
-        name: "",
-        open: false,};
+        process : [],
+        timeline : [],
+        skills : [],
+        contributors : [],
+        name : "",
+        description : "",
+        status : "",
+        show_status : "",
+        rating: 0,
+
+        input: "",
+
+        open: false,
+      };
     }
-    //might need to change this shit
-    //handleUpdate = ({name, method}) => {
-    //    this.props.processChange(name,method);
-    //    this.handleCloseClick();
-    //};
-    handleCancel = () => {this.setState({open: false});};
-    handleEditClick = () => {this.setState({open: true});};
-    componentDidMount = () =>{
-        this.setState({name: this.props.name});}    
-    render(){
-        return(
-            <Fragment>
-            <Helmet>
-                <title>Microhard &middot; Profile </title>
-            </Helmet>
-
-            {!this.state.open? (
-                <div>
-                    <Typography>
-                        {this.state.name}
-                    </Typography>
-                    <IconButton onclick={this.handleEditClick}>
-                        <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton onclick={this.handleCancel}>
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
-                </div>
-            ):(
-                <Form name={this.state.name}
-                    handleCancle = {this.handleCancel}
-                    processChange = {this.props.processChange}
-                ></Form>
-            )}
-            </Fragment>
-        );
-    }
-}
-
-//fixed
-class Menu extends Component{
-    constructor(props){
-        super(props);
-        this.state = {open:false}
-    }
-    handleOpen = () => this.setState({open:false});
-    handleCancel = () => this.setState({open:true});
-
-    //need to consistend with the axios in main
-
-    //processChange = ({input, method}) => {this.props.processChange(input,method); this.handleCancel();}
-    selectionrender = (props) => {
-        switch(props.for){
-            case "con":
-                return (
-                    <Items updateItem={this.updateItem} deleteItem={this.deleteItem}
-                        name={this.state.name} handleCancel={this.handleCancel}
-                    //processChange={processChange}
-                    />
-                )
-            case "text":
-                return (
-                    <Items updateItem={this.updateItem} deleteItem={this.deleteItem}
-                        name={this.state.name} handleCancel={this.handleCancel}
-                    //processChange={processChange}
-                    />
-                )
-            case "process":
-                return (
-                    <Items updateItem={this.updateItem} deleteItem={this.deleteItem}
-                        name={this.state.name} handleCancel={this.handleCancel}
-                    //processChange={processChange}
-                    />
-                )
-            case "skills":
-                return (
-                    <Items updateItem={this.updateItem} deleteItem={this.deleteItem}
-                        name={this.state.name} handleCancel={this.handleCancel}
-                    //processChange={processChange}
-                    />
-                )
-        }
-    }
-    
-    addItem = ({name,id}) => {
-        //this change
-        this.props.add(name,id);
-        this.handleCancel();
-    }
-    updateItem = ({name}) => this.props.update(name);
-    deleteItem = ({name}) => this.props.delete(name);
-
-    render(){
-        return(
-            <Fragment>
-            <div>
-                {this.props.items.length>0 ? (
-                    this.props.items.map((item,i) => {
-                        //need a function to sort out
-                        return this.selectionrender(props.for);
-                })) : (
-                    <Typography>List is empty</Typography>
-                )}
-            </div>
-            <div>
-                {!this.state.open ? (
-                    <IconButton onclick={this.handleOpen}>
-                        <AddIcon fontSize="small"/>
-                    </IconButton>
-                ) : (
-                    <Edit_Form addItem={this.addItem} handleCancel={this.handleCancel}/>
-                )}
-            </div>
-            </Fragment>
-        )
-    }
-}
-
-
-
-function Project_Edit() {
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("");
-    const [show_status, setShow_Status] = useState("");
-    const [contributors, setContributors] = useState([]);
-    const [skills, setSkills] = useState([]);
-    const [timeline, setTimeline] = useState([]);
-    const [process, setProcess] = useState([]);
-    const [like, setLike] = useState(0);
-
-    useEffect(() => {
-        axios.get('/project/'+ this.props.match.params.id).then((res) => {
-            setName(res.data.project.name);
-            setDescription(res.data.project.description);
-            setStatus(res.data.project.status);
-            setShow_Status(res.data.project.show_status);
-            setContributors(res.data.project.contributors);
-            setSkills(res.data.project.skills);
-            setTimeline(res.data.project.timeline);
-            setProcess(res.data.project.process);
-            setLike(res.data.like);
-        })
-        .catch((error) => {});
-    }, []);
-
-    const classes = useStyles();
-
-
-    handleChange = event => {
-        const value = event.target.value;
-        this.setState({
-          status: value
-        });
-    };
     
     handleClose = () => {
-        //setOpen(false);
         this.setState({
             open: false
         });
@@ -277,135 +122,290 @@ function Project_Edit() {
             open: true
         });
     };
-    return(
-        <Fragment>
-        <Helmet>
-            <title>Microhard &middot; Profile </title>
-        </Helmet>
 
-        {/* Hero */}
-        <div className={classes.heroContent}>
-            <Container maxWidth="sm">
-                <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
-                    {this.state.name}
-                </Typography>
+    handleNameChange(event){
+        if(event.key ==='Enter'){
+            axios.post('/project/update/'+this.props.match.params.id, {"name":event.target.value}).catch((error) => {});
+            this.update();
+        }
+    };
+
+    handleNameOnChange(e){
+        this.setState({
+            name: e.target.value,
+        });
+    }
+
+    handleDescChange = (event) => {
+        axios.post('/project/update/'+this.props.match.params.id, {"description":this.state.description}).catch((error) => {});
+        this.update();
+    };
+
+    handleDescOnChange(e){
+        this.setState({
+            description: e.target.value,
+        });
+    }
+
+    handleStatusChange = event => {
+        axios.post('/project/update/'+this.props.match.params.id, {"status":event.target.value}).catch((error) => {});
+        this.update();
+    };
+    
+    //create a skills
+    handleSkillCreate = news => {
+        this.setState({skills: [...this.state.skills, news]});
+        axios.post('/project/update/'+this.props.match.params.id, {"skills":this.state.skills}).catch((error) => {});
+        this.update();
+    };
+
+    //delete a skills
+    handleSkillDelete = change => {
+        var skills = [...this.state.skills]; // make a separate copy of the array
+        var index = this.state.skills.indexOf(change)
+        if (index !== -1) {
+          skills.splice(index, 1);
+        }
+        axios.post('/project/update/'+this.props.match.params.id, {"skills":skills}).catch((error) => {});
+        this.update();
+    };
+
+    //upate a skills
+    handleSkillUpdate = (prev, news) => {
+        this.handleSkillDelete(prev);
+        this.handleSkillCreate(news);
+    };
+
+    handleStepCreate = (no,name) => {
+        axios.post('project/process/'+this.props.match.params.id,{no:name}).catch((error) => {});
+        this.update();
+    }
+
+    handleStepDelete = (no,name) => {
+        axios.post('project/process/remove/'+this.props.match.params.id,{no:name}).catch((error) => {});
+        this.update();
+    }
+
+    handleContributorAdd(event){
+        axios.post('/project/add_people/'+this.props.match.params.id, {"new_users":[this.state.input]}).catch((error) => {});
+        this.update();
+    };
+
+    handleContributorOnChange(event){
+        this.setState({
+            input: event.target.value,
+        });
+    }
+
+    update(){
+        axios.get('/project/'+this.props.match.params.id).then((res) => {
+            this.setState({
+                name: res.data.project.name,
+                description: res.data.project.description,
+                contributors: res.data.project.contributors,
+                skills: res.data.project.skills,
+                status: res.data.project.status,
+                show_status: res.data.project.show_status,
+                process: res.data.project.process,
+                timeline: res.data.project.timeline,
+                input: "",
+                rating: res.data.project.rating,
+            });
+        })
+        .catch((error) => {});
+    }
+  
+    componentDidMount = () =>{
+        axios.get('/project/'+this.props.match.params.id).then((res) => {
+            this.setState({
+                name: res.data.project.name,
+                description: res.data.project.description,
+                contributors: res.data.project.contributors,
+                skills: res.data.project.skills,
+                status: res.data.project.status,
+                show_status: res.data.project.show_status,
+                process: res.data.project.process,
+                timeline: res.data.project.timeline,
+                rating: res.data.project.rating,
+            });
+        })
+        .catch((error) => {});
+    }
+    render(){
+        //const {option} = this.props;
+        const {classes} = this.props;
+        const id= this.props.match.params.id;
+        return(
+            <Fragment>
+            <Helmet>
+                <title>Microhard &middot; Profile </title>
+            </Helmet>
+
+
+            <div className={classes.heroContent}>
+                <Container maxWidth="sm">
+                    <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
+                        <TextField
+                            value = {this.state.name}
+                            onKeyDown={this.handleNameChange}
+                            onChange={this.handleNameOnChange}
+                            fullWidth
+                            InputProps={{
+                                className: classes.input,
+                                disableUnderline: true
+                            }}
+                            inputProps={{style: { textAlign: 'center' }}}
+                        />
+                    </Typography>
+                </Container>
+            </div>
+
+            <Container className={classes.cardGrid} maxWidth="md">
+                <div>
+                <Grid container spacing={4}>
+                    {/* Contributors */}
+                    <Grid item xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                        <CardContent className={classes.cardContent}>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                Contributors
+                            </Typography>
+                            { this.state.contributors.length>0 ? (
+                                <List className={classes.list}>
+                                    {this.state.contributors.map(function(cons,i){
+                                        return <Con_items name={cons} id={id}/>})}
+                                </List>
+                            ) : (
+                                <Typography>
+                                    No contributor yet
+                                </Typography>
+                            )}
+                            <TextField
+                                label="Add new contributor"
+                                onChange={this.handleContributorOnChange}
+                                value={this.state.input}
+                                fullWidth
+                                InputProps={{disableUnderline: true }}
+                            />
+                            <Button fullWidth onClick={this.handleContributorAdd} size="small" variant="contained" color="primary">Add</Button>
+                        </CardContent>
+                        </Card>
+                    </Grid>
+
+                    {/* Status */}
+                    <Grid item xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                        <CardContent className={classes.cardContent}>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                Status
+                            </Typography>
+                            <FormControl>
+                                <Select
+                                    disableUnderline
+                                    open={this.state.open}
+                                    onClose={this.handleClose}
+                                    onOpen={this.handleOpen}
+                                    value={this.state.status}
+                                    onChange={this.handleStatusChange}
+                                >
+                                    <MenuItem value={"Inprogress"}>
+                                        <em>In Progress</em>
+                                    </MenuItem>
+                                    <MenuItem value={"Completed"}>Complete</MenuItem>
+                                    <MenuItem value={"Cancel"}>Cancel</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </CardContent>
+                        </Card>
+                    </Grid>
+                    {/* Rating */}
+                    <Grid item xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                        <CardContent className={classes.cardContent}>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                Rating
+                            </Typography>
+                            <Typography component="body2">
+                                {this.state.rating} people likes
+                            </Typography>
+                        </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+                </div>
             </Container>
-        </div>
-        <br/>
-
-        <Container className={classes.cardGrid} maxWidth="md">
-            <Grid container spacing={4}>
-                
-                {/* Contributors */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card className={classes.card}>
+            <Container className={classes.cardGrid} maxWidth="md">
+                <Card className={classes.card}>
                     <CardContent className={classes.cardContent}>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Contributors
+                            Description
                         </Typography>
-                        <List className={classes.list}>
-                            {this.state.contributors.map(function(con, i){
-                                return (
-                                    <ListItem className={classes.ListItem}>
-                                        <ListItemText primary={con}/>
-                                    </ListItem>
-                                )
-                            })}
-                        </List>
+                        <TextField
+                            value = {this.state.description}
+                            //onKeyDown={this.handleNameChange}
+                            onChange={this.handleDescOnChange}
+                            fullWidth
+                            multiline
+                            InputProps={{ disableUnderline: true }}
+                        />
                     </CardContent>
-                    </Card>
-                </Grid>
-
-                {/* Status */}
-                <Grid item xs={12} sm={6} md={4}>
-                    {/* Status */}
-                    <Card>
-                    <CardContent>
+                    <CardActions>
+                        <Button onClick={this.handleDescChange} size="small" variant="contained" color="primary">Submit</Button>
+                    </CardActions>
+                </Card>
+            </Container>
+            <Container className={classes.cardGrid} maxWidth="md">
+                <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                    Process
+                    </Typography>
+                    <Typography>
+                        No process yet
+                    </Typography>
+                    </CardContent>
+                </Card>
+                <CardActions>
+                </CardActions>
+            </Container>
+            {/* Timeline */}
+            <Container className={classes.cardGrid} maxWidth="md">
+                <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Status
+                            Time line
                         </Typography>
-                        <FormControl>
-                            <Select
-                                disableUnderline
-                                open={this.state.open}
-                                onClose={this.handleClose}
-                                onOpen={this.handleOpen}
-                                value={this.state.status}
-                                onChange={this.handleChange}
-                            >
-                                <MenuItem value={"Inprogress"}>In Progress</MenuItem>
-                                <MenuItem value={"Completed"}>Complete</MenuItem>
-                                <MenuItem value={"Cancel"}>Cancel</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <Timeline>
+                            {this.state.timeline.map((item,i)=>{
+                                return(
+                                    <TimelineItem>
+                                        <TimelineOppositeContent>
+                                            <Typography color="textSecondary">{item.date}</Typography>
+                                        </TimelineOppositeContent>
+                                        <TimelineSeparator>
+                                            <TimelineDot />
+                                            <TimelineConnector />
+                                        </TimelineSeparator>
+                                        <TimelineContent>
+                                            <Typography>{item.description}</Typography>
+                                        </TimelineContent>
+                                    </TimelineItem>
+                                )}
+                            )}
+                        </Timeline>
                     </CardContent>
-                    </Card>
-                    
-                    {/* Rating */}
-                    <Card>
-                    <CardContent>
-                        <IconButton>
-                            <ThumbUpAltIcon/>
-                        </IconButton>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {like} Likes
-                        </Typography>
-                    </CardContent>
-                    </Card>
-                </Grid>
-                {/* Rating */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                    <CardContent>
-                    </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
-        </Container>
-        
-        {/* Timeline */}
-        <Container>
-            <Timeline>
-                {timeline.map((item,i)=>{
-                    return(
-                        <TimelineItem>
-                            <TimelineOppositeContent>
-                                <Typography color="textSecondary">{item.date}</Typography>
-                            </TimelineOppositeContent>
-                            <TimelineSeparator>
-                                <TimelineDot />
-                                <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                <Typography>{item.description}</Typography>
-                            </TimelineContent>
-                        </TimelineItem>
-                    )}
-                )}
-            </Timeline>
-        </Container>
-
-        {/* Description */}
-        <Container maxWidth="md">
-            <Typography gutterBottom variant="h5" component="h2">
-                Description
-            </Typography>
-            {this.state.description===""? ( 
-                <Typography gutterBottom variant="body2">
-                    No Description Yet
-                </Typography>
-            ) : ( 
-                <Typography gutterBottom variant="body2">
-                    {this.state.description}
-                </Typography>
-            )}
-        </Container>
-        </Fragment>
-    );
+                </Card>
+            </Container>
+            <br/>
+            <br/>
+            </Fragment>
+        );
+    }
 }
 
   
-export default withRouter(Project_Edit);
+//export default withRouter(Project_Edit);
+export default withRouter(withStyles(styles)(Project_Edit));
 
 
 
@@ -413,14 +413,11 @@ export default withRouter(Project_Edit);
 
 /*export default function Album() {
   const classes = useStyles();
-
   return (
     <Fragment>
         <Helmet>
           <title>Microhard &middot; Profile </title>
         </Helmet>
-
-
         <div className={classes.heroContent}>
             <Container maxWidth="sm">
                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -431,8 +428,6 @@ export default withRouter(Project_Edit);
                 </Typography>
             </Container>
         </div>
-
-
         <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
                 <Grid item xs={12} sm={6} md={4}>
@@ -483,7 +478,6 @@ export default withRouter(Project_Edit);
                     </CardContent>
                     </Card>
                 </Grid>
-
                 //rating stuff
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className={classes.card}>
@@ -518,7 +512,6 @@ export default withRouter(Project_Edit);
                 </TimelineItem>
             </Timeline>
         </Container>
-
         <Container className={classes.cardGrid} maxWidth="md">
             <Typography gutterBottom variant="h5" component="h2">
                 Introduction
@@ -531,7 +524,6 @@ export default withRouter(Project_Edit);
     </Fragment>
   );
 }
-
 componentDidMount(){
         let {id} = useParams();
         axios.get('/project/'+{id}).then((res) => {
@@ -557,7 +549,6 @@ componentDidMount(){
     const [skills, setSkills] = useState([]);
     const [timeline, setTimeline] = useState([]);
     const [process, setProcess] = useState([]);
-
   
     useEffect(() => {
         let {id} = useParams();
@@ -573,8 +564,6 @@ componentDidMount(){
         })
         .catch((error) => {});
     }, []);
-
-
         handleClickListItem(event){
         this.setState({anchorEl: event.currentTarget});
     };
@@ -589,32 +578,22 @@ componentDidMount(){
         this.setState({anchorEl:null});
     };
 
+    
+                {this.state.process.length> 0 ? (
+                    this.processList();
+                ) : ( 
+                    <Typography gutterBottom variant="body2">
+                        No Process Yet
+                    </Typography>
+                )}
 
-    componentDidMount = () =>{
-        axios.get('/project/'+this.props.match.params.id).then((res) => {
-            this.setState({
-                name: res.data.project.name,
-                description: res.data.project.description,
-                contributors: res.data.project.contributors,
-                skills: res.data.project.skills,
-                status: res.data.project.status,
-                show_status: res.data.project.show_status,
-                process: res.data.project.process,
-                timeline: res.data.project.timeline,
-            });
-        })
-        .catch((error) => {});
-    }
-
-                    <TextField               
-                        value={this.state.input}
-                        onInput={(event) => this.handleChange(event)}
-                    />
-                    <Typography />
-                    <IconButton onclick={this.handleSubmit}>
-                        <DoneIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton onclick={this.handleCancel}>
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
+    { this.state.process.length>0 ? (
+                    this.state.process.map(function(step,i){
+                        return <Process_step step={step} id={id}/>;
+                    })
+                ) : (
+                    <Typography>
+                        No process yet
+                    </Typography>
+    )}
 */

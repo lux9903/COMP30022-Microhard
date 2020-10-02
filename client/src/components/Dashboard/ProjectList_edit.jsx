@@ -25,8 +25,40 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-import AddProject from './AddProject';
+const styles = (theme) => ({
+  icon: {
+      marginRight: theme.spacing(2),
+  },
+  heroContent: {
+      backgroundColor: '#094183',
+      padding: theme.spacing(8, 0, 6),
+  },
+  cardGrid: {
+      paddingTop: theme.spacing(8),
+  },
+  card: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+  },
+  cardContent: {
+      flexGrow: 1,
+  },
+  margin: {
+      margin: theme.spacing(1),
+  },
+  ListItem:{
+      padding: "0px",
+  },
+  list:{
+      maxHeight: 100,
+      overflow: 'auto',
+  },
+});
+
 function DeleteButton(props) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {setOpen(true);};
@@ -37,7 +69,7 @@ function DeleteButton(props) {
   }
   return (
     <div>
-      <Button variant="contained" color="primary" size="small" onClick={handleClickOpen}>
+      <Button variant="contained" size="small" onClick={handleClickOpen}>
         Delete
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -123,26 +155,36 @@ function MyForm(props) {
   )
 }
 
-const Project = props => (
-  <Grid item xs={12} sm={6} md={4}>
-    <Card style={{display: 'flex', flexDirection: 'column'}}>
-      <CardMedia image={img} style={{paddingTop: '56.25%'}} title="Image title"/>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {props.project.name}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Link to={"/project/"+props.project._id} style={{textDecoration:"none"}}>
-          <Button variant="contained" color="primary" size="small" color="primary">
-            Edit
-          </Button>
-        </Link>
-        <DeleteButton id={props.project._id}/>
-      </CardActions>
-    </Card>
-  </Grid>
-)
+
+function Project(props){
+  const handleStatusChange = (event, newAlignment) => {
+    axios.post('/project/update/'+props.project._id, {"show_status":newAlignment})
+    .catch((error) => {});
+  }
+  return(
+    <Grid item xs={12} sm={6} md={4}>
+        <Card style={{display: 'flex', flexDirection: 'column'}}>
+          <CardMedia image={img} style={{paddingTop: '56.25%'}} title="Image title"/>
+          <Link to={"/project/"+props.project._id} style={{textDecoration:"none"}}>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {props.project.name}
+              </Typography>
+            </CardContent>
+          </Link>
+          <CardActions>
+            <DeleteButton id={props.project._id}/>
+            <ToggleButtonGroup size="small" value={props.project.show_status} exclusive onChange={handleStatusChange}>
+              <ToggleButton value='private' aria-label='private'>Private</ToggleButton>
+              <ToggleButton value='public' aria-label='private'>Public</ToggleButton>
+            </ToggleButtonGroup>
+          </CardActions>
+        </Card>
+
+    </Grid>
+
+  )
+}
 class ProjectList extends Component{
   constructor(props) {
     super(props);
@@ -164,10 +206,21 @@ class ProjectList extends Component{
 		axios.post('/project/create', formD);
   }
 
+  handleStatusChange = (stat) => {
+    axios.post('/project/update/'+this.props.match.params.id, {"status":stat}).catch((error) => {});
+  }
+
   pList() {
     return this.state.projlist.map(function(proj, i){
       return <Project project={proj}></Project>
     });
+  }
+
+  update(){
+    axios.get('/project/').then((res) => {
+      this.setState({projlist: res.data.projects});
+    })
+    .catch((error) => {});
   }
 	componentDidMount(){
     axios.get('/project/').then((res) => {
@@ -213,7 +266,7 @@ class ProjectList extends Component{
               variant="h5"
               align="center"
             >
-              Project Length : {this.state.projlist.length}
+              No project yet
             </Typography>
             )}
         </Grid>

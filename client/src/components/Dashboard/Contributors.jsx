@@ -4,78 +4,54 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import axios from '../../helpers/axiosConfig';
+class Con_Items extends Component{
+    constructor(props){
+        super(props);
+        this.handleContributorDelete = this.handleContributorDelete.bind(this);
+        this.handleContributorOnChange = this.handleContributorOnChange.bind(this);
+        this.handleContributorUpdate = this.handleContributorUpdate.bind(this);
+        this.state = {
+            prev: this.props.name,
+            name: this.props.name,
+        }
+    }
+    handleContributorDelete(){
+        axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.state.name]})
+        .catch((error) => {});
+        //this.props.update();
+    };
 
-class Contributors extends Component{
-    constructor(props) {
-      super(props);
-
-      this.componentDidMount = this.componentDidMount.bind(this);
-      this.state = {
-        name: "",
-        open: false,
-      };
+    handleContributorOnChange(event){
+        this.setState({
+            name: event.target.value,
+        });
     }
 
-    //need to check with Luc to know what need to handling contributor add + remove +create
-    //project id + contributor name???
-    handleUpdate = (name) => {
-        this.props.handleUpdate(name);
-        this.handleCloseClick();
-    };
-    
-    handleDelete = (name) => {
-        this.props.handleDelete(name);
-    }
-
-    handleCloseClick = () => {
-        //setOpen(false);
+    handleContributorUpdate(event){
+        axios.post('/project/remove_people/'+this.props.match.params.id, {'old_users':[this.state.prev]})
+        .catch((error) => {});
+        axios.post('/project/add_people/'+this.props.match.params.id, {'new_users':[this.state.name]}).catch((error) => {});
         this.setState({
-            open: false
+            prev: event.target.value,
+            name: event.target.value,
         });
-    };
-    
-    handleEditClick = () => {
-        this.setState({
-            open: true
-        });
+        //this.props.update();
     };
 
-  
-    componentDidMount = () =>{
-        this.setState({
-            name: this.props.name
-        });
-    }    
     render(){
-        //const {option} = this.props;
         return(
-            <Fragment>
-            <Helmet>
-                <title>Microhard &middot; Profile </title>
-            </Helmet>
-
-            {!this.state.open? (
-                <div>
-                    <Typography>
-                        {this.state.name}
-                    </Typography>
-                    <IconButton onclick={this.handleEditClick}>
-                        <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton onclick={this.handleCancel}>
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
-                </div>
-            ):(
-                <Form name={this.state.name}
-                    //handleCancle = {this.handleCloseClick}
-                    //handleUpdate = {this.handleUpdate}
-                ></Form>
-            )}
-            </Fragment>
-        );
+            <ListItem>
+                <ListItemText primary={this.state.name}/>
+                <IconButton>
+                    <DeleteIcon onClick={this.handleContributorDelete}/>
+                </IconButton>
+            </ListItem>
+        )
     }
 }
 
   
-export default (Contributors);
+export default (Con_Items);
