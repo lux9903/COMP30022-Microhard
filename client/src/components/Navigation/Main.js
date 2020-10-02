@@ -9,10 +9,7 @@ import SignIn from '../Account/SignIn';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
-<<<<<<< HEAD
 //import Image from '../Dashboard/Image';
-=======
->>>>>>> 974fef18a6c333ebc6c7ffc8e136a0eb7f6ba7a8
 import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/Project_Edit';
 import Image from '../Dashboard/Photos/Image';
