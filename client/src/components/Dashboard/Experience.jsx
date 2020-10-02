@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MyForm(props) {
+  let defState;
+  if (props.state === undefined){ defState = 'going'}
+  else {defState = props.state}
   return (
     <Dialog
       fullWidth={fullWidth}
@@ -91,7 +94,7 @@ function MyForm(props) {
                 position: props.position,
                 company: props.company,
                 description: props.description,
-                state: props.state,
+                state: defState,
               }}
               onSubmit = {(values) => {props.submit(values); props.handleClose();}}
             >
