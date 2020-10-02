@@ -44,7 +44,7 @@ pdfRouter.post(
   (req, res) => {
     User.findById(req.payload.id).then( async function (user) {
       //console.log(req.name);
-      const resume = await Pdf.findOne({user: user._id,isResume:true});
+      const resume = await Pdf.findOne({user: user,isResume:true});
       if(resume){
         Pdf.deleteOne({_id:resume._id}, (err) => {
           if (err) {
