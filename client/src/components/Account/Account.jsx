@@ -1,11 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import {
-  updateUser,
-  deleteUser,
-  resetPassword,
-  signUpUser,
-} from '../../actions/userAction';
+import {updateUser, deleteUser, resetPassword} from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
@@ -23,11 +18,18 @@ import img from './form-background.jpg';
 import {withStyles} from '@material-ui/core/styles';
 
 const validationSchema = Yup.object().shape({
-  lastname: Yup.string().required('*Last name is required'),
-  firstname: Yup.string().required('*First name is required'),
-  username: Yup.string().required('*Username is required'),
-  email: Yup.string().email().required('*Email is required'),
-  bio: Yup.string(),
+  lastname: Yup.string().required('* Last name is required'),
+  firstname: Yup.string().required('* First name is required'),
+  username: Yup.string().required('* Username is required'),
+  email: Yup.string()
+    .email()
+    .required('* Email is required, like name@example.com'),
+  headline: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
+  linkedin: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
+  website: Yup.string().trim().max(80, 'Too long! Character limit is 80'),
+  location: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
+  graduation: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
+  aboutSection: Yup.string(),
 });
 
 const useStyles = (theme) => ({
@@ -35,7 +37,7 @@ const useStyles = (theme) => ({
     height: '100vh',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(5, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -56,7 +58,7 @@ const useStyles = (theme) => ({
     width: '100%',
   },
   form_group: {
-    padding: '5px 5px 5px 5px',
+    padding: theme.spacing(0.5),
   },
 });
 
@@ -94,7 +96,7 @@ class Account extends Component {
         <Grid container component="main" className={classes.root}>
           <Grid item xs={12} component={Paper} elevation={6} square>
             <div className={classes.paper}>
-              <Typography variant="h2" padding="10px">
+              <Typography variant="h1" padding="10px">
                 Account
               </Typography>
             </div>
@@ -116,10 +118,15 @@ class Account extends Component {
                 initialValues={{
                   username: user.username,
                   email: user.email,
-                  bio: user.bio,
+                  headline: user.headline,
                   lastname: user.lastname,
                   firstname: user.firstname,
                   major: user.major,
+                  linkedin: user.linkedin,
+                  location: user.location,
+                  website: user.website,
+                  graduation: user.graduation,
+                  aboutSection: user.aboutSection,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
@@ -145,11 +152,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.firstname && touched.firstname}
-                        // className={`form-control ${
-                        //   touched.firstname && errors.firstname
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -169,11 +171,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.lastname && touched.lastname}
-                        // className={`form-control ${
-                        //   touched.lastname && errors.lastname
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -193,11 +190,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.username && touched.username}
-                        // className={`form-control ${
-                        //   touched.username && errors.username
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -217,9 +209,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.email && touched.email}
-                        // className={`form-control ${
-                        //   touched.email && errors.email ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -239,31 +228,120 @@ class Account extends Component {
                           />
                         }
                         error={errors.major && touched.major}
-                        // className={`form-control ${
-                        //   touched.major && errors.major ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
                       <Field
                         variant="outlined"
                         margin="normal"
-                        type="bio"
-                        id="bio"
-                        name="bio"
-                        label="Add/change your bio"
+                        id="graduation"
+                        name="graduation"
+                        label="Add/change your expected graduation date"
                         fullWidth
                         as={TextField}
                         helperText={
                           <ErrorMessage
-                            name="bio"
+                            name="graduation"
                             className="invalid-feedback"
                           />
                         }
-                        error={errors.bio && touched.bio}
-                        // className={`form-control ${
-                        //   touched.bio && errors.bio ? 'is-invalid' : ''
-                        // }`}
+                        error={errors.graduation && touched.graduation}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        variant="outlined"
+                        margin="normal"
+                        id="headline"
+                        name="headline"
+                        label="Add/change your headline"
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="headline"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.headline && touched.headline}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        type="url"
+                        variant="outlined"
+                        margin="normal"
+                        id="linkedin"
+                        name="linkedin"
+                        label="Add/change your Linkedin link"
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="linkedin"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.linkedin && touched.linkedin}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        type="url"
+                        variant="outlined"
+                        margin="normal"
+                        id="website"
+                        name="website"
+                        label="Add/change your personal website"
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="website"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.website && touched.website}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        autoComplete="off"
+                        variant="outlined"
+                        margin="normal"
+                        id="location"
+                        name="location"
+                        label="Add/change your current location "
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="location"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.location && touched.location}
+                      />
+                    </div>
+                    <div className={classes.form_group}>
+                      <Field
+                        autoComplete="off"
+                        variant="outlined"
+                        id="aboutSection"
+                        name="aboutSection"
+                        label="Describe yourself"
+                        margin="normal"
+                        multiline
+                        rows={10}
+                        fullWidth
+                        as={TextField}
+                        helperText={
+                          <ErrorMessage
+                            name="aboutSection"
+                            className="invalid-feedback"
+                          />
+                        }
+                        error={errors.aboutSection && touched.aboutSection}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -330,11 +408,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.password && touched.password}
-                        // className={`form-control ${
-                        //   touched.password && errors.password
-                        //     ? 'is-invalid'
-                        //     : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>
@@ -354,9 +427,6 @@ class Account extends Component {
                           />
                         }
                         error={errors.confirm && touched.confirm}
-                        // className={`form-control ${
-                        //   touched.confirm && errors.confirm ? 'is-invalid' : ''
-                        // }`}
                       />
                     </div>
                     <div className={classes.form_group}>

@@ -46,18 +46,47 @@ const theme = createMuiTheme({
     },
   },
 
-  background: '#F4F5F7',
+  background: '#FFF',
 
   typography: {
     fontFamily: 'Nunito, sans-serif',
     button: {
       fontWeight: '600',
+      fontSize: '16px',
     },
     body1: {
       fontFamily: 'Lato, san-serif',
+      fontSize: '16px',
+      fontWeight: '400',
     },
     body2: {
       fontFamily: 'Nunito, sans-serif',
+      fontSize: '16px',
+      fontWeight: '400',
+    },
+    h1: {
+      fontSize: '36px',
+      fontWeight: '600',
+    },
+    h2: {
+      fontSize: '30px',
+      fontWeight: '600',
+    },
+    h3: {
+      fontSize: '24px',
+      fontWeight: '400',
+    },
+    h4: {
+      fontSize: '20px',
+      fontWeight: '400',
+    },
+    h5: {
+      fontSize: '18px',
+      fontWeight: '400',
+    },
+    h6: {
+      fontSize: '16px',
+      fontWeight: '400',
     },
   },
 });

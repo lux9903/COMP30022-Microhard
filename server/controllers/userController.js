@@ -40,8 +40,23 @@ const updateUser = (req, res, next) => {
       if (typeof req.body.user.email !== 'undefined') {
         user.email = req.body.user.email;
       }
-      if (typeof req.body.user.bio !== 'undefined') {
-        user.bio = req.body.user.bio;
+      if (typeof req.body.user.headline !== 'undefined') {
+        user.headline = req.body.user.headline;
+      }
+      if (typeof req.body.user.aboutSection !== 'undefined') {
+        user.aboutSection = req.body.user.aboutSection;
+      }
+      if (typeof req.body.user.location !== 'undefined') {
+        user.location = req.body.user.location;
+      }
+      if (typeof req.body.user.website !== 'undefined') {
+        user.website = req.body.user.website;
+      }
+      if (typeof req.body.user.linkedin !== 'undefined') {
+        user.linkedin = req.body.user.linkedin;
+      }
+      if (typeof req.body.user.graduation !== 'undefined') {
+        user.graduation = req.body.user.graduation;
       }
       if (typeof req.body.user.image !== 'undefined') {
         user.image = req.body.user.image;
@@ -88,6 +103,13 @@ const signUpUser = (req, res, next) => {
   user.firstname = req.body.user.firstname;
   user.username = req.body.user.username;
   user.email = req.body.user.email;
+  user.major = req.body.user.major;
+  user.headline = req.body.user.headline;
+  user.aboutSection = req.body.user.aboutSection;
+  user.linkedin = req.body.user.linkedin;
+  user.location = req.body.user.location;
+  user.website = req.body.user.website;
+  user.graduation = req.body.user.graduation;
   user.setPassword(req.body.user.password);
 
   user

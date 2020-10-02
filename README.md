@@ -61,12 +61,15 @@ User {
     `ID`: User ID;
     `Username`: Name of user;
     `Email`: Email address;
-    `Bio`: Short description of user;
+    `Headline`: Short description of user;
     `Image`: Profile picture;
     `Password`: Secure authentication;
     `Lastname`: Lastname of user;
     `Firstname`: Firstname of user;
     `Major`: Major of user;
+    `Location`: Where the user is based in at the current time
+    `Website`: (Optional) Website contact
+    `Linkedin`: (Optional) Linkedin contact
     
 }
 

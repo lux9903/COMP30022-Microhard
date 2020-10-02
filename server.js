@@ -62,7 +62,7 @@ app.use(
 
 require('./server/models/userModel');
 require('./server/models/imageModel');
-
+require('./server/models/pdfModel');
 // Authentication
 require('./server/config/passport');
 

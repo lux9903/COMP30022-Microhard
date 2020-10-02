@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
-
 import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
@@ -9,6 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import ImageGrid from './ImageGrid';
 
 const styles = (theme) => ({
   root: {
@@ -16,11 +16,14 @@ const styles = (theme) => ({
   },
 });
 
-class FilesUploadComponent extends Component {
+// Photo page that contains upload button to upload and preview images in grid
+class Image extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
+      deleteImageLink: null,
+      currentImage: 0,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -35,28 +38,15 @@ class FilesUploadComponent extends Component {
       },
     };
     axios
-      .post('/image/upload', formData, config)
+      .post('/image/upload', formData)
       .then((response) => {
         alert('The file is successfully uploaded');
       })
       .catch((error) => {});
   }
+
   onChange(e) {
     this.setState({file: e.target.files[0]});
-  }
-
-  componentDidMount() {
-    const imgs = axios.get('/image').then((res) => {
-      if (res.data.files) {
-        const imgPic = res.data.files.map((ele) => (
-          <img
-            src={'/api/image/' + ele.filename}
-            alt={'/image/' + ele.filename}
-          />
-        ));
-        ReactDOM.render(imgPic, document.getElementById('all_img'));
-      }
-    });
   }
 
   render() {
@@ -66,7 +56,7 @@ class FilesUploadComponent extends Component {
         <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+          <Typography variant="h1" align="center" style={{color: '#fff'}}>
             Images
           </Typography>
         </div>
@@ -90,18 +80,21 @@ class FilesUploadComponent extends Component {
                     <Input
                       type="file"
                       name="file"
+                      inputProps={{accept: 'image/*'}}
                       onChange={this.onChange}
                       color="primary"
                     />
                     <Button type="submit" color="primary" variant="contained">
                       Upload
                     </Button>
+
+          
                   </form>
                 </div>
               </Grid>
               <br />
-              <div id="all_img" align="center"></div>
             </Grid>
+            <ImageGrid />
           </Container>
         </div>
       </Fragment>
@@ -109,4 +102,4 @@ class FilesUploadComponent extends Component {
   }
 }
 
-export default withStyles(styles)(FilesUploadComponent);
+export default withStyles(styles)(Image);

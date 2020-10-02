@@ -15,9 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
-import {withStyles} from '@material-ui/core/styles';
 
-class Document extends Component {
+class Documents extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +46,6 @@ class Document extends Component {
         'content-type': 'multipart/form-data',
       },
     };
-    //alert(document.getElementById("title").value);
     var url = '';
     if (document.getElementById('title').value.trim() !== '') {
       url = '/pdf/upload/' + document.getElementById('title').value;
@@ -76,7 +74,11 @@ class Document extends Component {
           <TableRow>
             <TableCell>{ele.title}</TableCell>
             <TableCell align="right">
-              <a href={ele.getFileLink} target="_blank">
+              <a
+                href={ele.getFileLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {ele.originalname}
               </a>
             </TableCell>
@@ -106,7 +108,11 @@ class Document extends Component {
         <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <Typography variant="h4" align="center" style={{color: '#fff'}}>
+          <Typography
+            variant="h1"
+            align="center"
+            style={{color: '#fff', fontSize: '36px'}}
+          >
             Personal Documents
           </Typography>
         </div>
@@ -144,16 +150,9 @@ class Document extends Component {
             </Table>
           </TableContainer>
         </Container>
-        <div>
-          <form name="editTitle" onSubmit={this.onEdit}>
-            <input type="text" name="id" required />
-            <input type="text" name="title" required />
-            <input type="submit" value="text" />
-          </form>
-        </div>
       </Fragment>
     );
   }
 }
 
-export default Document;
+export default Documents;

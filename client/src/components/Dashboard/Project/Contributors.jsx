@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 class Con_Items extends Component{
     constructor(props){
         super(props);

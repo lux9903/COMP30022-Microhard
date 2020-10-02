@@ -26,6 +26,7 @@ export default function EditDocument(props) {
         <EditIcon onClick={handleClickOpen} />
       </IconButton>
       <Dialog
+        fullScreen
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
@@ -60,12 +61,15 @@ export default function EditDocument(props) {
               <Button
                 type="submit"
                 onClick={() => window.location.reload(false)}
-                color="primary"
+                style={{fontFamily: 'Lato, sans-serif'}}
               >
                 Upload
               </Button>
             </label>
-            <Button onClick={handleClose} color="primary">
+            <Button
+              onClick={handleClose}
+              style={{fontFamily: 'Lato, sans-serif'}}
+            >
               Cancel
             </Button>
           </DialogActions>
