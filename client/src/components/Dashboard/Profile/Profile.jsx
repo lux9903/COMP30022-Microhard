@@ -20,7 +20,6 @@ import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import ImageGrid from '../Photos/ImageGrid';
-import DescriptionIcon from '@material-ui/icons/Description';
 import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
