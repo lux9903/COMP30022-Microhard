@@ -150,6 +150,23 @@ class Profile extends Component {
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
+
+    const resume = axios.get('/pdf/').then((res)=>{
+      if(res.data.pdfs){
+        var resumeUrl = {getFileLink:"#"};
+        var ele;
+        for(ele of res.data.pdfs){
+          if(ele.isResume){
+            resumeUrl = ele;
+            break;
+          }
+        }
+        if(resumeUrl){
+          const resumeLink = <a href = {resumeUrl.getFileLink} target="_blank"> resume </a>
+          ReactDOM.render(resumeLink, document.getElementById("resume"));
+        }
+      }
+    });
   }
 
   render() {
@@ -333,6 +350,11 @@ class Profile extends Component {
               </Grid>
             </Grow>
           </Container>
+        </div>
+        <h1>
+        Here
+        </h1>
+        <div id ="resume">
         </div>
       </Fragment>
     );
