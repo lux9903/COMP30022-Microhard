@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Gallery from 'react-grid-gallery';
