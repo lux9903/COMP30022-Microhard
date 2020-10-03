@@ -34,7 +34,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 
-
 const useStyles = (theme) => ({
   root: {
     backgroundColor: '#094183',
@@ -56,8 +55,11 @@ function MyGrid(props) {
   let i = 0;
   let color;
 
-  let gridByYear = keys.map(key => {
-    let summer = [], winter = [], sem1 = [], sem2 = [];
+  let gridByYear = keys.map((key) => {
+    let summer = [],
+      winter = [],
+      sem1 = [],
+      sem2 = [];
     {
       props.courses[key].map((value) => {
         switch (value.sem) {
@@ -85,29 +87,48 @@ function MyGrid(props) {
     }
     return (
       <div>
-        <Grid container style={{backgroundColor: color}} spacing={2} justify="space-evenly" alignItems='center'>
+        <Grid
+          container
+          style={{backgroundColor: color}}
+          spacing={2}
+          justify="space-evenly"
+          alignItems="center"
+        >
           <Grid item sm={1}>
-            <Typography align="right" style={{fontFamily: 'sans-serif', fontSize: 22}}>{key}</Typography>
+            <Typography
+              align="right"
+              style={{fontFamily: 'sans-serif', fontSize: 22}}
+            >
+              {key}
+            </Typography>
             <br />
           </Grid>
           <Divider orientation="vertical" flexItem />
           <Grid item sm={2}>
-            <Typography align="center" variant="h5">{summer}</Typography>
+            <Typography align="center" variant="h5">
+              {summer}
+            </Typography>
             <br />
           </Grid>
           <Divider orientation="vertical" flexItem />
           <Grid item sm={2}>
-            <Typography align="center" variant="h5">{sem1}</Typography>
+            <Typography align="center" variant="h5">
+              {sem1}
+            </Typography>
             <br />
           </Grid>
           <Divider orientation="vertical" flexItem />
           <Grid item sm={2}>
-            <Typography align="center" variant="h5">{winter}</Typography>
+            <Typography align="center" variant="h5">
+              {winter}
+            </Typography>
             <br />
           </Grid>
           <Divider orientation="vertical" flexItem />
           <Grid item sm={2}>
-            <Typography align="center" variant="h5">{sem2}</Typography>
+            <Typography align="center" variant="h5">
+              {sem2}
+            </Typography>
             <br />
           </Grid>
         </Grid>
@@ -125,22 +146,42 @@ function MyGrid(props) {
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item sm={2}>
-          <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Summer</Typography>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Summer
+          </Typography>
           <br />
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item sm={2}>
-          <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Semester 1</Typography>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Semester 1
+          </Typography>
           <br />
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item sm={2}>
-          <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Winter</Typography>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Winter
+          </Typography>
           <br />
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item sm={2}>
-          <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Semester 2</Typography>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Semester 2
+          </Typography>
           <br />
         </Grid>
       </Grid>
@@ -149,7 +190,6 @@ function MyGrid(props) {
     </div>
   );
 }
-
 
 class MyAccordion extends Component {
   render() {
@@ -165,17 +205,15 @@ class MyAccordion extends Component {
         <AccordionDetails>
           <Grid container direction="column">
             <Grid Item>
+              <Typography variant="subtitle1">{this.props.name}</Typography>
+            </Grid>
+            <Grid Item>
               <Typography variant="subtitle1">
-                {this.props.name}
+                {this.props.description}
               </Typography>
             </Grid>
             <Grid Item>
-              <Typography variant="subtitle1">{this.props.description}</Typography>
-            </Grid>
-            <Grid Item>
-              <Typography>
-                {this.props.link}
-              </Typography>
+              <Typography>{this.props.link}</Typography>
             </Grid>
           </Grid>
         </AccordionDetails>
@@ -185,24 +223,22 @@ class MyAccordion extends Component {
   }
 }
 
-
 function GetAccords(props) {
-
-  let accords = props.courses.map(elem => {
+  let accords = props.courses.map((elem) => {
     return (
       <div>
-        <MyAccordion code={elem.code} name={elem.name} description={elem.description} link={elem.link} />
+        <MyAccordion
+          code={elem.code}
+          name={elem.name}
+          description={elem.description}
+          link={elem.link}
+        />
       </div>
     );
   });
 
-  return (
-    <div>
-      {accords}
-    </div>
-  );
+  return <div>{accords}</div>;
 }
-
 
 function GetList(props) {
   return (
@@ -211,25 +247,26 @@ function GetList(props) {
         <Table aria-label="my-table">
           <TableHead>
             <TableRow>
-              <TableCell align='center'>Code</TableCell>
-              <TableCell align='center'>Subject Level</TableCell>
-              <TableCell align='center'>Year Taken</TableCell>
-              <TableCell align='center'>Status</TableCell>
-              <TableCell align='center'>Grade</TableCell>
+              <TableCell align="center">Code</TableCell>
+              <TableCell align="center">Subject Level</TableCell>
+              <TableCell align="center">Year Taken</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Grade</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.courses.map(row => (
+            {props.courses.map((row) => (
               <TableRow key={row.name}>
-                <TableCell align='center'>{row.code}</TableCell>
-                <TableCell align='center'>{row.score}</TableCell>
-                <TableCell align='center'>{row.year}</TableCell>
-                <TableCell align='center'>{row.state}</TableCell>
-                <TableCell align='center'>{row.grades}</TableCell>
-                <TableCell align='center'>
+                <TableCell align="center">{row.code}</TableCell>
+                <TableCell align="center">{row.score}</TableCell>
+                <TableCell align="center">{row.year}</TableCell>
+                <TableCell align="center">{row.state}</TableCell>
+                <TableCell align="center">{row.grades}</TableCell>
+                <TableCell align="center">
                   <EditButton {...row} refresh={props.refresh} />
-                  <DeleteButton code={row.code} refresh={props.refresh} /></TableCell>
+                  <DeleteButton code={row.code} refresh={props.refresh} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -239,12 +276,18 @@ function GetList(props) {
   );
 }
 
-
 function MyForm(props) {
-  let semesters = [{value: 'Sem1', label: 'Semester 1'}, {value: 'Winter', label: 'Winter'},
-    {value: 'Sem2', label: 'Semester 2'}, {value: 'Summer', label: 'Summer'}];
-  let states = [{value: 'Finished', label: 'Finished'}, {value: 'OnGoing', label: 'On Going'},
-    {value: 'Planned', label: 'Planned'}];
+  let semesters = [
+    {value: 'Sem1', label: 'Semester 1'},
+    {value: 'Winter', label: 'Winter'},
+    {value: 'Sem2', label: 'Semester 2'},
+    {value: 'Summer', label: 'Summer'},
+  ];
+  let states = [
+    {value: 'Finished', label: 'Finished'},
+    {value: 'OnGoing', label: 'On Going'},
+    {value: 'Planned', label: 'Planned'},
+  ];
   return (
     <Dialog
       fullWidth={fullWidth}
@@ -264,9 +307,15 @@ function MyForm(props) {
             <h2 id="transition-modal-title">{props.title}</h2>
             <Formik
               initialValues={{
-                code: props.code, year: props.year, score: props.score,
-                grades: props.grades, description: props.description, state: props.state,
-                name: props.name, sem: props.sem, link: props.link,
+                code: props.code,
+                year: props.year,
+                score: props.score,
+                grades: props.grades,
+                description: props.description,
+                state: props.state,
+                name: props.name,
+                sem: props.sem,
+                link: props.link,
               }}
               onSubmit={(values) => {
                 props.submit(values);
@@ -274,29 +323,49 @@ function MyForm(props) {
                 setTimeout(() => props.refresh(), 400);
               }}
             >
-              <Form width='100%'>
-                <Typography variant="body2"><br /></Typography>
-                <Field as={TextField}
-                       id="code" name="code" label="Subject Code"
-                       fullWidth
-                       required
+              <Form width="100%">
+                <Typography variant="body2">
+                  <br />
+                </Typography>
+                <Field
+                  as={TextField}
+                  id="code"
+                  name="code"
+                  label="Subject Code"
+                  fullWidth
+                  required
                 />
-                <Typography variant="body2"><br /></Typography>
-                <Field as={TextField}
-                       label="Subject Title" name="name" id="name"
-                       fullWidth
+                <Typography variant="body2">
+                  <br />
+                </Typography>
+                <Field
+                  as={TextField}
+                  label="Subject Title"
+                  name="name"
+                  id="name"
+                  fullWidth
                 />
-                <Typography variant="body2"><br /></Typography>
-                <Field as={TextField}
-                       label="Course Description" name="description" id="description"
-                       fullWidth
-                       multiline
+                <Typography variant="body2">
+                  <br />
+                </Typography>
+                <Field
+                  as={TextField}
+                  label="Course Description"
+                  name="description"
+                  id="description"
+                  fullWidth
+                  multiline
                 />
-                <Typography variant="body2"><br /></Typography>
-                <Field as={TextField}
-                       label="Semester Taken" name="sem" id="sem"
-                       fullWidth
-                       select
+                <Typography variant="body2">
+                  <br />
+                </Typography>
+                <Field
+                  as={TextField}
+                  label="Semester Taken"
+                  name="sem"
+                  id="sem"
+                  fullWidth
+                  select
                 >
                   {semesters.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -305,11 +374,16 @@ function MyForm(props) {
                   ))}
                 </Field>
 
-                <Typography variant="body2"><br /></Typography>
-                <Field as={TextField}
-                       label="State of Subject" name="state" id="state"
-                       select
-                       fullWidth
+                <Typography variant="body2">
+                  <br />
+                </Typography>
+                <Field
+                  as={TextField}
+                  label="State of Subject"
+                  name="state"
+                  id="state"
+                  select
+                  fullWidth
                 >
                   {states.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -317,38 +391,64 @@ function MyForm(props) {
                     </MenuItem>
                   ))}
                 </Field>
-                <Typography variant="body2"><br /></Typography>
+                <Typography variant="body2">
+                  <br />
+                </Typography>
 
-                <Grid container direction="row" justify="space-evenly" spacing={1}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-evenly"
+                  spacing={1}
+                >
                   <Grid item xs={4}>
-                    <Field as={TextField}
-                           label="Year Taken" name="year" id="year" type="number"
-                           InputProps={{inputProps: {min: 1853, max: 2500}}}
-                           fullWidth
+                    <Field
+                      as={TextField}
+                      label="Year Taken"
+                      name="year"
+                      id="year"
+                      type="number"
+                      InputProps={{inputProps: {min: 1853, max: 2500}}}
+                      fullWidth
                     />
                   </Grid>
                   <Grid item xs={4}>
-                    <Field as={TextField}
-                           label="Subject level" name="score" id="score" type="number"
-                           InputProps={{inputProps: {min: 0, max: 4}}}
-                           fullWidth
+                    <Field
+                      as={TextField}
+                      label="Subject level"
+                      name="score"
+                      id="score"
+                      type="number"
+                      InputProps={{inputProps: {min: 0, max: 4}}}
+                      fullWidth
                     />
                   </Grid>
                   <Grid item xs={4}>
-                    <Field as={TextField}
-                           label="Grade" name="grades" id="grades" type="number"
-                           InputProps={{inputProps: {min: 0, max: 100}}}
-                           fullWidth
+                    <Field
+                      as={TextField}
+                      label="Grade"
+                      name="grades"
+                      id="grades"
+                      type="number"
+                      InputProps={{inputProps: {min: 0, max: 100}}}
+                      fullWidth
                     />
                   </Grid>
                 </Grid>
-                <Typography variant="body2"><br /></Typography>
-                <Field as={TextField}
-                       label="Link to handbook" name="link" id="link"
-                       fullWidth
+                <Typography variant="body2">
+                  <br />
+                </Typography>
+                <Field
+                  as={TextField}
+                  label="Link to handbook"
+                  name="link"
+                  id="link"
+                  fullWidth
                 />
                 <Button
-                  type="submit" variant="raised" color="primary"
+                  type="submit"
+                  variant="raised"
+                  color="primary"
                   fullWidth
                 >
                   Submit
@@ -362,7 +462,6 @@ function MyForm(props) {
   );
 }
 
-
 function EditButton(props) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -375,21 +474,28 @@ function EditButton(props) {
 
   const onEditSubmit = (values) => {
     let url = '/course/' + props.code;
-    axios.post(url, values).then(() => setOpen(false))
+    axios
+      .post(url, values)
+      .then(() => setOpen(false))
       .catch(() => alert('error in editing course'));
     setTimeout(() => props.refresh(), 400);
   };
 
   return (
     <div>
-      <Button size="small" onClick={handleClickOpen}>Edit</Button>
-      <MyForm open={open} handleClose={handleClose}
-              title='Edit This Course' submit={onEditSubmit} {...props}
+      <Button size="small" onClick={handleClickOpen}>
+        Edit
+      </Button>
+      <MyForm
+        open={open}
+        handleClose={handleClose}
+        title="Edit This Course"
+        submit={onEditSubmit}
+        {...props}
       />
     </div>
   );
 }
-
 
 function DeleteButton(props) {
   const [open, setOpen] = useState(false);
@@ -404,23 +510,31 @@ function DeleteButton(props) {
 
   const handleAccept = () => {
     let url = '/course/' + props.code;
-    axios.delete(url).then(r => setOpen(false)).catch(() => alert('error in deleting course'));
+    axios
+      .delete(url)
+      .then((r) => setOpen(false))
+      .catch(() => alert('error in deleting course'));
     setTimeout(() => props.refresh(), 400);
   };
 
   return (
     <div>
-      <Button size="small" color="primary" onClick={handleClickOpen}>Delete</Button>
+      <Button size="small" color="primary" onClick={handleClickOpen}>
+        Delete
+      </Button>
       <Dialog
         open={open}
         onClose={handleCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Are you sure you want to delete?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Are you sure you want to delete?
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Accepting this will permanently remove this course from your profile.
+            Accepting this will permanently remove this course from your
+            profile.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -444,7 +558,12 @@ class Course extends Component {
     this.getOneCourse = this.getOneCourse.bind(this);
     this.getAllCourse = this.getAllCourse.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
-    this.state = {courses: undefined, tabIndex: 0, open: null, courses2: undefined};
+    this.state = {
+      courses: undefined,
+      tabIndex: 0,
+      open: null,
+      courses2: undefined,
+    };
     this.refresh = this.refresh.bind(this);
   }
 
@@ -452,17 +571,25 @@ class Course extends Component {
     e.preventDefault();
     var checked = document.forms.namedItem('createCourse')['core'].checked;
     let formD = {
-      'code': document.forms.namedItem('createCourse')['code']['value'],
-      'name': document.forms.namedItem('createCourse')['name']['value'],
-      'description': document.forms.namedItem('createCourse')['description']['value'],
-      'related_skills': document.forms.namedItem('createCourse')['related_skills']['value'].split(','),
-      'state': document.forms.namedItem('createCourse')['state']['value'],
-      'grades': parseInt(document.forms.namedItem('createCourse')['grades']['value']),
-      'link': document.forms.namedItem('createCourse')['link']['value'],
-      'year': parseInt(document.forms.namedItem('createCourse')['year']['value']),
-      'sem': document.forms.namedItem('createCourse')['sem']['value'],
-      'core': checked,
-      'score': parseInt(document.forms.namedItem('createCourse')['score']['value']),
+      code: document.forms.namedItem('createCourse')['code']['value'],
+      name: document.forms.namedItem('createCourse')['name']['value'],
+      description: document.forms.namedItem('createCourse')['description'][
+        'value'
+      ],
+      related_skills: document.forms
+        .namedItem('createCourse')
+        ['related_skills']['value'].split(','),
+      state: document.forms.namedItem('createCourse')['state']['value'],
+      grades: parseInt(
+        document.forms.namedItem('createCourse')['grades']['value']
+      ),
+      link: document.forms.namedItem('createCourse')['link']['value'],
+      year: parseInt(document.forms.namedItem('createCourse')['year']['value']),
+      sem: document.forms.namedItem('createCourse')['sem']['value'],
+      core: checked,
+      score: parseInt(
+        document.forms.namedItem('createCourse')['score']['value']
+      ),
     };
     axios.post('/course/create', formD);
   }
@@ -470,31 +597,69 @@ class Course extends Component {
   updateCourse(e) {
     e.preventDefault();
     let formD = {};
-    if (document.forms.namedItem('updateCourse')['code']['value'].trim() != '') {
-      const url = '/course/' + document.forms.namedItem('updateCourse')['code']['value'].trim();
-      if (document.forms.namedItem('updateCourse')['name']['value'].trim() != '') {
-        formD['name'] = document.forms.namedItem('updateCourse')['name']['value'].trim();
+    if (
+      document.forms.namedItem('updateCourse')['code']['value'].trim() != ''
+    ) {
+      const url =
+        '/course/' +
+        document.forms.namedItem('updateCourse')['code']['value'].trim();
+      if (
+        document.forms.namedItem('updateCourse')['name']['value'].trim() != ''
+      ) {
+        formD['name'] = document.forms
+          .namedItem('updateCourse')
+          ['name']['value'].trim();
       }
-      if (document.forms.namedItem('updateCourse')['description']['value'].trim() != '') {
-        formD['description'] = document.forms.namedItem('updateCourse')['description']['value'].trim();
+      if (
+        document.forms
+          .namedItem('updateCourse')
+          ['description']['value'].trim() != ''
+      ) {
+        formD['description'] = document.forms
+          .namedItem('updateCourse')
+          ['description']['value'].trim();
       }
-      formD['state'] = document.forms.namedItem('updateCourse')['state']['value'];
-      if (document.forms.namedItem('updateCourse')['related_skills']['value'].trim() != '') {
-        formD['related_skills'] = document.forms.namedItem('updateCourse')['related_skills']['value'].split(',');
+      formD['state'] = document.forms.namedItem('updateCourse')['state'][
+        'value'
+      ];
+      if (
+        document.forms
+          .namedItem('updateCourse')
+          ['related_skills']['value'].trim() != ''
+      ) {
+        formD['related_skills'] = document.forms
+          .namedItem('updateCourse')
+          ['related_skills']['value'].split(',');
       }
-      if (parseInt(document.forms.namedItem('updateCourse')['grades']['value'])) {
-        formD['grades'] = parseInt(document.forms.namedItem('updateCourse')['grades']['value']);
+      if (
+        parseInt(document.forms.namedItem('updateCourse')['grades']['value'])
+      ) {
+        formD['grades'] = parseInt(
+          document.forms.namedItem('updateCourse')['grades']['value']
+        );
       }
-      if (document.forms.namedItem('updateCourse')['link']['value'].trim() != '') {
-        formD['link'] = document.forms.namedItem('updateCourse')['link']['value'].trim();
+      if (
+        document.forms.namedItem('updateCourse')['link']['value'].trim() != ''
+      ) {
+        formD['link'] = document.forms
+          .namedItem('updateCourse')
+          ['link']['value'].trim();
       }
       if (parseInt(document.forms.namedItem('updateCourse')['year']['value'])) {
-        formD['year'] = parseInt(document.forms.namedItem('updateCourse')['year']['value']);
+        formD['year'] = parseInt(
+          document.forms.namedItem('updateCourse')['year']['value']
+        );
       }
       formD['sem'] = document.forms.namedItem('updateCourse')['sem']['value'];
-      formD['core'] = document.forms.namedItem('updateCourse')['core']['value'].checked;
-      if (parseInt(document.forms.namedItem('updateCourse')['score']['value'])) {
-        formD['score'] = parseInt(document.forms.namedItem('updateCourse')['score']['value']);
+      formD['core'] = document.forms.namedItem('updateCourse')['core'][
+        'value'
+      ].checked;
+      if (
+        parseInt(document.forms.namedItem('updateCourse')['score']['value'])
+      ) {
+        formD['score'] = parseInt(
+          document.forms.namedItem('updateCourse')['score']['value']
+        );
       }
       axios.post(url, formD);
     }
@@ -502,7 +667,8 @@ class Course extends Component {
 
   getOneCourse(e) {
     e.preventDefault();
-    const url = '/course/' + document.forms.namedItem('oneCourse')['code']['value'];
+    const url =
+      '/course/' + document.forms.namedItem('oneCourse')['code']['value'];
     axios.get(url).then((res) => {
       if (res.data.course) {
         alert(JSON.stringify(res.data.course));
@@ -511,7 +677,6 @@ class Course extends Component {
       }
     });
   }
-
 
   getAllCourse(e) {
     e.preventDefault();
@@ -526,7 +691,8 @@ class Course extends Component {
 
   deleteCourse(e) {
     e.preventDefault();
-    const url = '/course/' + document.forms.namedItem('deleteCourse')['code']['value'];
+    const url =
+      '/course/' + document.forms.namedItem('deleteCourse')['code']['value'];
     axios.delete(url);
   }
 
@@ -546,12 +712,20 @@ class Course extends Component {
     axios.get('/course/').then((res) => {
       if (res.data.course) {
         this.setState({courses: res.data.course});
-        keys.map(key => {
+        keys.map((key) => {
           this.state.courses[key].map((value) => {
             rows[i] = {};
-            rows[i] ={code: value.code, year: value.year, sem: value.sem, grades: value.grades,
-            score: value.score, state: value.state, description: value.description,
-            name: value.name, link: value.link};
+            rows[i] = {
+              code: value.code,
+              year: value.year,
+              sem: value.sem,
+              grades: value.grades,
+              score: value.score,
+              state: value.state,
+              description: value.description,
+              name: value.name,
+              link: value.link,
+            };
             i++;
           });
         });
@@ -568,17 +742,27 @@ class Course extends Component {
     const {classes} = this.props;
 
     return (
-      <div>
-        <container>
-          <Helmet>
-            <title>Microhard &middot; Welcome </title>
-          </Helmet>
-          <div className={classes.root}>
-            <div className={classes.formWrap}>
-              <h1 className={classes.formTitle}>My Courses</h1>
-            </div>
-          </div>
-        </container>
+      <Fragment>
+        <Helmet>
+          <title>Microhard &middot; Courses </title>
+        </Helmet>
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
+          <br />
+          <br />
+          <Typography variant="h1" align="center" style={{color: '#fff'}}>
+            Courses
+          </Typography>
+        </div>
+        {/*<container>*/}
+        {/*  <Helmet>*/}
+        {/*    <title>Microhard &middot; Courses </title>*/}
+        {/*  </Helmet>*/}
+        {/*  <div className={classes.root}>*/}
+        {/*    <div className={classes.formWrap}>*/}
+        {/*      <h1 className={classes.formTitle}>My Courses</h1>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</container>*/}
         <div>
           <Tabs
             value={this.state.tabIndex}
@@ -589,39 +773,56 @@ class Course extends Component {
             aria-label="icon label tabs example"
           >
             <Tab label="Overview" index={0} />
-            <Tab label='Details' index={1} />
+            <Tab label="Details" index={1} />
           </Tabs>
-          {this.state.tabIndex === 0 &&
-          <div>
-            {this.state.courses && <MyGrid courses={this.state.courses} />}
-            <br />
-            <Typography align="center" variant="h3">Course Overview</Typography>
-            <br />
-            <Grid container justify="center" direction="row">
-              <Grid item xs={11}>
-                {this.state.courses2 && <GetAccords courses={this.state.courses2} />}
+          {this.state.tabIndex === 0 && (
+            <div>
+              {this.state.courses && <MyGrid courses={this.state.courses} />}
+              <br />
+              <Typography align="center" variant="h3">
+                Course Overview
+              </Typography>
+              <br />
+              <Grid container justify="center" direction="row">
+                <Grid item xs={11}>
+                  {this.state.courses2 && (
+                    <GetAccords courses={this.state.courses2} />
+                  )}
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
-          }
-          {this.state.tabIndex === 1 && <div>
-            <GetList courses={this.state.courses2} refresh={this.refresh} />
-            <br />
-            <Button fullWidth variant="outlined" color="primary" onClick={() => this.setState({open: true})}>
-              Add new Course
-            </Button>
+            </div>
+          )}
+          {this.state.tabIndex === 1 && (
+            <div>
+              <GetList courses={this.state.courses2} refresh={this.refresh} />
+              <br />
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                onClick={() => this.setState({open: true})}
+              >
+                Add new Course
+              </Button>
 
-            <MyForm open={this.state.open} classes={classes} handleClose={() => this.setState({open: null})}
-                    title='Add New Course' submit={this.submit} year="2020" sem="Winter" refresh={this.refresh}
-            />
-          </div>}
-          <br/>
+              <MyForm
+                open={this.state.open}
+                classes={classes}
+                handleClose={() => this.setState({open: null})}
+                title="Add New Course"
+                submit={this.submit}
+                year="2020"
+                sem="Winter"
+                refresh={this.refresh}
+              />
+            </div>
+          )}
+          <br />
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
-
 
 const mapStateToProps = (state) => ({
   ...state,
