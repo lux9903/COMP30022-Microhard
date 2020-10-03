@@ -59,7 +59,7 @@ export default function EditDocument(props) {
               <Button
                 type="submit"
                 onClick={() => {
-                  // window.location.reload(false);
+                  window.location.reload(false);
                   setUpload(true);
                 }}
                 style={{fontFamily: 'Lato, sans-serif'}}

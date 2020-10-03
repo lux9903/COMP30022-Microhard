@@ -31,7 +31,6 @@ class Documents extends Component {
   }
   onEdit(e) {
     e.preventDefault();
-    console.log('onEdit');
     const url =
       '/pdf/title/' + document.forms.namedItem('editTitle')['id']['value'];
     const body = {
