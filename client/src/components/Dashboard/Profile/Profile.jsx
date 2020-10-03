@@ -9,6 +9,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import Typography from '@material-ui/core/Typography';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Alert from '@material-ui/lab/Alert';
+import ShareIcon from '@material-ui/icons/Share';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
@@ -100,9 +103,11 @@ class Profile extends Component {
     super(props);
     this.state = {
       file: null,
+      copied: false,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+
   }
 
   onFormSubmit(e) {
@@ -180,6 +185,7 @@ class Profile extends Component {
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
+
     return (
       <Fragment>
         <Helmet>
@@ -277,6 +283,20 @@ class Profile extends Component {
                         <LinkedInIcon />
                       </Fab>
                     )}
+                    {user._id && (
+                        <Fab
+                            color="secondary"
+                            size="small"
+                            className={classes.socialIcon}
+                            target="_blank"
+                        >
+                          <CopyToClipboard text={`https://comp30022-microhard.herokuapp.com`+`/view/${user._id}`}
+                                           onCopy={() => this.setState({copied: true})}>
+                            <ShareIcon />
+                          </CopyToClipboard>
+                        </Fab>
+                    )}
+                    {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
                   </Grid>
                 </Grid>
               </Grid>
