@@ -23,7 +23,6 @@ import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import ImageGrid from '../Photos/ImageGrid';
-import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
   root: {
@@ -64,8 +63,8 @@ const styles = (theme) => ({
   socialIcon: {
     marginRight: '8px',
   },
-  socialIcons: {
-    [theme.breakpoints.down('sm')]: {
+  icons: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'center',
     },
   },
@@ -74,7 +73,7 @@ const styles = (theme) => ({
     padding: '20px 32px',
     textAlign: 'left',
     color: '#657786',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'center',
     },
   },
@@ -107,7 +106,6 @@ class Profile extends Component {
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-
   }
 
   onFormSubmit(e) {
@@ -148,9 +146,7 @@ class Profile extends Component {
           <Avatar
             className={clsx(classes.primaryColor, classes.avatar)}
             alt="default avatar"
-          >
-            UK
-          </Avatar>
+          />
         );
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
@@ -245,13 +241,7 @@ class Profile extends Component {
                   </Typography>
                   <Typography variant="h4">{user.headline}</Typography>
                   <Typography variant="h4">{user.major}</Typography>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.socialIcons}
-                  >
+                  <Grid item xs={12} sm={12} md={12} className={classes.icons}>
                     <Fab
                       href={'mailto:' + user.email}
                       size="small"
@@ -284,19 +274,28 @@ class Profile extends Component {
                       </Fab>
                     )}
                     {user._id && (
-                        <Fab
-                            color="secondary"
-                            size="small"
-                            className={classes.socialIcon}
-                            target="_blank"
+                      <Fab
+                        color="secondary"
+                        size="small"
+                        className={classes.socialIcon}
+                        target="_blank"
+                      >
+                        <CopyToClipboard
+                          text={
+                            `https://comp30022-microhard.herokuapp.com` +
+                            `/view/${user._id}`
+                          }
+                          onCopy={() => this.setState({copied: true})}
                         >
-                          <CopyToClipboard text={`https://comp30022-microhard.herokuapp.com`+`/view/${user._id}`}
-                                           onCopy={() => this.setState({copied: true})}>
-                            <ShareIcon />
-                          </CopyToClipboard>
-                        </Fab>
+                          <ShareIcon />
+                        </CopyToClipboard>
+                      </Fab>
                     )}
-                    {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
+                    {this.state.copied ? (
+                      <Alert severity="success">
+                        Share link has copied to the clipboard
+                      </Alert>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>
@@ -324,15 +323,15 @@ class Profile extends Component {
                       </Typography>
                     )}
                   </Grid>
-                  <Grid item xs={12} sm={6} md={5}>
-                    {/*  <Button variant="outlined" color="primary" fullWidth>*/}
-                    {/*    <div id="resume"></div>*/}
-                    {/*  </Button>*/}
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
-                    <Button variant="outlined" color="primary" fullWidth>
+                  {/*<Grid item xs={12} sm={6} md={5}>*/}
+                  {/*  <Button variant="outlined" color="primary" fullWidth>*/}
+                  {/*    <div id="resume"></div>*/}
+                  {/*  </Button>*/}
+                  {/*</Grid>*/}
+                  <Grid item xs={12} sm={12} md={9} className={classes.icons}>
+                    <Fab variant="extended">
                       <div id="resume"></div>
-                    </Button>
+                    </Fab>
                   </Grid>
                 </Grid>
               )}

@@ -422,7 +422,7 @@ export default function Experience() {
     <Fragment>
       {/*<container>*/}
       <Helmet>
-        <title>Microhard &middot; Welcome </title>
+        <title>Microhard &middot; Experience </title>
       </Helmet>
       {/*  <div className={classes.root}>*/}
       {/*    <div className={classes.formWrap}>*/}
