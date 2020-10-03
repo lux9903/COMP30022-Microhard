@@ -31,6 +31,7 @@ class Documents extends Component {
   }
   onEdit(e) {
     e.preventDefault();
+    console.log('onEdit');
     const url =
       '/pdf/title/' + document.forms.namedItem('editTitle')['id']['value'];
     const body = {
@@ -95,7 +96,7 @@ class Documents extends Component {
             </TableCell>
             <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
-              <EditDocument onEdit />
+              <EditDocument onEdit={this.onEdit} />
               <IconButton aria-label="delete">
                 <DeleteIcon
                   onClick={() => {
