@@ -1,7 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router";
 import {Helmet} from 'react-helmet';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';

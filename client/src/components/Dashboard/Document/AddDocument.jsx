@@ -48,6 +48,7 @@ export default function AddDocument(props) {
               label="File Title"
               fullWidth
               variant="filled"
+              autoComplete="off"
             />
             <br />
             <br />
@@ -58,7 +59,7 @@ export default function AddDocument(props) {
               onChange={props.onChange}
             />
             Is Resume?
-            <input type="checkbox" id = "isResume"/>
+            <input type="checkbox" id="isResume" />
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">

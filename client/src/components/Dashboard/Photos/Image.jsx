@@ -82,6 +82,7 @@ class Image extends Component {
                       inputProps={{accept: 'image/*'}}
                       onChange={this.onChange}
                       color="primary"
+                      // style={{paddingBottom: '8px'}}
                     />
                     <Button type="submit" color="primary" variant="contained">
                       Upload
