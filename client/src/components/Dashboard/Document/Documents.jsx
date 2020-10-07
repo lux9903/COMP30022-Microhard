@@ -29,14 +29,12 @@ class Documents extends Component {
     this.getAllPdf = this.getAllPdf.bind(this);
     this.onEdit = this.onEdit.bind(this);
   }
-  onEdit(e) {
-    e.preventDefault();
-    const url =
-      '/pdf/title/' + document.forms.namedItem('editTitle')['id']['value'];
+  onEdit(url) {
     const body = {
       title: document.forms.namedItem('editTitle')['title']['value'],
     };
     axios.post(url, body);
+    
   }
 
   onFormSubmitPDF(e) {
@@ -95,7 +93,7 @@ class Documents extends Component {
             </TableCell>
             <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
-              <EditDocument onEdit={this.onEdit} />
+              <EditDocument onEdit={this.onEdit} url = {ele.updateFileLink}/>
               <IconButton aria-label="delete">
                 <DeleteIcon
                   onClick={() => {

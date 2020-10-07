@@ -34,7 +34,7 @@ export default function EditDocument(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <form onSubmit={props.onEdit}>
+        <form onSubmit={() => props.onEdit(props.url)} name="editTitle">
           <DialogTitle id="form-dialog-title">Edit this document</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -52,7 +52,6 @@ export default function EditDocument(props) {
             />
             <br />
             <br />
-            <input accept="application/pdf" type="file" name="file" />
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
