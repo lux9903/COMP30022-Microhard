@@ -211,7 +211,6 @@ projectRouter.post('/process/node/:id',auth.optional,(req,res)=>{
 		if(req.body.processNum && (req.body.processNum <= project.process.length)){
 			
 			project.process[req.body.processNum - 1].nodes.push({
-				"name": req.body.name,
 				"description": req.body.description,
 				"state": false,
 				"index": project.process[req.body.processNum - 1].nodes.length + 1
@@ -232,9 +231,6 @@ projectRouter.post('/process/node/update/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function(user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
 		if(req.body.processNum && (req.body.processNum <= project.process.length)){
-			if(req.body.name){
-				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).name = req.body.name;
-			}
 			if(req.body.description){
 				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).description = req.body.description;	
 			}
