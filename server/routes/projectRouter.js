@@ -16,10 +16,12 @@ projectRouter.post('/create', auth.optional, (req,res)=>{
 	        project.contributors = [user.username];
 	        project.skills = [];
 	        project.process = [];
+	        /*
 	        project.timeline = [{
 	        	"date": new Date(),
 	        	"description": "Project created"
 	        }];
+	        */
 	        project.rating = 0;
 	        await project.save();
 	      });
@@ -58,6 +60,7 @@ projectRouter.post('/update/:id',auth.optional, (req,res)=>{
 	User.findById(req.payload.id).then(async function (user){
 		const result = await Project.findOneAndUpdate({user:user._id,_id:req.params.id},req.body);
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
+		/*
 		if(project.status == "Completed"){
 			project.timeline.push({
 				"date": new Date(),
@@ -73,7 +76,7 @@ projectRouter.post('/update/:id',auth.optional, (req,res)=>{
 				"date" : new Date(),
 				"description": "Project updated."
 			});
-		}
+		}*/
 		project.save();
 		return res.json({"result":result});
 	});
@@ -125,10 +128,12 @@ projectRouter.post('/process/:id',auth.optional,(req,res)=>{
 		}
 		if(newProcess.processNum == (project.process.length + 1)){
 			project.process.push(newProcess);
+			/*
 			project.timeline.push({
 				"date":new Date(),
 				"description":"Process " + newProcess.processNum + " created."
 			});
+			*/
 			project.save();
 		}else{
 			for(ele of project.process){
@@ -138,10 +143,12 @@ projectRouter.post('/process/:id',auth.optional,(req,res)=>{
 			}
 			project.process.push(newProcess);
 			project.process.sort((a,b)=> a.processNum - b.processNum);
+			/*
 			project.timeline.push({
 				"date":new Date(),
 				"description":"Process " + newProcess.processNum + " inserted."
 			})
+			*/
 			project.save();
 
 
@@ -161,10 +168,12 @@ projectRouter.post('/process/remove/:id',auth.optional,(req,res)=>{
 					ele.processNum = ele.processNum -1;
 				}
 			}
+			/*
 			project.timeline.push({
 				"date":new Date(),
 				"description": "Process " + processNum + " removed."
 			});
+			*/
 			project.save();
 		}
 	})
@@ -188,6 +197,7 @@ projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 				}
 				project.process.sort((a,b)=> a.processNum - b.processNum)[processNum-1].status = req.body.status;
 			}
+			/*
 			if(toComplete){
 				project.timeline.push({
 					"date" : new Date(),
@@ -198,20 +208,19 @@ projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 					"date" : new Date(),
 					"description": "Process " + processNum + " updated."
 				});
-			}
+			}*/
 			project.save();
 		}
 	});
 });
 
 //c nodes
-projectRouter.post('/process/node/:id',auth.optional,(req,res)=>{
+projectRouter.post(':/process/node/id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function(user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
 		if(req.body.processNum && (req.body.processNum <= project.process.length)){
 			
 			project.process[req.body.processNum - 1].nodes.push({
-				"name": req.body.name,
 				"description": req.body.description,
 				"state": false,
 				"index": project.process[req.body.processNum - 1].nodes.length + 1
@@ -232,9 +241,6 @@ projectRouter.post('/process/node/update/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function(user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
 		if(req.body.processNum && (req.body.processNum <= project.process.length)){
-			if(req.body.name){
-				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).name = req.body.name;
-			}
 			if(req.body.description){
 				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).description = req.body.description;	
 			}
@@ -289,15 +295,16 @@ projectRouter.post('/process/node/finish/:id',auth.optional,(req,res)=>{
 						break;
 					}
 				}
+				/*
 				if(allDone){
 					project.process[req.body.processNum-1].status = "complete";
 					project.timeline.push({
 					"date" : new Date(),
 					"description": "Process " + req.body.processNum + " completed."
 				});	
-				}
+				}*/
 				project.markModified('process');
-				project.markModified('timeline');
+				//project.markModified('timeline');
 				project.save();
 			}
 		}

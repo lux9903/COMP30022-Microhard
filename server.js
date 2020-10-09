@@ -63,6 +63,9 @@ app.use(
 require('./server/models/userModel');
 require('./server/models/imageModel');
 require('./server/models/pdfModel');
+require('./server/models/courseModel');
+require('./server/models/experienceModel');
+require('./server/models/projectModel');
 // Authentication
 require('./server/config/passport');
 

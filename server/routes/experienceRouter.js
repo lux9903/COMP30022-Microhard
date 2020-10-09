@@ -19,7 +19,7 @@ experienceRouter.post('/create', auth.optional, (req,res)=>{
         experience.description = req.body.description;
         experience.state = req.body.state;
         experience.save();
-        return res.redirect("/");
+        return res.json(experience);
       }).catch();
 });
 
@@ -44,7 +44,7 @@ experienceRouter.get("/",auth.optional, async (req,res)=>{
 		if(experiences){
 			return res.send(experiences);
 		}else{
-			return res.send("no");
+			return res.send([]);
 		}
 	});
 });

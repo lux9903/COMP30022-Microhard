@@ -103,9 +103,7 @@ class Project_Edit extends Component{
         status : "",
         show_status : "",
         rating: 0,
-
         input: "",
-
         open: false,
       };
     }
@@ -269,7 +267,7 @@ class Project_Edit extends Component{
                             <Typography gutterBottom variant="h5" component="h2">
                                 Contributors
                             </Typography>
-                            { this.state.contributors.length>0 ? (
+                            {this.state.contributors && this.state.contributors.length>0 ? (
                                 <List className={classes.list}>
                                     {this.state.contributors.map(function(cons,i){
                                         return <Con_items name={cons} id={id}/>})}

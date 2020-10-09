@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Gallery from 'react-grid-gallery';
@@ -54,30 +54,28 @@ class Image extends Component {
         this.setState({deleteImageLink: deleteLink});
 
         let photogrid = (
-          <Container>
-            <div
-              style={{
-                display: 'block',
-                minHeight: '1px',
-                width: '100%',
-                border: '1px solid #ddd',
-                overflow: 'auto',
-              }}
-            >
-              <Gallery
-                maxRows={5}
-                images={photodata}
-                enableLightbox={true}
-                enableImageSelection={false}
-                currentImageWillChange={this.onCurrentImageChange}
-                customControls={[
-                  <button key="deleteImage" onClick={this.deleteImage}>
-                    Delete Image
-                  </button>,
-                ]}
-              />
-            </div>
-          </Container>
+          <div
+            style={{
+              display: 'block',
+              minHeight: '1px',
+              width: '100%',
+              border: '1px solid #ddd',
+              overflow: 'auto',
+            }}
+          >
+            <Gallery
+              maxRows={5}
+              images={photodata}
+              enableLightbox={true}
+              enableImageSelection={false}
+              currentImageWillChange={this.onCurrentImageChange}
+              customControls={[
+                <button key="deleteImage" onClick={this.deleteImage}>
+                  Delete Image
+                </button>,
+              ]}
+            />
+          </div>
         );
         ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
@@ -89,9 +87,7 @@ class Image extends Component {
     return (
       <Fragment>
         <div className={classes.root}>
-          <Container>
-            <div id="all_img"></div>
-          </Container>
+          <div id="all_img"></div>
         </div>
       </Fragment>
     );

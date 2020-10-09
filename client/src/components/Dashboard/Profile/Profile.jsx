@@ -9,18 +9,21 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import Typography from '@material-ui/core/Typography';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Alert from '@material-ui/lab/Alert';
+import ShareIcon from '@material-ui/icons/Share';
 import Avatar from '@material-ui/core/Avatar';
 import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from '@material-ui/core/Popover';
-import EditAvatar from '../EditAvatar';
+import EditAvatar from './EditAvatar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
-import PDFPreview from './PDFPreview';
-import ImageGrid from '../ImageGrid';
+import ImageGrid from '../Photos/ImageGrid';
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
   root: {
@@ -100,9 +103,11 @@ class Profile extends Component {
     super(props);
     this.state = {
       file: null,
+      copied: false,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+
   }
 
   onFormSubmit(e) {
@@ -150,11 +155,37 @@ class Profile extends Component {
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
+
+    const resume = axios.get('/pdf/').then((res) => {
+      if (res.data.pdfs) {
+        var resumeUrl = {getFileLink: '#'};
+        var ele;
+        for (ele of res.data.pdfs) {
+          if (ele.isResume) {
+            resumeUrl = ele;
+            break;
+          }
+        }
+        if (resumeUrl) {
+          const resumeLink = (
+            <a
+              href={resumeUrl.getFileLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume
+            </a>
+          );
+          ReactDOM.render(resumeLink, document.getElementById('resume'));
+        }
+      }
+    });
   }
 
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
+
     return (
       <Fragment>
         <Helmet>
@@ -252,6 +283,20 @@ class Profile extends Component {
                         <LinkedInIcon />
                       </Fab>
                     )}
+                    {user._id && (
+                        <Fab
+                            color="secondary"
+                            size="small"
+                            className={classes.socialIcon}
+                            target="_blank"
+                        >
+                          <CopyToClipboard text={`https://comp30022-microhard.herokuapp.com`+`/view/${user._id}`}
+                                           onCopy={() => this.setState({copied: true})}>
+                            <ShareIcon />
+                          </CopyToClipboard>
+                        </Fab>
+                    )}
+                    {this.state.copied ? <Alert severity="success">Share link has copied to the clipboard</Alert> : null}
                   </Grid>
                 </Grid>
               </Grid>
@@ -263,7 +308,7 @@ class Profile extends Component {
                   component={Paper}
                   className={classes.secondSection}
                 >
-                  <Grid item xs={12} sm={12} md={4}>
+                  <Grid item xs={12} sm={12} md={3}>
                     {user.location && (
                       <Typography variant="body1">
                         <LocationOnOutlinedIcon
@@ -278,6 +323,16 @@ class Profile extends Component {
                         {user.graduation}
                       </Typography>
                     )}
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={5}>
+                    {/*  <Button variant="outlined" color="primary" fullWidth>*/}
+                    {/*    <div id="resume"></div>*/}
+                    {/*  </Button>*/}
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <Button variant="outlined" color="primary" fullWidth>
+                      <div id="resume"></div>
+                    </Button>
                   </Grid>
                 </Grid>
               )}
@@ -315,20 +370,8 @@ class Profile extends Component {
                 <Grid item xs={12} sm={11} md={12}>
                   <Typography variant="h2">Photos</Typography>
                 </Grid>
-                <Grid item xs={12} sm={11} md={11}>
+                <Grid item xs={12} sm={11} md={12}>
                   <ImageGrid />
-                </Grid>
-              </Grid>
-            </Grow>
-            <Grow in timeout={1700}>
-              <Grid
-                container
-                component={Paper}
-                elevation={3}
-                className={classes.aboutSection}
-              >
-                <Grid item xs={12} sm={11} md={11}>
-                  <PDFPreview />
                 </Grid>
               </Grid>
             </Grow>

@@ -11,9 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 //import Link from '@material-ui/core/Link';
-import logo from '../../components/Navigation/logo.png';
+//import logo from '../../components/Navigation/logo.png';
 import img from './form-background.jpg';
-import axios from '../../helpers/axiosConfig';
+import axios from '../../../helpers/axiosConfig';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -140,14 +140,7 @@ class ProjectList extends Component{
       <br/>
       <Container maxWidth="md">
         <Grid container spacing={4}>
-            {this.state.projlist.length > 0 ? (this.pList()) : (
-            <Typography
-              variant="h5"
-              align="center"
-            >
-              Loading...
-            </Typography>
-            )}
+          {this.pList()}
         </Grid>
       </Container>
     </Fragment>

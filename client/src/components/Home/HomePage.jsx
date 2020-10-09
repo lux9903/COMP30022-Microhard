@@ -15,9 +15,9 @@ export default function HomePage() {
       <Appbar />
       <Hero />
       <Functionalities />
-      <form onSubmit = {() => axios.post('/api/project/like/anoymous/5f74529cdafcc42aecf374fb')}>
-        <input type = "submit" value = "test"/>
-      </form>
+      {/*<form onSubmit = {() => axios.post('/api/project/like/anoymous/5f74529cdafcc42aecf374fb')}>*/}
+      {/*  <input type = "submit" value = "test"/>*/}
+      {/*</form>*/}
     </Fragment>
   );
 }
