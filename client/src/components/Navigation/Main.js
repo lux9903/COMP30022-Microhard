@@ -9,9 +9,10 @@ import SignIn from '../Account/SignIn';
 import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
+
 //import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/ProjectList_edit';
-import Project_Edit from '../Dashboard/Project/Project_Edit';
+import Project_Edit from '../Dashboard/Project/p';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';
