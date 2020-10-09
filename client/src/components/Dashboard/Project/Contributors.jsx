@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
 //import Con_Items from './Contributors';
 
 class Con_List extends Component{
@@ -21,7 +23,7 @@ class Con_List extends Component{
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            conlist=[],
+            conlist:[],
             input: "",
         }
     }
@@ -34,16 +36,18 @@ class Con_List extends Component{
             this.setState({
                 conlist: res.data.project.contributors,
             });
+            //alert(res.data.project.contributors);
         })
         .catch((error) => {});
     }
-    renList() {
-        return this.state.conlist.map(function(cons, i){
-          return <Con_Items contributor={cons} id={this.props.id} update={this.update()}/>
-        });
+
+    renList = () =>{
+        return (this.state.conlist.map((cons,i)=>{
+            return <Con_Items contributor={cons} id={this.props.id} update={this.update}/>
+        }));
     }
 
-    update(){
+    update = () =>{
         this.getData();
         this.renList();
     }
@@ -65,13 +69,23 @@ class Con_List extends Component{
                     Contributors
                 </Typography>
                 <Divider/>
-                {renList()}
-                <TextField
-                    lable="Add new contributor"
-                    onChange={this.onChange}
-                    disableUnderline
-                />
-                <Button onClick={this.handleSubmit}>Add</Button>
+                {this.renList()}
+                <form onSubmit={this.handleSubmit} >
+                    <TextField
+                        label="Add new contributor"
+                        onChange={this.onChange}
+                        InputProps={{ disableUnderline: true }}
+                        required
+                        variant="outlined"
+                    />
+                    <Button 
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                    >
+                        Add
+                    </Button>
+                </form>
             </Fragment>
         )
     }
@@ -81,7 +95,7 @@ class Con_Items extends Component{
     constructor(props){
         super(props);
         this.OnChange = this.OnChange.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -93,6 +107,7 @@ class Con_Items extends Component{
     handleCancel = () =>{
         this.setState({
             open:false,
+            name:this.props.contributor,
         })
     }
     handleOpen = () =>{
@@ -100,53 +115,61 @@ class Con_Items extends Component{
             open:true,
         })
     }
-    handleDelete(){
-        axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.props.contributor]})
+    handleDelete = () =>{
+        axios.post('/project/remove_people/'+this.props.id, {"old_users":[this.props.contributor]})
         .catch((error) => {});
         this.props.update();
     };
 
-    OnChange(event){
+    OnChange = (event) =>{
         this.setState({
             name: event.target.value,
         });
     }
 
-    handleUpdate(event){
-        axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.props.contributor]})
+    handleUpdate = (event) => {
+        axios.post('/project/remove_people/'+this.props.id, {"old_users":[this.props.contributor]})
         .catch((error) => {});
-        axios.post('/project/add_people/'+this.props.id, {'new_users':[this.state.name]})
+        axios.post('/project/add_people/'+this.props.id, {"new_users":[this.state.name]})
         .catch((error) => {});
-        //do i have to set state again if i gonna renderlist again?
         this.props.update();
     };
 
     render(){
         return(
             <Fragment>
-                {!open ? (
+                {(!this.state.open) ? (
                     <div>
                         <TextField
                             disabled
                             value={this.state.name}
-                            disableUnderline
+                            InputProps={{ disableUnderline: true }}
+                            variant="outlined"
                         />
                         <IconButton>
-                            <EditIcon onClick={this.handleOpen}/>
-                            <DeleteIcon onClick={this.handleDelete}/>
+                            <EditIcon onClick={this.handleOpen} fontSize="small"/>
+                        </IconButton>
+                        <IconButton>
+                            <DeleteIcon onClick={this.handleDelete} fontSize="small"/>
                         </IconButton>
                     </div>
                 ) : (
                     <div>
-                        <TextField
-                            onChange={this.onChange}
-                            value={this.state.name}
-                            disableUnderline
-                        />
-                        <IconButton>
-                            <CheckIcon onClick={this.handleUpdate}/>
-                            <ClearIcon onClick={this.handleCancel}/>
-                        </IconButton>
+                        <form onSubmit={this.handleUpdate} fullWidth>
+                            <TextField
+                                onChange={this.OnChange}
+                                value={this.state.name}
+                                InputProps={{ disableUnderline: true }}
+                                variant="outlined"
+                                required
+                            />
+                            <IconButton type="submit">
+                                <CheckIcon fontSize="small"/>
+                            </IconButton>
+                            <IconButton>
+                                <ClearIcon onClick={this.handleCancel} fontSize="small"/>
+                            </IconButton>
+                        </form>
                     </div>
                 )}
             </Fragment>

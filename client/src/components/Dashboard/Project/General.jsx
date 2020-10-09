@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
+import { FormControl } from '@material-ui/core';
 
 
 class General_Info extends Component{
@@ -59,32 +60,42 @@ class General_Info extends Component{
                     General Information
                 </Typography>
                 <Divider/>
-                <Typography>
-                    Name
-                </Typography>
-                <TextField 
-                    value={this.state.name}
-                    onChange={this.onChangeName}
-                    fullWidth
-                />
-                <Typography>
-                    Description
-                </Typography>
-                <TextField 
-                    value={this.state.description}
-                    onChange={this.onChangeDesc}
-                    fullWidth
-                    multiline
-                />
-                <Button
-                    fullWidth
-                    onClick={this.handleSubmit}
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                >
-                    Submit
-                </Button>
+                <form onSubmit={this.handleSubmit} fullWidth>
+                    <Typography>
+                        Name
+                    </Typography>
+                    <TextField 
+                        value={this.state.name}
+                        onChange={this.onChangeName}
+                        fullWidth
+                        InputProps={{ disableUnderline: true }}
+                        variant="outlined"
+                        required
+                    />
+                    <br/>
+                    <Typography>
+                        Description
+                    </Typography>
+                    <TextField 
+                        value={this.state.description}
+                        onChange={this.onChangeDesc}
+                        fullWidth
+                        multiline
+                        InputProps={{ disableUnderline: true }}
+                        variant="outlined"
+                    />
+                    <br/>
+                    <Button
+                        fullWidth
+                        type="submit"
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                    >
+                        Submit
+                    </Button>
+                </form>
+
             </Fragment>
         )
     }

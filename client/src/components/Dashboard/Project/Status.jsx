@@ -13,14 +13,17 @@ class Status extends Component{
       super(props);
       this.componentDidMount = this.componentDidMount.bind(this);
       this.getData = this.getData.bind(this);
-      this.handleOpen = this.handleOpen.bind(this);
-      this.handleClose = this.handleClose.bind(this);
+      this.handleStatOpen = this.handleStatOpen.bind(this);
+      this.handleStatClose = this.handleStatClose.bind(this);
+      this.handleShowOpen = this.handleShowOpen.bind(this);
+      this.handleShowClose = this.handleShowClose.bind(this);
       this.handleShowStatusChange = this.handleShowStatusChange.bind(this);
       this.handleStatusChange = this.handleStatusChange.bind(this);
       this.state = {
         status: "",
         show_status: "",
-        open: false,
+        open_stat: false,
+        open_show: false,
       };
     }
     componentDidMount = () =>{
@@ -41,7 +44,7 @@ class Status extends Component{
         axios.post('/project/update/'+this.props.id, {"status":event.target.value}).catch((error) => {});
         this.setState({
             status:event.target.value,
-            open:false,
+            open_stat:false,
         })
     };
 
@@ -49,18 +52,29 @@ class Status extends Component{
         axios.post('/project/update/'+this.props.id, {"show_status":event.target.value}).catch((error) => {});
         this.setState({
             show_status:event.target.value,
-            open:false,
+            open_show:false,
         })
     };
 
-    handleClose = () =>{
+    handleStatClose = () =>{
         this.setState({
-            open:false,
+            open_stat:false,
         })
     }
-    handleOpen = () =>{
+
+    handleShowClose = () =>{
         this.setState({
-            open:true,
+            open_show:false,
+        })
+    }
+    handleStatOpen = () =>{
+        this.setState({
+            open_stat:true,
+        })
+    }
+    handleShowOpen = () =>{
+        this.setState({
+            open_show:true,
         })
     }
 
@@ -78,8 +92,8 @@ class Status extends Component{
                     <Select
                         disableUnderline
                         open={this.state.open}
-                        onClose={this.handleClose}
-                        onOpen={this.handleOpen}
+                        onClose={this.handleStatClose}
+                        onOpen={this.handleStatOpen}
                         value={this.state.status}
                         onChange={this.handleStatusChange}
                     >
@@ -95,8 +109,8 @@ class Status extends Component{
                     <Select
                         disableUnderline
                         open={this.state.open}
-                        onClose={this.handleClose}
-                        onOpen={this.handleOpen}
+                        onClose={this.handleShowClose}
+                        onOpen={this.handleShowOpen}
                         value={this.state.show_status}
                         onChange={this.handleShowStatusChange}
                     >

@@ -9,6 +9,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CheckIcon from '@material-ui/icons/Check';
+import EditIcon from '@material-ui/icons/Edit';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
@@ -19,46 +21,80 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
 
-class EditButton extends Component {
+class Process_List extends Component{
     constructor(props){
         super(props);
+        this.componentDidMount=this.componentDidMount.bind(this);
+        this.getData = this.getData.bind(this);
+        this.renList = this.renList.bind(this);
+        this.update = this.update.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
+            proclist:[],
             input: "",
         }
     }
-    onChange =(event)=>{
+    componentDidMount = () =>{
+        this.getData();
+    }
+
+    getData = () =>{
+        axios.get('/project/'+this.props.id).then((res) => {
+            this.setState({
+                proclist: res.data.project.process,
+            });
+            //alert(res.data.project.process);
+            alert(res.data.project.process.length);
+        })
+        .catch((error) => {});
+    }
+
+    renList = () => {
+        return (this.state.proclist.map((proc,i)=>{
+            return <Process process={proc} id={this.props.id} update={this.update} fullWidth/>
+        }));
+    }
+
+    update = () =>{
+        this.getData();
+        this.renList();
+    }
+
+    onChange = (event) =>{
         this.setState({input:event.target.value});
     }
 
     handleSubmit = () =>{
-        axios.post('/project/process/update/'+this.props.id, {
+        axios.post('/project/process/'+this.props.id, {
             "description": this.state.input,
-            "processNum": this.props.processNum,
-        }).catch((error) => {});
-        this.props.update();
+            //"processNum": "1",
+            "processNum": this.state.proclist ? (this.state.proclist.length + 1): (1),
+        })
+        .catch((error) => {});
+        this.setState({input:""});
+        this.update();
     }
 
-    //need sth to do cancel, should change to form instead?
     render(){
         return(
-            <Dialog>
-                <DialogContent>
-                    <Typography>
-                        Process Number: {this.props.proc.processNum}
-                    </Typography>
-                    <Typography>
-                        Description
-                    </Typography>
+            <Fragment>
+                <Typography>
+                    Process
+                </Typography>
+                <Divider/>
+                {this.renList()}
+                <form onSubmit= {this.handleSubmit} fullWidth>
                     <TextField
-                        label="Process Description"
-                        value={this.props.proc.description}
-                        disableUnderline
+                        label="Add description for new process"
                         onChange={this.onChange}
+                        InputProps={{ disableUnderline: true }}
+                        required
+                        variant="outlined"
                     />
-                    <Button onClick={this.handleSubmit}>Submit</Button>
-                    <Button>Cancel</Button>
-                </DialogContent>
-            </Dialog>
+                    <Button type="submit">Add</Button>
+                </form>
+            </Fragment>
         )
     }
 }
@@ -66,11 +102,30 @@ class EditButton extends Component {
 class Process extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            input: "",
+        }
+
     }
 
     handleDelete(){
         axios.post('/project/process/remove/'+this.props.id, {
-            "processNum": this.props.processNum,
+            "processNum": this.props.process.processNum,
+        })
+        .catch((error) => {});
+        this.props.update();
+    }
+
+    onChange = (event) => {
+        this.setState({
+            input: event.target.value,
+        })
+    }
+
+    handleSubmit = () => {
+        axios.post('/project/process/node/'+this.props.id, {
+            "processNum": this.props.process.processNum,
+            "description" : this.state.input,
         })
         .catch((error) => {});
         this.props.update();
@@ -84,23 +139,34 @@ class Process extends Component {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                <Typography variant="h6">{this.props.proc.description}</Typography>
+                <Typography variant="h6">{this.props.process.description}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <Grid container direction="column">
                     <List>
-                        {this.props.proc.node.map(function(node, i){
+                        {this.props.process.nodes.map((node, i)=>{
                             return( 
                                 <ListItem>
-                                    <Node node={node} id={this.props.id} update={this.props.update} processNum={this.props.proc.processNum}/>
+                                    <Node node={node} id={this.props.id} update={this.props.update} processNum={this.props.process.processNum}/>
                                 </ListItem>
                         )})}
                     </List>
                 </Grid>
+                <form onSubmit={this.handleSubmit}>
+                    <TextField
+                        label="Add new task"
+                        InputProps={{ disableUnderline: true }}
+                        onChange={this.onChange}
+                        value={this.state.input}
+                        required
+                        variant="outlined"
+                    />
+                    <Button type="submit">Add</Button>
+                </form>
             </AccordionDetails>
             <Divider />
             <AccordionActions>
-                <EditButton/>
+                <EditButton process={this.props.process} id={this.props.id}/>
                 <Button onClick={this.handleDelete}>Delete</Button>
             </AccordionActions>
         </Accordion>
@@ -108,70 +174,72 @@ class Process extends Component {
     }
 }
 
-class Process_List extends Component{
+class EditButton extends Component {
     constructor(props){
         super(props);
-        this.componentDidMount=this.componentDidMount.bind(this);
-        this.getData = this.getData.bind(this);
-        this.renList = this.renList.bind(this);
-        this.update = this.update.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
         this.state = {
-            proclist=[],
-            input: "",
+            description: this.props.process.description,
+            open: false,
         }
     }
-    componentDidMount = () =>{
-        this.getData();
-    }
-
-    getData = () =>{
-        axios.get('/project/'+this.props.id).then((res) => {
-            this.setState({
-                proclist: res.data.project.process,
-            });
-        })
-        .catch((error) => {});
-    }
-    renList() {
-        return this.state.proclist.map(function(proc, i){
-          return <Con_Items proc={proc} id={this.props.id} update={this.update()}/>
-        });
-    }
-
-    update(){
-        this.getData();
-        this.renList();
-    }
-
-    onChange =(event)=>{
-        this.setState({input:event.target.value});
+    onChange = (event) => {
+        this.setState({description:event.target.value});
     }
 
     handleSubmit = () =>{
-        axios.post('/project/process/'+this.props.id, {
-            "description": this.state.input,
-            "processNum": this.state.proclist.length +1,
+        axios.post('/project/process/update/'+this.props.id, {
+            "description": this.state.description,
+            "processNum": this.props.process.processNum,
         }).catch((error) => {});
-        this.setState({input:""});
-        this.update();
+        this.props.update();
     }
 
+    handleCancel = () => {
+        this.setState({
+            open:true,
+            description:this.props.process.description,
+        });
+    }
+
+    handleOpen = () => {
+        this.setState({open:true});
+    }
+
+    //need sth to do cancel, should change to form instead?
     render(){
         return(
             <Fragment>
-                <Typography>
-                    Process
-                </Typography>
-                <Divider/>
-                {renList()}
-                <TextField
-                    lable="Add description for new process"
-                    onChange={this.onChange}
-                    disableUnderline
-                />
-                <Button onClick={this.handleSubmit}>Add</Button>
+            {(!this.state.open) ? (
+                <Button onClick={this.handleOpen}>Edit</Button>
+            ) : (
+                <Dialog>
+                    <DialogContent>
+                        <form onSubmit={this.handleSubmit} fullWidth>
+                            <Typography>
+                                Process Number: {this.props.process.processNum}
+                            </Typography>
+                            <Typography>
+                                Description
+                            </Typography>
+                            <TextField
+                                value={this.state.description}
+                                InputProps={{ disableUnderline: true }}
+                                onChange={this.onChange}
+                                required
+                                fullWidth
+                                multiline
+                                variant="outlined"
+                            />
+                            <Button type="submit">Submit</Button>
+                            <Button onClick={this.handleCancel}>Cancel</Button>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+            )} 
             </Fragment>
         )
     }
@@ -181,17 +249,14 @@ class Node extends Component{
     constructor(props){
         super(props);
         this.OnChange = this.OnChange.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleAddNode = this.handleAddNode.bind(this);
-        this.onChangeNew = this.onChangeNew.bind(this);
         this.state = {
             description: this.props.node.description,
             state: this.props.node.state,
             open: false,
-            input: "",
         }
     }
     handleCancel = () =>{
@@ -205,7 +270,7 @@ class Node extends Component{
             open:true,
         })
     }
-    handleDelete(){
+    handleDelete = () =>{
         axios.post('/project/process/node/remove/'+this.props.id, {
             "processNum": this.props.processNum,
             "nodeIndex" : this.props.node.nodeIndex,
@@ -214,13 +279,13 @@ class Node extends Component{
         this.props.update();
     };
 
-    OnChange(event){
+    OnChange = (event) => {
         this.setState({
             description: event.target.value,
         });
     }
 
-    handleUpdate(event){
+    handleUpdate = (event) => {
         axios.post('/project/process/node/update/'+this.props.id, {
             "processNum": this.props.processNum,
             "nodeIndex" : this.props.node.nodeIndex,
@@ -230,57 +295,46 @@ class Node extends Component{
         this.props.update();
     };
 
-    handleAddNode(){
-        axios.post('/project/process/node/'+this.props.id, {
-            "processNum": this.props.processNum,
-            "description": this.state.input,
-        })
-        .catch((error) => {});
-        this.props.update();
-    }
-
-    onChangeNew(event){
-        this.setState({
-            input:event.target.value,
-        })
-    }
-
     //adding box -> handleboxChecked
-
     render(){
         return(
             <Fragment>
-                {!open ? (
+                {(!this.state.open) ? (
                     <div>
                         <TextField
                             disabled
-                            value={this.state.name}
-                            disableUnderline
+                            value={this.state.description}
+                            InputProps={{ disableUnderline: true }}
+                            multiline
+                            variant="outlined"
                         />
                         <IconButton>
                             <EditIcon onClick={this.handleOpen}/>
+                        </IconButton>
+                        <IconButton>
                             <DeleteIcon onClick={this.handleDelete}/>
                         </IconButton>
                     </div>
                 ) : (
                     <div>
-                        <TextField
-                            onChange={this.onChange}
-                            value={this.state.name}
-                            disableUnderline
-                        />
-                        <IconButton>
-                            <CheckIcon onClick={this.handleUpdate}/>
-                            <ClearIcon onClick={this.handleCancel}/>
-                        </IconButton>
+                        <form onSubmit={this.handleUpdate}>
+                            <TextField
+                                onChange={this.onChange}
+                                value={this.state.description}
+                                InputProps={{ disableUnderline: true }}
+                                multiline
+                                required
+                                variant="outlined"
+                            />
+                            <IconButton type="submit">
+                                <CheckIcon/>
+                            </IconButton>
+                            <IconButton onClick={this.handleCancel}>
+                                <ClearIcon/>
+                            </IconButton>
+                        </form>
                     </div>
                 )}
-                <TextField
-                    label="Add new task"
-                    disableUnderline
-                    onChange={this.onChangeNew}
-                />
-                <Button onClick={this.handleAddNode}>Add</Button>
             </Fragment>
         )
     }
