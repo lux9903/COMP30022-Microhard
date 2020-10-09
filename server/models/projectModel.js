@@ -11,6 +11,7 @@ const projectSchema = new Schema(
 		name : String,
 		contributors: Array,
 		skills : Array,
+		//could come with req.body
 		description: String,
 		status: {
 			type: String,
