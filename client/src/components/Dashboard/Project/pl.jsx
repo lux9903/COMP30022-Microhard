@@ -3,6 +3,7 @@ import React, {Component, Fragment, useState} from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
@@ -23,6 +24,9 @@ import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
+
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 const styles = (theme) => ({
   icon: {
@@ -53,8 +57,12 @@ const styles = (theme) => ({
       maxHeight: 100,
       overflow: 'auto',
   },
+  container:{
+    justify_content: "space-between",
+  }
 });
 
+//button to opening warning delete form
 function DeleteButton(props) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {setOpen(true);};
@@ -90,6 +98,7 @@ function DeleteButton(props) {
   );
 }
 
+//Button opening add form
 function AddButton(props) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -106,7 +115,7 @@ function AddButton(props) {
   };
   return (
     <div>
-      <Button size="small" variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>
         <MyForm open={open} update={props.update} handleClose={handleClose}
                 title='Add a project' submit={onSubmit} 
       />
@@ -114,6 +123,7 @@ function AddButton(props) {
   )
 }
 
+//adding form
 function MyForm(props) {
   return (
     <Dialog
@@ -126,16 +136,28 @@ function MyForm(props) {
             <Formik
               initialValues={{
                 name: "",
+                description: "",
               }}
               onSubmit = {(values) => {props.submit(values); props.handleClose();}}
             >
-              <Form width='100%'>
+              <Form width='100%' mt="2">
+                <Typography>ADD NEW PROJECT</Typography>
+                <Divider/>
                 <Field as={TextField}
-                       label="Name"
-                       variant="outlined"
-                       name="name"
-                       id="name"
-                       fullWidth
+                  label="Name"
+                  variant="outlined"
+                  name="name"
+                  id="name"
+                  fullWidth
+                  required
+                />
+                <br/>
+                <Field as={TextField}
+                  label="Description"
+                  variant="outlined"
+                  name="description"
+                  id="description"
+                  fullWidth
                 />
                 <Button
                   type="submit"
@@ -166,7 +188,7 @@ function Project(props){
       </AccordionSummary>
       <AccordionDetails>
         <Grid container direction="column">
-          <Typography>{props.project.description}</Typography>
+          <Typography>Description: {props.project.description}</Typography>
           <Typography>Progress: {props.project.status}</Typography>
           <Typography>Show status: {props.project.show_status}</Typography>
         </Grid>
@@ -176,7 +198,7 @@ function Project(props){
         <Link to={"/project/"+props.project._id}>
           <Button>Edit</Button>
         </Link>
-        <DeleteButton id={props.project._id} update={props.update}/>
+        <DeleteButton id={props.project._id} update={()=>props.update()}/>
       </AccordionActions>
     </Accordion>
   )
@@ -189,11 +211,16 @@ class ProjectList extends Component{
     this.update = this.update.bind(this);
     this.getAll = this.getAll.bind(this);
     this.pList = this.pList.bind(this);
-    this.onSearh = this.onSearch.bind(this);
+    this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
+    this.onStatusChange = this.onStatusChange.bind(this);
+    this.getCondition= this.getCondition.bind(this);
+    this.onSortChange = this.onSortChange.bind(this);
     this.state = {
       projlist : [],
       search : "",
+      search_status: "",
+      sortBy: "",
     };
   }
 
@@ -219,8 +246,32 @@ class ProjectList extends Component{
     .catch((error) => {})
   }
 
+  getCondition = () =>{
+    if(this.state.search_status == ""){
+      if(this.state.sortBy == ""){
+        axios.post('/project/conditional', {"name":this.state.input})
+          .then((res) => {this.setState({projlist: res.data.result});})
+          .catch((error) => {});
+      }else{
+        axios.post('/project/conditional', {"name":this.state.input,"sortBy": this.state.sortBy})
+          .then((res) => {this.setState({projlist: res.data.result});})
+          .catch((error) => {});
+      }
+    }else{
+      if(this.state.sortBy == ""){
+        axios.post('/project/conditional', {"name":this.state.input,"status":this.state.search_status})
+          .then((res) => {this.setState({projlist: res.data.result});})
+          .catch((error) => {});
+      }else{
+        axios.post('/project/conditional', {"name":this.state.input,"sortBy": this.state.sortBy,"status":this.state.search_status})
+          .then((res) => {this.setState({projlist: res.data.result});})
+          .catch((error) => {});
+      }
+    }
+  }
+
   update = () => {
-    this.getAll();
+    this.getCondition();
     this.pList();
   }
 	componentDidMount = () => {
@@ -235,14 +286,28 @@ class ProjectList extends Component{
   onSearch = (event) => {
     //event.preventDefault();
     if(event.key === "Enter"){
-      event.preventDefault();
-      axios.post('/project/conditional', {"name":this.state.input})
-      .then((res) => {
-        this.setState({projlist: res.data.result});
-        alert(res.data.result);
-      })
-      .catch((error) => {});
-      this.pList();
+      this.update();
+    }
+  }
+
+  onStatusChange = (event, newstatus) => {
+    if(newstatus !== null){
+      this.setState(
+        {search_status: newstatus},
+        //alert(this.state.search_status),
+        this.update
+      );
+    }
+    //alert(this.state.search_status);
+  }
+
+  onSortChange = (event, newsort) => {
+    if(newsort !== null){
+      this.setState(
+        {sortBy: newsort},
+        //alert(this.state.search_status),
+        this.update
+      );
     }
   }
 
@@ -276,18 +341,42 @@ class ProjectList extends Component{
       </div>
       <br/>
       <Container maxWidth="md">
-        <Grid container direction="row">
+        <Grid container spacing={1} direction="row" justify="space-between" alignItems="center">
           <AddButton update={this.update}/>
-          <br/>
           <TextField
             onChange ={this.onChangeInput}
             onKeyDown={this.onSearch}
             value={this.state.input}
             variant="outlined"
+            size="small"
+            label="Search name"
           />
+          <ToggleButtonGroup
+            value={this.state.sortBy}
+            exclusive
+            onChange={this.onSortChange}
+            size="small"
+          >
+            <ToggleButton value="">All</ToggleButton>
+            <ToggleButton value='descending'>Oldest</ToggleButton>
+            <ToggleButton value='ascending'>Lastest</ToggleButton>
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            value={this.state.search_status}
+            exclusive
+            onChange={this.onStatusChange}
+            size="small"
+          >
+            <ToggleButton value="">All</ToggleButton>
+            <ToggleButton value='Inprogress'>In Progress</ToggleButton>
+            <ToggleButton value='Completed'>Complete</ToggleButton>
+            <ToggleButton value='Cancel'>Cancel</ToggleButton>
+          </ToggleButtonGroup>
         </Grid>
         <br/>
         {this.pList()}
+        <br/>
+        <br/>
       </Container>
     </Fragment>
     );
