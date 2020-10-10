@@ -360,3 +360,37 @@ class Node extends Component{
 }
   
 export default (Process_List);
+
+/*
+    <List>
+      <ListItem fullWidth>
+      {openEdit ? (
+        <div>
+          <ListItemText>
+            <TextField value="hello" disabled/>
+            <IconButton onClick={handleEditClick}>
+              <EditIcon/>
+          </IconButton>
+          </ListItemText>
+        </div>
+      ) : (
+        <div>
+          <ListItemText>
+            <TextField value="hello"/>
+            <IconButton onClick={handleEditClick}>
+              <ClearIcon/>
+          </IconButton>
+          </ListItemText>
+        </div>
+      )}
+        {open ? (<ExpandLess onClick={handleClick}/>) : (<ExpandMore onClick={handleClick}/>)}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List>
+          <ListItem>
+              <TextField value="hello" disabled/>
+          </ListItem>
+        </List>
+      </Collapse>
+    </List>
+*/

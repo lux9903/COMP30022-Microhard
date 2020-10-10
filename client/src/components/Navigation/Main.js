@@ -12,7 +12,7 @@ import Experience from '../Dashboard/Experience';
 
 //import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/pl';
-import Project_Edit from '../Dashboard/Project/p';
+import Project_Edit from '../Dashboard/Project/pv';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';
@@ -46,6 +46,12 @@ class Main extends Component {
           exact
           path="/experiences"
           component={Experience}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/test"
+          component={Test}
           authed={this.props.user}
         />
         <PrivateRoute

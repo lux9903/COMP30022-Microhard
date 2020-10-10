@@ -195,9 +195,12 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Link to={"/project/"+props.project._id}>
-          <Button>Edit</Button>
-        </Link>
+        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
+          View
+        </Button>
+        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
+          Edit
+        </Button>
         <DeleteButton id={props.project._id} update={()=>props.update()}/>
       </AccordionActions>
     </Accordion>
@@ -341,7 +344,7 @@ class ProjectList extends Component{
       </div>
       <br/>
       <Container maxWidth="md">
-        <Grid container spacing={1} direction="row" justify="space-between" alignItems="center">
+        <Grid container spacing={1} direction="row" justify="space-evenly" alignItems="center">
           <AddButton update={this.update}/>
           <TextField
             onChange ={this.onChangeInput}
