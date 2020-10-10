@@ -146,11 +146,11 @@ class Con_Items extends Component{
                             InputProps={{ disableUnderline: true }}
                             variant="outlined"
                         />
-                        <IconButton>
-                            <EditIcon onClick={this.handleOpen} fontSize="small"/>
+                        <IconButton onClick={this.handleOpen}>
+                            <EditIcon  fontSize="small"/>
                         </IconButton>
-                        <IconButton>
-                            <DeleteIcon onClick={this.handleDelete} fontSize="small"/>
+                        <IconButton onClick={this.handleDelete}>
+                            <DeleteIcon fontSize="small"/>
                         </IconButton>
                     </div>
                 ) : (
@@ -166,8 +166,8 @@ class Con_Items extends Component{
                             <IconButton type="submit">
                                 <CheckIcon fontSize="small"/>
                             </IconButton>
-                            <IconButton>
-                                <ClearIcon onClick={this.handleCancel} fontSize="small"/>
+                            <IconButton onClick={this.handleCancel} >
+                                <ClearIcon fontSize="small"/>
                             </IconButton>
                         </form>
                     </div>

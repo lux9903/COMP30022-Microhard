@@ -192,9 +192,9 @@ projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 			}
 
 			if(req.body.status){
-				if(project.process.sort((a,b)=> a.processNum - b.processNum)[processNum-1].status == "incomplete" && req.body.status == "complete"){
+				/*if(project.process.sort((a,b)=> a.processNum - b.processNum)[processNum-1].status == "incomplete" && req.body.status == "complete"){
 					toComplete = true;
-				}
+				}*/
 				project.process.sort((a,b)=> a.processNum - b.processNum)[processNum-1].status = req.body.status;
 			}
 			/*
@@ -209,6 +209,7 @@ projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 					"description": "Process " + processNum + " updated."
 				});
 			}*/
+			console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			project.save();
 		}
 	});
