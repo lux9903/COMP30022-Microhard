@@ -19,6 +19,13 @@ import ClearIcon from '@material-ui/icons/Clear';
 class Timeline_List extends Component{
     constructor(props) {
       super(props);
+      this.componentDidMount = this.componentDidMount.bind(this);
+      this.updateTimeline = this.updateTimeline.bind(this);
+      this.getTimeline = this.getTimeline.bind(this);
+      this.renTimelineList = this.renTimelineList.bind(this);
+      this.onChangeDate = this.onChangeDate.bind(this);
+      this.onChangeDesc = this.onChangeDesc.bind(this);
+      this.handleAddTimelineSubmit = this.handleAddTimelineSubmit.bind(this);
       this.state = {
         timeline = [],
         date: "",
@@ -27,10 +34,10 @@ class Timeline_List extends Component{
     }
 
     componentDidMount = () =>{
-        this.getData();
+        this.getTimeline();
     }
 
-    getData = () =>{
+    getTimeline = () => {
         axios.get('/project/'+this.props.id).then((res) => {
             this.setState({
                 timeline: res.data.project.timeline,
@@ -38,32 +45,33 @@ class Timeline_List extends Component{
         })
         .catch((error) => {});
     }
-    renList() {
-        return this.state.conlist.map(function(each, i){
-          return <Timeline_Items each={each} id={this.props.id} update={this.update()}/>
+
+    renTimelineList = () => {
+        return this.state.conlist.map((each, i)=>{
+          return <Timeline_Items each={each} id={this.props.id} update={this.updateTimeline}/>
         });
     }
 
-    update(){
-        this.getData();
-        this.renList();
+    updateTimeline = () => {
+        this.getTimeline();
+        this.renTimelineList();
     }
 
-    onChangeDate =(event)=>{
+    onChangeDate = (event) => {
         this.setState({date:event.target.value});
     }
 
-    onChangeDesc = (event) =>{
+    onChangeDesc = (event) => {
         this.setState({description:event.target.value});
     }
 
-    handleSubmit = () =>{
+    handleAddTimelineSubmit = () =>{
         axios.post('/project/timeline/'+this.props.id, {
             "date": this.state.date,
             "description":this.state.description,
         }).catch((error) => {});
         this.setState({date:"",description:""});
-        this.update();
+        this.updateTimeline();
     }
     
     render(){
@@ -73,17 +81,22 @@ class Timeline_List extends Component{
                     Timeline
                 </Typography>
                 <Divider/>
-                {this.renList}
-                <DateField
-                    lable="Add new contributor"
-                    onChange={this.onChangeDate}
-                />
-                <TextField
-                    lable="Add new contributor"
-                    onChange={this.onChangeDesc}
-                    disableUnderline
-                />
-                <Button onClick={this.handleSubmit}>Add</Button>
+                {this.renTimelineList()}
+                <form onSubmit={this.handleAddTimelineSubmit}>
+                    <TextField
+                        lable="Add new contributor"
+                        onChange={this.onChangeDate}
+                        type="date"
+                        required
+                    />
+                    <TextField
+                        lable="Add new contributor"
+                        onChange={this.onChangeDesc}
+                        disableUnderline
+                        required
+                    />
+                    <Button type="submit">Add New Timeline</Button>
+                </form>
             </Fragment>
         );
     }
@@ -93,47 +106,48 @@ class Timeline_List extends Component{
 class Timeline_Items extends Component{
     constructor(props){
         super(props);
-        this.OnChange = this.OnChange.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+        this.handleTimelineCancel = this.handleTimelineCancel.bind(this);
+        this.handleTimelineOpen = this.handleTimelineOpen.bind(this);
+        this.handleTimelineUpdate = this.handleTimelineUpdate.bind(this);
+        this.handleTimelineDelete = this.handleTimelineDelete.bind(this);
+        this.OnChangeDateUpdate = this.OnChangeDateUpdate.bind(this);
+        this.OnChangeDescUpdate = this.OnChangeDescUpdate.bind(this);
         this.state = {
             description: this.props.each.description,
             date: this.props.each.each.date,
             open: false,
         }
     }
-    handleCancel = () =>{
+    handleTimelineCancel = () =>{
         this.setState({
             open:false,
         })
     }
-    handleOpen = () =>{
+    handleTimelineOpen = () =>{
         this.setState({
             open:true,
         })
     }
 
-    OnChangeDate(event){
+    OnChangeDateUpdate = (event) => {
         this.setState({
             date: event.target.value,
         });
     }
 
-    OnChangeDesc(event){
+    OnChangeDescUpdate = (event) => {
         this.setState({
             description: event.target.value,
         });
     }
 
-    handleDelete(){
+    handleTimelineDelete = () => {
         axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.props.contributor]})
         .catch((error) => {});
         this.props.update();
     };
 
-    handleUpdate(event){
+    handleTimelineUpdate = (event) => {
         axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.props.contributor]})
         .catch((error) => {});
         this.props.update();
@@ -142,47 +156,6 @@ class Timeline_Items extends Component{
     render(){
         return(
             <Fragment>
-                {!open ? (
-                    <div>
-                        <TextField
-                            disabled
-                            value={this.state.date}
-                            disableUnderline
-                            type="date"
-                        />
-                        <TextField
-                            disabled
-                            value={this.state.description}
-                            disableUnderline
-                            type="date"
-                        />
-                        <Divider/>
-                        <IconButton>
-                            <EditIcon onClick={this.handleOpen}/>
-                            <DeleteIcon onClick={this.handleDelete}/>
-                        </IconButton>
-                    </div>
-                ) : (
-                    <div>
-                        <TextField
-                            onChange={this.onChangeDate}
-                            value={this.state.date}
-                            disableUnderline
-                            type="date"
-                        />
-                        <TextField
-                            onChange={this.onChangeDesc}
-                            value={this.state.description}
-                            disableUnderline
-                            type="date"
-                        />
-                        <Divider/>
-                        <IconButton>
-                            <CheckIcon onClick={this.handleUpdate}/>
-                            <ClearIcon onClick={this.handleCancel}/>
-                        </IconButton>
-                    </div>
-                )}
             </Fragment>
         )
     }

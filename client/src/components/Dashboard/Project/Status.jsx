@@ -12,7 +12,7 @@ class Status extends Component{
     constructor(props) {
       super(props);
       this.componentDidMount = this.componentDidMount.bind(this);
-      this.getData = this.getData.bind(this);
+      this.getStatus = this.getStatus.bind(this);
       this.handleStatOpen = this.handleStatOpen.bind(this);
       this.handleStatClose = this.handleStatClose.bind(this);
       this.handleShowOpen = this.handleShowOpen.bind(this);
@@ -27,10 +27,10 @@ class Status extends Component{
       };
     }
     componentDidMount = () =>{
-        this.getData();
+        this.getStatus();
     }
 
-    getData = () =>{
+    getStatus = () =>{
         axios.get('/project/'+this.props.id).then((res) => {
             this.setState({
                 status: res.data.project.status,
@@ -67,6 +67,7 @@ class Status extends Component{
             open_show:false,
         })
     }
+    
     handleStatOpen = () =>{
         this.setState({
             open_stat:true,

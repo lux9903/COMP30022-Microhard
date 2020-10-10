@@ -5,17 +5,16 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-import { FormControl } from '@material-ui/core';
 
 
 class General_Info extends Component{
     constructor(props) {
       super(props);
-      this.getData = this.getData.bind(this);
+      this.getGeneral = this.getGeneral.bind(this);
       this.onChangeDesc = this.onChangeDesc.bind(this);
       this.onChangeName = this.onChangeName.bind(this);
       this.componentDidMount = this.componentDidMount.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleGeneralSubmit = this.handleGeneralSubmit.bind(this);
       this.state = {
         name: "",
         description: "",
@@ -23,10 +22,10 @@ class General_Info extends Component{
     }
 
     componentDidMount = () =>{
-        this.getData();
+        this.getGeneral();
     }
 
-    getData = () =>{
+    getGeneral = () =>{
         axios.get('/project/'+this.props.id).then((res) => {
             this.setState({
                 name: res.data.project.name,
@@ -48,7 +47,7 @@ class General_Info extends Component{
         })
     }
 
-    handleSubmit = () =>{
+    handleGeneralSubmit = () =>{
         axios.post('/project/update/'+ this.props.id, {"name":this.state.name, "description": this.state.description})
         .catch((error) => {});
     }
@@ -60,7 +59,7 @@ class General_Info extends Component{
                     General Information
                 </Typography>
                 <Divider/>
-                <form onSubmit={this.handleSubmit} fullWidth>
+                <form onSubmit={this.handleGeneralSubmit} fullWidth>
                     <Typography>
                         Name
                     </Typography>
