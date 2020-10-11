@@ -110,7 +110,8 @@ export default function Functionalities() {
                 Employers can 'like' your project
               </Typography>
               <Typography variant="body1" className={classes.body}>
-                Employers 'liking' a project gives students encouragement
+                Employers 'liking' a project gives students encouragement to
+                improve and take on challenging tasks
               </Typography>
             </Grid>
             <br />
