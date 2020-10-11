@@ -22,7 +22,7 @@ courseRouter.post('/create/',auth.optional,(req,res)=>{
 		var course = new Course(req.body);
 		course.user = user;
 		course.save();
-		return res.send("successfully created");
+		return res.json(course);
 	});
 });
 
@@ -31,17 +31,23 @@ courseRouter.post('/create/',auth.optional,(req,res)=>{
 // if found -> edit
 // else -> return no such course
 
-courseRouter.post('/:code',auth.optional,(req,res)=>{
+courseRouter.post('/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async (user)=>{
-		await Course.findOneAndUpdate({code:req.params.code, user: user},req.body);
-		return res.send("successfully updated");
+		const result = await Course.findOneAndUpdate({_id:req.params.id, user: user},req.body);
+		const newOne = await Course.findOne({_id:req.params.id, user: user});
+		if(newOne){
+			return res.json(newOne);
+		}else{
+			return res.status(401).send('No such course.');
+		}
+		
 	});
 });
-//3. get specific course by course code
+//3. get specific course by course id
 
-courseRouter.get('/:code',auth.optional,(req,res)=>{
+courseRouter.get('/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async (user)=>{
-		const course = await Course.findOne({code:req.params.code, user: user});
+		const course = await Course.findOne({_id:req.params.id, user: user});
 		if(course){
 			return res.json({"course":course});
 		}else{
@@ -61,10 +67,10 @@ courseRouter.get('/',auth.optional,(req,res)=>{
 });
 //5. delete specific course
 
-courseRouter.delete('/:code',auth.optional,(req,res)=>{
+courseRouter.delete('/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async (user)=>{
-		const result = await Course.findOneAndDelete({code:req.params.code, user: user});
-		return res.json({"result":result});
+		const result = await Course.findOneAndDelete({_id:req.params.id, user: user});
+		return res.json({"deleteId":req.params.id});
 	});
 })
 
