@@ -49,7 +49,8 @@ export default function Functionalities() {
         <br />
         <Grid container justify="center" alignItems="center" align="center">
           <Grid item xs={12} sm={12}>
-            <Typography variant="h2">How can Microhard help you... </Typography>
+            <Typography variant="h2">How can Microhard help you...</Typography>
+            <Typography variant="h4">From a student's perspective</Typography>
             <br />
             <br />
             <br />
@@ -58,17 +59,17 @@ export default function Functionalities() {
             <Grid item xs={10} sm={8}>
               <Float>
                 <img
-                  src="https://image.flaticon.com/icons/svg/3281/3281289.svg"
+                  src="https://www.flaticon.com/svg/static/icons/svg/3594/3594995.svg"
                   alt="skill"
                   className={classes.icon}
                 />
               </Float>
               <Typography variant="h5" align="center">
-                Showcase e-portfolio to employers
+                Showcase your e-portfolio to employers
               </Typography>
               <Typography variant="body1" className={classes.body}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                By featuring your projects, personality, and capabilities, your
+                portfolio showcases your character and identity.
               </Typography>
             </Grid>
             <br />
@@ -79,17 +80,17 @@ export default function Functionalities() {
             <Grid item xs={10} sm={8}>
               <Float>
                 <img
-                  src="https://image.flaticon.com/icons/svg/3050/3050452.svg"
+                  src="https://www.flaticon.com/svg/static/icons/svg/1308/1308491.svg"
                   alt="skill"
                   className={classes.icon}
                 />
               </Float>
               <Typography variant="h5" align="center">
-                Monitor your skill-building progress
+                Share your e-portfolio privately
               </Typography>
               <Typography variant="body1" className={classes.body}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Students have the capability to share their e-portfolio
+                privately to potential recruiters
               </Typography>
             </Grid>
             <br />
@@ -100,17 +101,17 @@ export default function Functionalities() {
             <Grid item xs={10} sm={8}>
               <Float>
                 <img
-                  src="https://image.flaticon.com/icons/svg/134/134908.svg"
+                  src="https://www.flaticon.com/svg/static/icons/svg/1820/1820042.svg"
                   alt="skill"
                   className={classes.icon}
                 />
               </Float>
               <Typography variant="h5" align="center">
-                Comment on other students' projects
+                Employers can 'like' your project
               </Typography>
               <Typography variant="body1" className={classes.body}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Employers 'liking' a project gives students encouragement to
+                improve and take on challenging tasks
               </Typography>
             </Grid>
             <br />
@@ -121,17 +122,17 @@ export default function Functionalities() {
             <Grid item xs={10} sm={8}>
               <Float>
                 <img
-                  src="https://image.flaticon.com/icons/svg/2345/2345026.svg"
+                  src="https://www.flaticon.com/svg/static/icons/svg/1881/1881518.svg"
                   alt="skill"
                   className={classes.icon}
                 />
               </Float>
               <Typography variant="h5" align="center">
-                Layout your projects in a logical way
+                Organises your components in a logical way
               </Typography>
               <Typography variant="body1" className={classes.body}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                The important components are already logically structured, all
+                the user needs to do is add their information
               </Typography>
             </Grid>
             <br />

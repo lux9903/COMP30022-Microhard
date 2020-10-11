@@ -15,26 +15,26 @@ import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
+import Alert from '@material-ui/lab/Alert';
 
 class Documents extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
+      deleted: false,
     };
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getAllPdf = this.getAllPdf.bind(this);
     this.onEdit = this.onEdit.bind(this);
   }
-  onEdit(e) {
-    e.preventDefault();
-    const url =
-      '/pdf/title/' + document.forms.namedItem('editTitle')['id']['value'];
+  onEdit(url) {
     const body = {
       title: document.forms.namedItem('editTitle')['title']['value'],
     };
     axios.post(url, body);
+    
   }
 
   onFormSubmitPDF(e) {
@@ -46,12 +46,12 @@ class Documents extends Component {
         'content-type': 'multipart/form-data',
       },
     };
-    
+
     var base = '';
     var url = '';
-    if(document.getElementById('isResume').checked){
+    if (document.getElementById('isResume').checked) {
       base = '/pdf/upload/resume/';
-    }else{
+    } else {
       base = '/pdf/upload/';
     }
     if (document.getElementById('title').value.trim() !== '') {
@@ -59,11 +59,12 @@ class Documents extends Component {
     } else {
       url = base + 'UNKNOWN';
     }
-    
+
     axios
       .post(url, formData, config)
       .then((response) => {
-        alert('The file is successfully uploaded');
+        alert('The file has been successfully uploaded');
+        window.location.reload(false);
       })
       .catch((error) => {});
   }
@@ -92,12 +93,13 @@ class Documents extends Component {
             </TableCell>
             <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
-              <EditDocument />
+              <EditDocument onEdit={this.onEdit} url = {ele.updateFileLink}/>
               <IconButton aria-label="delete">
                 <DeleteIcon
                   onClick={() => {
                     axios.delete(ele.deleteFileLink);
                     window.location.reload();
+                    this.setState({deleted: true});
                   }}
                 />
               </IconButton>
@@ -131,6 +133,9 @@ class Documents extends Component {
 
         <Container>
           <br />
+          {this.state.deleted ? (
+            <Alert severity="success">Document has been deleted</Alert>
+          ) : null}
           <br />
           <AddDocument
             onFormSubmitPDF={this.onFormSubmitPDF}

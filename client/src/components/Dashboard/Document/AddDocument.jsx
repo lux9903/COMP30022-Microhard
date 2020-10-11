@@ -63,11 +63,7 @@ export default function AddDocument(props) {
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
-              <Button
-                type="submit"
-                onClick={() => window.location.reload(false)}
-                color="primary"
-              >
+              <Button type="submit" color="primary">
                 Upload
               </Button>
             </label>
