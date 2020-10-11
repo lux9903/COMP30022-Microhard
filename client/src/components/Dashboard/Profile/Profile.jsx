@@ -23,6 +23,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import ImageGrid from '../Photos/ImageGrid';
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
   root: {
@@ -323,15 +324,15 @@ class Profile extends Component {
                       </Typography>
                     )}
                   </Grid>
-                  {/*<Grid item xs={12} sm={6} md={5}>*/}
-                  {/*  <Button variant="outlined" color="primary" fullWidth>*/}
-                  {/*    <div id="resume"></div>*/}
-                  {/*  </Button>*/}
-                  {/*</Grid>*/}
-                  <Grid item xs={12} sm={12} md={9} className={classes.icons}>
-                    <Fab variant="extended">
+                  <Grid item xs={12} sm={12} md={4}>
+                    {/*  <Button variant="outlined" color="primary" fullWidth>*/}
+                    {/*    <div id="resume"></div>*/}
+                    {/*  </Button>*/}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={5} className={classes.icons}>
+                    <Button variant="outlined" color="primary" fullWidth>
                       <div id="resume"></div>
-                    </Fab>
+                    </Button>
                   </Grid>
                 </Grid>
               )}

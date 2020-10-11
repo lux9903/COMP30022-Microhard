@@ -17,11 +17,11 @@ import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';
 import Course from '../Dashboard/Course/Course';
 import NoMatch from '../NoMatch';
-import View from  '../View/view'
-import ViewImage from '../View/ViewImage'
-import ViewDocument from '../View/ViewDocument'
-import ViewExperience from '../View/ViewExperience'
-import ViewCourse from '../View/ViewCourse'
+import View from '../View/view';
+import ViewImage from '../View/ViewImage';
+import ViewDocument from '../View/ViewDocument';
+import ViewExperience from '../View/ViewExperience';
+import ViewCourse from '../View/ViewCourse';
 
 import Test from '../Dashboard/test';
 
@@ -33,12 +33,11 @@ class Main extends Component {
         <Route exact path="/sign-up" component={AddProfileContent} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
         <Route exact path="/reset-password/:token" component={ResetPassword} />
-        <Route exact path ="/view/:id" component = {View} />
-        <Route exact path ="/view/:id/image" component = {ViewImage} />
-        <Route exact path ="/view/:id/document" component = {ViewDocument} />
-        <Route exact path ="/view/:id/course" component = {ViewCourse} />
-        <Route exact path ="/view/:id/experiences" component = {ViewExperience} />
-
+        <Route exact path="/view/:id" component={View} />
+        <Route exact path="/view/:id/image" component={ViewImage} />
+        <Route exact path="/view/:id/document" component={ViewDocument} />
+        <Route exact path="/view/:id/course" component={ViewCourse} />
+        <Route exact path="/view/:id/experiences" component={ViewExperience} />
 
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute

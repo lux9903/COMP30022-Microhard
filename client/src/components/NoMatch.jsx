@@ -11,7 +11,6 @@ import Grow from '@material-ui/core/Grow';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: '',
     padding: theme.spacing(4, 10),
   },
   img: {
