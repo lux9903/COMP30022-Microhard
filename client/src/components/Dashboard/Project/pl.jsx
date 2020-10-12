@@ -27,6 +27,8 @@ import Divider from '@material-ui/core/Divider';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { IconButton } from '@material-ui/core';
 
 const styles = (theme) => ({
   icon: {
@@ -115,8 +117,11 @@ function AddButton(props) {
   };
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>
-        <MyForm open={open} update={props.update} handleClose={handleClose}
+      <IconButton onClick={handleClickOpen}>
+        <AddCircleIcon color="primary"/>
+      </IconButton>
+      {/*<Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>*/}
+      <MyForm open={open} update={props.update} handleClose={handleClose}
                 title='Add a project' submit={onSubmit} 
       />
     </div>
@@ -224,6 +229,7 @@ class ProjectList extends Component{
       search : "",
       search_status: "",
       sortBy: "",
+      show_status: "",
     };
   }
 
@@ -250,7 +256,25 @@ class ProjectList extends Component{
   }
 
   getCondition = () =>{
-    if(this.state.search_status == ""){
+    let formD = {
+      "name":this.state.input
+    }
+    if(this.state.search_status !== ""){
+      formD['status'] = this.state.search_status;
+    }
+
+    if(this.state.sortBy !== ""){
+      formD['sortBy'] = this.state.sortBy;
+    }
+
+    if(this.state.show_status !== ""){
+      formD['show_status'] = this.state.show_status;
+    }
+    axios.post('/project/conditional',formD)
+    .then((res) => {this.setState({projlist: res.data.result});})
+    .catch((error) => {});
+
+    /*if(this.state.search_status == ""){
       if(this.state.sortBy == ""){
         axios.post('/project/conditional', {"name":this.state.input})
           .then((res) => {this.setState({projlist: res.data.result});})
@@ -270,7 +294,7 @@ class ProjectList extends Component{
           .then((res) => {this.setState({projlist: res.data.result});})
           .catch((error) => {});
       }
-    }
+    }*/
   }
 
   update = () => {
@@ -308,6 +332,16 @@ class ProjectList extends Component{
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
+        //alert(this.state.search_status),
+        this.update
+      );
+    }
+  }
+
+  onShowStatusChange = (event, newshow) => {
+    if(newshow !== null){
+      this.setState(
+        {show_status: newshow},
         //alert(this.state.search_status),
         this.update
       );
@@ -374,6 +408,17 @@ class ProjectList extends Component{
             <ToggleButton value='Inprogress'>In Progress</ToggleButton>
             <ToggleButton value='Completed'>Complete</ToggleButton>
             <ToggleButton value='Cancel'>Cancel</ToggleButton>
+          </ToggleButtonGroup>
+
+          <ToggleButtonGroup
+            value={this.state.show_status}
+            exclusive
+            onChange={this.onShowStatusChange}
+            size="small"
+          >
+            <ToggleButton value="">All</ToggleButton>
+            <ToggleButton value='public'>Public</ToggleButton>
+            <ToggleButton value='private'>Private</ToggleButton>
           </ToggleButtonGroup>
         </Grid>
         <br/>
