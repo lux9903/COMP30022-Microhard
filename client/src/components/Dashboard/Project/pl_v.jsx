@@ -64,122 +64,6 @@ const styles = (theme) => ({
   }
 });
 
-//button to opening warning delete form
-function DeleteButton(props) {
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {setOpen(true);};
-  const handleClose = () => {setOpen(false);};
-  const handleDelete = () => {
-    setOpen(false);
-    axios.delete('/project/'+ props.id).catch((error)=>{});
-    props.update();
-  }
-  return (
-    <div>
-      <Button variant="contained" size="small" onClick={handleClickOpen}>
-        Delete
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle id="form-dialog-title">Delete Project</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this project? 
-            The project will be permanently delete and unable to recover.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDelete} color="primary">
-            Yes
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-}
-
-//Button opening add form
-function AddButton(props) {
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const onSubmit = (values) => {
-    let url= '/project/create';
-    axios.post(url, values).then(() => setOpen(false))
-    .catch(() => {});
-    props.update();
-  };
-  return (
-    <div>
-      <IconButton onClick={handleClickOpen}>
-        <AddCircleIcon color="primary"/>
-      </IconButton>
-      {/*<Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>*/}
-      <MyForm open={open} update={props.update} handleClose={handleClose}
-                title='Add a project' submit={onSubmit} 
-      />
-    </div>
-  )
-}
-
-//adding form
-function MyForm(props) {
-  return (
-    <Dialog
-      open={props.open}
-      onClose={props.handleClose}
-      closeAfterTransition
-    >
-        <DialogContent>
-          <div>
-            <Formik
-              initialValues={{
-                name: "",
-                description: "",
-              }}
-              onSubmit = {(values) => {props.submit(values); props.handleClose();}}
-            >
-              <Form width='100%' mt="2">
-                <Typography>ADD NEW PROJECT</Typography>
-                <Divider/>
-                <Field as={TextField}
-                  label="Name"
-                  variant="outlined"
-                  name="name"
-                  id="name"
-                  fullWidth
-                  required
-                />
-                <br/>
-                <Field as={TextField}
-                  label="Description"
-                  variant="outlined"
-                  name="description"
-                  id="description"
-                  fullWidth
-                />
-                <Button
-                  type="submit"
-                  variant="raised"
-                  color="primary"
-                  fullWidth
-                >
-                  Submit
-                </Button>
-              </Form>
-            </Formik>
-          </div>
-        </DialogContent>
-    </Dialog>
-  )
-}
-
 
 function Project(props){
   return(
@@ -195,7 +79,6 @@ function Project(props){
         <Grid container direction="column">
           <Typography>Description: {props.project.description}</Typography>
           <Typography>Progress: {props.project.status}</Typography>
-          <Typography>Show status: {props.project.show_status}</Typography>
         </Grid>
       </AccordionDetails>
       <Divider />
@@ -203,10 +86,6 @@ function Project(props){
         <Button variant="contained" size="small" href={"/project/"+props.project._id}>
           View
         </Button>
-        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
-          Edit
-        </Button>
-        <DeleteButton id={props.project._id} update={()=>props.update()}/>
       </AccordionActions>
     </Accordion>
   )
@@ -224,13 +103,11 @@ class ProjectList extends Component{
     this.onStatusChange = this.onStatusChange.bind(this);
     this.getCondition= this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
-    this.onShowStatusChange = this.onShowStatusChange.bind(this);
     this.state = {
       projlist : [],
       search : "",
       search_status: "",
       sortBy: "",
-      show_status: "",
     };
   }
 
@@ -258,7 +135,8 @@ class ProjectList extends Component{
 
   getCondition = () =>{
     let formD = {
-      "name": this.state.input
+      "name": this.state.input,
+      "status": "public"
     }
 
     if(this.state.search_status !== ""){
@@ -269,11 +147,6 @@ class ProjectList extends Component{
       formD['sortBy'] = this.state.sortBy;
     }
 
-    if(this.state.show_status !== ""){
-      //alert(this.state.show_status);
-      formD['show_status'] = this.state.show_status;
-      //alert(formD['show_status']);
-    }
     axios.post('/project/conditional',formD)
     .then((res) => {
       this.setState({projlist: res.data.result});
@@ -287,7 +160,7 @@ class ProjectList extends Component{
     this.pList();
   }
 	componentDidMount = () => {
-    this.getAll();
+    this.getCondition();
   }
 
   onChangeInput = (event) => {
@@ -317,16 +190,6 @@ class ProjectList extends Component{
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
-        //alert(this.state.search_status),
-        this.update
-      );
-    }
-  }
-
-  onShowStatusChange = (event, newshow) => {
-    if(newshow !== null){
-      this.setState(
-        {show_status: newshow},
         //alert(this.state.search_status),
         this.update
       );
@@ -364,7 +227,6 @@ class ProjectList extends Component{
       <br/>
       <Container maxWidth="md">
         <Grid container spacing={1} direction="row" justify="space-evenly" alignItems="center">
-          <AddButton update={this.update}/>
           <TextField
             onChange ={this.onChangeInput}
             onKeyDown={this.onSearch}
@@ -393,17 +255,6 @@ class ProjectList extends Component{
             <ToggleButton value='Inprogress'>In Progress</ToggleButton>
             <ToggleButton value='Completed'>Complete</ToggleButton>
             <ToggleButton value='Cancel'>Cancel</ToggleButton>
-          </ToggleButtonGroup>
-
-          <ToggleButtonGroup
-            value={this.state.show_status}
-            exclusive
-            onChange={this.onShowStatusChange}
-            size="small"
-          >
-            <ToggleButton value="">All</ToggleButton>
-            <ToggleButton value='public'>Public</ToggleButton>
-            <ToggleButton value='private'>Private</ToggleButton>
           </ToggleButtonGroup>
         </Grid>
         <br/>
