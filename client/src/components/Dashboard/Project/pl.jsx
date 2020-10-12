@@ -30,6 +30,10 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { IconButton } from '@material-ui/core';
 
+import SearchIcon from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+
 const styles = (theme) => ({
   icon: {
       marginRight: theme.spacing(2),
@@ -118,7 +122,7 @@ function AddButton(props) {
   return (
     <div>
       <IconButton onClick={handleClickOpen}>
-        <AddCircleIcon color="primary"/>
+        <AddBoxIcon color="primary"/>
       </IconButton>
       {/*<Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>*/}
       <MyForm open={open} update={props.update} handleClose={handleClose}
@@ -363,8 +367,7 @@ class ProjectList extends Component{
       </div>
       <br/>
       <Container maxWidth="md">
-        <Grid container spacing={1} direction="row" justify="space-evenly" alignItems="center">
-          <AddButton update={this.update}/>
+        <Grid container direction="row" justify="space-between" alignItems="center">
           <TextField
             onChange ={this.onChangeInput}
             onKeyDown={this.onSearch}
@@ -372,6 +375,13 @@ class ProjectList extends Component{
             variant="outlined"
             size="small"
             label="Search name"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon/>
+                </InputAdornment>
+              )
+            }}
           />
           <ToggleButtonGroup
             value={this.state.sortBy}
@@ -405,6 +415,9 @@ class ProjectList extends Component{
             <ToggleButton value='public'>Public</ToggleButton>
             <ToggleButton value='private'>Private</ToggleButton>
           </ToggleButtonGroup>
+        </Grid>
+        <Grid container direction="row" alignItems="center">
+          <AddButton update={this.update}/>
         </Grid>
         <br/>
         {this.pList()}

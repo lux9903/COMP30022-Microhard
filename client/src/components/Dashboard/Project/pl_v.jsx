@@ -1,53 +1,36 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, {Component, Fragment} from 'react';
 //import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
-import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-//import Link from '@material-ui/core/Link';
 import axios from '../../../helpers/axiosConfig';
-import {Formik, Field, Form} from 'formik';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
-
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
-
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { IconButton } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const styles = (theme) => ({
-  icon: {
-      marginRight: theme.spacing(2),
-  },
   heroContent: {
       backgroundColor: '#094183',
-      padding: theme.spacing(8, 0, 6),
+      padding: theme.spacing(6, 0, 6),
   },
-  cardGrid: {
-      paddingTop: theme.spacing(8),
+  body: {
+      paddingTop: theme.spacing(4),
   },
-  card: {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-  },
-  cardContent: {
-      flexGrow: 1,
+  searchbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justify: "space-between",
   },
   margin: {
       margin: theme.spacing(1),
@@ -59,9 +42,6 @@ const styles = (theme) => ({
       maxHeight: 100,
       overflow: 'auto',
   },
-  container:{
-    justify_content: "space-between",
-  }
 });
 
 
@@ -94,9 +74,7 @@ class ProjectList extends Component{
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
     this.update = this.update.bind(this);
-    this.getAll = this.getAll.bind(this);
     this.pList = this.pList.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -111,32 +89,16 @@ class ProjectList extends Component{
     };
   }
 
-  onFormSubmit = (e) => {
-		e.preventDefault();
-		let formD = {
-      "name":document.forms.namedItem("create")["name"]["value"],
-      "description":document.forms.namedItem("create")["description"]["value"]
-		}
-		axios.post('/project/create', formD);
-  }
-
   pList = () => {
     return (this.state.projlist && this.state.projlist.map((proj, i) => {
       return <Project project={proj} update={this.update}/>
     }));
   }
 
-  getAll = () => {
-    axios.get('/project/').then((res) => {
-      this.setState({projlist: res.data.projects});
-    })
-    .catch((error) => {})
-  }
-
   getCondition = () =>{
     let formD = {
       "name": this.state.input,
-      "status": "public"
+      "show_status": "public",
     }
 
     if(this.state.search_status !== ""){
@@ -150,7 +112,6 @@ class ProjectList extends Component{
     axios.post('/project/conditional',formD)
     .then((res) => {
       this.setState({projlist: res.data.result});
-      //alert(res.data.result);
     })
     .catch((error) => {});
   }
@@ -179,32 +140,29 @@ class ProjectList extends Component{
     if(newstatus !== null){
       this.setState(
         {search_status: newstatus},
-        //alert(this.state.search_status),
         this.update
       );
     }
-    //alert(this.state.search_status);
   }
 
   onSortChange = (event, newsort) => {
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
-        //alert(this.state.search_status),
         this.update
       );
     }
   }
 
 	render(){
+    const {classes} = this.props;
     return(
       <Fragment>
       <Helmet>
         <title>Microhard &middot; My projects </title>
       </Helmet>
-      <div style={{padding: "10px", backgroundColor: '#094183'}}>
+      <div className={classes.heroContent}>
         <Container maxWidth="sm">
-          <br />
           <Typography
             component="h1"
             variant="h2"
@@ -224,9 +182,8 @@ class ProjectList extends Component{
           </Typography>
         </Container>
       </div>
-      <br/>
-      <Container maxWidth="md">
-        <Grid container spacing={1} direction="row" justify="space-evenly" alignItems="center">
+      <Container maxWidth="md" className={classes.body}>
+        <Grid container direction="row" justify="space-evenly" alignItems="center">
           <TextField
             onChange ={this.onChangeInput}
             onKeyDown={this.onSearch}
@@ -234,6 +191,13 @@ class ProjectList extends Component{
             variant="outlined"
             size="small"
             label="Search name"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon/>
+                </InputAdornment>
+               )
+              }}
           />
           <ToggleButtonGroup
             value={this.state.sortBy}
@@ -266,10 +230,7 @@ class ProjectList extends Component{
     );
   }
 }
-/*const mapStateToProps = (state) => ({
-  ...state,
-});*/
 
-//export default connect(mapStateToProps)(withStyles(styles)(Profile));
+//export default (ProjectList);
 
-export default (ProjectList);
+export default withStyles(styles)(ProjectList);

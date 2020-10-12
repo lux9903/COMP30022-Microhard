@@ -1,4 +1,4 @@
-import React, {Fragment, Component} from 'react';
+import React, {Fragment, Component, useState} from 'react';
 import {Helmet} from 'react-helmet';
 
 import axios from '../../../helpers/axiosConfig';
@@ -21,7 +21,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InputLabel from '@material-ui/core/InputLabel';
 import CardActions from '@material-ui/core/CardActions';
 import Rating from '@material-ui/lab/Rating';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -31,19 +30,15 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 
-import {Formik, Field, Form} from 'formik';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionActions from '@material-ui/core/AccordionActions';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import TextField from '@material-ui/core/TextField';
 
 import Divider from '@material-ui/core/Divider';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import ClearIcon from '@material-ui/icons/Clear';
 import { withRouter } from "react-router";
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import Collapse from '@material-ui/core/Collapse';
+import { IconButton } from '@material-ui/core';
+
 
 const styles = (theme) => ({
   icon: {
@@ -79,6 +74,52 @@ const styles = (theme) => ({
       overflow: 'auto',
   },
 });
+
+function Process(props) {
+  const [open, setOpen] = useState(false);
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <List>
+      <ListItem button onClick={handleClick}>
+        <ListItemText>{props.proc.processNum}:{" "}{props.proc.description}</ListItemText>
+        {!open ? (<ExpandMoreIcon/>) : (<ExpandLessIcon/>)}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        {props.proc.nodes && props.proc.nodes.length > 0 ? (
+            props.proc.nodes.map((node, i)=>{
+              return (
+                <List>
+                  {node.state ? (
+                    <ListItem>
+                      <ListItemText primary={node.description} />
+                    </ListItem>
+                  ) : (
+                    <ListItem disabled>
+                      <ListItemText primary={node.description} />
+                      <DoneAllIcon/>
+                    </ListItem>
+                  )}
+                </List>
+            )})) : (
+              <List>
+                <ListItem>
+                  <ListItemText>No task yet</ListItemText>
+                </ListItem>
+              </List>
+        )}
+      </Collapse>
+    </List>
+  )
+}
+
+function TimeLine(props) {
+  return (
+    <Typography>ha ha ha</Typography>
+  )
+}
 
 class Project_View extends Component{
   constructor(props) {
@@ -139,8 +180,11 @@ class Project_View extends Component{
                 <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">Description</Typography>
                   <Divider/>
-                  <br/>
-                  <Typography>{this.state.project.description}</Typography>
+                  {this.state.project.description && this.state.project.description!=="" ? (
+                    <Typography>{this.state.project.description}</Typography>
+                  ) : (
+                    <Typography>No Description Yet</Typography>
+                  )}
                 </CardContent>
               </Card>
               <br/>
@@ -148,7 +192,12 @@ class Project_View extends Component{
                 <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">Process</Typography>
                   <Divider/>
-                  <br/>
+                  {this.state.project.process && this.state.project.process.length>0 ? (
+                    this.state.project.process.map((proc,i)=>{
+                      return <Process proc={proc}/>
+                    })) : (
+                      <Typography>No Process Yet</Typography>
+                  )}
                 </CardContent>
               </Card>
               <br/>

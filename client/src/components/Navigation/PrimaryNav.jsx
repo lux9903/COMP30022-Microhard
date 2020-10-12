@@ -220,6 +220,9 @@ class PrimaryNav extends Component {
             {/*<Link to="/test" className={classes.noDecoration}>*/}
             {/*  <Button className={classes.button}>Test</Button>*/}
             {/*</Link>*/}
+            <Link to="/test" className={classes.noDecoration}>
+              <Button className={classes.button}>Test</Button>
+            </Link>
           </div>
 
           <div>

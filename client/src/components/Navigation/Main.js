@@ -11,8 +11,8 @@ import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
 //import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project/pl_v';
-import Project_Edit from '../Dashboard/Project/p';
+import Project from '../Dashboard/Project/pl';
+import Project_Edit from '../Dashboard/Project/pv';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';
