@@ -380,7 +380,7 @@ projectRouter.post('/conditional',auth.optional,(req,res)=>{
 			sql.status = req.body.status;
 		}
 		if(req.body.show_status){
-			sql.show = req.body.show_status;
+			sql.show_status = req.body.show_status;
 		}
 		var projects = await Project.find(sql);
 		if(req.body.sortBy){
