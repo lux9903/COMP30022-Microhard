@@ -266,7 +266,7 @@ projectRouter.post('/process/update/:id',auth.optional,(req,res)=>{
 });
 
 //c nodes
-projectRouter.post(':/process/node/id',auth.optional,(req,res)=>{
+projectRouter.post('/process/node/:id',auth.optional,(req,res)=>{
 	User.findById(req.payload.id).then(async function(user){
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
 		if(req.body.processNum && (req.body.processNum <= project.process.length)){
@@ -378,6 +378,9 @@ projectRouter.post('/conditional',auth.optional,(req,res)=>{
 		}
 		if(req.body.status){
 			sql.status = req.body.status;
+		}
+		if(req.body.show_status){
+			sql.show = req.body.show_status;
 		}
 		var projects = await Project.find(sql);
 		if(req.body.sortBy){

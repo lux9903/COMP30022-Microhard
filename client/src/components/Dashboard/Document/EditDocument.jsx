@@ -8,9 +8,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+import Alert from '@material-ui/lab/Alert';
+import Container from '@material-ui/core/Container';
 
 export default function EditDocument(props) {
   const [open, setOpen] = React.useState(false);
+  const [upload, setUpload] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -31,7 +34,7 @@ export default function EditDocument(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <form onSubmit={props.onFormSubmitPDF}>
+        <form onSubmit={() => props.onEdit(props.url)} name="editTitle">
           <DialogTitle id="form-dialog-title">Edit this document</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -49,18 +52,15 @@ export default function EditDocument(props) {
             />
             <br />
             <br />
-            <input
-              accept="application/pdf"
-              type="file"
-              name="file"
-              onChange={props.onChange}
-            />
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
               <Button
                 type="submit"
-                onClick={() => window.location.reload(false)}
+                onClick={() => {
+                  window.location.reload(false);
+                  setUpload(true);
+                }}
                 style={{fontFamily: 'Lato, sans-serif'}}
               >
                 Upload
@@ -73,6 +73,11 @@ export default function EditDocument(props) {
               Cancel
             </Button>
           </DialogActions>
+          {upload ? (
+            <Container>
+              <Alert severity="success">Document has been modified</Alert>
+            </Container>
+          ) : null}
         </form>
       </Dialog>
     </Fragment>

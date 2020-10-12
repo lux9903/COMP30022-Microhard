@@ -44,7 +44,7 @@ export default function Appbar() {
               href="#outlined-buttons"
               style={{margin: '0px 10px'}}
             >
-              About Us
+              About us
             </Button>
 
             <Button
