@@ -6,9 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
+import Container from '@material-ui/core/Container';
 
 export default function AddDocument(props) {
   const [open, setOpen] = React.useState(false);
+  const [create, setCreate] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -63,7 +66,14 @@ export default function AddDocument(props) {
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
-              <Button type="submit" color="primary">
+                <Button
+                    type="submit"
+                    onClick={() => {
+                      //window.location.reload(false);
+                      setCreate(true);
+                    }}
+                    color="primary"
+                >
                 Upload
               </Button>
             </label>
@@ -71,6 +81,11 @@ export default function AddDocument(props) {
               Cancel
             </Button>
           </DialogActions>
+          {create ? (
+              <Container>
+                <Alert severity="success">Document is uploading </Alert>
+              </Container>
+          ) : null}
         </form>
       </Dialog>
     </div>

@@ -63,8 +63,8 @@ class Documents extends Component {
     axios
       .post(url, formData, config)
       .then((response) => {
-        alert('The file has been successfully uploaded');
-        window.location.reload(false);
+        //alert('The file has been successfully uploaded');
+        window.location.reload();
       })
       .catch((error) => {});
   }
