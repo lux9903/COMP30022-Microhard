@@ -24,6 +24,7 @@ import PublicIcon from '@material-ui/icons/Public';
 import Grow from '@material-ui/core/Grow';
 import ImageGrid from '../Photos/ImageGrid';
 import Button from '@material-ui/core/Button';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 const styles = (theme) => ({
   root: {
@@ -83,6 +84,11 @@ const styles = (theme) => ({
     top: '7px',
   },
   graduationIcon: {
+    position: 'relative',
+    top: '7px',
+    left: '-2px',
+  },
+  universityIcon: {
     position: 'relative',
     top: '7px',
     left: '-2px',
@@ -283,7 +289,6 @@ class Profile extends Component {
                       )}
                       {user._id && (
                         <Fab
-                          color="secondary"
                           size="small"
                           className={classes.socialIcon}
                           target="_blank"
@@ -295,7 +300,7 @@ class Profile extends Component {
                             }
                             onCopy={() => this.setState({copied: true})}
                           >
-                            <ShareIcon />
+                            <ShareIcon style={{color: '#3FA7C2'}} />
                           </CopyToClipboard>
                         </Fab>
                       )}
@@ -311,40 +316,39 @@ class Profile extends Component {
             </Grow>
             <Grow in timeout={1100}>
               <div>
-                {(user.location || user.graduation) && (
-                  <Grid
-                    container
-                    component={Paper}
-                    className={classes.secondSection}
-                  >
-                    <Grid item xs={12} sm={12} md={3}>
-                      {user.location && (
-                        <Typography variant="body1">
-                          <LocationOnOutlinedIcon
-                            className={classes.locationIcon}
-                          />{' '}
-                          {user.location}
-                        </Typography>
-                      )}
-                      {user.graduation && (
-                        <Typography variant="body1">
-                          <SchoolIcon className={classes.graduationIcon} />{' '}
-                          {user.graduation}
-                        </Typography>
-                      )}
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={4}>
-                      {/*  <Button variant="outlined" color="primary" fullWidth>*/}
-                      {/*    <div id="resume"></div>*/}
-                      {/*  </Button>*/}
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={5} className={classes.icons}>
-                      <Button variant="outlined" color="primary" fullWidth>
-                        <div id="resume"></div>
-                      </Button>
-                    </Grid>
+                <Grid
+                  container
+                  component={Paper}
+                  className={classes.secondSection}
+                >
+                  <Grid item xs={12} sm={12} md={3}>
+                    {user.location && (
+                      <Typography variant="body1">
+                        <LocationOnOutlinedIcon
+                          className={classes.locationIcon}
+                        />{' '}
+                        {user.location}
+                      </Typography>
+                    )}
+                    {user.graduation && (
+                      <Typography variant="body1">
+                        <SchoolIcon className={classes.graduationIcon} />{' '}
+                        {user.graduation}
+                      </Typography>
+                    )}
                   </Grid>
-                )}
+                  <Grid item xs={12} sm={12} md={5}>
+                    <Typography variant="body1">
+                      <AccountBalanceIcon className={classes.universityIcon} />{' '}
+                      University of Melbourne
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={4} className={classes.icons}>
+                    <Button variant="outlined" color="primary" fullWidth>
+                      <div id="resume"></div>
+                    </Button>
+                  </Grid>
+                </Grid>
               </div>
             </Grow>
             <Grow in timeout={1300}>

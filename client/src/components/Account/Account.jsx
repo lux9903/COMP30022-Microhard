@@ -232,6 +232,7 @@ class Account extends Component {
                     </div>
                     <div className={classes.form_group}>
                       <Field
+                        autoComplete="off"
                         variant="outlined"
                         margin="normal"
                         id="graduation"
