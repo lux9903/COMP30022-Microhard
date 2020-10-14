@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
-import axios from '../../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -10,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import ImageGrid from './ImageGrid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import {postPhoto} from '../../../actions/photoAction';
+import {connect} from 'react-redux';
 
 const styles = (theme) => ({
   root: {
@@ -23,8 +24,6 @@ class Image extends Component {
     super(props);
     this.state = {
       file: null,
-      deleteImageLink: null,
-      currentImage: 0,
       create: false,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -34,18 +33,7 @@ class Image extends Component {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', this.state.file);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post('/image/upload', formData)
-      .then((response) => {
-        // alert('The file is successfully uploaded');
-        window.location.reload();
-      })
-      .catch((error) => {});
+    this.props.dispatch(postPhoto(formData));
   }
 
   onChange(e) {
@@ -115,5 +103,8 @@ class Image extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  ...state,
+});
 
-export default withStyles(styles)(Image);
+export default connect(mapStateToProps)(withStyles(styles)(Image));

@@ -1,8 +1,10 @@
 import React, {Component, Fragment} from 'react';
-import ReactDOM from 'react-dom';
-import axios from '../../../helpers/axiosConfig';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Gallery from 'react-grid-gallery';
+import {fetchPhotos,deletePhoto} from '../../../actions/photoAction';
+import {connect} from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
 
 const styles = (theme) => ({
   root: {
@@ -10,35 +12,63 @@ const styles = (theme) => ({
   },
 });
 
-class Image extends Component {
+class ImageGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
       deleteImageLink: null,
       currentImage: 0,
+      page: 1,
     };
     this.deleteImage = this.deleteImage.bind(this);
     this.onCurrentImageChange = this.onCurrentImageChange.bind(this);
   }
-  deleteImage() {
+  deleteImage(e) {
+    e.preventDefault();
     if (
       window.confirm(
         `Are you sure you want to delete image number ${this.state.currentImage}?`
       )
     ) {
-      axios.delete(this.state.deleteImageLink[this.state.currentImage]);
-      window.location.reload();
+      this.props.dispatch(deletePhoto(this.props.photo.photos[this.state.currentImage]._id));
     }
   }
   onCurrentImageChange(index) {
     this.setState({currentImage: index});
   }
-
   componentDidMount() {
-    const imgs = axios.get('/image').then((res) => {
-      if (res.data.files) {
-        const photodata = res.data.files.map(getPhoto);
+
+    this.props.dispatch(fetchPhotos());
+  }
+
+
+  render() {
+    const {classes} = this.props;
+    const { error, isFetching, photos } = this.props.photo;
+
+    let content;
+
+    if (error) {
+      content = <Alert variant='danger'>{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <div className='text-center'>
+          <CircularProgress>
+            <span>Loading...</span>
+          </CircularProgress>
+        </div>
+      );
+    }else if (photos.length === 0 || !photos) {
+      content = (
+        <p className='lead'>
+          No photos found.
+        </p>
+      );
+    }
+    else {
+        const photodata = photos.map(getPhoto);
+
         function getPhoto(elem) {
           return {
             src: '/api/image/' + elem.filename,
@@ -47,9 +77,6 @@ class Image extends Component {
             thumbnailHeight: 250,
           };
         }
-        this.setState({images: photodata});
-        const deleteLink = res.data.files.map((ele) => '/image/' + ele._id);
-        this.setState({deleteImageLink: deleteLink});
 
         let photogrid = (
           <div
@@ -69,26 +96,32 @@ class Image extends Component {
               customControls={[
                 <button key="deleteImage" onClick={this.deleteImage}>
                   Delete Image
-                </button>,
+                </button>
               ]}
             />
           </div>
         );
-        ReactDOM.render(photogrid, document.getElementById('all_img'));
-      }
-    });
-  }
+        content =(
+          <div>
+            {photogrid}
+          </div>
+        );
 
-  render() {
-    const {classes} = this.props;
+
+
+    }
     return (
       <Fragment>
         <div className={classes.root}>
-          <div id="all_img"></div>
+          {content}
         </div>
       </Fragment>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  ...state,
+});
 
-export default withStyles(styles)(Image);
+export default connect(mapStateToProps)(withStyles(styles)(ImageGrid));
+
