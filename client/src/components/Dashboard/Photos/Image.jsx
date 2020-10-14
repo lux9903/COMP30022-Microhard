@@ -81,8 +81,7 @@ class Image extends Component {
                           Image has been successfully uploaded
                         </Alert>
                       </Snackbar>
-                    ) : // <Snackbar open message="Image uploaded" />
-                    null}
+                    ) : null}
                     <Button
                       type="submit"
                       color="primary"

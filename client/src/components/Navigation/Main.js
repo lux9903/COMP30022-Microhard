@@ -10,7 +10,7 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
-//import Image from '../Dashboard/Image';
+import About from '../About/About';
 import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/p';
 import Image from '../Dashboard/Photos/Image';
@@ -30,6 +30,7 @@ class Main extends Component {
   render() {
     return (
       <Switch>
+        <Route exact path="/about" component={About} />
         <Route exact path="/sign-in" component={SignIn} />
         <Route exact path="/sign-up" component={AddProfileContent} />
         <Route exact path="/forgot-password" component={ForgotPassword} />

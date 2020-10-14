@@ -4,7 +4,6 @@ import {Helmet} from 'react-helmet';
 import clsx from 'clsx';
 import ReactDOM from 'react-dom';
 import axios from '../../../helpers/axiosConfig';
-import {Container, Grid, IconButton} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import EmailIcon from '@material-ui/icons/Email';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -25,10 +24,16 @@ import Grow from '@material-ui/core/Grow';
 import ImageGrid from '../Photos/ImageGrid';
 import Button from '@material-ui/core/Button';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import Tooltip from '@material-ui/core/Tooltip';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = (theme) => ({
   root: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundImage:
+      'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
+    // backgroundColor: theme.palette.primary.main,
     marginTop: '-15px',
     padding: '25px 0 150px 0',
   },
@@ -331,10 +336,15 @@ class Profile extends Component {
                       </Typography>
                     )}
                     {user.graduation && (
-                      <Typography variant="body1">
-                        <SchoolIcon className={classes.graduationIcon} />{' '}
-                        {user.graduation}
-                      </Typography>
+                      <Tooltip
+                        title="Expected graduation date"
+                        placement="bottom-start"
+                      >
+                        <Typography variant="body1">
+                          <SchoolIcon className={classes.graduationIcon} />{' '}
+                          {user.graduation}
+                        </Typography>
+                      </Tooltip>
                     )}
                   </Grid>
                   <Grid item xs={12} sm={12} md={5}>
@@ -344,9 +354,11 @@ class Profile extends Component {
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={12} md={4} className={classes.icons}>
-                    <Button variant="outlined" color="primary" fullWidth>
-                      <div id="resume"></div>
-                    </Button>
+                    <Tooltip title="To add/change your resume, go to the Personal Documents page">
+                      <Button variant="outlined" color="primary" fullWidth>
+                        <div id="resume"></div>
+                      </Button>
+                    </Tooltip>
                   </Grid>
                 </Grid>
               </div>
