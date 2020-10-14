@@ -191,189 +191,203 @@ class Profile extends Component {
         <div className={classes.root}>
           <Container maxWidth="md">
             <Grow in timeout={900}>
-              <Grid
-                container
-                component={Paper}
-                className={classes.personal}
-                spacing={(2, 0)}
-                elevation={3}
-              >
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={3}
-                  className={classes.avatarSection}
-                >
-                  <PopupState variant="popover" popupId="demo-popup-popover">
-                    {(popupState) => (
-                      <div>
-                        <IconButton
-                          aria-label="account of current user"
-                          aria-controls="menu-appbar"
-                          aria-haspopup="true"
-                          color="inherit"
-                        >
-                          <div id="avatar" {...bindTrigger(popupState)}></div>
-                        </IconButton>
-                        <Popover
-                          {...bindPopover(popupState)}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                          }}
-                          transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'center',
-                          }}
-                        >
-                          <EditAvatar
-                            onFormSubmit={this.onFormSubmit}
-                            onChange={this.onChange}
-                          />
-                        </Popover>
-                      </div>
-                    )}
-                  </PopupState>
-                </Grid>
-                <Grid item xs={12} sm={12} md={9}>
-                  <Typography variant="h1">
-                    {user.firstname} {user.lastname}
-                  </Typography>
-                  <Typography variant="h4">{user.headline}</Typography>
-                  <Typography variant="h4">{user.major}</Typography>
-                  <Grid item xs={12} sm={12} md={12} className={classes.icons}>
-                    <Fab
-                      href={'mailto:' + user.email}
-                      size="small"
-                      color="secondary"
-                      aria-label="email"
-                      className={classes.socialIcon}
-                    >
-                      <EmailIcon />
-                    </Fab>
-                    {user.website && (
-                      <Fab
-                        color="secondary"
-                        size="small"
-                        href={user.website}
-                        className={classes.socialIcon}
-                        target="_blank"
-                      >
-                        <PublicIcon />
-                      </Fab>
-                    )}
-                    {user.linkedin && (
-                      <Fab
-                        color="secondary"
-                        size="small"
-                        href={user.linkedin}
-                        className={classes.socialIcon}
-                        target="_blank"
-                      >
-                        <LinkedInIcon />
-                      </Fab>
-                    )}
-                    {user._id && (
-                      <Fab
-                        color="secondary"
-                        size="small"
-                        className={classes.socialIcon}
-                        target="_blank"
-                      >
-                        <CopyToClipboard
-                          text={
-                            `https://comp30022-microhard.herokuapp.com` +
-                            `/view/${user._id}`
-                          }
-                          onCopy={() => this.setState({copied: true})}
-                        >
-                          <ShareIcon />
-                        </CopyToClipboard>
-                      </Fab>
-                    )}
-                    {this.state.copied ? (
-                      <Alert severity="success">
-                        Share link has copied to the clipboard
-                      </Alert>
-                    ) : null}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grow>
-            <Grow in timeout={1100}>
-              {(user.location || user.graduation) && (
+              <div>
                 <Grid
                   container
                   component={Paper}
-                  className={classes.secondSection}
+                  className={classes.personal}
+                  spacing={(2, 0)}
+                  elevation={3}
                 >
-                  <Grid item xs={12} sm={12} md={3}>
-                    {user.location && (
-                      <Typography variant="body1">
-                        <LocationOnOutlinedIcon
-                          className={classes.locationIcon}
-                        />{' '}
-                        {user.location}
-                      </Typography>
-                    )}
-                    {user.graduation && (
-                      <Typography variant="body1">
-                        <SchoolIcon className={classes.graduationIcon} />{' '}
-                        {user.graduation}
-                      </Typography>
-                    )}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={3}
+                    className={classes.avatarSection}
+                  >
+                    <PopupState variant="popover" popupId="demo-popup-popover">
+                      {(popupState) => (
+                        <div>
+                          <IconButton
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            color="inherit"
+                          >
+                            <div id="avatar" {...bindTrigger(popupState)}></div>
+                          </IconButton>
+                          <Popover
+                            {...bindPopover(popupState)}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                              vertical: 'top',
+                              horizontal: 'center',
+                            }}
+                          >
+                            <EditAvatar
+                              onFormSubmit={this.onFormSubmit}
+                              onChange={this.onChange}
+                            />
+                          </Popover>
+                        </div>
+                      )}
+                    </PopupState>
                   </Grid>
-                  <Grid item xs={12} sm={12} md={4}>
-                    {/*  <Button variant="outlined" color="primary" fullWidth>*/}
-                    {/*    <div id="resume"></div>*/}
-                    {/*  </Button>*/}
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={5} className={classes.icons}>
-                    <Button variant="outlined" color="primary" fullWidth>
-                      <div id="resume"></div>
-                    </Button>
+                  <Grid item xs={12} sm={12} md={9}>
+                    <Typography variant="h1">
+                      {user.firstname} {user.lastname}
+                    </Typography>
+                    <Typography variant="h4">{user.headline}</Typography>
+                    <Typography variant="h4">{user.major}</Typography>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      className={classes.icons}
+                    >
+                      <Fab
+                        href={'mailto:' + user.email}
+                        size="small"
+                        color="secondary"
+                        aria-label="email"
+                        className={classes.socialIcon}
+                      >
+                        <EmailIcon />
+                      </Fab>
+                      {user.website && (
+                        <Fab
+                          color="secondary"
+                          size="small"
+                          href={user.website}
+                          className={classes.socialIcon}
+                          target="_blank"
+                        >
+                          <PublicIcon />
+                        </Fab>
+                      )}
+                      {user.linkedin && (
+                        <Fab
+                          color="secondary"
+                          size="small"
+                          href={user.linkedin}
+                          className={classes.socialIcon}
+                          target="_blank"
+                        >
+                          <LinkedInIcon />
+                        </Fab>
+                      )}
+                      {user._id && (
+                        <Fab
+                          color="secondary"
+                          size="small"
+                          className={classes.socialIcon}
+                          target="_blank"
+                        >
+                          <CopyToClipboard
+                            text={
+                              `https://comp30022-microhard.herokuapp.com` +
+                              `/view/${user._id}`
+                            }
+                            onCopy={() => this.setState({copied: true})}
+                          >
+                            <ShareIcon />
+                          </CopyToClipboard>
+                        </Fab>
+                      )}
+                      {this.state.copied ? (
+                        <Alert severity="success">
+                          Share link has copied to the clipboard
+                        </Alert>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
-              )}
+              </div>
+            </Grow>
+            <Grow in timeout={1100}>
+              <div>
+                {(user.location || user.graduation) && (
+                  <Grid
+                    container
+                    component={Paper}
+                    className={classes.secondSection}
+                  >
+                    <Grid item xs={12} sm={12} md={3}>
+                      {user.location && (
+                        <Typography variant="body1">
+                          <LocationOnOutlinedIcon
+                            className={classes.locationIcon}
+                          />{' '}
+                          {user.location}
+                        </Typography>
+                      )}
+                      {user.graduation && (
+                        <Typography variant="body1">
+                          <SchoolIcon className={classes.graduationIcon} />{' '}
+                          {user.graduation}
+                        </Typography>
+                      )}
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4}>
+                      {/*  <Button variant="outlined" color="primary" fullWidth>*/}
+                      {/*    <div id="resume"></div>*/}
+                      {/*  </Button>*/}
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={5} className={classes.icons}>
+                      <Button variant="outlined" color="primary" fullWidth>
+                        <div id="resume"></div>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
+              </div>
             </Grow>
             <Grow in timeout={1300}>
-              <Grid
-                container
-                component={Paper}
-                elevation={3}
-                className={classes.aboutSection}
-              >
-                <Grid item xs={12} sm={11} md={11}>
-                  <Typography variant="h2" style={{paddingBottom: '10px'}}>
-                    About Me
-                  </Typography>
-                </Grid>
+              <div>
                 <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  style={{whiteSpace: 'pre-wrap'}}
+                  container
+                  component={Paper}
+                  elevation={3}
+                  className={classes.aboutSection}
                 >
-                  <Typography variant="body1">{user.aboutSection}</Typography>
+                  <Grid item xs={12} sm={11} md={11}>
+                    <Typography variant="h2" style={{paddingBottom: '10px'}}>
+                      About Me
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    style={{whiteSpace: 'pre-wrap'}}
+                  >
+                    <Typography variant="body1">{user.aboutSection}</Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </div>
             </Grow>
             <Grow in timeout={1500}>
-              <Grid
-                container
-                component={Paper}
-                elevation={3}
-                className={classes.aboutSection}
-              >
-                <Grid item xs={12} sm={11} md={12}>
-                  <Typography variant="h2">Photos</Typography>
+              <div>
+                <Grid
+                  container
+                  component={Paper}
+                  elevation={3}
+                  className={classes.aboutSection}
+                >
+                  <Grid item xs={12} sm={11} md={12}>
+                    <Typography variant="h2">Photos</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={11} md={12}>
+                    <ImageGrid />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={11} md={12}>
-                  <ImageGrid />
-                </Grid>
-              </Grid>
+              </div>
             </Grow>
           </Container>
         </div>
