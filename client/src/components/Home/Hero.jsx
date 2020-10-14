@@ -74,8 +74,8 @@ export default function Hero() {
                   <Typography className={classes.body} variant="h5">
                     <br />
                     Microhard makes it easier for students to showcase their
-                    collection of projects and reflections over the course of
-                    their career path.
+                    collection of best projects and reflections over the course
+                    of their career path
                     <br />
                     <br />
                   </Typography>

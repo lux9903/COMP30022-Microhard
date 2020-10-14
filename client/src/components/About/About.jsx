@@ -80,7 +80,7 @@ export default function About() {
                         qualities, as well as your past works.
                         <br />
                         <br />
-                        And that's why MICROHARD was created. MICROHARD is an
+                        And that's why Microhard was created. Microhard is an
                         online platform that helps UniMelb students share their
                         customised portfolios privately to potential employers.
                         We hope that with this implementation, we support each
