@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import ImageGrid from './ImageGrid';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const styles = (theme) => ({
   root: {
@@ -23,6 +25,7 @@ class Image extends Component {
       file: null,
       deleteImageLink: null,
       currentImage: 0,
+      create: false,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -39,7 +42,8 @@ class Image extends Component {
     axios
       .post('/image/upload', formData)
       .then((response) => {
-        alert('The file is successfully uploaded');
+        // alert('The file is successfully uploaded');
+        window.location.reload();
       })
       .catch((error) => {});
   }
@@ -82,9 +86,21 @@ class Image extends Component {
                       inputProps={{accept: 'image/*'}}
                       onChange={this.onChange}
                       color="primary"
-                      // style={{paddingBottom: '8px'}}
                     />
-                    <Button type="submit" color="primary" variant="contained">
+                    {this.state.create ? (
+                      <Snackbar open autoHideDuration={6000}>
+                        <Alert severity="success" variant="outlined">
+                          Image has been successfully uploaded
+                        </Alert>
+                      </Snackbar>
+                    ) : // <Snackbar open message="Image uploaded" />
+                    null}
+                    <Button
+                      type="submit"
+                      color="primary"
+                      variant="contained"
+                      onClick={() => this.setState({create: true})}
+                    >
                       Upload
                     </Button>
                   </form>

@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import axios from '../../../helpers/axiosConfig';
-import {Container} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Gallery from 'react-grid-gallery';
 
@@ -39,13 +38,12 @@ class Image extends Component {
   componentDidMount() {
     const imgs = axios.get('/image').then((res) => {
       if (res.data.files) {
-        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
         const photodata = res.data.files.map(getPhoto);
         function getPhoto(elem) {
           return {
             src: '/api/image/' + elem.filename,
             thumbnail: '/api/image/' + elem.filename,
-            thumbnailWidth: 340,
+            thumbnailWidth: 'auto',
             thumbnailHeight: 250,
           };
         }
@@ -64,7 +62,6 @@ class Image extends Component {
             }}
           >
             <Gallery
-              maxRows={5}
               images={photodata}
               enableLightbox={true}
               enableImageSelection={false}
