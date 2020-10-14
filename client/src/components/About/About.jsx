@@ -15,19 +15,20 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage:
       'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
-    minHeight: '105vh',
+    minHeight: '113vh',
   },
   grid: {
-    paddingTop: '150px',
+    paddingTop: '100px',
   },
   image: {
-    maxWidth: '400px',
+    maxWidth: '430px',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',
-    paddingTop: '50px',
+    paddingTop: '100px',
     [theme.breakpoints.down('xs')]: {
       maxWidth: '310px',
+      paddingTop: '40px',
     },
   },
   paper: {
@@ -62,7 +63,6 @@ export default function About() {
                     />
                     <Divider variant="middle" />
                     <CardContent>
-                      <br />
                       <Typography variant="h4">
                         To help UniMelb students showcase their work in a clean,
                         concise and job-winning manner.
@@ -70,18 +70,22 @@ export default function About() {
                         <br />
                       </Typography>
                       <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Asperiores blanditiis commodi deserunt earum
-                        eligendi facere fuga id magnam maxime minima, possimus
-                        quam quidem quo quod quos ratione repellendus tenetur
-                        ullam.
+                        There will come a time when we university students will
+                        want to present the best versions of ourselves whether
+                        it be for work shadowing, internships, or full-time
+                        jobs. Demonstrating a well-articulated and polished
+                        portfolio during an interview would definitely leave an
+                        impression on potential employers. A portfolio can give
+                        hiring managers insight into your abilities and
+                        qualities, as well as your past works.
                         <br />
                         <br />
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Molestias, mollitia quod. A iure perspiciatis,
-                        possimus sed vitae voluptates? Accusamus aliquid beatae
-                        impedit laboriosam placeat porro quae, qui ut! Deleniti,
-                        doloremque?
+                        And that's why MICROHARD was created. MICROHARD is an
+                        online platform that helps UniMelb students share their
+                        customised portfolios privately to potential employers.
+                        We hope that with this implementation, we support each
+                        and every student by presenting themselves in the best
+                        possible light.
                       </Typography>
                     </CardContent>
                   </Paper>
