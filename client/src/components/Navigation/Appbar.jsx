@@ -34,14 +34,15 @@ export default function Appbar() {
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appbar}>
         <Toolbar>
-          <Button>
+          <Button component={Link} to="/">
             <img className={classes.logo} src={logo} alt={'logo'} />
           </Button>
 
           <div className={classes.navItem}>
             <Button
+              component={Link}
+              to="/about"
               className={classes.greyText}
-              href="#outlined-buttons"
               style={{margin: '0px 10px'}}
             >
               About us
@@ -51,7 +52,6 @@ export default function Appbar() {
               component={Link}
               to="/sign-in"
               className={classes.greyText}
-              href="#outlined-buttons"
               style={{margin: '0px 20px 0px 10px'}}
             >
               Sign in
