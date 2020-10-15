@@ -25,9 +25,11 @@ class Image extends Component {
     this.state = {
       file: null,
       create: false,
+      open: false,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   onFormSubmit(e) {
     e.preventDefault();
@@ -39,6 +41,13 @@ class Image extends Component {
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
+
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({open: false, create: false});
+  };
 
   render() {
     const {classes} = this.props;
@@ -55,7 +64,7 @@ class Image extends Component {
         <div className={classes.root}>
           <Container>
             <Helmet>
-              <title>Microhard &middot; Photos </title>
+              <title>Microhard &middot; Photos</title>
             </Helmet>
 
             <Grid
@@ -76,9 +85,17 @@ class Image extends Component {
                       color="primary"
                     />
                     {this.state.create ? (
-                      <Snackbar open autoHideDuration={6000}>
-                        <Alert severity="success" variant="outlined">
-                          Image has been successfully uploaded
+                      <Snackbar
+                        open
+                        autoHideDuration={6000}
+                        onClose={this.handleClose}
+                      >
+                        <Alert
+                          onClose={this.handleClose}
+                          severity="success"
+                          variant="filled"
+                        >
+                          Image was successfully uploaded!
                         </Alert>
                       </Snackbar>
                     ) : null}
@@ -86,7 +103,7 @@ class Image extends Component {
                       type="submit"
                       color="primary"
                       variant="contained"
-                      onClick={() => this.setState({create: true})}
+                      onClick={() => this.setState({create: true, open: true})}
                     >
                       Upload
                     </Button>
