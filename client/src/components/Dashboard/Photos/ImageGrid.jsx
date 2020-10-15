@@ -5,6 +5,7 @@ import {fetchPhotos, deletePhoto} from '../../../actions/photoAction';
 import {connect} from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const styles = (theme) => ({
   root: {
@@ -20,9 +21,12 @@ class ImageGrid extends Component {
       deleteImageLink: null,
       currentImage: 0,
       page: 1,
+      delete: false,
+      open: false,
     };
     this.deleteImage = this.deleteImage.bind(this);
     this.onCurrentImageChange = this.onCurrentImageChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   deleteImage(e) {
     e.preventDefault();
@@ -34,6 +38,7 @@ class ImageGrid extends Component {
       this.props.dispatch(
         deletePhoto(this.props.photo.photos[this.state.currentImage]._id)
       );
+      this.setState({delete: true});
     }
   }
   onCurrentImageChange(index) {
@@ -42,6 +47,12 @@ class ImageGrid extends Component {
   componentDidMount() {
     this.props.dispatch(fetchPhotos());
   }
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({open: false, delete: false});
+  };
 
   render() {
     const {classes} = this.props;
@@ -98,6 +109,17 @@ class ImageGrid extends Component {
               </button>,
             ]}
           />
+          {this.state.delete ? (
+            <Snackbar open autoHideDuration={6000} onClose={this.handleClose}>
+              <Alert
+                onClose={this.handleClose}
+                severity="success"
+                variant="filled"
+              >
+                Image was successfully deleted!
+              </Alert>
+            </Snackbar>
+          ) : null}
         </div>
       );
       content = <div>{photogrid}</div>;
