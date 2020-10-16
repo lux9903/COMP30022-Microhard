@@ -16,6 +16,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
 import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class Documents extends Component {
   constructor(props) {
@@ -23,18 +24,24 @@ class Documents extends Component {
     this.state = {
       file: null,
       deleted: false,
+      open: false,
     };
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getAllPdf = this.getAllPdf.bind(this);
     this.onEdit = this.onEdit.bind(this);
+    this.handleAlert = this.handleAlert.bind(this);
   }
+  handleAlert = (event, reason) => {
+    if (reason === 'clickaway') return;
+    this.setState({open: false, deleted: false});
+  };
+
   onEdit(url) {
     const body = {
       title: document.forms.namedItem('editTitle')['title']['value'],
     };
     axios.post(url, body);
-    
   }
 
   onFormSubmitPDF(e) {
@@ -93,7 +100,7 @@ class Documents extends Component {
             </TableCell>
             <TableCell align="right">{ele.date}</TableCell>
             <TableCell align="right">
-              <EditDocument onEdit={this.onEdit} url = {ele.updateFileLink}/>
+              <EditDocument onEdit={this.onEdit} url={ele.updateFileLink} />
               <IconButton aria-label="delete">
                 <DeleteIcon
                   onClick={() => {
@@ -112,7 +119,6 @@ class Documents extends Component {
   }
 
   render() {
-    const {classes} = this.props;
     return (
       <Fragment>
         <div style={{height: '120px', backgroundColor: '#094183'}}>
@@ -132,11 +138,17 @@ class Documents extends Component {
         </Helmet>
 
         <Container>
-          <br />
           {this.state.deleted ? (
-            <Alert severity="success">Document has been deleted</Alert>
+            <Snackbar open autoHideDuration={6000} onClose={this.handleAlert}>
+              <Alert
+                onClose={this.handleAlert}
+                severity="success"
+                variant="filled"
+              >
+                PDF document was successfully deleted
+              </Alert>
+            </Snackbar>
           ) : null}
-          <br />
           <AddDocument
             onFormSubmitPDF={this.onFormSubmitPDF}
             onDelete={this.onDelete}
