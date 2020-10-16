@@ -6,9 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 export default function AddDocument(props) {
   const [open, setOpen] = React.useState(false);
+  const [create, setCreate] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -16,6 +19,13 @@ export default function AddDocument(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setCreate(false);
   };
 
   return (
@@ -63,7 +73,14 @@ export default function AddDocument(props) {
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
-              <Button type="submit" color="primary">
+              <Button
+                type="submit"
+                onClick={() => {
+                  //window.location.reload();
+                  setCreate(true);
+                }}
+                color="primary"
+              >
                 Upload
               </Button>
             </label>
@@ -71,6 +88,17 @@ export default function AddDocument(props) {
               Cancel
             </Button>
           </DialogActions>
+          {create ? (
+            <Snackbar open autoHideDuration={6000} onClose={handleCloseAlert}>
+              <Alert
+                onClose={handleCloseAlert}
+                severity="success"
+                variant="filled"
+              >
+                PDF was successfully uploaded!
+              </Alert>
+            </Snackbar>
+          ) : null}
         </form>
       </Dialog>
     </div>

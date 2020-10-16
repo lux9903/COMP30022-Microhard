@@ -463,7 +463,8 @@ projectRouter.post('/timeline/update/:id',auth.optional, (req,res)=>{
 				project.timeline[req.body.index-1]['description'] = req.body.description;
 			}
 			if(req.body.time){
-				project.timeline[req.body.index-1]['time'] = new Date(req.body.time.year, req.body.time.month, req.body.time.day, req.body.time.hr, req.body.time.min, req.body.time.sec, req.body.time.minsec);
+				//project.timeline[req.body.index-1]['time'] = new Date(req.body.time.year, req.body.time.month, req.body.time.day, req.body.time.hr, req.body.time.min, req.body.time.sec, req.body.time.minsec);
+				project.timeline[req.body.index-1]['time'] = new Date(req.body.time.year, req.body.time.month, req.body.time.day, 0, 0, 0, 0);
 			}
 			project.timeline.sort((a,b)=> ((new Date(a.time)).getTime() - (new Date(b.time)).getTime()));
 				let inde = 0;

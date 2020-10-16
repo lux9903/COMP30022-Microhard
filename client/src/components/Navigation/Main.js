@@ -10,8 +10,13 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
+<<<<<<< HEAD
 //import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/pl';
+=======
+import About from '../About/About';
+import Project from '../Dashboard/Project/ProjectList_edit';
+>>>>>>> faa4eb452592a75524633b5e2970517fed985416
 import Project_Edit from '../Dashboard/Project/p';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
@@ -30,6 +35,7 @@ class Main extends Component {
   render() {
     return (
       <Switch>
+        <Route exact path="/about" component={About} />
         <Route exact path="/sign-in" component={SignIn} />
         <Route exact path="/sign-up" component={AddProfileContent} />
         <Route exact path="/forgot-password" component={ForgotPassword} />

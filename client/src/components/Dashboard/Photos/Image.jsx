@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
-import axios from '../../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -8,6 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import ImageGrid from './ImageGrid';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import {postPhoto} from '../../../actions/photoAction';
+import {connect} from 'react-redux';
 
 const styles = (theme) => ({
   root: {
@@ -21,32 +24,30 @@ class Image extends Component {
     super(props);
     this.state = {
       file: null,
-      deleteImageLink: null,
-      currentImage: 0,
+      create: false,
+      open: false,
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   onFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', this.state.file);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post('/image/upload', formData)
-      .then((response) => {
-        alert('The file is successfully uploaded');
-      })
-      .catch((error) => {});
+    this.props.dispatch(postPhoto(formData));
   }
 
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
+
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({open: false, create: false});
+  };
 
   render() {
     const {classes} = this.props;
@@ -63,7 +64,7 @@ class Image extends Component {
         <div className={classes.root}>
           <Container>
             <Helmet>
-              <title>Microhard &middot; Photos </title>
+              <title>Microhard &middot; Photos</title>
             </Helmet>
 
             <Grid
@@ -82,9 +83,28 @@ class Image extends Component {
                       inputProps={{accept: 'image/*'}}
                       onChange={this.onChange}
                       color="primary"
-                      // style={{paddingBottom: '8px'}}
                     />
-                    <Button type="submit" color="primary" variant="contained">
+                    {this.state.create ? (
+                      <Snackbar
+                        open
+                        autoHideDuration={6000}
+                        onClose={this.handleClose}
+                      >
+                        <Alert
+                          onClose={this.handleClose}
+                          severity="success"
+                          variant="filled"
+                        >
+                          Image was successfully uploaded!
+                        </Alert>
+                      </Snackbar>
+                    ) : null}
+                    <Button
+                      type="submit"
+                      color="primary"
+                      variant="contained"
+                      onClick={() => this.setState({create: true, open: true})}
+                    >
                       Upload
                     </Button>
                   </form>
@@ -99,5 +119,8 @@ class Image extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  ...state,
+});
 
-export default withStyles(styles)(Image);
+export default connect(mapStateToProps)(withStyles(styles)(Image));

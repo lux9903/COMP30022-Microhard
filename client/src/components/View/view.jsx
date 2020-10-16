@@ -22,6 +22,7 @@ import PublicIcon from '@material-ui/icons/Public';
 import Gallery from 'react-grid-gallery';
 import ViewNav from './ViewNav';
 import Button from '@material-ui/core/Button';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 const styles = (theme) => ({
   root: {
@@ -311,35 +312,38 @@ class View extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            {(view_user.location || view_user.graduation) && (
-              <Grid
-                container
-                component={Paper}
-                className={classes.secondSection}
-              >
-                <Grid item xs={12} sm={12} md={4}>
-                  {view_user.location && (
-                    <Typography variant="body1">
-                      <LocationOnOutlinedIcon
-                        className={classes.locationIcon}
-                      />{' '}
-                      {view_user.location}
-                    </Typography>
-                  )}
-                  {view_user.graduation && (
-                    <Typography variant="body1">
-                      <SchoolIcon className={classes.graduationIcon} />{' '}
-                      {view_user.graduation}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Button variant="outlined" color="primary" fullWidth>
-                    <div id="resume"></div>
-                  </Button>
-                </Grid>
+            <Grid container component={Paper} className={classes.secondSection}>
+              <Grid item xs={12} sm={12} md={3}>
+                {view_user.location && (
+                  <Typography variant="body1">
+                    <LocationOnOutlinedIcon className={classes.locationIcon} />{' '}
+                    {view_user.location}
+                  </Typography>
+                )}
+                {view_user.graduation && (
+                  <Typography variant="body1">
+                    <SchoolIcon className={classes.graduationIcon} />{' '}
+                    {view_user.graduation}
+                  </Typography>
+                )}
               </Grid>
-            )}
+              <Grid item xs={12} sm={12} md={5}>
+                <Typography variant="body1">
+                  <AccountBalanceIcon className={classes.universityIcon} />{' '}
+                  University of Melbourne
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={4} className={classes.icons}>
+                <Button variant="outlined" color="primary" fullWidth>
+                  <div id="resume"></div>
+                </Button>
+              </Grid>
+              {/*<Grid item xs={12} sm={6} md={4}>*/}
+              {/*  <Button variant="outlined" color="primary" fullWidth>*/}
+              {/*    <div id="resume"></div>*/}
+              {/*  </Button>*/}
+              {/*</Grid>*/}
+            </Grid>
             <Grid
               container
               component={Paper}
