@@ -67,7 +67,6 @@ export const deletePhoto = (id) => {
       dispatch(deletePhotoSuccess(id));
       dispatch(push('/image'));
     } catch (error) {
-      console.log(error)
       dispatch(deletePhotoFailure('Could not delete photo.'));
     }
   };
@@ -82,7 +81,6 @@ export const postPhoto = (data) => {
       dispatch(postPhotoSuccess(response.data));
       dispatch(push('/image'));
     } catch (error) {
-      console.log(error)
       dispatch(postPhotoFailure('Could not add photo.'));
     }
   };

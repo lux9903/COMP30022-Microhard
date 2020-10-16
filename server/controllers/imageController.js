@@ -49,7 +49,7 @@ const getAllImage = (req, res) => {
       gfs.files.find({_id: {$in: image}}).toArray((err,files)=>{
         if(!files || files.length ===0){
           return res.json({
-            files: false
+            files: []
           });
         }else{
           files.map(file=>{
