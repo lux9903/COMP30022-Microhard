@@ -11,10 +11,14 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import IconButton from '@material-ui/core/IconButton';
+import CheckIcon from '@material-ui/icons/Check';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ClearIcon from '@material-ui/icons/Clear';
+import { CardContent } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
 
 class Timeline_List extends Component{
     constructor(props) {
@@ -26,10 +30,13 @@ class Timeline_List extends Component{
       this.onChangeDate = this.onChangeDate.bind(this);
       this.onChangeDesc = this.onChangeDesc.bind(this);
       this.handleAddTimelineSubmit = this.handleAddTimelineSubmit.bind(this);
+      this.handleAddTimelineOpen = this.handleAddTimelineOpen.bind(this);
+      this.handleAddTimelineCancel = this.handleAddTimelineCancel.bind(this);
       this.state = {
-        timeline = [],
+        timeline: [],
         date: "",
         description: "",
+        open: false,
       };
     }
 
@@ -47,12 +54,13 @@ class Timeline_List extends Component{
     }
 
     renTimelineList = () => {
-        return this.state.conlist.map((each, i)=>{
+        return (this.state.timeline && this.state.timeline.map((each, i)=>{
           return <Timeline_Items each={each} id={this.props.id} update={this.updateTimeline}/>
-        });
+        }));
     }
 
     updateTimeline = () => {
+        //alert("updating");
         this.getTimeline();
         this.renTimelineList();
     }
@@ -65,9 +73,22 @@ class Timeline_List extends Component{
         this.setState({description:event.target.value});
     }
 
-    handleAddTimelineSubmit = () =>{
+    handleAddTimelineOpen = () => {
+        this.setState({open:true});
+    }
+
+    handleAddTimelineCancel = () => {
+        this.setState({
+            open:false,
+            input: "",
+        });
+    }
+
+    handleAddTimelineSubmit = (event) =>{
+        event.preventDefault();
+        this.setState({open:false});
         axios.post('/project/timeline/'+this.props.id, {
-            "date": this.state.date,
+            "time": this.state.date,
             "description":this.state.description,
         }).catch((error) => {});
         this.setState({date:"",description:""});
@@ -81,22 +102,41 @@ class Timeline_List extends Component{
                     Timeline
                 </Typography>
                 <Divider/>
-                {this.renTimelineList()}
-                <form onSubmit={this.handleAddTimelineSubmit}>
-                    <TextField
-                        lable="Add new contributor"
-                        onChange={this.onChangeDate}
-                        type="date"
-                        required
-                    />
-                    <TextField
-                        lable="Add new contributor"
-                        onChange={this.onChangeDesc}
-                        disableUnderline
-                        required
-                    />
-                    <Button type="submit">Add New Timeline</Button>
-                </form>
+                <Timeline>
+                    {this.renTimelineList()}
+                </Timeline>
+                {!this.state.open ? (
+                    <Button 
+                        onClick={this.handleAddTimelineOpen}
+                        fullWidth
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                    >
+                        Add new event
+                    </Button>
+                ) : (
+                    <form onSubmit={this.handleAddTimelineSubmit}>
+                        <TextField
+                            lable="Add new contributor"
+                            onChange={this.onChangeDate}
+                            type="date"
+                            required
+                        />
+                        <TextField
+                            lable="Add new contributor"
+                            onChange={this.onChangeDesc}
+                            disableUnderline
+                            required
+                        />
+                        <IconButton type="submit">
+                            <CheckIcon fontSize="small"/>
+                        </IconButton>
+                        <IconButton onClick={this.handleAddTimelineCancel} >
+                            <ClearIcon fontSize="small"/>
+                        </IconButton>
+                    </form>
+                )}
             </Fragment>
         );
     }
@@ -114,7 +154,7 @@ class Timeline_Items extends Component{
         this.OnChangeDescUpdate = this.OnChangeDescUpdate.bind(this);
         this.state = {
             description: this.props.each.description,
-            date: this.props.each.each.date,
+            date: this.props.each.time,
             open: false,
         }
     }
@@ -142,13 +182,21 @@ class Timeline_Items extends Component{
     }
 
     handleTimelineDelete = () => {
-        axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.props.contributor]})
+        axios.post('/project/timeline/remove/'+this.props.id, {
+            "index":this.props.each.index,
+        })
         .catch((error) => {});
         this.props.update();
     };
 
     handleTimelineUpdate = (event) => {
-        axios.post('/project/remove_people/'+this.props.id, {'old_users':[this.props.contributor]})
+        event.preventDefault();
+        this.setState({open:false});
+        axios.post('/project/timeline/update/'+this.props.id, {
+            "time":this.state.date,
+            "description":this.state.description,
+            "index":this.props.each.index,
+        })
         .catch((error) => {});
         this.props.update();
     };
@@ -156,6 +204,67 @@ class Timeline_Items extends Component{
     render(){
         return(
             <Fragment>
+                <TimelineItem align="left">
+                    <TimelineSeparator>
+                        <TimelineDot/>
+                        <TimelineConnector/>
+                    </TimelineSeparator>
+                    <TimelineContent>
+                        <Card>
+                            <CardContent>
+                                {!this.state.open ? (
+                                    <div>
+                                        <TextField
+                                            disabled
+                                            value={this.state.date}
+                                            InputProps={{ disableUnderline: true }}
+                                            variant="outlined"
+                                            size="small"
+                                        />
+                                        <Divider/>
+                                        <TextField
+                                            disabled
+                                            value={this.state.description}
+                                            InputProps={{ disableUnderline: true }}
+                                            variant="outlined"
+                                            size="small"
+                                        />
+                                        <IconButton onClick={this.handleTimelineOpen}>
+                                            <EditIcon fontSize="small"/>
+                                        </IconButton>
+                                        <IconButton onClick={this.handleTimelineDelete} >
+                                            <DeleteIcon fontSize="small"/>
+                                        </IconButton>
+                                    </div>
+                                ) : (
+                                    <form onSubmit={this.handleTimelineUpdate}>
+                                        <TextField
+                                            onChange={this.OnChangeDateUpdate}
+                                            value={this.state.date}
+                                            InputProps={{ disableUnderline: true }}
+                                            variant="outlined"
+                                            size="small"
+                                        />
+                                        <Divider/>
+                                        <TextField
+                                            onChange={this.OnChangeDescUpdate}
+                                            value={this.state.description}
+                                            InputProps={{ disableUnderline: true }}
+                                            variant="outlined"
+                                            size="small"
+                                        />
+                                        <IconButton type="submit">
+                                            <CheckIcon fontSize="small"/>
+                                        </IconButton>
+                                        <IconButton onClick={this.handleTimelineCancel} >
+                                            <ClearIcon fontSize="small"/>
+                                        </IconButton>
+                                    </form>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </TimelineContent>
+                </TimelineItem>
             </Fragment>
         )
     }

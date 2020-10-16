@@ -47,7 +47,8 @@ class General_Info extends Component{
         })
     }
 
-    handleGeneralSubmit = () =>{
+    handleGeneralSubmit = (event) =>{
+        event.preventDefault();
         axios.post('/project/update/'+ this.props.id, {"name":this.state.name, "description": this.state.description})
         .catch((error) => {});
     }

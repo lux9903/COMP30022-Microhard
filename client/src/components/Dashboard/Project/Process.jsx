@@ -6,20 +6,17 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import EditIcon from '@material-ui/icons/Edit';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionActions from '@material-ui/core/AccordionActions';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ClearIcon from '@material-ui/icons/Clear';
-import DialogContent from '@material-ui/core/DialogContent';
-import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 //render the process list and have a form to add a process
@@ -35,6 +32,7 @@ class Process_List extends Component{
         this.state = {
             proclist:[],
             input: "",
+            open: false,
         }
     }
     componentDidMount = () =>{
@@ -46,8 +44,6 @@ class Process_List extends Component{
             this.setState({
                 proclist: res.data.project.process,
             });
-            //alert(res.data.project.process);
-            //alert(res.data.project.process.length);
         })
         .catch((error) => {});
     }
@@ -67,17 +63,29 @@ class Process_List extends Component{
         this.setState({input:event.target.value});
     }
 
-    handleAddProcessSubmit = () =>{
+    handleAddProcessSubmit = (event) =>{
+        event.preventDefault();
+        this.setState({open:false});
         axios.post('/project/process/'+ this.props.id, {
             "process": {
             "description": this.state.input,
             "processNum": this.state.proclist ? (this.state.proclist.length+1) : (0),
             "status": true
         }})
-        //.then(alert(this.state.proclist.length + 1))
         .catch((error) => {});
-        this.setState({input:""});
+        this.setState({input:"", open:false});
         this.updateProcess();
+    }
+
+    handleAddProcessCancel = () => {
+        this.setState({
+            open:false,
+            input: "",
+        });
+    }
+
+    handleAddProcessOpen = () => {
+        this.setState({open:true});
     }
 
     render(){
@@ -88,17 +96,35 @@ class Process_List extends Component{
                 </Typography>
                 <Divider/>
                 {this.renProcessList()}
-                <form onSubmit= {this.handleAddProcessSubmit}>
-                    <TextField
-                        label="Add description for new process"
-                        onChange={this.onInputAddProcess}
-                        InputProps={{ disableUnderline: true }}
-                        required
+                {!this.state.open ? (
+                    <Button
+                        onClick={this.handleAddProcessOpen}
                         fullWidth
-                        variant="outlined"
-                    />
-                    <Button type="submit" fullWidth>Add</Button>
-                </form>
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                    >
+                        Add new Process
+                    </Button>
+                ) : (
+                    <form onSubmit= {this.handleAddProcessSubmit}>
+                        <TextField
+                            label="Add description for new process"
+                            onChange={this.onInputAddProcess}
+                            InputProps={{ disableUnderline: true }}
+                            required
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                        />
+                        <IconButton type="submit">
+                            <CheckIcon fontSize="small"/>
+                        </IconButton>
+                        <IconButton onClick={this.handleAddProcessCancel} >
+                            <ClearIcon fontSize="small"/>
+                        </IconButton>
+                    </form>
+                )}   
             </Fragment>
         )
     }
@@ -108,12 +134,95 @@ class Process_List extends Component{
 class Process extends Component {
     constructor(props){
         super(props);
-        this.handleProcessDelete = this.handleProcessDelete.bind(this);
+        this.renNodeList = this.renNodeList.bind(this);
+        this.handleNodeListOpen = this.handleNodeListOpen.bind(this);
+        this.handleNodeListClose = this.handleNodeListClose.bind(this);
+        this.handleAddNodeOpen = this.handleAddNodeOpen.bind(this);
+        this.handleAddNodeCancel = this.handleAddNodeCancel.bind(this);
         this.handleAddNodeSubmit = this.handleAddNodeSubmit.bind(this);
         this.onInputAddNodeChange =this.onInputAddNodeChange.bind(this);
+        this.handleProcessDelete = this.handleProcessDelete.bind(this);
+        this.handleProcessEditOpen = this.handleProcessEditOpen.bind(this);
+        this.handleProcessEditCancel = this.handleProcessEditCancel.bind(this);
+        this.handleProcessEditSubmit = this.handleProcessEditSubmit.bind(this);
+        this.onInputEditProcessChange = this.onInputEditProcessChange.bind(this);
+        
         this.state = {
+            open:false,
+            openEdit: false,
+            openAdd:false,
             input: "",
+            description: this.props.process.description,
+            nodelist:this.props.process.nodes,
         }
+    }
+
+    renNodeList = () => {
+        return (this.state.nodelist && this.state.nodelist.map((node,i)=>{
+            return <Node node={node} id={this.props.id} update={this.props.update} fullWidth/>
+        }));
+    }
+
+    handleNodeListOpen = () => {
+        this.setState({open:true});
+    }
+
+    handleNodeListClose = () =>{
+        this.setState({open:false});
+    }
+
+    handleAddNodeOpen = () => {
+        this.setState({openAdd:true});
+    }
+
+    handleAddNodeCancel = () => {
+        this.setState({
+            openAdd:false,
+            input:"",
+        });
+    }
+
+    onInputAddNodeChange = (event) => {
+        this.setState({
+            input: event.target.value,
+        })
+    }
+
+    handleAddNodeSubmit = (event) => {
+        event.preventDefault();
+        this.setState({openAdd:false});
+        axios.post('/project/process/node/'+this.props.id, {
+            "processNum": this.props.process.processNum,
+            "description" : this.state.input,
+        })
+        .catch((error) => {});
+        this.props.update();
+    }
+
+    handleProcessEditOpen = () => {
+        this.setState({openEdit:true});
+    }
+
+    handleProcessEditCancel = () => {
+        this.setState({
+            openEdit:false,
+            description:this.props.process.description,
+        });
+    }
+
+    onInputEditProcessChange = (event) => {
+        this.setState({description:event.target.value});
+    }
+
+    handleProcessEditSubmit = (event) => {
+        event.preventDefault();
+        this.setState({openEdit:false});
+        axios.post('/project/process/update/'+this.props.id, {
+            "processNum": this.props.process.processNum,
+            "description":this.state.description,
+        })
+        .catch((error) => {});
+        this.props.update();
     }
 
     handleProcessDelete = () => {
@@ -124,144 +233,95 @@ class Process extends Component {
         this.props.update();
     }
 
-    onInputAddNodeChange = (event) => {
-        //event.preventDefault();
-        this.setState({
-            input: event.target.value,
-        })
-    }
-
-    handleAddNodeSubmit = () => {
-        axios.post('/project/process/node/'+this.props.id, {
-            "processNum": this.props.process.processNum,
-            "description" : this.state.input,
-        })
-        .catch((error) => {});
-        this.setState({input: ""})
-        this.props.update();
-    }
-
     render() {
       return (
-        <Accordion>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-            >
-                <Typography variant="h6">{this.props.process.description}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Grid container direction="column">
-                    <List>
-                        {this.props.process.nodes && this.props.process.nodes.map((node, i)=>{
-                            return( 
-                                <ListItem>
-                                    <Node node={node} id={this.props.id} update={this.props.update} processNum={this.props.process.processNum}/>
-                                </ListItem>
-                        )})}
-                    </List>
-                    <form onSubmit={this.handleAddNodeSubmit}>
+        <List>
+            <ListItem fullWidth>
+                {/* show and edit form for process description */}
+                {!this.state.openEdit ? (
+                    <div>
                         <TextField
-                            label="Add new task"
+                            disabled
+                            value={this.state.description}
                             InputProps={{ disableUnderline: true }}
-                            onChange={this.onInputAddNodeChange}
-                            value={this.state.input}
-                            required
                             variant="outlined"
+                            size = "small"
                         />
-                        <Button type="submit">Add</Button>
+                        <IconButton onClick={this.handleProcessEditOpen}>
+                            <EditIcon  fontSize="small"/>
+                        </IconButton>
+                        <IconButton onClick={this.handleProcessDelete}>
+                            <DeleteIcon fontSize="small"/>
+                        </IconButton>
+                    </div>
+                ) :(
+                    <form onSubmit={this.handleProcessEditSubmit}>
+                        <TextField
+                            onChange={this.onInputEditProcessChange}
+                            value={this.state.description}
+                            InputProps={{ disableUnderline: true }}
+                            variant="outlined"
+                            size = "small"
+                            required
+                        />
+                        <IconButton type="submit">
+                            <CheckIcon  fontSize="small"/>
+                        </IconButton>
+                        <IconButton onClick={this.handleProcessEditSubmit}>
+                            <ClearIcon fontSize="small"/>
+                        </IconButton>
                     </form>
-                </Grid>
-            </AccordionDetails>
-            <Divider />
-            <AccordionActions>
-                <EditButton process={this.props.process} id={this.props.id}/>
-                <Button onClick={this.handleProcessDelete}>Delete</Button>
-            </AccordionActions>
-        </Accordion>
+                )}
+                {/* this is button to expand to see node list */}
+                {!this.state.open ? (
+                    <IconButton onClick={this.handleNodeListOpen}>
+                        <ExpandMoreIcon fontSize="small"/>
+                    </IconButton>
+                ) : (
+                    <IconButton onClick={this.handleNodeListClose}>
+                        <ExpandLessIcon fontSize="small"/>
+                    </IconButton>
+                )}
+                {/* this is render the node in the process */}
+                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                    <List>
+                        {this.renNodeList()}
+                    </List>
+                    {/* this is form to add a node in a process */}
+                    {!this.state.openAdd ? (
+                        <Button 
+                            onClick={this.handleAddNodeOpen}
+                            fullWidth
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                        >
+                            Add new task
+                        </Button>
+                    ) : (
+                        <form onSubmit={this.handleAddNodeSubmit}>
+                            <TextField
+                                label="Add new task"
+                                onChange={this.onInputAddNodeChange}
+                                InputProps={{ disableUnderline: true }}
+                                required
+                                variant="outlined"
+                                size="small"
+                            />
+                            <IconButton type="submit">
+                                <CheckIcon fontSize="small"/>
+                            </IconButton>
+                            <IconButton onClick={this.handleAddNodeCancel} >
+                                <ClearIcon fontSize="small"/>
+                            </IconButton>
+                        </form>
+                    )}
+                </Collapse>
+            </ListItem>
+        </List>
       );
     }
 }
-
-//pop up form to edit particular process
-class EditButton extends Component {
-    constructor(props){
-        super(props);
-        this.onInputEditProcessChange = this.onInputEditProcessChange.bind(this);
-        this.handleEditProcessSubmit = this.handleEditProcessSubmit.bind(this);
-        this.handleEditProcessCancel = this.handleEditProcessCancel.bind(this);
-        this.handleEditProcessOpen = this.handleEditProcessOpen.bind(this);
-        this.state = {
-            description: this.props.process.description,
-            open: false,
-        }
-    }
-    onInputEditProcessChange = (event) => {
-        this.setState({description:event.target.value});
-    }
-
-    handleEditProcessSubmit = () =>{
-        axios.post('/project/process/update/'+this.props.id, {
-            'description': this.state.description,
-            'processNum': this.props.process.processNum
-        })
-        .then(this.props.update())
-        //.then(alert(this.props.process.processNum))
-        .catch((error) => {});
-        //this.props.update();
-    }
-
-    handleEditProcessCancel = () => {
-        this.setState({
-            open:false,
-            description:this.props.process.description,
-        });
-    }
-
-    handleEditProcessOpen = () => {
-        this.setState({open:true});
-    }
-
-    render(){
-        return(
-            <Fragment>
-            {(!this.state.open) ? (
-                <Button onClick={this.handleEditProcessOpen}>Edit</Button>
-            ) : (
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleEditProcessCancel}
-                    closeAfterTransition
-                >
-                    <DialogContent>
-                        <form onSubmit={this.handleEditProcessSubmit} fullWidth>
-                            <Typography>
-                                Process Number: {this.props.process.processNum}
-                            </Typography>
-                            <Typography>
-                                Description
-                            </Typography>
-                            <TextField
-                                value={this.state.description}
-                                InputProps={{ disableUnderline: true }}
-                                onChange={this.onInputEditProcessChange}
-                                required
-                                fullWidth
-                                multiline
-                                variant="outlined"
-                            />
-                            <Button type="submit">Submit</Button>
-                            <Button onClick={this.handleEditProcessCancel}>Cancel</Button>
-                        </form>
-                    </DialogContent>
-                </Dialog>
-            )} 
-            </Fragment>
-        )
-    }
-}
-
 
 //render the node-items, which each have view and edit mode
 class Node extends Component{
@@ -274,26 +334,29 @@ class Node extends Component{
         this.handleNodeDelete = this.handleNodeDelete.bind(this);
         this.state = {
             description: this.props.node.description,
-            state: this.props.node.state,
+            status: this.props.node.state,
             open: false,
         }
     }
+
     handleEditNodeCancel = () =>{
         this.setState({
             open:false,
             description:this.props.node.description,
         })
     }
+
     handleEditNodeOpen = () =>{
         this.setState({
             open:true,
         })
     }
+
     handleNodeDelete = () =>{
         axios.post('/project/process/node/remove/'+this.props.id, {
             "processNum": this.props.processNum,
             "nodeIndex" : this.props.node.nodeIndex,
-        })
+        }).then(alert("delete!"))
         .catch((error) => {});
         this.props.update();
     };
@@ -305,6 +368,8 @@ class Node extends Component{
     }
 
     handleEditNodeUpdate = (event) => {
+        event.preventDefault();
+        this.setState({open:false});
         axios.post('/project/process/node/update/'+this.props.id, {
             "processNum": this.props.processNum,
             "nodeIndex" : this.props.node.nodeIndex,
@@ -314,10 +379,20 @@ class Node extends Component{
         this.props.update();
     };
 
-    //adding box -> handleboxChecked
+    handleFinishNode = (event) => {
+        axios.post('/project/process/node/finish/'+this.props.id, {
+            "processNum": this.props.processNum,
+            "nodeIndex" : this.props.node.nodeIndex,
+            //"state":this.state.status,
+        })
+        .catch((error) => {});
+        this.props.update();
+    }
+
     render(){
         return(
             <Fragment>
+                <ListItem fullWidth>
                 {(!this.state.open) ? (
                     <div>
                         <TextField
@@ -327,6 +402,7 @@ class Node extends Component{
                             multiline
                             variant="outlined"
                         />
+                        <Checkbox value={this.state.status} onChange={this.handleFinishNode}/>
                         <IconButton onClick={this.handleEditNodeOpen}>
                             <EditIcon fontSize="small" />
                         </IconButton>
@@ -345,6 +421,7 @@ class Node extends Component{
                                 required
                                 variant="outlined"
                             />
+                            <Checkbox value={this.state.status} onChange={this.handleFinishNode}/>
                             <IconButton type="submit">
                                 <CheckIcon fontSize="small"/>
                             </IconButton>
@@ -354,6 +431,7 @@ class Node extends Component{
                         </form>
                     </div>
                 )}
+                </ListItem>
             </Fragment>
         )
     }
@@ -361,39 +439,4 @@ class Node extends Component{
   
 export default (Process_List);
 
-/*
-    <List>
-      <ListItem fullWidth>
-      {openEdit ? (
-        <div>
-          <ListItemText>
-            <TextField value="hello" disabled/>
-            <IconButton onClick={handleEditClick}>
-              <EditIcon/>
-          </IconButton>
-          </ListItemText>
-        </div>
-      ) : (
-        <div>
-          <ListItemText>
-            <TextField value="hello"/>
-            <IconButton onClick={handleEditClick}>
-              <ClearIcon/>
-          </IconButton>
-          </ListItemText>
-        </div>
-      )}
-        {open ? (<ExpandLess onClick={handleClick}/>) : (<ExpandMore onClick={handleClick}/>)}
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List>
-          <ListItem>
-              <TextField value="hello" disabled/>
-          </ListItem>
-        </List>
-      </Collapse>
-    </List>
-
-    
-*/
 

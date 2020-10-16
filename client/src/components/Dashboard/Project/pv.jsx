@@ -9,18 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-//import Link from '@material-ui/core/Link';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-//import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import FormControl from '@material-ui/core/FormControl';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import InputLabel from '@material-ui/core/InputLabel';
-import CardActions from '@material-ui/core/CardActions';
-import Rating from '@material-ui/lab/Rating';
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -68,6 +59,9 @@ const styles = (theme) => ({
   },
   ListItem:{
       padding: "0px",
+  },
+  oppositeContent:{
+    flex: 0,
   },
   list:{
       maxHeight: 100,
@@ -205,7 +199,32 @@ class Project_View extends Component{
                 <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
                   <Divider/>
-                  <br/>
+                  <Timeline>
+                    {this.state.project.timeline && this.state.project.timeline.length > 0 ? (
+                      this.state.project.timeline.map((each,i)=>{
+                        return (
+                          <TimelineItem align="left">
+                            <TimelineSeparator>
+                              <TimelineDot/>
+                              <TimelineConnector />
+                            </TimelineSeparator>
+                            <TimelineOppositeContent className={classes.oppositeContent}/>
+                            <TimelineContent>
+                              <Card>
+                                <CardContent>
+                                  <Typography>{each.time}</Typography>
+                                  <Divider/>
+                                  <Typography>{each.description}</Typography>
+                                </CardContent>
+                              </Card>
+                            </TimelineContent>
+                          </TimelineItem>
+                        )
+                      })
+                    ) : (
+                      <Typography>No Timeline Yet</Typography>
+                    )}
+                  </Timeline>
                 </CardContent>
               </Card>
             </Grid>
@@ -216,6 +235,14 @@ class Project_View extends Component{
                   <Divider/>
                   <Typography>Progress Status: {this.state.project.status}</Typography>
                   <Typography>Show Status: {this.state.project.show_status}</Typography>
+                </CardContent>
+              </Card>
+              <br/>
+              <Card className={classes.card}>
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
+                  <Divider/>
+                  <Typography>{this.state.project.rating}{" "}people had liked this project</Typography>
                 </CardContent>
               </Card>
               <br/>
@@ -239,23 +266,3 @@ class Project_View extends Component{
 
 //export default withRouter(Project_View);
 export default withRouter(withStyles(styles)(Project_View));
-
-/*
-{this.state.project.process && this.state.project.process.map((proc,i)=>{
-                    <List>
-                      <ListItem>
-                        <ListItemText>{proc.description}</ListItemText>
-                        {open ? <ExpandMore onClick={this.handleClickOpen}/> : <ExpandLess onClick={this.handleClickClose}/>}
-                        <Collapse in={open} timeout="auto" unmountOnExit>
-                          {proc.nodes && proc.nodes.map((node, i)=>{
-                            <List component="div" disablePadding>
-                              <ListItem button>
-                                <ListItemText primary={node.description} />
-                              </ListItem>
-                            </List>
-                          })}
-                        </Collapse>
-                      </ListItem>
-                    </List>
-                  })}
-*/
