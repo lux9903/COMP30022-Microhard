@@ -294,7 +294,7 @@ projectRouter.post('/process/node/update/:id',auth.optional,(req,res)=>{
 		var project = await Project.findOne({user:user._id,_id:req.params.id});
 		if(req.body.processNum && (req.body.processNum <= project.process.length)){
 			if(req.body.description){
-				project.process[req.body.processNum - 1].nodes.find(ele => ele.index = req.body.nodeIndex).description = req.body.description;	
+				project.process[req.body.processNum - 1].nodes.find(ele => ele.index == req.body.nodeIndex).description = req.body.description;	
 			}
 			project.markModified('process');
 			project.save();
