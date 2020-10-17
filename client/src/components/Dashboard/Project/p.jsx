@@ -16,16 +16,55 @@ import Contributor from './Contributors';
 import Process from './Process';
 import Timeline from './Timeline';
 
+const styles = (theme) => ({
+  icon: {
+      marginRight: theme.spacing(2),
+  },
+  heroContent: {
+      backgroundColor: '#094183',
+      padding: theme.spacing(6, 0, 6),
+  },
+  cardGrid: {
+      paddingTop: theme.spacing(4),
+  },
+  card: {
+      height: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+  },
+  cardContent: {
+      flexGrow: 0,
+  },
+  input: {
+      color: "white",
+      fontSize:50,
+  },
+  margin: {
+      margin: theme.spacing(1),
+  },
+  ListItem:{
+      padding: "0px",
+  },
+  oppositeContent:{
+    flex: 0,
+  },
+  list:{
+      maxHeight: 100,
+      overflow: 'auto',
+  },
+});
+
 class Project extends Component{
   render(){
-    const id= this.props.match.params.id;
+    //const {classes} = this.props;
+    const id = this.props.match.params.id;
     return (
       <Fragment>
         <Helmet>
           <title>Microhard &middot; Project</title>
         </Helmet>
 
-        <div style={{padding: "10px", backgroundColor: '#094183'}}>
+        <div>
           <Container maxWidth="sm" >
               <Typography component="h1" variant="h2" align="center" color="primary" gutterBottom>
                 Hero Content
@@ -33,44 +72,42 @@ class Project extends Component{
           </Container>
         </div>
         <br/>
-        <div>
-          <Container maxWidth="md">
+        <Container maxWidth="md">
           <Grid container spacing={3}>
-              <Grid item xs={12} md={8}>
-                <Card>
-                  <CardContent>
-                    <General id={id}/>
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card>
-                  <CardContent>
-                    <Process id={id}/>
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card>
-                  <CardContent>
-                    <Timeline id={id}/>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Card>
-                  <CardContent>
-                    <Status id={id}/>
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card>
-                  <CardContent>
-                    <Contributor id={id}/>
-                  </CardContent>
-                </Card>
-              </Grid>
+            <Grid item xs={12} md={8}>
+              <Card>
+                <CardContent>
+                  <General id={id}/>
+                </CardContent>
+              </Card>
+              <br/>
+              <Card>
+                <CardContent>
+                  <Process id={id}/>
+                </CardContent>
+              </Card>
+              <br/>
+              <Card>
+                <CardContent>
+                  <Timeline id={id}/>
+                </CardContent>
+              </Card>
             </Grid>
-          </Container>
-        </div>
+            <Grid item xs={12} md={4}>
+              <Card>
+                <CardContent>
+                  <Status id={id}/>
+                </CardContent>
+              </Card>
+              <br/>
+              <Card>
+                <CardContent>
+                  <Contributor id={id}/>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
       </Fragment>
   );}
 }

@@ -10,13 +10,10 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
-<<<<<<< HEAD
 //import Image from '../Dashboard/Image';
 import Project from '../Dashboard/Project/pl';
-=======
 import About from '../About/About';
-import Project from '../Dashboard/Project/ProjectList_edit';
->>>>>>> faa4eb452592a75524633b5e2970517fed985416
+//import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/p';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
