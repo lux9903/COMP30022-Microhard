@@ -34,7 +34,7 @@ export default function EditDocument(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <form onSubmit={() => props.onEdit(props.url)} name="editTitle">
+        <form onSubmit={() => props.onEdit(props.id)} name="editTitle">
           <DialogTitle id="form-dialog-title">Edit this document</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -59,7 +59,7 @@ export default function EditDocument(props) {
               <Button
                 type="submit"
                 onClick={() => {
-                  window.location.reload(false);
+                  //window.location.reload(false);
                   setUpload(true);
                 }}
                 style={{fontFamily: 'Lato, sans-serif'}}
