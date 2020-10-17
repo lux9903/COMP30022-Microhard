@@ -110,12 +110,18 @@ class Documents extends Component {
           {error}
         </Alert>
       );
-    } else if (isFetching || isUpdating) {
+    } else if (isFetching) {
       content = (
         <div className="text-center">
           <CircularProgress>
             <span>Loading...</span>
           </CircularProgress>
+        </div>
+      );
+    }else if (isUpdating){
+      content = (
+        <div className="text-center">
+          <span>Update your change</span>
         </div>
       );
     }
