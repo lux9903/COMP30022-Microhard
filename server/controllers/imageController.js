@@ -68,6 +68,11 @@ const getAllImage = (req, res) => {
           const imgObj = [];
           for (file of files) {
             if (file.isImage) {
+              imgObj.push({
+                _id: file.fileId,
+                originalname: file.originalName,
+                caption: file.caption,
+              });
               imgObj.push(file);
             }
           }
