@@ -20,7 +20,7 @@ imageRouter.post(
       const image = new Image(req.body);
       image.filename = req.file.filename;
       image.originalName = req.file.originalname;
-      image.caption = req.file.caption;
+      image.caption = req.params.caption;
       image.user = user;
       image.fileId = req.file.id;
       image.save();
