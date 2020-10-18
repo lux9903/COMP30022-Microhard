@@ -12,7 +12,7 @@ const {upload} = imageController;
 // upload a single photo to the database :/upload
 
 imageRouter.post(
-  '/upload',
+  '/upload/:caption',
   imageController.upload.single('file'),
   auth.optional,
   (req, res) => {
