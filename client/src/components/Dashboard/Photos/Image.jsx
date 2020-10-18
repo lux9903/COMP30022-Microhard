@@ -11,6 +11,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import {postPhoto} from '../../../actions/photoAction';
 import {connect} from 'react-redux';
+import TextField from '@material-ui/core/TextField';
 
 const styles = (theme) => ({
   root: {
@@ -34,8 +35,16 @@ class Image extends Component {
   onFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
+
     formData.append('file', this.state.file);
-    this.props.dispatch(postPhoto(formData));
+    var base = `/image/upload/`;
+    var url = '';
+    if (document.getElementById('caption').value.trim() !== '') {
+      url = base + document.getElementById('caption').value;
+    } else {
+      url = base + 'UNKNOWN';
+    }
+    this.props.dispatch(postPhoto(url, formData));
   }
 
   onChange(e) {
@@ -77,6 +86,16 @@ class Image extends Component {
               <Grid item xs={12} sm={12} md={12}>
                 <div style={{padding: '20px'}}>
                   <form onSubmit={this.onFormSubmit}>
+                    <TextField
+                      autoFocus
+                      name="caption"
+                      margin="dense"
+                      id="caption"
+                      label="Caption image"
+                      fullWidth
+                      variant="filled"
+                      autoComplete="off"
+                    />
                     <Input
                       type="file"
                       name="file"

@@ -1,6 +1,11 @@
-import { createActions } from 'redux-actions';
+import {createActions} from 'redux-actions';
 import axios from '../helpers/axiosConfig';
-import { push } from 'connected-react-router';
+import {push} from 'connected-react-router';
+import {
+  updateDocumentFailure,
+  updateDocumentStarted,
+  updateDocumentSuccess,
+} from './documentAction';
 
 export const {
   fetchPhotosStarted,
@@ -15,16 +20,19 @@ export const {
   deletePhotoStarted,
   deletePhotoSuccess,
   deletePhotoFailure,
+  updatePhotoStarted,
+  updatePhotoFailure,
+  updatePhotoSuccess,
 } = createActions(
   {
-    FETCH_PHOTOS_SUCCESS: (data) => ({ data }),
-    FETCH_PHOTOS_FAILURE: (error) => ({ error }),
-    FETCH_PHOTO_SUCCESS: (data) => ({ data }),
-    FETCH_PHOTO_FAILURE: (error) => ({ error }),
-    POST_PHOTO_SUCCESS: (data) => ({ data }),
-    POST_PHOTO_FAILURE: (error) => ({ error }),
-    DELETE_PHOTO_SUCCESS: (data) => ({ data }),
-    DELETE_PHOTO_FAILURE: (error) => ({ error }),
+    FETCH_PHOTOS_SUCCESS: (data) => ({data}),
+    FETCH_PHOTOS_FAILURE: (error) => ({error}),
+    FETCH_PHOTO_SUCCESS: (data) => ({data}),
+    FETCH_PHOTO_FAILURE: (error) => ({error}),
+    POST_PHOTO_SUCCESS: (data) => ({data}),
+    POST_PHOTO_FAILURE: (error) => ({error}),
+    DELETE_PHOTO_SUCCESS: (data) => ({data}),
+    DELETE_PHOTO_FAILURE: (error) => ({error}),
   },
   'FETCH_PHOTOS_STARTED',
   'FETCH_PHOTO_STARTED',
@@ -72,12 +80,12 @@ export const deletePhoto = (id) => {
   };
 };
 
-export const postPhoto = (data) => {
+export const postPhoto = (url, data) => {
   return async (dispatch) => {
     dispatch(postPhotoStarted());
 
     try {
-      const response = await axios.post(`/image/upload`, data);
+      const response = await axios.post(url, data);
       dispatch(postPhotoSuccess(response.data));
       dispatch(push('/image'));
     } catch (error) {
