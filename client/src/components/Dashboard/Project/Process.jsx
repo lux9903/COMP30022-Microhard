@@ -1,23 +1,62 @@
-import React, { Component, Fragment} from 'react';
+import React, { Component, Fragment, useState, useEffect} from 'react';
 import axios from '../../../helpers/axiosConfig';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ClearIcon from '@material-ui/icons/Clear';
 import Checkbox from '@material-ui/core/Checkbox';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionActions from '@material-ui/core/AccordionActions';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
+//for function
+const useStyles = makeStyles((theme) => ({
+    textfield:{
+        width: "80%",
+        underline: "none"
+    },
+    textfield2:{
+        width: "73%",
+    },
+    accordion :{
+        width: "100%",
+        underline: "none",
+    },
+    button:{
+        marginTop: theme.spacing(2),
+    },
+    root: {
+        width: "100%",
+    }
+}));
+
+//for class
+const styles = (theme) => ({
+    textfield:{
+        width: "83%",
+        underline: "none",
+        marginTop: theme.spacing(2),
+    },
+    button:{
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(1),
+    },
+    icon:{
+        marginTop: theme.spacing(2),
+    },
+});
 
 //render the process list and have a form to add a process
 class Process_List extends Component{
@@ -72,9 +111,9 @@ class Process_List extends Component{
             "processNum": this.state.proclist ? (this.state.proclist.length+1) : (0),
             "status": true
         }})
+        .then(()=> this.updateProcess())
         .catch((error) => {});
         this.setState({input:""});
-        this.updateProcess();
     }
 
     handleAddProcessCancel = () => {
@@ -89,6 +128,7 @@ class Process_List extends Component{
     }
 
     render(){
+        const {classes} = this.props;
         return(
             <Fragment>
                 <Typography>
@@ -103,6 +143,7 @@ class Process_List extends Component{
                         size="small"
                         variant="contained"
                         color="primary"
+                        className={classes.button}
                     >
                         Add new Process
                     </Button>
@@ -111,17 +152,18 @@ class Process_List extends Component{
                         <TextField
                             label="Add description for new process"
                             onChange={this.onInputAddProcess}
-                            InputProps={{ disableUnderline: true }}
+                            //InputProps={{ disableUnderline: true }}
                             required
                             fullWidth
                             size="small"
                             variant="outlined"
+                            className={classes.textfield}
                         />
-                        <IconButton type="submit">
-                            <CheckIcon fontSize="small"/>
+                        <IconButton type="submit" className={classes.icon}>
+                            <CheckIcon fontSize="small" color="primary"/>
                         </IconButton>
-                        <IconButton onClick={this.handleAddProcessCancel} >
-                            <ClearIcon fontSize="small"/>
+                        <IconButton onClick={this.handleAddProcessCancel} className={classes.icon}>
+                            <ClearIcon fontSize="small" style={{ color: "red" }}/>
                         </IconButton>
                     </form>
                 )}   
@@ -130,7 +172,412 @@ class Process_List extends Component{
     }
 }
 
+
+
 //render a particular process with a form to add a node 
+function Process(props){
+    const [open,setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
+    const [input,setInput] = useState("");
+    const [description, setDescription] = useState(props.process.description);
+    const [nodelist, setNodeList] = useState(props.process.nodes);
+    const classes = useStyles();
+
+    useEffect(() => {
+        setDescription(props.process.description);
+        setNodeList(props.process.nodes);
+    }, [props.process]);
+
+    const renNodeList = () => {
+        return (nodelist && nodelist.map((node,i)=>{
+            return <Node node={node} id={props.id} processNum={props.process.processNum} update={() => props.update()} fullWidth/>
+        }));
+    }
+
+    const handleNodeListOpen = () => {
+        setOpen(true);
+    }
+
+    const handleNodeListClose = () =>{
+        setOpen(false);
+    }
+
+    const handleAddNodeOpen = () => {
+        setOpenAdd(true);
+    }
+
+    const handleAddNodeCancel = () => {
+        setOpenAdd(false);
+        setInput("");
+    }
+
+    const onInputAddNodeChange = (event) => {
+        setInput(event.target.value);
+    }
+
+    const handleAddNodeSubmit = (event) => {
+        event.preventDefault();
+        setOpenAdd(false);
+        axios.post('/project/process/node/'+props.id, {
+            "processNum": props.process.processNum,
+            "description" : input,
+        })
+        .then(() => props.update())
+        .catch((error) => {});
+    }
+
+    const handleProcessEditOpen = () => {
+        setOpenEdit(true);
+    }
+
+    const handleProcessEditCancel = () => {
+        setOpenEdit(false);
+        setDescription(props.process.description);
+    }
+
+    const onInputEditProcessChange = (event) => {
+        setDescription(event.target.value);
+    }
+
+    const handleProcessEditSubmit = (event) => {
+        event.preventDefault();
+        setOpenEdit(false);
+        axios.post('/project/process/update/'+props.id, {
+            "processNum": props.process.processNum,
+            "description":description,
+        })
+        .then(()=> props.update())
+        .catch((error) => {});
+    }
+
+    const handleProcessDelete = () => {
+        axios.post('/project/process/remove/'+props.id, {
+            "processNum": props.process.processNum,
+        })
+        .then(()=> props.update())
+        .catch((error) => {});
+    }
+    return (
+        <Fragment>
+            <Accordion className={classes.root}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    {!openEdit ? (
+                        <Grid container direction="row" justify="" alignItems="center">
+                            <TextField
+                                disabled
+                                value={description}
+                                InputProps={{ disableUnderline: true }}
+                                variant="outlined"
+                                size = "small"
+                                className={classes.accordion}
+                            />
+                        </Grid>
+                    ) :(
+                        <Grid container direction="row" justify="space-between" alignItems="center">
+                            <TextField
+                                onChange={onInputEditProcessChange}
+                                value={description}
+                                //InputProps={{ disableUnderline: true }}
+                                variant="outlined"
+                                size = "small"
+                                required
+                                className={classes.accordion}
+                            />
+                        </Grid>
+                    )}
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Grid container direction="column" justify="flex-start">
+                        <List className={classes.root}>
+                            {renNodeList()}
+                            <ListItem>
+                                {!openAdd ? (
+                                    <Button 
+                                        onClick={handleAddNodeOpen}
+                                        fullWidth
+                                        size="small"
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        Add new task
+                                    </Button>
+                                ) : (
+                                    <form onSubmit={handleAddNodeSubmit} className={classes.root}>
+                                        <Grid container direction="row" justify="flex_start">
+                                            <TextField
+                                                label="Add new task"
+                                                onChange={onInputAddNodeChange}
+                                                //InputProps={{ disableUnderline: true }}
+                                                required
+                                                variant="outlined"
+                                                size="small"
+                                                className={classes.textfield2}
+                                            />
+                                            <IconButton type="submit" className={classes.icon}>
+                                                <CheckIcon fontSize="small" color="primary"/>
+                                            </IconButton>
+                                            <IconButton onClick={handleAddNodeCancel} className={classes.icon}>
+                                                <ClearIcon fontSize="small" style={{ color: "red" }}/>
+                                            </IconButton>
+                                        </Grid>
+                                    </form>
+                                )}
+                            </ListItem>
+                        </List>
+                    </Grid>
+                </AccordionDetails>
+                <Divider/>
+                <AccordionActions>
+                    {!openEdit ? (
+                        <Fragment>
+                            <IconButton onClick={handleProcessEditOpen}>
+                                <EditIcon  fontSize="small" color="primary"/>
+                            </IconButton>
+                            <IconButton onClick={handleProcessDelete}>
+                                <DeleteIcon fontSize="small" style={{ color: "red" }}/>
+                            </IconButton>
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            <IconButton onClick={handleProcessEditSubmit}>
+                                <CheckIcon  fontSize="small" color="primary"/>
+                            </IconButton>
+                            <IconButton onClick={handleProcessEditCancel}>
+                                <ClearIcon fontSize="small" style={{ color: "red" }}/>
+                            </IconButton>
+                        </Fragment>
+                    )}
+                </AccordionActions>
+            </Accordion>
+        </Fragment>
+    )
+}
+
+
+//render the node-items, which each have view and edit mode
+function Node(props){
+    const [description, setDescription] = useState(props.node.description);
+    const [status, setStatus] = useState(props.node.state);
+    const [open, setOpen] = useState(false);
+    const classes = useStyles();
+
+    useEffect(() => {
+        setDescription(props.node.description);
+        setStatus(props.node.state);
+    }, [props.node]);
+
+    const handleEditNodeCancel = () => {
+        setOpen(false);
+        setDescription(props.node.description);
+    }
+
+    const handleEditNodeOpen = () => {
+        setOpen(true);
+    }
+
+    const handleNodeDelete = () => {
+        axios.post('/project/process/node/remove/'+props.id, {
+            "processNum": props.processNum,
+            "nodeIndex" : props.node.index,
+        }).then(() => props.update())
+        .catch((error) => {});
+    };
+
+    const OnInputEditNodeChange = (event) => {
+        setDescription(event.target.value);
+    }
+
+    const handleEditNodeUpdate = (event) => {
+        event.preventDefault();
+        setOpen(false);
+        let formD = {
+			"processNum" : props.processNum,
+            "nodeIndex" : props.node.index,
+            "description": description
+		}
+        axios.post('/project/process/node/update/'+props.id, formD)
+        .then(()=>props.update())
+        .catch((error) => {});
+    };
+
+    const handleFinishNode = (event) => {
+        axios.post('/project/process/node/finish/'+props.id, {
+            "processNum": props.processNum,
+            "nodeIndex" : props.node.index,
+        })
+        .then(()=>props.update())
+        .catch((error) => {});
+    }
+
+    return(
+        <Fragment>
+            <ListItem>
+                {(!open) ? (
+                    <Grid container direction="row" justify="flex_start">
+                        <TextField
+                            disabled
+                            value={description}
+                            multiline
+                            variant="outlined"
+                            className={classes.textfield2}
+                            size="small"
+                        />
+                        <Checkbox value={status} onChange={handleFinishNode} className={classes.icon}/>
+                        <IconButton onClick={handleEditNodeOpen} className={classes.icon}>
+                            <EditIcon fontSize="small" color="primary"/>
+                        </IconButton>
+                        <IconButton onClick={handleNodeDelete} className={classes.icon}>
+                            <DeleteIcon fontSize="small" style={{ color: "red" }}/>
+                        </IconButton>
+                    </Grid>
+                ) : (
+                    <form onSubmit={handleEditNodeUpdate} className={classes.root}>
+                        <Grid container direction="row" justify="flex_start">
+                            <TextField
+                                onChange={OnInputEditNodeChange}
+                                value={description}
+                                //InputProps={{ disableUnderline: true }}
+                                multiline
+                                required
+                                variant="outlined"
+                                size="small"
+                                className={classes.textfield2}
+                            />
+                            <Checkbox value={status} onChange={handleFinishNode} className={classes.icon}/>
+                            <IconButton type="submit" className={classes.icon}>
+                                <CheckIcon fontSize="small" color="primary"/>
+                            </IconButton>
+                            <IconButton onClick={handleEditNodeCancel} className={classes.icon}>
+                                <ClearIcon fontSize="small" style={{ color: "red" }}/>
+                            </IconButton>
+                        </Grid>
+                    </form>
+                )}
+            </ListItem>
+        </Fragment>
+    )
+}
+  
+//export default (Process_List);
+export default withStyles(styles)(Process_List);
+
+/*
+class Node extends Component{
+    constructor(props){
+        super(props);
+        this.OnInputEditNodeChange = this.OnInputEditNodeChange.bind(this);
+        this.handleEditNodeCancel = this.handleEditNodeCancel.bind(this);
+        this.handleEditNodeOpen = this.handleEditNodeOpen.bind(this);
+        this.handleEditNodeUpdate = this.handleEditNodeUpdate.bind(this);
+        this.handleNodeDelete = this.handleNodeDelete.bind(this);
+        this.state = {
+            description: this.props.node.description,
+            status: this.props.node.state,
+            open: false,
+        }
+    }
+
+    handleEditNodeCancel = () =>{
+        this.setState({
+            open:false,
+            description:this.props.node.description,
+        })
+    }
+
+    handleEditNodeOpen = () =>{
+        //alert(this.props.node.index);
+        this.setState({
+            open:true,
+        })
+    }
+
+    handleNodeDelete = () =>{
+        axios.post('/project/process/node/remove/'+this.props.id, {
+            "processNum": this.props.processNum,
+            "nodeIndex" : this.props.node.index,
+        }).then(this.props.update())
+        .catch((error) => {});
+        //this.props.update();
+    };
+
+    OnInputEditNodeChange = (event) => {
+        this.setState({
+            description: event.target.value,
+        });
+    }
+
+    handleEditNodeUpdate = (event) => {
+        event.preventDefault();
+        this.setState({open:false});
+        let formD = {
+			"processNum" : this.props.processNum,
+            "nodeIndex" : this.props.node.index,
+            "description": this.state.description
+		}
+		axios.post('/project/process/node/update/'+this.props.id, formD).catch((error) => {});
+        //this.props.update();
+    };
+
+    handleFinishNode = (event) => {
+        axios.post('/project/process/node/finish/'+this.props.id, {
+            "processNum": this.props.processNum,
+            "nodeIndex" : this.props.node.index,
+            //"state":this.state.status,
+        })
+        .catch((error) => {});
+        this.props.update();
+    }
+
+    render(){
+        return(
+            <Fragment>
+                <ListItem fullWidth>
+                {(!this.state.open) ? (
+                    <div>
+                        <TextField
+                            disabled
+                            value={this.state.description}
+                            InputProps={{ disableUnderline: true }}
+                            multiline
+                            variant="outlined"
+                        />
+                        <Checkbox value={this.state.status} onChange={this.handleFinishNode}/>
+                        <IconButton onClick={this.handleEditNodeOpen}>
+                            <EditIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton onClick={this.handleNodeDelete}>
+                            <DeleteIcon fontSize="small"/>
+                        </IconButton>
+                    </div>
+                ) : (
+                    <div>
+                        <form onSubmit={this.handleEditNodeUpdate}>
+                            <TextField
+                                onChange={this.OnInputEditNodeChange}
+                                value={this.state.description}
+                                InputProps={{ disableUnderline: true }}
+                                multiline
+                                required
+                                variant="outlined"
+                            />
+                            <Checkbox value={this.state.status} onChange={this.handleFinishNode}/>
+                            <IconButton type="submit">
+                                <CheckIcon fontSize="small"/>
+                            </IconButton>
+                            <IconButton onClick={this.handleEditNodeCancel}>
+                                <ClearIcon fontSize="small"/>
+                            </IconButton>
+                        </form>
+                    </div>
+                )}
+                </ListItem>
+            </Fragment>
+        )
+    }
+}
+
 class Process extends Component {
     constructor(props){
         super(props);
@@ -241,7 +688,6 @@ class Process extends Component {
         <Fragment>
             <List>
                 <ListItem fullWidth>
-                    {/* show and edit form for process description */}
                     {!this.state.openEdit ? (
                         <div>
                             <TextField
@@ -276,7 +722,6 @@ class Process extends Component {
                             </IconButton>
                         </form>
                     )}
-                    {/* this is button to expand to see node list */}
                     {!this.state.open ? (
                         <IconButton onClick={this.handleNodeListOpen}>
                             <ExpandMoreIcon fontSize="small"/>
@@ -286,12 +731,10 @@ class Process extends Component {
                             <ExpandLessIcon fontSize="small"/>
                         </IconButton>
                     )}
-                    {/* this is render the node in the process */}
                     <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                         <List>
                             {this.renNodeList()}
                         </List>
-                        {/* this is form to add a node in a process */}
                         {!this.state.openAdd ? (
                             <Button 
                                 onClick={this.handleAddNodeOpen}
@@ -327,130 +770,4 @@ class Process extends Component {
       );
     }
 }
-
-//render the node-items, which each have view and edit mode
-class Node extends Component{
-    constructor(props){
-        super(props);
-        this.OnInputEditNodeChange = this.OnInputEditNodeChange.bind(this);
-        this.handleEditNodeCancel = this.handleEditNodeCancel.bind(this);
-        this.handleEditNodeOpen = this.handleEditNodeOpen.bind(this);
-        this.handleEditNodeUpdate = this.handleEditNodeUpdate.bind(this);
-        this.handleNodeDelete = this.handleNodeDelete.bind(this);
-        this.state = {
-            description: this.props.node.description,
-            status: this.props.node.state,
-            open: false,
-        }
-    }
-
-    handleEditNodeCancel = () =>{
-        this.setState({
-            open:false,
-            description:this.props.node.description,
-        })
-    }
-
-    handleEditNodeOpen = () =>{
-        //alert(this.props.node.index);
-        this.setState({
-            open:true,
-        })
-    }
-
-    handleNodeDelete = () =>{
-        axios.post('/project/process/node/remove/'+this.props.id, {
-            "processNum": this.props.processNum,
-            "nodeIndex" : this.props.node.index,
-        }).then(this.props.update())
-        .catch((error) => {});
-        //this.props.update();
-    };
-
-    OnInputEditNodeChange = (event) => {
-        this.setState({
-            description: event.target.value,
-        });
-    }
-
-    handleEditNodeUpdate = (event) => {
-        event.preventDefault();
-        this.setState({open:false});
-        //alert(this.props.processNum);
-        //axios.post('/project/process/node/update/'+this.props.id, {
-        //    "processNum": this.props.processNum,
-        //    "nodeIndex" : this.props.node.index,
-        //    "description": this.state.description,
-        //})
-
-        let formD = {
-			"processNum" : this.props.processNum,
-            "nodeIndex" : this.props.node.index,
-            "description": this.state.description
-		}
-		//let url = '/project/process/node/update/' + document.forms.namedItem("updateNode")["id"]["value"];
-		axios.post('/project/process/node/update/'+this.props.id, formD).catch((error) => {});
-        //this.props.update();
-    };
-
-    handleFinishNode = (event) => {
-        axios.post('/project/process/node/finish/'+this.props.id, {
-            "processNum": this.props.processNum,
-            "nodeIndex" : this.props.node.index,
-            //"state":this.state.status,
-        })
-        .catch((error) => {});
-        this.props.update();
-    }
-
-    render(){
-        return(
-            <Fragment>
-                <ListItem fullWidth>
-                {(!this.state.open) ? (
-                    <div>
-                        <TextField
-                            disabled
-                            value={this.state.description}
-                            InputProps={{ disableUnderline: true }}
-                            multiline
-                            variant="outlined"
-                        />
-                        <Checkbox value={this.state.status} onChange={this.handleFinishNode}/>
-                        <IconButton onClick={this.handleEditNodeOpen}>
-                            <EditIcon fontSize="small" />
-                        </IconButton>
-                        <IconButton onClick={this.handleNodeDelete}>
-                            <DeleteIcon fontSize="small"/>
-                        </IconButton>
-                    </div>
-                ) : (
-                    <div>
-                        <form onSubmit={this.handleEditNodeUpdate}>
-                            <TextField
-                                onChange={this.OnInputEditNodeChange}
-                                value={this.state.description}
-                                InputProps={{ disableUnderline: true }}
-                                multiline
-                                required
-                                variant="outlined"
-                            />
-                            <Checkbox value={this.state.status} onChange={this.handleFinishNode}/>
-                            <IconButton type="submit">
-                                <CheckIcon fontSize="small"/>
-                            </IconButton>
-                            <IconButton onClick={this.handleEditNodeCancel}>
-                                <ClearIcon fontSize="small"/>
-                            </IconButton>
-                        </form>
-                    </div>
-                )}
-                </ListItem>
-            </Fragment>
-        )
-    }
-}
-  
-export default (Process_List);
-
-
+*/

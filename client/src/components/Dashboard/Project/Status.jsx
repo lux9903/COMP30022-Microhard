@@ -6,7 +6,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 
+const styles = (theme) => ({
+    formcontrol :{
+        paddingLeft: theme.spacing(1),
+    }
+});
 
 class Status extends Component{
     constructor(props) {
@@ -80,49 +86,56 @@ class Status extends Component{
     }
 
     render(){
+        const {classes} = this.props;
         return(
             <Fragment>
                 <Typography>
                     Status
                 </Typography>
                 <Divider/>
-                <Typography>
-                    Progress Status
-                </Typography>
-                <FormControl>
-                    <Select
-                        disableUnderline
-                        open={this.state.open}
-                        onClose={this.handleStatClose}
-                        onOpen={this.handleStatOpen}
-                        value={this.state.status}
-                        onChange={this.handleStatusChange}
-                    >
-                        <MenuItem value={"Inprogress"}>In Progress</MenuItem>
-                        <MenuItem value={"Completed"}>Complete</MenuItem>
-                        <MenuItem value={"Cancel"}>Cancel</MenuItem>
-                    </Select>
-                </FormControl>
-                <Typography>
-                    Show Status
-                </Typography>
-                <FormControl>
-                    <Select
-                        disableUnderline
-                        open={this.state.open}
-                        onClose={this.handleShowClose}
-                        onOpen={this.handleShowOpen}
-                        value={this.state.show_status}
-                        onChange={this.handleShowStatusChange}
-                    >
-                        <MenuItem value={"public"}>Public</MenuItem>
-                        <MenuItem value={"private"}>Private</MenuItem>
-                    </Select>
-                </FormControl>
+                <Grid container direction="row" justify="flex_start" alignItems="center">
+                    <Typography gutterBottom variant="h5" component="h2">
+                        Progress Status
+                    </Typography>
+                    <FormControl className={classes.formcontrol}>
+                        <Select
+                            disableUnderline
+                            open={this.state.open}
+                            onClose={this.handleStatClose}
+                            onOpen={this.handleStatOpen}
+                            value={this.state.status}
+                            onChange={this.handleStatusChange}
+                        >
+                            <MenuItem value={"Inprogress"}>In Progress</MenuItem>
+                            <MenuItem value={"Completed"}>Complete</MenuItem>
+                            <MenuItem value={"Cancel"}>Cancel</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid container direction="row" justify="flex_start" alignItems="center">
+                    <Typography>
+                        Show Status:
+                    </Typography>
+                    <FormControl className={classes.formcontrol}>
+                        <Select
+                            disableUnderline
+                            open={this.state.open}
+                            onClose={this.handleShowClose}
+                            onOpen={this.handleShowOpen}
+                            value={this.state.show_status}
+                            onChange={this.handleShowStatusChange}
+                        >
+                            <MenuItem value={"public"}>Public</MenuItem>
+                            <MenuItem value={"private"}>Private</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
             </Fragment>
         );
     }
 }
 
-export default (Status);
+//export default (Status);
+export default withStyles(styles)(Status);
+
 

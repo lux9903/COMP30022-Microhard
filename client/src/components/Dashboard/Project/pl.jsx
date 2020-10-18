@@ -204,7 +204,7 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
+        <Button variant="contained" size="small" href={"/project/view/"+props.project._id}>
           View
         </Button>
         <Button variant="contained" size="small" href={"/project/"+props.project._id}>

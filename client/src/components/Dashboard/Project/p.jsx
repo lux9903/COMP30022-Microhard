@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
 
 import General from './General';
 import Status from './Status';
@@ -17,11 +18,8 @@ import Process from './Process';
 import Timeline from './Timeline';
 
 const styles = (theme) => ({
-  icon: {
-      marginRight: theme.spacing(2),
-  },
   heroContent: {
-      backgroundColor: '#094183',
+      backgroundColor: '#fff',
       padding: theme.spacing(6, 0, 6),
   },
   cardGrid: {
@@ -35,28 +33,16 @@ const styles = (theme) => ({
   cardContent: {
       flexGrow: 0,
   },
-  input: {
-      color: "white",
-      fontSize:50,
-  },
-  margin: {
-      margin: theme.spacing(1),
-  },
-  ListItem:{
-      padding: "0px",
-  },
-  oppositeContent:{
-    flex: 0,
-  },
-  list:{
-      maxHeight: 100,
-      overflow: 'auto',
-  },
+  body: {
+    backgroundImage:
+      'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
+    padding: theme.spacing(6, 0, 6),
+  }
 });
 
 class Project extends Component{
   render(){
-    //const {classes} = this.props;
+    const {classes} = this.props;
     const id = this.props.match.params.id;
     return (
       <Fragment>
@@ -64,52 +50,67 @@ class Project extends Component{
           <title>Microhard &middot; Project</title>
         </Helmet>
 
-        <div>
+        <div className={classes.body}>
           <Container maxWidth="sm" >
-              <Typography component="h1" variant="h2" align="center" color="primary" gutterBottom>
-                Hero Content
-              </Typography>
+            <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
+              Editing page
+            </Typography>
+            <br/>
+            <Grid container spacing={4} justify="center" alignItems="center">
+              <Grid item>
+                <Button variant="contained" href={"/project/"}>
+                  Back to List
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" href={"/project/view/"+id}>
+                  View page
+                </Button>
+              </Grid>
+            </Grid>
+          </Container>
+          <br/>
+          <Container maxWidth="md" className={classes.cardGrid}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={8}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <General id={id}/>
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Process id={id}/>
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Timeline id={id}/>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Status id={id}/>
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Contributor id={id}/>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           </Container>
         </div>
-        <br/>
-        <Container maxWidth="md">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-              <Card>
-                <CardContent>
-                  <General id={id}/>
-                </CardContent>
-              </Card>
-              <br/>
-              <Card>
-                <CardContent>
-                  <Process id={id}/>
-                </CardContent>
-              </Card>
-              <br/>
-              <Card>
-                <CardContent>
-                  <Timeline id={id}/>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Card>
-                <CardContent>
-                  <Status id={id}/>
-                </CardContent>
-              </Card>
-              <br/>
-              <Card>
-                <CardContent>
-                  <Contributor id={id}/>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
       </Fragment>
   );}
 }
 
-export default withRouter(Project);
+//export default withRouter(Project);
+//export default withStyles(styles)(Project);
+export default withRouter(withStyles(styles)(Project));

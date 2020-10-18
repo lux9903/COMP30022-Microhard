@@ -67,6 +67,11 @@ const styles = (theme) => ({
       maxHeight: 100,
       overflow: 'auto',
   },
+  body: {
+    backgroundImage:
+      'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
+    padding: theme.spacing(6, 0, 6),
+  }
 });
 
 function Process(props) {
@@ -142,17 +147,19 @@ class Project_View extends Component{
   }
   render(){
     const {classes} = this.props;
+    const id = this.props.match.params.id;
     return (
       <Fragment>
         <Helmet>
           <title>Microhard &middot; Project View</title>
         </Helmet>
 
-        <div className={classes.heroContent}>
+        <div className={classes.body}>
           <Container maxWidth="sm" >
               <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
                 {this.state.project.name}
               </Typography>
+              <br/>
               <Grid container spacing={4} justify="center" alignItems="center">
                 <Grid item>
                   <Button variant="contained" href={"/project/"}>
@@ -160,106 +167,106 @@ class Project_View extends Component{
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained">
+                  <Button variant="contained" href={"/project/"+id}>
                     Edit Page
                   </Button>
                 </Grid>
               </Grid>
           </Container>
-        </div>
-        <Container className={classes.cardGrid} maxWidth="md">
-        <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">Description</Typography>
-                  <Divider/>
-                  {this.state.project.description && this.state.project.description!=="" ? (
-                    <Typography>{this.state.project.description}</Typography>
-                  ) : (
-                    <Typography>No Description Yet</Typography>
-                  )}
-                </CardContent>
-              </Card>
-              <br/>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">Process</Typography>
-                  <Divider/>
-                  {this.state.project.process && this.state.project.process.length>0 ? (
-                    this.state.project.process.map((proc,i)=>{
-                      return <Process proc={proc}/>
-                    })) : (
-                      <Typography>No Process Yet</Typography>
-                  )}
-                </CardContent>
-              </Card>
-              <br/>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
-                  <Divider/>
-                  <Timeline>
-                    {this.state.project.timeline && this.state.project.timeline.length > 0 ? (
-                      this.state.project.timeline.map((each,i)=>{
-                        return (
-                          <TimelineItem align="left">
-                            <TimelineSeparator>
-                              <TimelineDot/>
-                              <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineOppositeContent className={classes.oppositeContent}/>
-                            <TimelineContent>
-                              <Card>
-                                <CardContent>
-                                  <Typography>{each.time}</Typography>
-                                  <Divider/>
-                                  <Typography>{each.description}</Typography>
-                                </CardContent>
-                              </Card>
-                            </TimelineContent>
-                          </TimelineItem>
-                        )
-                      })
+          <Container className={classes.cardGrid} maxWidth="md">
+          <Grid container spacing={3}>
+              <Grid item xs={12} md={8}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">Description</Typography>
+                    <Divider/>
+                    {this.state.project.description && this.state.project.description!=="" ? (
+                      <Typography>{this.state.project.description}</Typography>
                     ) : (
-                      <Typography>No Timeline Yet</Typography>
+                      <Typography>No Description Yet</Typography>
                     )}
-                  </Timeline>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">Process</Typography>
+                    <Divider/>
+                    {this.state.project.process && this.state.project.process.length>0 ? (
+                      this.state.project.process.map((proc,i)=>{
+                        return <Process proc={proc}/>
+                      })) : (
+                        <Typography>No Process Yet</Typography>
+                    )}
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
+                    <Divider/>
+                    <Timeline>
+                      {this.state.project.timeline && this.state.project.timeline.length > 0 ? (
+                        this.state.project.timeline.map((each,i)=>{
+                          return (
+                            <TimelineItem align="left">
+                              <TimelineSeparator>
+                                <TimelineDot/>
+                                <TimelineConnector />
+                              </TimelineSeparator>
+                              <TimelineOppositeContent className={classes.oppositeContent}/>
+                              <TimelineContent>
+                                <Card>
+                                  <CardContent>
+                                    <Typography>{each.time}</Typography>
+                                    <Divider/>
+                                    <Typography>{each.description}</Typography>
+                                  </CardContent>
+                                </Card>
+                              </TimelineContent>
+                            </TimelineItem>
+                          )
+                        })
+                      ) : (
+                        <Typography>No Timeline Yet</Typography>
+                      )}
+                    </Timeline>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">Status</Typography>
+                    <Divider/>
+                    <Typography>Progress Status: {this.state.project.status}</Typography>
+                    <Typography>Show Status: {this.state.project.show_status}</Typography>
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
+                    <Divider/>
+                    <Typography>{this.state.project.rating}{" "}people had liked this project</Typography>
+                  </CardContent>
+                </Card>
+                <br/>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
+                    <Divider/>
+                    <List>
+                      {this.state.project.contributors && this.state.project.contributors.map((con, i)=>{
+                        return <ListItemText>{con}</ListItemText>
+                      })}
+                    </List>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">Status</Typography>
-                  <Divider/>
-                  <Typography>Progress Status: {this.state.project.status}</Typography>
-                  <Typography>Show Status: {this.state.project.show_status}</Typography>
-                </CardContent>
-              </Card>
-              <br/>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
-                  <Divider/>
-                  <Typography>{this.state.project.rating}{" "}people had liked this project</Typography>
-                </CardContent>
-              </Card>
-              <br/>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
-                  <Divider/>
-                  <List>
-                    {this.state.project.contributors && this.state.project.contributors.map((con, i)=>{
-                      return <ListItemText>{con}</ListItemText>
-                    })}
-                  </List>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </div>
       </Fragment>
   );}
 }
