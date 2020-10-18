@@ -68,13 +68,7 @@ class Account extends Component {
       update: false,
       open: false,
     };
-    this.handleAlert = this.handleAlert.bind(this);
   }
-
-  handleAlert = (event, reason) => {
-    if (reason === 'clickaway') return;
-    this.setState({open: false, update: false});
-  };
 
   render() {
     const {error, isAuthenticating, user} = this.props.user;
@@ -90,7 +84,11 @@ class Account extends Component {
     let content;
 
     if (error) {
-      content = <Alert severity="error">{error}</Alert>;
+      content = (
+        <Alert severity="error" variant="filled">
+          {error}
+        </Alert>
+      );
     } else if (isAuthenticating) {
       content = (
         <CircularProgress>
@@ -497,12 +495,8 @@ class Account extends Component {
         </Grid>
 
         {this.state.update && !error ? (
-          <Snackbar open autoHideDuration={6000} onClose={this.handleAlert}>
-            <Alert
-              onClose={this.handleAlert}
-              severity="success"
-              variant="filled"
-            >
+          <Snackbar open autoHideDuration={6000}>
+            <Alert severity="success" variant="filled">
               Account was successfully uploaded!
             </Alert>
           </Snackbar>
