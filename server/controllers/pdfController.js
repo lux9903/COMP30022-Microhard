@@ -71,6 +71,7 @@ const getAllPdf = (req, res) => {
     Pdf.find({user: user._id}).then((pdfs) => {
       for (ele of pdfs) {
         result.push({
+          _id: ele.fileId,
           originalname: ele.originalName,
           getFileLink: '/api/pdf/' + ele.filename,
           deleteFileLink: '/pdf/' + ele.fileId,
@@ -110,7 +111,6 @@ const updateTitle = (req, res) =>{
     if (!user) {
       return res.sendStatus(401).send('The user does not exist.');
     }
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
     console.log(req.body);
     const result = await Pdf.findOneAndUpdate({user: user._id, fileId: req.params.id},{'title': req.body.title});
     return res.send(result);

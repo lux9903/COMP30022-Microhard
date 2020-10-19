@@ -78,6 +78,7 @@ export default function AddDocument(props) {
                 onClick={() => {
                   //window.location.reload();
                   setCreate(true);
+                  handleClose();
                 }}
                 color="primary"
               >
