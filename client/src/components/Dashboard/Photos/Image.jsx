@@ -36,6 +36,7 @@ class Image extends Component {
     const formData = new FormData();
     formData.append('file', this.state.file);
     this.props.dispatch(postPhoto(formData));
+    this.setState({create: true, open: true});
   }
 
   onChange(e) {
@@ -51,6 +52,7 @@ class Image extends Component {
 
   render() {
     const {classes} = this.props;
+    const {error} = this.props.photo;
     return (
       <Fragment>
         <div style={{height: '120px', backgroundColor: '#094183'}}>
@@ -84,7 +86,7 @@ class Image extends Component {
                       onChange={this.onChange}
                       color="primary"
                     />
-                    {this.state.create ? (
+                    {this.state.create && !error ? (
                       <Snackbar
                         open
                         autoHideDuration={6000}
@@ -99,12 +101,7 @@ class Image extends Component {
                         </Alert>
                       </Snackbar>
                     ) : null}
-                    <Button
-                      type="submit"
-                      color="primary"
-                      variant="contained"
-                      onClick={() => this.setState({create: true, open: true})}
-                    >
+                    <Button type="submit" color="primary" variant="contained">
                       Upload
                     </Button>
                   </form>

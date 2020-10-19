@@ -76,7 +76,9 @@ export default function EditDocument(props) {
           </DialogActions>
           {upload ? (
             <Container>
-              <Alert severity="success">Document has been modified</Alert>
+              <Alert severity="success" variant="filled">
+                PDF document was successfully modified
+              </Alert>
             </Container>
           ) : null}
         </form>
