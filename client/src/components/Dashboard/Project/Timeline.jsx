@@ -109,20 +109,11 @@ class Timeline_List extends Component{
 
     handleAddTimelineSubmit = (event) =>{
         event.preventDefault();
-        //alert("year:"+this.state.date.slice(0,4));
-        //alert("month:"+this.state.date.slice(5,7));
-        //alert("day"+this.state.date.slice(8,10));
-        //alert(this.state.date);
         axios.post('/project/timeline/'+this.props.id, {
-            //"time": this.state.date,
             'time': {
 				'year':parseInt(this.state.date.slice(0,4)),
 				'month':parseInt(this.state.date.slice(5,7)),
                 'day':parseInt(this.state.date.slice(8,10)),
-                'hr':0,
-				'min':0,
-				'sec':0,
-				'minsec':0
             },
             "description":this.state.description,
         })
@@ -196,12 +187,12 @@ class Timeline_List extends Component{
 
 function Timeline_Items(props){
     const [description, setDescription] = useState(props.each.description);
-    const [date,setDate] = useState(props.each.time);
+    const [date,setDate] = useState(props.each.time.slice(0,10));
     const [open,setOpen] = useState(false);
     const classes = useStyles();
     useEffect(() => {
         setDescription(props.each.description);
-        setDate(props.each.time);
+        setDate(props.each.time.slice(0,10));
     }, [props.each]);
 
     const handleTimelineCancel = () =>{
@@ -212,6 +203,7 @@ function Timeline_Items(props){
     }
 
     const OnChangeDateUpdate = (event) => {
+        //alert(event.target.value);
         setDate(event.target.value);
     }
 
@@ -229,7 +221,12 @@ function Timeline_Items(props){
         event.preventDefault();
         setOpen(false);
         axios.post('/project/timeline/update/'+props.id, {
-            "time":date,
+            //"time":date,
+            'time': {
+				'year':parseInt(date.slice(0,4)),
+				'month':parseInt(date.slice(5,7)),
+                'day':parseInt(date.slice(8,10)),
+            },
             "description": description,
             "index":props.each.index,
         })
@@ -251,7 +248,7 @@ function Timeline_Items(props){
                                 <Grid container justify="flex-end" alignItems="center">
                                     <TextField
                                         disabled
-                                        value={date.slice(0,10)}
+                                        value={date}
                                         //InputProps={{ disableUnderline: true }}
                                         variant="outlined"
                                         size="small"
@@ -279,7 +276,7 @@ function Timeline_Items(props){
                                     <Grid container justify="flex-end" alignItems="center">
                                         <TextField
                                             onChange={OnChangeDateUpdate}
-                                            value={date.slice(0,10)}
+                                            value={date}
                                             //InputProps={{ disableUnderline: true }}
                                             variant="outlined"
                                             size="small"

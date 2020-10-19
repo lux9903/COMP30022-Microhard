@@ -91,7 +91,7 @@ function Process(props) {
             props.proc.nodes.map((node, i)=>{
               return (
                 <List>
-                  {node.state ? (
+                  {!node.state ? (
                     <ListItem>
                       <ListItemText primary={node.description} />
                     </ListItem>
@@ -211,7 +211,7 @@ class Project_View extends Component{
                           return (
                             <TimelineItem align="left">
                               <TimelineSeparator>
-                                <TimelineDot/>
+                                <TimelineDot color="primary"/>
                                 <TimelineConnector />
                               </TimelineSeparator>
                               <TimelineOppositeContent className={classes.oppositeContent}/>
