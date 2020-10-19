@@ -29,8 +29,8 @@ const validationSchema = Yup.object().shape({
   location: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   graduation: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   aboutSection: Yup.string(),
-  password: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character").required('*Password is required'),
-  confirm: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character").required('*Password is required'),
+  password: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"),
+  confirm: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"),
 
 });
 
