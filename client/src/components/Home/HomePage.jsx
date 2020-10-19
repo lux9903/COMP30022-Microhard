@@ -4,8 +4,6 @@ import Hero from '../Home/Hero';
 import Functionalities from './Functionalities';
 import Appbar from '../Navigation/Appbar';
 
-import axios from 'axios';
-
 export default function HomePage() {
   return (
     <Fragment>

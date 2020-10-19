@@ -3,19 +3,18 @@ import {connect} from 'react-redux';
 import {updateUser, deleteUser, resetPassword} from '../../actions/userAction';
 import {Helmet} from 'react-helmet';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {
-  CircularProgress,
-  Typography,
-  Button,
-  Grid,
-  TextField,
-  Paper,
-} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {Formik, ErrorMessage, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import img from './form-background.jpg';
 import {withStyles} from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const validationSchema = Yup.object().shape({
   lastname: Yup.string().required('* Last name is required'),
@@ -30,6 +29,9 @@ const validationSchema = Yup.object().shape({
   location: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   graduation: Yup.string().trim().max(60, 'Too long! Character limit is 60'),
   aboutSection: Yup.string(),
+  password: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character").required('*Password is required'),
+  confirm: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character").required('*Password is required'),
+
 });
 
 const useStyles = (theme) => ({
@@ -63,13 +65,20 @@ const useStyles = (theme) => ({
 });
 
 class Account extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      update: false,
+      open: false,
+    };
+  }
+
   render() {
     const {error, isAuthenticating, user} = this.props.user;
     const {classes} = this.props;
 
     const deleteAccount = (e) => {
       e.preventDefault();
-
       if (window.confirm('Are you sure you want to delete your account?')) {
         this.props.dispatch(deleteUser());
       }
@@ -78,7 +87,11 @@ class Account extends Component {
     let content;
 
     if (error) {
-      content = <Alert severity="error">{error}</Alert>;
+      content = (
+        <Alert severity="error" variant="filled">
+          {error}
+        </Alert>
+      );
     } else if (isAuthenticating) {
       content = (
         <CircularProgress>
@@ -312,7 +325,7 @@ class Account extends Component {
                         margin="normal"
                         id="location"
                         name="location"
-                        label="Add/change your current location "
+                        label="Add/change your current location"
                         fullWidth
                         as={TextField}
                         helperText={
@@ -351,6 +364,7 @@ class Account extends Component {
                         variant="raised"
                         color="primary"
                         fullWidth
+                        onClick={() => this.setState({update: true})}
                       >
                         Update Account
                       </Button>
@@ -482,6 +496,14 @@ class Account extends Component {
             </div>
           </Grid>
         </Grid>
+
+        {this.state.update && !error ? (
+          <Snackbar open autoHideDuration={6000}>
+            <Alert severity="success" variant="filled">
+              Account was successfully uploaded!
+            </Alert>
+          </Snackbar>
+        ) : null}
       </Fragment>
     );
   }

@@ -65,9 +65,7 @@ class ImageGrid extends Component {
     }
   }
   handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+    if (reason === 'clickaway') return;
     this.setState({open: false, delete: false});
   };
 
@@ -79,11 +77,7 @@ class ImageGrid extends Component {
     let content;
 
     if (error) {
-      content = (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      );
+      content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
         <div className="text-center">
