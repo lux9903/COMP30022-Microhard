@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 const styles = (theme) => ({
   root: {
@@ -46,8 +46,6 @@ class ImageGrid extends Component {
     this.setState({currentImage: index});
   }
 
-
-
   componentDidMount() {
     let page = 1;
 
@@ -65,7 +63,7 @@ class ImageGrid extends Component {
       }
       this.props.dispatch(fetchPhotos(page));
     }
- }
+  }
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -103,8 +101,10 @@ class ImageGrid extends Component {
         return {
           src: '/api/image/' + elem.filename,
           thumbnail: '/api/image/' + elem.filename,
+          caption: elem.caption,
           thumbnailWidth: 'auto',
           thumbnailHeight: 250,
+          thumbnailCaption: 'elem.caption',
         };
       }
 
@@ -155,4 +155,6 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(ImageGrid)));
+export default withRouter(
+  connect(mapStateToProps)(withStyles(styles)(ImageGrid))
+);

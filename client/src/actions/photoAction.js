@@ -1,11 +1,6 @@
 import {createActions} from 'redux-actions';
 import axios from '../helpers/axiosConfig';
 import {push} from 'connected-react-router';
-import {
-  updateDocumentFailure,
-  updateDocumentStarted,
-  updateDocumentSuccess,
-} from './documentAction';
 
 export const {
   fetchPhotosStarted,
@@ -20,9 +15,7 @@ export const {
   deletePhotoStarted,
   deletePhotoSuccess,
   deletePhotoFailure,
-  updatePhotoStarted,
   updatePhotoFailure,
-  updatePhotoSuccess,
 } = createActions(
   {
     FETCH_PHOTOS_SUCCESS: (data) => ({data}),
