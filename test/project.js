@@ -378,6 +378,7 @@
 		send({
 			processNum:1,
 			nodeIndex:1,
+			state : true
 		});
 		expect(re.statusCode).to.equal(200);
 		expect(re.body).to.be.an.an('object');

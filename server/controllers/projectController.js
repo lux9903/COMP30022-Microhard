@@ -304,7 +304,11 @@ const finishNode = (req, res)=>{
 			if(req.body.nodeIndex && req.body.nodeIndex <= project.process[req.body.processNum-1].nodes.length){
 				for(index in project.process[req.body.processNum-1].nodes){
 					if(project.process[req.body.processNum-1].nodes[index].index == req.body.nodeIndex){
-						project.process[req.body.processNum-1].nodes[index].state = true;
+						if(req.body.state == true){
+							project.process[req.body.processNum-1].nodes[index].state = true;
+						}else if(req.body.state ==false){
+							project.process[req.body.processNum-1].nodes[index].state = false;
+						}
 					}
 					
 				}
@@ -365,12 +369,12 @@ const loginLike = async (req, res)=>{
 		if(project && user){
 			if(project.user.equals(user._id)){
 				//console.log("Can't rate yourself");
-				return res.send("Can't rate yourself");
+				return res.json({"state":false,"err":"Can not rate your self."});
 			} else{
 				project.rating = project.rating + 1;
 				project.save();
 			}
-			return;
+			return res.json({"state":true,"new_rate":project.rating});
 		}
 };
 const anoymousLike = async (req, res)=>{
@@ -378,7 +382,7 @@ const anoymousLike = async (req, res)=>{
 	if(project){
 		project.rating = project.rating + 1;
 		project.save();
-		return res.json({"new_rate":project.rating});
+		return res.json({"state":true,"new_rate":project.rating});
 	}
 };
 const createTimeLine = (req, res)=>{
