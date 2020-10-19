@@ -101,10 +101,9 @@ class ImageGrid extends Component {
         return {
           src: '/api/image/' + elem.filename,
           thumbnail: '/api/image/' + elem.filename,
-          caption: elem.caption,
           thumbnailWidth: 'auto',
           thumbnailHeight: 250,
-          thumbnailCaption: 'elem.caption',
+          thumbnailCaption: elem.caption,
         };
       }
 
