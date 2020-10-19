@@ -30,7 +30,6 @@ const storage = new GridFsStorage({
         const fileInfo = {
           filename,
           bucketName: 'uploads',
-          caption: req.body.caption,
         };
         resolve(fileInfo);
       });
@@ -65,18 +64,18 @@ const getAllImage = (req, res) => {
               file.isImage = false;
             }
           });
-          const imgObj = [];
-          for (file of files) {
-            if (file.isImage) {
-              imgObj.push({
-                _id: file.fileId,
-                originalname: file.originalName,
-                caption: file.caption,
-              });
-              imgObj.push(file);
-            }
-          }
-          return res.json({files: imgObj});
+          Image.find({user: user._id, type: {$exists: false}})
+            .distinct('caption')
+            .then(function (captions) {
+              const imgObj = [];
+              for (i= 0; i < files.length;i++){
+                if (files[i].isImage){
+                  files[i].caption = captions[i];
+                  imgObj.push(files[i]);
+                }
+              }
+              return res.json({files: imgObj});
+            });
         });
       });
   });
