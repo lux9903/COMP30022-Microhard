@@ -424,7 +424,7 @@ function Node(props){
                             className={classes.textfield2}
                             size="small"
                         />
-                        <Checkbox value={status} onChange={handleFinishNode} className={classes.icon}/>
+                        <Checkbox checked={status} onChange={handleFinishNode} className={classes.icon}/>
                         <IconButton onClick={handleEditNodeOpen} className={classes.icon}>
                             <EditIcon fontSize="small" color="primary"/>
                         </IconButton>
@@ -445,7 +445,7 @@ function Node(props){
                                 size="small"
                                 className={classes.textfield2}
                             />
-                            <Checkbox value={status} onChange={handleFinishNode} className={classes.icon}/>
+                            <Checkbox checked={status} onChange={handleFinishNode} className={classes.icon}/>
                             <IconButton type="submit" className={classes.icon}>
                                 <CheckIcon fontSize="small" color="primary"/>
                             </IconButton>
