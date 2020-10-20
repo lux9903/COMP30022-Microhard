@@ -14,10 +14,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import AddDocument from './AddDocument';
 import EditDocument from './EditDocument';
 import Alert from '@material-ui/lab/Alert';
-import {fetchDocuments, deleteDocument, updateDocument,postDocument} from '../../../actions/documentAction';
+import {
+  fetchDocuments,
+  deleteDocument,
+  updateDocument,
+  postDocument,
+} from '../../../actions/documentAction';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
 import {CircularProgress} from '@material-ui/core';
 
 class Documents extends Component {
@@ -38,8 +42,7 @@ class Documents extends Component {
       title: document.forms.namedItem('editTitle')['title']['value'],
     };
     console.log(id);
-    this.props.dispatch(updateDocument(id,body));
-    
+    this.props.dispatch(updateDocument(id, body));
   }
 
   onFormSubmitPDF(e) {
@@ -59,21 +62,15 @@ class Documents extends Component {
     } else {
       url = base + 'UNKNOWN';
     }
-    this.props.dispatch(postDocument(url,formData));
+    this.props.dispatch(postDocument(url, formData));
   }
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
 
   deleteDocument(id) {
-    if (
-      window.confirm(
-        `Are you sure you want to delete this document?`
-      )
-    ) {
-      this.props.dispatch(
-        deleteDocument(id)
-      );
+    if (window.confirm(`Are you sure you want to delete this document?`)) {
+      this.props.dispatch(deleteDocument(id));
       this.setState({delete: true});
     }
   }
@@ -98,18 +95,13 @@ class Documents extends Component {
   }
 
   render() {
-    const {classes} = this.props;
-    const {error, isFetching, documents,isUpdating} = this.props.document;
+    const {error, isFetching, documents, isUpdating} = this.props.document;
     console.log(this.props);
 
     let content;
 
     if (error) {
-      content = (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      );
+      content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
         <div className="text-center">
@@ -118,42 +110,37 @@ class Documents extends Component {
           </CircularProgress>
         </div>
       );
-    }else if (isUpdating){
+    } else if (isUpdating) {
       content = (
         <div className="text-center">
           <span>Update your change</span>
         </div>
       );
-    }
-    else if (documents.length === 0 || !documents) {
+    } else if (documents.length === 0 || !documents) {
       content = <p className="lead">No documents found.</p>;
     } else {
       const Pdfs = documents.map((ele) => (
         <TableRow>
           <TableCell>{ele.title}</TableCell>
           <TableCell align="right">
-            <a
-              href={ele.getFileLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={ele.getFileLink} target="_blank" rel="noopener noreferrer">
               {ele.originalname}
             </a>
           </TableCell>
           <TableCell align="right">{ele.date}</TableCell>
           <TableCell align="right">
-            <EditDocument onEdit={this.onEdit} id = {ele._id}/>
+            <EditDocument onEdit={this.onEdit} id={ele._id} />
             <IconButton aria-label="delete">
               <DeleteIcon
                 onClick={() => {
-                  this.deleteDocument(ele._id)
+                  this.deleteDocument(ele._id);
                 }}
               />
             </IconButton>
           </TableCell>
         </TableRow>
       ));
-      content = <TableBody>{Pdfs}</TableBody>
+      content = <TableBody>{Pdfs}</TableBody>;
     }
     return (
       <Fragment>
@@ -215,4 +202,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(connect(mapStateToProps)(Documents));
-

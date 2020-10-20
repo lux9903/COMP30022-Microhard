@@ -98,6 +98,7 @@ class ImageGrid extends Component {
           thumbnailWidth: 'auto',
           thumbnailHeight: 250,
           thumbnailCaption: elem.caption,
+          caption: elem.caption,
         };
       }
 
@@ -109,6 +110,9 @@ class ImageGrid extends Component {
             width: '100%',
             border: '1px solid #ddd',
             overflow: 'auto',
+            fontFamily: 'Nunito, Lato, sans-serif',
+            textAlign: 'center',
+            background: 'white',
           }}
         >
           <Gallery

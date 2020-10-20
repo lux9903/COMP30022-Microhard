@@ -27,11 +27,23 @@ class Image extends Component {
       file: null,
       create: false,
       open: false,
+      caption: '',
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.canBeSubmitted = this.canBeSubmitted.bind(this);
+    this.getCaption = this.getCaption.bind(this);
   }
+
+  canBeSubmitted() {
+    return this.state.caption === '';
+  }
+
+  getCaption(e) {
+    this.setState({caption: e.target.value});
+  }
+
   onFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
@@ -42,7 +54,7 @@ class Image extends Component {
     if (document.getElementById('caption').value.trim() !== '') {
       url = base + document.getElementById('caption').value;
     } else {
-      url = base + 'UNKNOWN';
+      url = base + 'UNKNOWN_PHOTO';
     }
     this.props.dispatch(postPhoto(url, formData));
   }
@@ -59,6 +71,7 @@ class Image extends Component {
   };
 
   render() {
+    const isEnabled = this.canBeSubmitted();
     const {classes} = this.props;
     return (
       <Fragment>
@@ -95,6 +108,9 @@ class Image extends Component {
                       fullWidth
                       variant="filled"
                       autoComplete="off"
+                      required
+                      value={this.state.caption}
+                      onChange={this.getCaption}
                     />
                     <Input
                       type="file"
@@ -123,6 +139,7 @@ class Image extends Component {
                       color="primary"
                       variant="contained"
                       onClick={() => this.setState({create: true, open: true})}
+                      disabled={isEnabled}
                     >
                       Upload
                     </Button>
