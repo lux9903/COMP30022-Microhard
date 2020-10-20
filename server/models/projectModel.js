@@ -25,7 +25,8 @@ const projectSchema = new Schema(
 		},
 		process: Array,
 		timeline: Array,
-		rating: Number
+		rating: Number,
+		likedBy: Array,
 	}
 	,{timestamps: true}
 	

@@ -91,6 +91,11 @@ projectRouter.post('/conditional',auth.optional, function (req,res){
 projectRouter.post('/like/:id',auth.optional,async (req,res)=>{
 	projectController.loginLike(req, res);
 });
+
+projectRouter.post('/dislike/:id',auth.optional,async (req,res)=>{
+	projectController.loginDislike(req, res);
+});
+
 projectRouter.post('/like/anoymous/:id',async (req,res)=>{
 	projectController.anoymousLike(req, res);
 });
