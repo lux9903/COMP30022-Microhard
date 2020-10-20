@@ -23,6 +23,25 @@ import {
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {CircularProgress} from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Snackbar from '@material-ui/core/Snackbar';
+
+const styles = (theme) => ({
+  tableHeader: {
+    fontWeight: '700',
+  },
+  section: {
+    height: '120px',
+    backgroundColor: '#094183',
+  },
+  heading: {
+    color: '#fff',
+    fontSize: '36px',
+  },
+  noDocs: {
+    margin: '15px',
+  },
+});
 
 class Documents extends Component {
   constructor(props) {
@@ -31,11 +50,13 @@ class Documents extends Component {
       file: null,
       deleted: false,
       page: 1,
+      open: false,
     };
     this.onFormSubmitPDF = this.onFormSubmitPDF.bind(this);
     this.onChange = this.onChange.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     this.onEdit = this.onEdit.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   onEdit(id) {
     const body = {
@@ -68,10 +89,17 @@ class Documents extends Component {
     this.setState({file: e.target.files[0]});
   }
 
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({open: false, deleted: false});
+  };
+
   deleteDocument(id) {
     if (window.confirm(`Are you sure you want to delete this document?`)) {
       this.props.dispatch(deleteDocument(id));
-      this.setState({delete: true});
+      this.setState({deleted: true});
     }
   }
 
@@ -97,6 +125,7 @@ class Documents extends Component {
   render() {
     const {error, isFetching, documents, isUpdating} = this.props.document;
     console.log(this.props);
+    const {classes} = this.props;
 
     let content;
 
@@ -104,20 +133,20 @@ class Documents extends Component {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <div className="text-center">
-          <CircularProgress>
-            <span>Loading...</span>
-          </CircularProgress>
-        </div>
+        <CircularProgress>
+          <span>Loading...</span>
+        </CircularProgress>
       );
     } else if (isUpdating) {
       content = (
-        <div className="text-center">
+        <CircularProgress>
           <span>Update your change</span>
-        </div>
+        </CircularProgress>
       );
     } else if (documents.length === 0 || !documents) {
-      content = <p className="lead">No documents found.</p>;
+      content = (
+        <Typography className={classes.noDocs}>No documents found.</Typography>
+      );
     } else {
       const Pdfs = documents.map((ele) => (
         <TableRow>
@@ -144,14 +173,10 @@ class Documents extends Component {
     }
     return (
       <Fragment>
-        <div style={{height: '120px', backgroundColor: '#094183'}}>
+        <div className={classes.section}>
           <br />
           <br />
-          <Typography
-            variant="h1"
-            align="center"
-            style={{color: '#fff', fontSize: '36px'}}
-          >
+          <Typography variant="h1" align="center" className={classes.heading}>
             Personal Documents
           </Typography>
         </div>
@@ -163,7 +188,15 @@ class Documents extends Component {
         <Container>
           <br />
           {this.state.deleted ? (
-            <Alert severity="success">Document has been deleted</Alert>
+            <Snackbar open autoHideDuration={4000} onClose={this.handleClose}>
+              <Alert
+                onClose={this.handleClose}
+                severity="success"
+                variant="filled"
+              >
+                PDF was successfully deleted!
+              </Alert>
+            </Snackbar>
           ) : null}
           <br />
           <AddDocument
@@ -176,14 +209,14 @@ class Documents extends Component {
             <Table size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell style={{fontWeight: '700'}}>Title</TableCell>
-                  <TableCell align="right" style={{fontWeight: '700'}}>
+                  <TableCell className={classes.tableHeader}>Title</TableCell>
+                  <TableCell align="right" className={classes.tableHeader}>
                     Filename
                   </TableCell>
-                  <TableCell align="right" style={{fontWeight: '700'}}>
+                  <TableCell align="right" className={classes.tableHeader}>
                     Date Uploaded
                   </TableCell>
-                  <TableCell align="right" style={{fontWeight: '700'}}>
+                  <TableCell align="right" className={classes.tableHeader}>
                     Actions
                   </TableCell>
                 </TableRow>
@@ -201,4 +234,6 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default withRouter(connect(mapStateToProps)(Documents));
+export default withRouter(
+  connect(mapStateToProps)(withStyles(styles)(Documents))
+);

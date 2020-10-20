@@ -28,12 +28,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import {Link} from 'react-router-dom';
 
 const styles = (theme) => ({
   root: {
     backgroundImage:
       'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
-    // backgroundColor: theme.palette.primary.main,
     marginTop: '-15px',
     padding: '25px 0 150px 0',
   },
@@ -71,7 +72,7 @@ const styles = (theme) => ({
     marginRight: '8px',
   },
   icons: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
   },
@@ -80,13 +81,14 @@ const styles = (theme) => ({
     padding: '20px 32px',
     textAlign: 'left',
     color: '#657786',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
   },
   locationIcon: {
     position: 'relative',
     top: '7px',
+    right: '2px',
   },
   graduationIcon: {
     position: 'relative',
@@ -309,6 +311,14 @@ class Profile extends Component {
                           </CopyToClipboard>
                         </Fab>
                       )}
+                      <Fab
+                        size="small"
+                        className={classes.socialIcon}
+                        component={Link}
+                        to="/account"
+                      >
+                        <EditIcon style={{color: '#657786'}} />
+                      </Fab>
                       {this.state.copied ? (
                         <Alert severity="success">
                           Share link has copied to the clipboard
@@ -325,6 +335,7 @@ class Profile extends Component {
                   container
                   component={Paper}
                   className={classes.secondSection}
+                  spacing={1}
                 >
                   <Grid item xs={12} sm={12} md={3}>
                     {user.location && (
@@ -371,7 +382,7 @@ class Profile extends Component {
                   elevation={3}
                   className={classes.aboutSection}
                 >
-                  <Grid item xs={12} sm={11} md={11}>
+                  <Grid item xs={12} sm={11} md={12}>
                     <Typography variant="h2" style={{paddingBottom: '10px'}}>
                       About Me
                     </Typography>
