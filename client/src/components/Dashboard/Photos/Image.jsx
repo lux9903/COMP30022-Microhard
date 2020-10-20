@@ -100,11 +100,10 @@ class Image extends Component {
                 <div style={{padding: '20px'}}>
                   <form onSubmit={this.onFormSubmit}>
                     <TextField
-                      autoFocus
                       name="caption"
                       margin="dense"
                       id="caption"
-                      label="Caption image"
+                      label="Image caption"
                       fullWidth
                       variant="filled"
                       autoComplete="off"
@@ -140,6 +139,7 @@ class Image extends Component {
                       variant="contained"
                       onClick={() => this.setState({create: true, open: true})}
                       disabled={isEnabled}
+                      style={{float: 'right'}}
                     >
                       Upload
                     </Button>

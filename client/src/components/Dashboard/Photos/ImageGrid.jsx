@@ -127,7 +127,7 @@ class ImageGrid extends Component {
             ]}
           />
           {this.state.delete ? (
-            <Snackbar open autoHideDuration={6000} onClose={this.handleClose}>
+            <Snackbar open autoHideDuration={4000} onClose={this.handleClose}>
               <Alert
                 onClose={this.handleClose}
                 severity="success"

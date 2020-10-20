@@ -9,11 +9,11 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Alert from '@material-ui/lab/Alert';
-import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
 
 export default function EditDocument(props) {
   const [open, setOpen] = React.useState(false);
-  const [upload, setUpload] = React.useState(false);
+  const [update, setUpdate] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,13 +23,17 @@ export default function EditDocument(props) {
     setOpen(false);
   };
 
+  const handleAlert = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setUpdate(false);
+  };
+
   return (
     <Fragment>
       <IconButton aria-label="edit">
         <EditIcon onClick={handleClickOpen} />
       </IconButton>
       <Dialog
-        fullScreen
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
@@ -59,30 +63,24 @@ export default function EditDocument(props) {
               <Button
                 type="submit"
                 onClick={() => {
-                  //window.location.reload(false);
-                  setUpload(true);
+                  setUpdate(true);
+                  handleClose();
                 }}
-                style={{fontFamily: 'Lato, sans-serif'}}
               >
-                Upload
+                Update
               </Button>
             </label>
-            <Button
-              onClick={handleClose}
-              style={{fontFamily: 'Lato, sans-serif'}}
-            >
-              Cancel
-            </Button>
+            <Button onClick={handleClose}>Cancel</Button>
           </DialogActions>
-          {upload ? (
-            <Container>
-              <Alert severity="success" variant="filled">
-                PDF document was successfully modified
-              </Alert>
-            </Container>
-          ) : null}
         </form>
       </Dialog>
+      {update ? (
+        <Snackbar open autoHideDuration={4000} onClose={handleAlert}>
+          <Alert onClose={handleAlert} severity="success" variant="filled">
+            PDF was successfully updated!
+          </Alert>
+        </Snackbar>
+      ) : null}
     </Fragment>
   );
 }

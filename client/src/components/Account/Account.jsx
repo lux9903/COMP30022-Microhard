@@ -509,7 +509,7 @@ class Account extends Component {
         </Grid>
 
         {this.state.update && !error ? (
-          <Snackbar open autoHideDuration={6000} onClose={this.handleAlert}>
+          <Snackbar open autoHideDuration={4000} onClose={this.handleAlert}>
             <Alert
               onClose={this.handleAlert}
               severity="success"
