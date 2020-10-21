@@ -27,6 +27,8 @@ import { withRouter } from "react-router";
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Collapse from '@material-ui/core/Collapse';
 import { IconButton } from '@material-ui/core';
 
@@ -71,6 +73,9 @@ const styles = (theme) => ({
     backgroundImage:
       'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
     padding: theme.spacing(6, 0, 6),
+  },
+  liketext: {
+    marginTop: theme.spacing(1),
   }
 });
 
@@ -145,6 +150,12 @@ class Project_View extends Component{
   handleClickClose = () =>{
     this.setState({open: true})
   }
+
+  handleLikeClick = () => {
+    axios.get('/project/like/'+this.props.match.params.id)
+    .catch((error) => {})
+  }
+
   render(){
     const {classes} = this.props;
     const id = this.props.match.params.id;
@@ -218,7 +229,7 @@ class Project_View extends Component{
                               <TimelineContent>
                                 <Card>
                                   <CardContent>
-                                    <Typography>{each.time}</Typography>
+                                    <Typography>{each.time.slice(0,10)}</Typography>
                                     <Divider/>
                                     <Typography>{each.description}</Typography>
                                   </CardContent>
@@ -248,7 +259,12 @@ class Project_View extends Component{
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
                     <Divider/>
-                    <Typography>{this.state.project.rating}{" "}people had liked this project</Typography>
+                    <Grid container direction="row">
+                      <Typography className={classes.liketext}>{this.state.project.rating}{" "} likes</Typography>
+                      <IconButton>
+                        <FavoriteBorderIcon fontSize="small"/>
+                      </IconButton>
+                    </Grid>
                   </CardContent>
                 </Card>
                 <br/>

@@ -89,13 +89,13 @@ class Status extends Component{
         const {classes} = this.props;
         return(
             <Fragment>
-                <Typography>
+                <Typography gutterBottom variant="h5" component="h2">
                     Status
                 </Typography>
                 <Divider/>
                 <Grid container direction="row" justify="flex_start" alignItems="center">
-                    <Typography gutterBottom variant="h5" component="h2">
-                        Progress Status
+                    <Typography>
+                        Progress Status: 
                     </Typography>
                     <FormControl className={classes.formcontrol}>
                         <Select

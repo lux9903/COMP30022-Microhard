@@ -391,7 +391,7 @@ const createTimeLine = (req, res)=>{
 				return res.status(400).send('Insufficient Params');
 			}else{
 				project['timeline'].push({
-					'time': new Date(req.body.time.year, req.body.time.month, req.body.time.day, req.body.time.hr, req.body.time.min, req.body.time.sec, req.body.time.minsec),
+					'time': new Date(req.body.time.year, req.body.time.month, req.body.time.day, 0, 0, 0,0),
 					'description': req.body.description
 				})
 				//console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");

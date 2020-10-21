@@ -114,6 +114,10 @@ class Timeline_List extends Component{
 				'year':parseInt(this.state.date.slice(0,4)),
 				'month':parseInt(this.state.date.slice(5,7)),
                 'day':parseInt(this.state.date.slice(8,10)),
+                'hr':0,
+				'min':0,
+				'sec':0,
+				'minsec':0
             },
             "description":this.state.description,
         })
