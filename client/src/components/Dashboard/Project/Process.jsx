@@ -403,9 +403,11 @@ function Node(props){
     };
 
     const handleFinishNode = (event) => {
+        setStatus(event.target.checked);
         axios.post('/project/process/node/finish/'+props.id, {
             "processNum": props.processNum,
             "nodeIndex" : props.node.index,
+            "state": event.target.checked
         })
         .then(()=>props.update())
         .catch((error) => {});

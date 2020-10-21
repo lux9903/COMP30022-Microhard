@@ -79,6 +79,7 @@ const styles = (theme) => ({
   }
 });
 
+//this render the process section
 function Process(props) {
   const [open, setOpen] = useState(false);
   const handleClick = () => {
@@ -116,12 +117,6 @@ function Process(props) {
         )}
       </Collapse>
     </List>
-  )
-}
-
-function TimeLine(props) {
-  return (
-    <Typography>ha ha ha</Typography>
   )
 }
 
@@ -166,6 +161,7 @@ class Project_View extends Component{
         </Helmet>
 
         <div className={classes.body}>
+
           <Container maxWidth="sm" >
               <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
                 {this.state.project.name}
@@ -184,9 +180,14 @@ class Project_View extends Component{
                 </Grid>
               </Grid>
           </Container>
+
           <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={3}>
+
+              {/* this is the left colum  */}
               <Grid item xs={12} md={8}>
+
+                {/* this is the card for description */}
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Description</Typography>
@@ -199,6 +200,8 @@ class Project_View extends Component{
                   </CardContent>
                 </Card>
                 <br/>
+
+                {/* this is the card for process */}
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Process</Typography>
@@ -212,6 +215,8 @@ class Project_View extends Component{
                   </CardContent>
                 </Card>
                 <br/>
+
+                {/* this is the card for timeline */}
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
@@ -245,7 +250,11 @@ class Project_View extends Component{
                   </CardContent>
                 </Card>
               </Grid>
+
+              {/* this is the second column*/}
               <Grid item xs={12} md={4}>
+
+                {/* this is the card for project status */}
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Status</Typography>
@@ -255,6 +264,8 @@ class Project_View extends Component{
                   </CardContent>
                 </Card>
                 <br/>
+
+                {/* this is the card for rating */}
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
@@ -268,6 +279,8 @@ class Project_View extends Component{
                   </CardContent>
                 </Card>
                 <br/>
+
+                {/* this is the card for contributors */}
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>

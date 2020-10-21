@@ -44,7 +44,7 @@ const styles = (theme) => ({
   },
 });
 
-
+//this function render each project in the project list
 function Project(props){
   return(
     <Accordion>
@@ -89,12 +89,19 @@ class ProjectList extends Component{
     };
   }
 
+  //this function will use the projlist that save from get request and render each project by calling 
+  //the function "project" above
   pList = () => {
     return (this.state.projlist && this.state.projlist.map((proj, i) => {
       return <Project project={proj} update={this.update}/>
     }));
   }
 
+  //this will analyse the input from user and do get request based on them
+  //this get request will responsible for:
+  // -get all public
+  // -handle toggle to sort out projects based on condition
+  // -handle name search
   getCondition = () =>{
     let formD = {
       "name": this.state.input,
@@ -116,19 +123,24 @@ class ProjectList extends Component{
     .catch((error) => {});
   }
 
+  //the update function will just do get request then call the render function to re-render
   update = () => {
     this.getCondition();
     this.pList();
   }
+
+  //this is just function to mount the class
 	componentDidMount = () => {
     this.getCondition();
   }
 
+  //this will set the input from search bar
   onChangeInput = (event) => {
     event.preventDefault();
     this.setState({input: event.target.value});
   }
 
+  //call update if user hit enter in search bar to signal search
   onSearch = (event) => {
     //event.preventDefault();
     if(event.key === "Enter"){
@@ -136,6 +148,7 @@ class ProjectList extends Component{
     }
   }
 
+  //handle of toggle button for progress status sorting
   onStatusChange = (event, newstatus) => {
     if(newstatus !== null){
       this.setState(
@@ -145,6 +158,7 @@ class ProjectList extends Component{
     }
   }
 
+  //handle of toggle button for show status sorting
   onSortChange = (event, newsort) => {
     if(newsort !== null){
       this.setState(
@@ -154,6 +168,9 @@ class ProjectList extends Component{
     }
   }
 
+  //view for project list will do not have sorting for public/private because guest will do not able 
+  //to know those attributes, only owner can
+  
 	render(){
     const {classes} = this.props;
     return(
