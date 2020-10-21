@@ -21,6 +21,7 @@ const createProject = (req, res) =>{
 	        */
 	        project.timeline = [];
 	        project.rating = 0;
+	        project.likedBy = [];
 	        await project.save();
 	        return res.json(project);
 	      });
@@ -31,11 +32,27 @@ const createProject = (req, res) =>{
 
 const getAllProject = (req, res) =>{
 	User.findById(req.payload.id).then(async function (user) {
+		var project = await Project.find({show_status:"public"});
+		var result = [];
+		var liked = [];
+		for(ele of project){
+			if(ele.user.toString() != req.payload.id.toString()){
+				if(ele.likedBy){
+					for(elem of ele.likedBy){
+						if(elem.toString() == req.payload.id.toString()){
+							liked.push(ele);
+							break;
+						}
+					}
+				}
+				result.push(ele);
+			}
+		}
         const projects = await Project.find({user:user._id});
         if(projects){
-        	return res.json({"projects":projects});
+        	return res.json({"projects":projects,"result":result,"liked":liked});
     	}else{
-    		return res.json({'projects':[]});
+    		return res.json({'projects':[],"result":result,"liked":liked});
     	}
     });
 };
@@ -304,7 +321,11 @@ const finishNode = (req, res)=>{
 			if(req.body.nodeIndex && req.body.nodeIndex <= project.process[req.body.processNum-1].nodes.length){
 				for(index in project.process[req.body.processNum-1].nodes){
 					if(project.process[req.body.processNum-1].nodes[index].index == req.body.nodeIndex){
-						project.process[req.body.processNum-1].nodes[index].state = true;
+						if(req.body.state == true){
+							project.process[req.body.processNum-1].nodes[index].state = true;
+						}else if(req.body.state ==false){
+							project.process[req.body.processNum-1].nodes[index].state = false;
+						}
 					}
 					
 				}
@@ -364,13 +385,41 @@ const loginLike = async (req, res)=>{
 		var user = await User.findById(req.payload.id);
 		if(project && user){
 			if(project.user.equals(user._id)){
+				//console.log("Can't rate yourselfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 				//console.log("Can't rate yourself");
-				return res.send("Can't rate yourself");
+				return res.json({"state":false,"err":"Can not rate your self."});
 			} else{
 				project.rating = project.rating + 1;
+				project.likedBy.push(req.payload.id);
 				project.save();
 			}
-			return;
+			return res.json({"state":true,"new_rate":project.rating});
+		}
+};
+
+const loginDislike = async (req, res)=>{
+		var project = await Project.findOne({_id:req.params.id});
+
+		var user = await User.findById(req.payload.id);
+		if(project && user){
+			if(project.user.equals(user._id)){
+				//console.log("Can't rate yourself");
+				return res.json({"state":false,"err":"Can not rate your self."});
+			} else{
+				for(index in project.likedBy){
+					console.log("herererererererer");
+					console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+					console.log(project.likedBy[index]);
+					
+					if(project.likedBy[index] == user._id.toString()){
+						project.likedBy.splice(index,1);
+						project.rating = project.rating - 1;
+						project.save();
+						break;
+					}
+				}
+			}
+			return res.json({"state":true,"new_rate":project.rating});
 		}
 };
 const anoymousLike = async (req, res)=>{
@@ -378,7 +427,7 @@ const anoymousLike = async (req, res)=>{
 	if(project){
 		project.rating = project.rating + 1;
 		project.save();
-		return res.json({"new_rate":project.rating});
+		return res.json({"state":true,"new_rate":project.rating});
 	}
 };
 const createTimeLine = (req, res)=>{
@@ -452,6 +501,19 @@ const deleteTimeLine = (req, res)=>{
 		}
 	});
 };
+
+const getOthers = (req, res)=>{
+	User.findById(req.payload.id).then(async function(user){
+		var project = await Project.find({show_status:"public"});
+		var result = [];
+		for(ele of project){
+			if(project.user.toString() != req.payload.id.toString()){
+				result.push(ele);
+			}
+		}
+		return res.json({"projects":result});
+	});
+}
 module.exports = {
 	createProject,
 	getAllProject,
@@ -469,6 +531,7 @@ module.exports = {
 	finishNode,
 	conditionalSearch,
 	loginLike,
+	loginDislike,
 	anoymousLike,
 	createTimeLine,
 	updateTimeLine,

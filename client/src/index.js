@@ -39,7 +39,7 @@ const theme = createMuiTheme({
       dark: '#A96832',
       contrastText: '#000',
     },
-    danger: {
+    error: {
       light: '#F1927E',
       main: '#E77052',
       dark: '#C64D3B',
