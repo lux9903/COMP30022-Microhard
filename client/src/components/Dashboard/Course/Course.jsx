@@ -265,7 +265,7 @@ function GetList(props) {
                 <TableCell align="center">{row.grades}</TableCell>
                 <TableCell align="center">
                   <EditButton {...row} refresh={props.refresh} />
-                  <DeleteButton code={row.code} refresh={props.refresh} />
+                  <DeleteButton {...row} code={row.code} refresh={props.refresh} />
                 </TableCell>
               </TableRow>
             ))}
