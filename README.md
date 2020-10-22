@@ -9,20 +9,20 @@ Microhard is a COMP30022 capstone project that delivers a solution to the follow
 To tackle this problem, we have chosen to build a MERN stack application. The frontend is written in ReactJS / Redux. The backend is written in Node.js and Express. MongoDB Atlas is used to store our documents and files. Our CI/CD pipeline is through Github Actions where unit testing occurs. Finally, after testing is successfuly, the application is deployed to Heroku. 
 The React UI framework used was Material-UI, providing a consistent theme and palette to the application. 
 
-### Installation requirements
-#### Prerequisites
+## Installation requirements
+### Prerequisites
 This tutorial will cover the process of setting up the development environment on your local computer for this application.
-##### npm
+#### npm
 npm is our chosen package manager for Node.js packages.
-##### MongoDB Atlas
+#### MongoDB Atlas
 MongoDB Atlas is a database service that is fully managed by MongoDB and is a NoSQL database. To learn more about MongoDB Atlas, read more here: (https://www.mongodb.com/cloud/atlas)
 
-#### Packages
+### Packages
 Once all the prerequisites have been satisfied, we can focus on the two packages: one for the client-side (`/client`) and another for the server-side (`/server`). These two packages have its own `package.json` files that stores their own dependencies.
 - **Client packages**: this package is focused on the frontend development. To install the dependencies, make sure to `cd` to the `client` directory before `npm install`. 
 - **Backend packages**: this package keeps all its necessary files in the root directory and the `server` directory. To install the necessary dependencies, we can `npm install` them to the root directory. 
 
-#### Package Installation
+### Package Installation
 1. Install Node.js and npm through this link (https://nodejs.org/en/download/) 
 
 2. Open the terminal window, from the root folder 
@@ -36,7 +36,7 @@ Once all the prerequisites have been satisfied, we can focus on the two packages
 ```
 > npm run dev
 ```
-#### Setting up the environmental variables
+### Setting up the environmental variables
 This `.env` configuration is located in the root directory:
 ```
 DATABASE: <MongoDB password>
@@ -49,7 +49,7 @@ This particular `.env` configuration should be located in the client directory:
 ...
 ```
 
-#### Test
+## Test
 
 Running Mocha tests
 
