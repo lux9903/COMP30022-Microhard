@@ -5,52 +5,25 @@ const auth = require('./authRouter');
 const Experience = require('../models/experienceModel');
 const User = mongoose.model('User');
 
+const experienceController = require('../controllers/experienceController');
+
 
 experienceRouter.post('/create', auth.optional, (req,res)=>{
-	User.findById(req.payload.id)
-      .then(function (user) {
-        
-        const experience = new Experience();
-        experience.start_date = new Date(req.body.start_date);
-        experience.end_date = new Date(req.body.end_date);
-        experience.user = user;
-        experience.position = req.body.position;
-        experience.company = req.body.company;
-        experience.description = req.body.description;
-        experience.state = req.body.state;
-        experience.save();
-        return res.json(experience);
-      }).catch();
+	experienceController.createExperience(req, res);
 });
 
 
 experienceRouter.get("/complete/:id",auth.optional, (req,res)=>{
-	Experience.findOne({_id: req.params.id}).then(function(experience){
-		if(!experience){
-			return res.status(401).send('The experience does not exist.');
-		}
-		experience.end_date = new Date();
-		experience.state = "end";
-		return experience.save().then(function () {
-            return res.json(experience);
-        });
-
-	})
+	experienceController.completeExperience(req, res);
 });
 
 experienceRouter.get("/",auth.optional, async (req,res)=>{
-	User.findById(req.payload.id).then(async function(theuser){
-		const experiences = await Experience.find({user:theuser._id});
-		if(experiences){
-			return res.send(experiences);
-		}else{
-			return res.send([]);
-		}
-	});
+	experienceController.getExperience(req, res);
 });
 
 
 experienceRouter.post('/update/:id', auth.optional, (req,res)=>{
+
 	User.findById(req.payload.id)
       .then(async function (user) {
         
@@ -77,18 +50,13 @@ experienceRouter.post('/update/:id', auth.optional, (req,res)=>{
                 return res.json(experience);
             });
       });
+
+	experienceController.updateExperience(req, res);
+
 });
 
 experienceRouter.delete('/:id',auth.optional, (req,res)=>{
-    User.findById(req.payload.id).then(async function (user){
-        let result = await Experience.deleteOne({user:req.payload.id, _id:req.params.id}, (err)=>{
-            if(err){
-                return res.status(404).json({err:'experience does not exist'});
-            }else{
-                return res.json({"deleteId":req.params.id});
-            }
-        });
-    });
+    experienceController.deleteExperience(req, res);
 });
 
 module.exports = experienceRouter;

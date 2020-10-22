@@ -39,7 +39,7 @@ describe('Image', () => {
 
     it('post a new image', () =>
         request(server)
-            .post('/api/image/upload')
+            .post('/api/image/upload/test')
             .set('Authorization', 'Bearer ' + token)
             .attach('file', './test/file/eportfolio-wordle.jpg')
             .then((r) => {

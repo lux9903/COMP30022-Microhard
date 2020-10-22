@@ -21,7 +21,7 @@ export default function AddDocument(props) {
     setOpen(false);
   };
 
-  const handleCloseAlert = (event, reason) => {
+  const handleAlert = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -30,6 +30,13 @@ export default function AddDocument(props) {
 
   return (
     <div>
+      {create ? (
+        <Snackbar open autoHideDuration={4000} onClose={handleAlert}>
+          <Alert onClose={handleAlert} severity="success" variant="filled">
+            PDF was successfully uploaded!
+          </Alert>
+        </Snackbar>
+      ) : null}
       <Button
         variant="contained"
         color="primary"
@@ -76,8 +83,8 @@ export default function AddDocument(props) {
               <Button
                 type="submit"
                 onClick={() => {
-                  //window.location.reload();
                   setCreate(true);
+                  handleClose();
                 }}
                 color="primary"
               >
@@ -88,17 +95,6 @@ export default function AddDocument(props) {
               Cancel
             </Button>
           </DialogActions>
-          {create ? (
-            <Snackbar open autoHideDuration={6000} onClose={handleCloseAlert}>
-              <Alert
-                onClose={handleCloseAlert}
-                severity="success"
-                variant="filled"
-              >
-                PDF was successfully uploaded!
-              </Alert>
-            </Snackbar>
-          ) : null}
         </form>
       </Dialog>
     </div>

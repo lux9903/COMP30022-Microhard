@@ -1,21 +1,29 @@
-import React, { Component, Fragment, useState, useEffect } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from '../../../helpers/axiosConfig';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-import { FormControl } from '@material-ui/core';
 
+
+const styles = (theme) => ({
+    textfield:{
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        width:"100%",
+        underline: "none",
+    },
+});
 
 class General_Info extends Component{
     constructor(props) {
       super(props);
-      this.getData = this.getData.bind(this);
+      this.getGeneral = this.getGeneral.bind(this);
       this.onChangeDesc = this.onChangeDesc.bind(this);
       this.onChangeName = this.onChangeName.bind(this);
       this.componentDidMount = this.componentDidMount.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleGeneralSubmit = this.handleGeneralSubmit.bind(this);
       this.state = {
         name: "",
         description: "",
@@ -23,10 +31,10 @@ class General_Info extends Component{
     }
 
     componentDidMount = () =>{
-        this.getData();
+        this.getGeneral();
     }
 
-    getData = () =>{
+    getGeneral = () =>{
         axios.get('/project/'+this.props.id).then((res) => {
             this.setState({
                 name: res.data.project.name,
@@ -48,19 +56,21 @@ class General_Info extends Component{
         })
     }
 
-    handleSubmit = () =>{
+    handleGeneralSubmit = (event) =>{
+        event.preventDefault();
         axios.post('/project/update/'+ this.props.id, {"name":this.state.name, "description": this.state.description})
         .catch((error) => {});
     }
 
     render(){
+        const {classes} = this.props;
         return(
             <Fragment>
-                <Typography>
+                <Typography gutterBottom variant="h5" component="h2">
                     General Information
                 </Typography>
                 <Divider/>
-                <form onSubmit={this.handleSubmit} fullWidth>
+                <form onSubmit={this.handleGeneralSubmit} fullWidth>
                     <Typography>
                         Name
                     </Typography>
@@ -81,8 +91,9 @@ class General_Info extends Component{
                         onChange={this.onChangeDesc}
                         fullWidth
                         multiline
-                        InputProps={{ disableUnderline: true }}
+                        //InputProps={{ disableUnderline: true }}
                         variant="outlined"
+                        className={classes.textfield}
                     />
                     <br/>
                     <Button
@@ -91,6 +102,7 @@ class General_Info extends Component{
                         size="small"
                         variant="contained"
                         color="primary"
+                        className={classes.textfield}
                     >
                         Submit
                     </Button>
@@ -101,4 +113,5 @@ class General_Info extends Component{
     }
 }
 
-export default (General_Info);
+//export default (General_Info);
+export default withStyles(styles)(General_Info);

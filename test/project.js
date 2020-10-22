@@ -13,11 +13,27 @@
 
 	describe('Projects', () => {
 	var token = '';
+	//var token2 = '';
 	var id1 = '';
 	var id2 = '';
 	var id3 = '5ebf86bf6c65861464d67730';
 
 	before(function (done) {
+		/*
+		request(server)
+			.post('/api/user/sign-in')
+			.send({
+				user: {
+					email: 'lucaaa@gmail.com',
+					password: 'lucaaa',
+				},
+			})
+			.expect(200)
+			.expect('Content-Type', /json/)
+			.end(function (err, res) {
+				token2 = res.body.token2;
+			});
+		*/
 		request(server)
 			.post('/api/user/sign-in')
 			.send({
@@ -47,7 +63,8 @@
 				name: 'test_1',
 				status: 'Inprogress',
 				show_status: 'public',
-				rating: 0
+				rating: 0,
+				likedBy: []
 			});
 		expect(re.body).to.have.property('_id');
 		id1 = re.body._id;
@@ -70,7 +87,8 @@
 			description: 'test_2_description',
 			status: 'Completed',
 			show_status: 'private',
-			rating: 0
+			rating: 0,
+			likedBy: []
 		});
 		expect(re.body).to.have.property('_id');
 		id2 = re.body._id;
@@ -92,7 +110,8 @@
 			show_status: ele.show_status,
 			process: ele.process,
 			timeline: ele.timeline,
-			rating: ele.rating
+			rating: ele.rating,
+			likedBy: ele.likedBy,
 		}));
 		//console.log(projects);
 		expect(projects).to.deep.include.something.that.deep.include({
@@ -104,7 +123,8 @@
 			show_status: 'public',
 			process: [],
 			timeline: [],
-			rating: 0
+			rating: 0,
+			likedBy: []
 		});
 		expect(projects).to.deep.include.something.that.deep.include({
 			_id: id2,
@@ -115,7 +135,8 @@
 			show_status: 'private',
 			process: [],
 			timeline: [],
-			rating: 0
+			rating: 0,
+			likedBy: []
 		});
 	});
 	
@@ -135,7 +156,8 @@
 			show_status: 'public',
 			process: [],
 			timeline: [],
-			rating: 0
+			rating: 0,
+			likedBy: []
 		});
 	});
 	
@@ -173,7 +195,8 @@
 			show_status: 'private',
 			process: [],
 			timeline: [],
-			rating: 0
+			rating: 0,
+			likedBy: []
 		}) 
 	});
 	
@@ -378,6 +401,7 @@
 		send({
 			processNum:1,
 			nodeIndex:1,
+			state : true
 		});
 		expect(re.statusCode).to.equal(200);
 		expect(re.body).to.be.an.an('object');
@@ -444,7 +468,12 @@
 		let pro = await request(server).
 		get('/api/project/'+id1).
 		set('Authorization', 'Bearer ' + token);
-
+		/*
+		let manual = await request(server).
+		get('/api/project/').
+		set('Authorization', 'Bearer ' + token);
+		console.log(manual.body.liked);
+		*/
 		expect(pro.body).to.have.property('project').to.be.an.an('object').that.deep.include({
 			_id: id1,
 			rating: 1
@@ -452,6 +481,24 @@
 
 	});
 
+/*
+	it('Login like one project', async()=>{
+		let re = await request(server).
+		post('/api/project/like/'+id1).
+		set('Authorization', 'Bearer ' + token2);
+		let pro = await request(server).
+		get('/api/project/'+id1).
+		set('Authorization', 'Bearer ' + token);
+
+		expect(pro.body).to.have.property('project').to.be.an.an('object').that.deep.include({
+			_id: id1,
+			rating: 2
+		});
+		expect(pro.body.project.likedBy).to.be.an.an('array');
+		expect(pro.body.project.likedBy[1].toString()).to.equal("5f74578323c0fa5f248995fc");
+
+	});
+*/
 	it('Create Timeline', async()=>{
 		await request(server).
 		post('/api/project/timeline/'+id1).

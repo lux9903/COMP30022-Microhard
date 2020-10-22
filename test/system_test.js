@@ -81,7 +81,7 @@ describe('Regression test selection to ensure new changes doest break current co
     });
     it('post a new image', () =>
         request(server)
-            .post('/api/image/upload')
+            .post('/api/image/upload/test')
             .set('Authorization', 'Bearer ' + token)
             .attach('file', './test/file/eportfolio-wordle.jpg')
             .then((r) => {

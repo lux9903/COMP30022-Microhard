@@ -14,6 +14,7 @@ const imageSchema = new Schema(
     filename: String,
     originalName: String,
     type: String,
+    caption: String,
   },
   {timestamps: true}
 );

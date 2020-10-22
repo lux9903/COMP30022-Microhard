@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
+import {withRouter} from 'react-router-dom';
 
 const styles = (theme) => ({
   root: {
@@ -44,28 +45,39 @@ class ImageGrid extends Component {
   onCurrentImageChange(index) {
     this.setState({currentImage: index});
   }
+
   componentDidMount() {
-    this.props.dispatch(fetchPhotos());
+    let page = 1;
+
+    if (this.props.match.params.page !== undefined) {
+      page = this.props.match.params.page;
+    }
+    this.props.dispatch(fetchPhotos(page));
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      let page = 1;
+
+      if (this.props.match.params.page !== undefined) {
+        page = this.props.match.params.page;
+      }
+      this.props.dispatch(fetchPhotos(page));
+    }
   }
   handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+    if (reason === 'clickaway') return;
     this.setState({open: false, delete: false});
   };
 
   render() {
     const {classes} = this.props;
     const {error, isFetching, photos} = this.props.photo;
+    console.log(this.props);
 
     let content;
 
     if (error) {
-      content = (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      );
+      content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
         <div className="text-center">
@@ -85,6 +97,8 @@ class ImageGrid extends Component {
           thumbnail: '/api/image/' + elem.filename,
           thumbnailWidth: 'auto',
           thumbnailHeight: 250,
+          thumbnailCaption: elem.caption,
+          caption: elem.caption,
         };
       }
 
@@ -96,6 +110,9 @@ class ImageGrid extends Component {
             width: '100%',
             border: '1px solid #ddd',
             overflow: 'auto',
+            fontFamily: 'Nunito, Lato, sans-serif',
+            textAlign: 'center',
+            background: 'white',
           }}
         >
           <Gallery
@@ -110,7 +127,7 @@ class ImageGrid extends Component {
             ]}
           />
           {this.state.delete ? (
-            <Snackbar open autoHideDuration={6000} onClose={this.handleClose}>
+            <Snackbar open autoHideDuration={4000} onClose={this.handleClose}>
               <Alert
                 onClose={this.handleClose}
                 severity="success"
@@ -135,4 +152,6 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(ImageGrid));
+export default withRouter(
+  connect(mapStateToProps)(withStyles(styles)(ImageGrid))
+);

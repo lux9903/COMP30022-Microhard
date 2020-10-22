@@ -10,9 +10,12 @@ import ForgotPassword from '../Account/ForgotPassword';
 import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
+//import Image from '../Dashboard/Image';
+import Project from '../Dashboard/Project/pl';
 import About from '../About/About';
-import Project from '../Dashboard/Project/ProjectList_edit';
+//import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/p';
+import Project_View from '../Dashboard/Project/pv';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';
@@ -50,8 +53,20 @@ class Main extends Component {
         />
         <PrivateRoute
           exact
+          path="/test"
+          component={Test}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
           path="/project/:id"
           component={Project_Edit}
+          authed={this.props.user}
+        />
+        <PrivateRoute
+          exact
+          path="/project/view/:id"
+          component={Project_View}
           authed={this.props.user}
         />
         <PrivateRoute

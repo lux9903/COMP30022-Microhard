@@ -26,7 +26,8 @@ class Test extends Component{
     	this.onFinishNode = this.onFinishNode.bind(this);
     	this.conditionalSearch = this.conditionalSearch.bind(this);
 
-    	this.likeOtherProject = this.likeOtherProject.bind(this);
+		this.likeOtherProject = this.likeOtherProject.bind(this);
+		this.createTimeLine = this.createTimeLine.bind(this);
   	}
 
 	onFormSubmit(e){
@@ -187,6 +188,34 @@ class Test extends Component{
 		let url = "/project/like/" + document.forms.namedItem("like")["id"]["value"];
 		axios.post(url);
 	}
+
+	createTimeLine(e){
+		e.preventDefault();
+		const id = document.forms.namedItem("createTimeLine")["id"]["value"];
+		const description = document.forms.namedItem("createTimeLine")["description"]["value"];
+		const date = document.forms.namedItem("createTimeLine")["date"]["value"].split('-');
+		const year = date[0];
+		const month = date[1];
+		const day = date[2];
+		const time = document.forms.namedItem("createTimeLine")["time"]["value"].split(':');
+		const hrs = time[0];
+		const mins = time[1];
+
+		const url = '/project/timeline/'+id;
+		axios.post(url,{
+			'description': description,
+			'time': {
+				'year':parseInt(year),
+				'month':parseInt(month),
+				'day':parseInt(day),
+				'hr':parseInt(hrs),
+				'min':parseInt(mins),
+				'sec':0,
+				'minsec':0
+			}
+		});
+	}
+	
 	componentDidMount(){
 
 	}
@@ -353,6 +382,15 @@ class Test extends Component{
 		        	Like one project
 		        	<form onSubmit = {this.likeOtherProject} name = "like">
 		        		<input type ="text" name = "id" placeholder = "projectId"/>
+		        		<input type = "submit" value = "test"/>
+		        	</form>
+
+					Create Timeline
+		        	<form onSubmit = {this.createTimeLine} name = "createTimeLine">
+		        		<input type = "text" name = "id" placeholder = "projectId" required/>
+		        		<input type = "text" name = "description" placeholder = "description"/>
+		        		<input type = "date" name = "date" required/>
+		        		<input type = "time" name = "time" required/>
 		        		<input type = "submit" value = "test"/>
 		        	</form>
 			</div>

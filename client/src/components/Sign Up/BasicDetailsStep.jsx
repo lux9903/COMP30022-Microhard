@@ -31,7 +31,7 @@ const BasicDetailsSchema = Yup.object().shape({
     .trim()
     .email()
     .required('*Enter an email address, like name@example.com'),
-  password: Yup.string().required('*Password is required'),
+  password: Yup.string().trim().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character").required('*Password is required'),
 });
 
 const BasicDetailsStep = (props) => {
