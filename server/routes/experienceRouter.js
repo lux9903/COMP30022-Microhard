@@ -59,7 +59,7 @@ experienceRouter.post('/update/:id', auth.optional, (req,res)=>{
         	experience.start_date = new Date(req.body.start_date);
         }
         if(typeof req.body.end_date != 'undefined'){
-        	experience.end_date = new Date(req.body.start_date);
+        	experience.end_date = new Date(req.body.end_date);
         }
         if(typeof req.body.position != 'undefined'){
         	experience.position = req.body.position;
