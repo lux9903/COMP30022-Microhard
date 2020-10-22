@@ -28,6 +28,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Collapse from '@material-ui/core/Collapse';
 import { IconButton } from '@material-ui/core';
 import ViewNav from './ViewNav';
@@ -155,8 +156,11 @@ class Project_View extends Component{
   }
 
   handleLikeClick = () => {
-    axios.get('/project/like/'+this.props.match.params.id)
-      .catch((error) => {})
+    //if(liked) {
+      //do post request to unliked the project => number people like reduce by one
+    //}else{
+      //do post request to like the project => number people like increase by one
+    //}
   }
 
   render(){
@@ -276,9 +280,20 @@ class Project_View extends Component{
                     <Divider/>
                     <Grid container direction="row">
                       <Typography className={classes.liketext}>{this.state.project.rating}{" "} likes</Typography>
-                      <IconButton>
-                        <FavoriteBorderIcon fontSize="small"/>
-                      </IconButton>
+                      {/* to create a like button, you need to have a boolean that indicate whenther the user has like project before  */}
+                      {/* lets say that bolean called "liked" which liked=false if user not like the project before */}
+                      {/* then have a handler called "handleLikeClick" which just do post request to db and increase rating */}
+                      {/* i have empty handleLikeClick function above so just filled it out */}
+
+                      {/*( !liked ? (   */}
+                      {/*  <IconButton onClick={handleLikeClick}> */}
+                      {/*    <FavoriteBorderIcon fontSize="small"/> */}
+                      {/*  </IconButton> */}
+                      {/*) : ( */}
+                      {/*  <IconButton> */}
+                      {/*    <FavoriteIcon fontSize="small"/> */}
+                      {/*  </IconButton> */}
+                      {/*))   */}
                     </Grid>
                   </CardContent>
                 </Card>
