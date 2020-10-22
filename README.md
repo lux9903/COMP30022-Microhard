@@ -1,11 +1,12 @@
-# COMP30022-Microhard
-Student E-portfolio app. Mongo/Express/React/Node.js.
+<h1 align="center">Microhard</h1>
+<p align="center">
+    <img src="logo.png" alt="logo" width="200"/>
+</p>
 
->The ePortfolio system must be capable of allowing you
-to submit individual guest lecture reports and end-of subject individual reflections that are requirements in
-COMP30022, as well as a team report. You will be
-assigned a client in addition, either a staff member or
-a group of Masters students studying SWEN90016.
+Microhard is a COMP30022 capstone project that delivers a solution to the following problem statement:
+> The ePortfolio system must be capable of allowing you to submit individual guest lecture reports and end-of subject individual reflections that are requirements in COMP30022, as well as a team report. You will be assigned a client in addition, either a staff member or a group of Masters students studying SWEN90016.
+
+To tackle this problem, we have chosen to build a MERN stack application. The frontend is written in ReactJS. The backend is written in Node.js and Express. MongoDB Atlas is used to store our documents and files. Our CI/CD pipeline is through Github Actions where unit testing occurs. Finally, after testing is successfuly, the application is deployed to Heroku. 
 
 ## Heroku deployment link
 
