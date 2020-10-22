@@ -9,6 +9,7 @@ const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const Pdf = require('../models/pdfModel');
 const Course = require('../models/courseModel');
+const Project = require('../models/projectModel')
 conn.once('open',() => {
     //Init stream
     gfs = Grid(conn.db, mongoose.mongo);
@@ -138,6 +139,77 @@ viewRouter.get('/:id/course',(req,res)=>{
         const course = await Course.find({user:user});
         //console.log(_.groupBy(course,"year"));
         return res.json({"course":_.groupBy(course,"year")});
+    })
+});
+
+viewRouter.get('/:id/project',(req,res)=>{
+    User.findById(req.params.id).then(async function (user) {
+        var project = await Project.find({show_status:"public"});
+        var isLiked = false;
+        var result = [];
+        var liked = [];
+        for(ele of project){
+            if(ele.user.toString() !== req.params.id.toString()){
+                if(ele.likedBy){
+                    for(elem of ele.likedBy){
+                        if(elem.toString() === req.params.id.toString()){
+                            liked.push(ele);
+                            isLiked = true;
+                            break;
+                        }
+                    }
+                }
+                if(isLiked){
+                }
+                else{
+                    result.push(ele);
+                    isLiked = false;
+                }
+
+            }
+        }
+        const projects = await Project.find({user:user._id});
+        if(projects){
+            return res.json({"projects":projects,"result":result,"liked":liked});
+        }else{
+            return res.json({'projects':[],"result":result,"liked":liked});
+        }
+    });
+});
+viewRouter.post('/:id/project/conditional',(req,res)=>{
+    User.findById(req.params.id).then(async function(user){
+        var sql = {}
+        sql.user = user;
+        if(req.body.name){
+            sql.name = req.body.name;
+        }
+        if(req.body.status){
+            sql.status = req.body.status;
+        }
+        if(req.body.show_status){
+            sql.show_status = req.body.show_status;
+        }
+        var projects = await Project.find(sql);
+        if(req.body.sortBy){
+            if(req.body.sortBy === "ascending"){
+                projects.sort((a,b)=>b.updatedAt - a.updatedAt);
+            }else{
+                projects.sort((a,b)=>a.updatedAt - b.updatedAt);
+            }
+        }
+        //console.log(projects);
+        return res.json({"result":projects});
+    });
+});
+
+viewRouter.get('/:id/project/:project_id',(req,res)=>{
+    User.findById(req.params.id).then(async function(user){
+        const project = await Project.findOne({user:user._id,_id:req.params.project_id});
+        if(project){
+            return res.json({"project":project});
+        }else{
+            return res.status(401).send('No such project');
+        }
     })
 });
 
