@@ -104,3 +104,66 @@ Pdf {
     'user': Ownership of pdfs;
 }
 ```
+
+## List of important files
+```
+.github
+    - workflows
+        node.js.yml
+client
+    - public
+    - src
+        - actions
+        - components
+        - helpers
+        - img
+        - reducers
+        index.js
+        setupProxy.js
+        store.js
+        styles.css
+    package.json
+    .env
+server
+    - config
+        index.js
+        passport.js
+    - controller
+    - models
+    - routes
+test
+    - file
+    course.js
+    experience.js
+    image.js
+    project.js
+    system_test.js
+    user.js  
+.env
+package.json
+README.md
+server.js
+```
+## Components in the client directory
+| Account            | Dashboard      | Home                | Navigation       | Sign Up               | View                | About     |
+|--------------------|----------------|---------------------|------------------|-----------------------|---------------------|-----------|
+| Account.jsx        | /Course        | Functionalities.jsx | Appbar.jsx       | AboutSectionStep.jsx  | view.jsx            | About.jsx |
+| ForgotPassword.jsx | /Document      | Hero.jsx            | NoMatch.jsx      | AddProfileContent.jsx | ViewCourse.jsx      |           |
+| ResetPassword.jsx  | /Photos        | HomePage.jsx        | PrimaryNav.js    | BasicDetailsStep.jsx  | ViewDocument.jsx    |           |
+| SignIn.jsx         | /Profile       |                     | PrivateHome.jsx  | ContactStep.jsx       | ViewExperience.jsx  |           |
+|                    | /Project       |                     | PrivateRoute.jsx | Review.jsx            | ViewImage.jsx       |           |
+|                    | Experience.jsx |                     |                  |                       | ViewProject.jsx     |           |
+|                    |                |                     |                  |                       | ViewProjectItem.jsx |           |
+
+## Controllers, models and routes in the server directory
+| Controllers             | Models             | Routes                            |
+|-------------------------|--------------------|-----------------------------------|
+| courseController.js     | courseModel.js     | courseRouter.js                   |
+| experienceController.js | experienceModel.js | experienceRouter.js               |
+| fileController.js       |                    | fileRouter.js                     |
+| imageController.js      | imageModel.js      | imageRouter.js                    |
+| passwordController.js   |                    | authRouter.js                     |
+| pdfController.js        | pdfModel.js        | pdfRouter.js                      |
+| projectController.js    | projectModel.js    | projectRouter.js                  |
+| userController.js       | userModel.js       | avatarRouter.js userController.js |
+|                         |                    | viewRouter.js                     |
