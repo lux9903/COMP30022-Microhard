@@ -265,7 +265,7 @@ function GetList(props) {
                 <TableCell align="center">{row.grades}</TableCell>
                 <TableCell align="center">
                   <EditButton {...row} refresh={props.refresh} />
-                  <DeleteButton code={row.code} refresh={props.refresh} />
+                  <DeleteButton {...row} code={row.code} refresh={props.refresh} />
                 </TableCell>
               </TableRow>
             ))}
@@ -473,7 +473,7 @@ function EditButton(props) {
   };
 
   const onEditSubmit = (values) => {
-    let url = '/course/' + props.code;
+    let url = '/course/' + props._id;
     axios
       .post(url, values)
       .then(() => setOpen(false))
@@ -509,7 +509,7 @@ function DeleteButton(props) {
   };
 
   const handleAccept = () => {
-    let url = '/course/' + props.code;
+    let url = '/course/' + props._id;
     axios
       .delete(url)
       .then((r) => setOpen(false))
@@ -598,13 +598,13 @@ class Course extends Component {
     e.preventDefault();
     let formD = {};
     if (
-      document.forms.namedItem('updateCourse')['code']['value'].trim() != ''
+      document.forms.namedItem('updateCourse')['code']['value'].trim() !== ''
     ) {
       const url =
         '/course/' +
         document.forms.namedItem('updateCourse')['code']['value'].trim();
       if (
-        document.forms.namedItem('updateCourse')['name']['value'].trim() != ''
+        document.forms.namedItem('updateCourse')['name']['value'].trim() !== ''
       ) {
         formD['name'] = document.forms
           .namedItem('updateCourse')
@@ -613,7 +613,7 @@ class Course extends Component {
       if (
         document.forms
           .namedItem('updateCourse')
-          ['description']['value'].trim() != ''
+          ['description']['value'].trim() !== ''
       ) {
         formD['description'] = document.forms
           .namedItem('updateCourse')
@@ -625,7 +625,7 @@ class Course extends Component {
       if (
         document.forms
           .namedItem('updateCourse')
-          ['related_skills']['value'].trim() != ''
+          ['related_skills']['value'].trim() !== ''
       ) {
         formD['related_skills'] = document.forms
           .namedItem('updateCourse')
@@ -713,22 +713,18 @@ class Course extends Component {
       if (res.data.course) {
         this.setState({courses: res.data.course});
         keys.map((key) => {
-          this.state.courses[key].map((value) => {
-            rows[i] = {};
-            rows[i] = {
-              code: value.code,
-              year: value.year,
-              sem: value.sem,
-              grades: value.grades,
-              score: value.score,
-              state: value.state,
-              description: value.description,
-              name: value.name,
-              link: value.link,
-            };
-            i++;
-          });
-        });
+          if(this.state.courses[key]) {
+            this.state.courses[key].map((value) => {
+              rows[i] = {};
+              rows[i] = {
+                code: value.code, year: value.year, sem: value.sem,
+                grades: value.grades, score: value.score, state: value.state,
+                description: value.description, name: value.name,
+                link: value.link, _id: value._id,
+              };
+              i++;
+            });
+          }});
         this.setState({courses2: rows});
       }
     });

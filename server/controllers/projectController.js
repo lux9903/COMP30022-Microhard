@@ -33,6 +33,7 @@ const createProject = (req, res) =>{
 const getAllProject = (req, res) =>{
 	User.findById(req.payload.id).then(async function (user) {
 		var project = await Project.find({show_status:"public"});
+		var isLiked = false;
 		var result = [];
 		var liked = [];
 		for(ele of project){
@@ -41,11 +42,18 @@ const getAllProject = (req, res) =>{
 					for(elem of ele.likedBy){
 						if(elem.toString() == req.payload.id.toString()){
 							liked.push(ele);
+							isLiked = true;
 							break;
 						}
 					}
 				}
-				result.push(ele);
+				if(isLiked){
+				}
+				else{
+					result.push(ele);
+					isLiked = false;
+				}
+				
 			}
 		}
         const projects = await Project.find({user:user._id});
