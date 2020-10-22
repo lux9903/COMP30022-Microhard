@@ -67,11 +67,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MyForm(props) {
-  let defState;
-  if (props.state === undefined) {
-    defState = 'going';
-  } else {
-    defState = props.state;
+  //Set initial values for values that need to be parsed differently if undefined
+  let initialState = 'going';
+  if (props.state !== undefined) {
+    initialState = props.state;
+  }
+  let initialStartDate = '';
+  if(props.start_date !== undefined) {
+    initialStartDate = props.start_date.substring(0,10);
+  }
+  let initialEndDate = '';
+  if(props.end_date !== undefined) {
+    initialEndDate = props.end_date.substring(0,10);
   }
   return (
     <Dialog
@@ -92,12 +99,12 @@ function MyForm(props) {
             <h2 id="transition-modal-title">{props.title}</h2>
             <Formik
               initialValues={{
-                start_date: props.start_date,
-                end_date: props.end_date,
+                start_date: initialStartDate,
+                end_date: initialEndDate,
                 position: props.position,
                 company: props.company,
                 description: props.description,
-                state: defState,
+                state: initialState,
               }}
               onSubmit={(values) => {
                 props.submit(values);
@@ -109,21 +116,27 @@ function MyForm(props) {
                   <br />
                 </Typography>
                 <Field
-                  as={DateField}
+                  as={TextField}
+                  type="date"
                   id="start_date"
                   name="start_date"
                   label="Start date"
+                  InputLabelProps={{shrink: true}}
                   fullWidth
+                  required
                 />
                 <Typography variant="body2">
                   <br />
                 </Typography>
                 <Field
-                  as={DateField}
+                  as={TextField}
                   label="End Date"
                   name="end_date"
                   id="end_date"
+                  type="date"
+                  InputLabelProps={{shrink: true}}
                   fullWidth
+                  required
                 />
                 <Typography variant="body2">
                   <br />
@@ -202,17 +215,11 @@ function EditButton(props) {
         Edit
       </Button>
       <MyForm
+        {...props}
         open={open}
-        update={props.update}
         handleClose={handleClose}
         title="Edit This Experience"
         submit={onEditSubmit}
-        start_date={props.allProps.start_date}
-        end_date={props.allProps.end_date}
-        position={props.allProps.position}
-        company={props.allProps.company}
-        description={props.allProps.description}
-        state={props.allProps.state}
       />
     </div>
   );
@@ -233,7 +240,7 @@ function DeleteButton(props) {
     let url = '/experience/' + props._id;
     axios
       .delete(url)
-      .then((r) => setOpen(false))
+      .then(() => setOpen(false))
       .catch(() => alert('error in deleting experience'));
     setTimeout(() => props.update(), 400);
   };
@@ -302,9 +309,7 @@ class MyAccordion extends Component {
         <Divider />
         <AccordionActions>
           <EditButton
-            _id={this.props._id}
-            update={this.props.update}
-            allProps={this.props}
+            {...this.props}
           />
           <div>
             <DeleteButton _id={this.props._id} update={this.props.update} />
@@ -316,15 +321,13 @@ class MyAccordion extends Component {
 }
 
 const RadioButton = ({field, ...props}) => {
-  let defVal = props.state;
-  //if(defVal === undefined) {defVal ="going"}
   return (
     <RadioGroup
       {...field}
       {...props}
       label={props.label}
       name={props.name}
-      defaultValue={defVal}
+      defaultValue={props.state}
     >
       <FormLabel component="legend">Do you currently work here?</FormLabel>
       <FormControlLabel value="going" control={<Radio />} label="Yes" />
@@ -333,19 +336,6 @@ const RadioButton = ({field, ...props}) => {
   );
 };
 
-const DateField = ({field, ...props}) => {
-  return (
-    <TextField
-      {...field}
-      {...props}
-      label={props.label}
-      type="date"
-      name={props.name}
-      InputLabelProps={{shrink: true}}
-      required
-    />
-  );
-};
 
 const DisplayItems = (items, state) => {
   let x = [];
@@ -360,22 +350,19 @@ const DisplayItems = (items, state) => {
 };
 
 export default function Experience() {
+  const [open, setOpen] = useState(false);
   const [items, setItems] = useState();
-  const [anchorEl, setAnchorEl] = useState();
 
-  const classes = useStyles();
-  const getExp = () => axios.get('/experience').catch();
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const classes = useStyles();
+  const getExp = () => axios.get('/experience').catch();
 
   function update() {
     getExp().then((data) => {
@@ -413,8 +400,8 @@ export default function Experience() {
   const onAddNewSubmit = (values) => {
     axios
       .post('/experience/create', values)
-      .then((response) => alert('The experience is successfully created'))
-      .catch((error) => alert('An error occurred'));
+      .then(() => alert('The experience is successfully created'))
+      .catch(() => alert('An error occurred'));
     setTimeout(() => update(), 400);
   };
 
