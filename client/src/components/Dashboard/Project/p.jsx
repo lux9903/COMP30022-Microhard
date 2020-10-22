@@ -52,8 +52,8 @@ class Project extends Component{
 
         <div className={classes.body}>
           <Container maxWidth="sm" >
-            <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
-              Editing page
+            <Typography variant="h1" component="h2" align="center" style={{color: '#fff'}} gutterBottom>
+              EDITING PAGE
             </Typography>
             <br/>
             <Grid container spacing={4} justify="center" alignItems="center">

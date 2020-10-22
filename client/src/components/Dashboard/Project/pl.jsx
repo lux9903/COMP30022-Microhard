@@ -3,7 +3,6 @@ import React, {Component, Fragment, useState} from 'react';
 import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
@@ -27,12 +26,19 @@ import Divider from '@material-ui/core/Divider';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { IconButton } from '@material-ui/core';
 
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+
+
+import {
+  fetchProjectList,
+  fetchProjectListCondition,
+  deleteProject,
+  createDocument,
+} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
   icon: {

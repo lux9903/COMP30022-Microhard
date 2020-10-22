@@ -1,25 +1,43 @@
 import React, { Component, Fragment, useState, useEffect} from 'react';
 import axios from '../../../helpers/axiosConfig';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+
 import {withStyles } from '@material-ui/core/styles';
 import {makeStyles} from '@material-ui/core/styles';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
+
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import EditIcon from '@material-ui/icons/Edit';
+import ClearIcon from '@material-ui/icons/Clear';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-import ClearIcon from '@material-ui/icons/Clear';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+
+import {
+    fetchProject,
+    createProcess,
+    updateProcess,
+    deleteProcess,
+    createNode,
+    updateNode,
+    deleteNode,
+    finishNode,
+} from '../../../actions/projectAction';
 
 //for function
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
         width: "73%",
     },
     accordion :{
-        width: "100%",
+        width: "81%",
         underline: "none",
     },
     button:{
@@ -131,7 +149,7 @@ class Process_List extends Component{
         const {classes} = this.props;
         return(
             <Fragment>
-                <Typography>
+                <Typography gutterBottom variant="h5" component="h2">
                     Process
                 </Typography>
                 <Divider/>
@@ -260,8 +278,8 @@ function Process(props){
     }
     return (
         <Fragment>
-            <Accordion className={classes.root}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <List className={classes.root}>
+                <ListItem>
                     {!openEdit ? (
                         <Grid container direction="row" justify="" alignItems="center">
                             <TextField
@@ -272,6 +290,12 @@ function Process(props){
                                 size = "small"
                                 className={classes.accordion}
                             />
+                            <IconButton onClick={handleProcessEditOpen}>
+                                <EditIcon  fontSize="small" color="primary"/>
+                            </IconButton>
+                            <IconButton onClick={handleProcessDelete}>
+                                <DeleteIcon fontSize="small" style={{ color: "red" }}/>
+                            </IconButton>
                         </Grid>
                     ) :(
                         <Grid container direction="row" justify="space-between" alignItems="center">
@@ -284,73 +308,64 @@ function Process(props){
                                 required
                                 className={classes.accordion}
                             />
-                        </Grid>
-                    )}
-                </AccordionSummary>
-                <Divider/>
-                <AccordionDetails>
-                    <Grid container direction="column" justify="flex-start">
-                        <List className={classes.root}>
-                            {renNodeList()}
-                            <ListItem>
-                                {!openAdd ? (
-                                    <Button 
-                                        onClick={handleAddNodeOpen}
-                                        fullWidth
-                                        size="small"
-                                        variant="contained"
-                                        color="primary"
-                                    >
-                                        Add new task
-                                    </Button>
-                                ) : (
-                                    <form onSubmit={handleAddNodeSubmit} className={classes.root}>
-                                        <Grid container direction="row" justify="flex_start">
-                                            <TextField
-                                                label="Add new task"
-                                                onChange={onInputAddNodeChange}
-                                                //InputProps={{ disableUnderline: true }}
-                                                required
-                                                variant="outlined"
-                                                size="small"
-                                                className={classes.textfield2}
-                                            />
-                                            <IconButton type="submit" className={classes.icon}>
-                                                <CheckIcon fontSize="small" color="primary"/>
-                                            </IconButton>
-                                            <IconButton onClick={handleAddNodeCancel} className={classes.icon}>
-                                                <ClearIcon fontSize="small" style={{ color: "red" }}/>
-                                            </IconButton>
-                                        </Grid>
-                                    </form>
-                                )}
-                            </ListItem>
-                        </List>
-                    </Grid>
-                </AccordionDetails>
-                <Divider/>
-                <AccordionActions>
-                    {!openEdit ? (
-                        <Fragment>
-                            <IconButton onClick={handleProcessEditOpen}>
-                                <EditIcon  fontSize="small" color="primary"/>
-                            </IconButton>
-                            <IconButton onClick={handleProcessDelete}>
-                                <DeleteIcon fontSize="small" style={{ color: "red" }}/>
-                            </IconButton>
-                        </Fragment>
-                    ) : (
-                        <Fragment>
                             <IconButton onClick={handleProcessEditSubmit}>
                                 <CheckIcon  fontSize="small" color="primary"/>
                             </IconButton>
                             <IconButton onClick={handleProcessEditCancel}>
                                 <ClearIcon fontSize="small" style={{ color: "red" }}/>
                             </IconButton>
-                        </Fragment>
+                        </Grid>
                     )}
-                </AccordionActions>
-            </Accordion>
+                    {!open ? (
+                        <IconButton onClick={handleNodeListOpen}>
+                            <ExpandMoreIcon fontSize="small"/>
+                        </IconButton>
+                    ) : (
+                        <IconButton onClick={handleNodeListClose}>
+                            <ExpandLessIcon fontSize="small"/>
+                        </IconButton>
+                    )}
+                </ListItem>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List>
+                        {renNodeList()}
+                        <ListItem>
+                        {!openAdd ? (
+                            <Button 
+                                onClick={handleAddNodeOpen}
+                                fullWidth
+                                size="small"
+                                variant="contained"
+                                color="primary"
+                            >
+                                Add new task
+                            </Button>
+                        ) : (
+                            <form onSubmit={handleAddNodeSubmit} className={classes.root}>
+                                <Grid container direction="row" justify="flex_start">
+                                    <TextField
+                                        label="Add new task"
+                                        onChange={onInputAddNodeChange}
+                                        //InputProps={{ disableUnderline: true }}
+                                        required
+                                        variant="outlined"
+                                        size="small"
+                                        className={classes.textfield2}
+                                    />
+                                    <IconButton type="submit" className={classes.icon}>
+                                        <CheckIcon fontSize="small" color="primary"/>
+                                    </IconButton>
+                                    <IconButton onClick={handleAddNodeCancel} className={classes.icon}>
+                                        <ClearIcon fontSize="small" style={{ color: "red" }}/>
+                                    </IconButton>
+                                </Grid>
+                            </form>
+                        )}
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <Divider/>
+            </List>
         </Fragment>
     )
 }

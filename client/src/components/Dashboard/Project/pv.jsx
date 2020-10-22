@@ -32,6 +32,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Collapse from '@material-ui/core/Collapse';
 import { IconButton } from '@material-ui/core';
 
+import {
+  fetchProject,
+  //likeProject,
+} from '../../../actions/projectAction';
+
 
 const styles = (theme) => ({
   icon: {

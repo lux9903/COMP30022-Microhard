@@ -6,6 +6,10 @@ import {withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 
+import {
+    fetchProject,
+    updateProject,
+  } from '../../../actions/projectAction';
 
 const styles = (theme) => ({
     textfield:{

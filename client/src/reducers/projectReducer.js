@@ -56,9 +56,6 @@ export default handleActions(
       ...state,
       isFetching: false,
       project: action.payload.data.project,
-      contributor: action.payload.data.project.contributors,
-      process: action.payload.data.project.process,
-      timeline:action.payload.data.project.timeline,
     }),
     FETCH_PROJECT_FAILURE: (state) => ({
       ...state,
@@ -104,14 +101,13 @@ export default handleActions(
     DELETE_PROJECT_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      project: state.projects.filter((proj) => proj._id !== action.payload.data.deleteId),
+      projects: state.projects.filter((proj) => proj._id !== action.payload.data.deleteId),
     }),
     DELETE_PROJECT_FAILURE: (state) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
     }),
-
     CREATE_CONTRIBUTOR_STARTED: (state) => ({
       ...state,
       isUpdating: true,
@@ -121,10 +117,6 @@ export default handleActions(
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
-      contributor: action.payload.data.project.contributors,
-      process: action.payload.data.project.process,
-      timeline:action.payload.data.project.timeline,
-      contributor: [...state.contributor, ]
     }),
     CREATE_CONTRIBUTOR_FAILURE: (state) => ({
       ...state,
@@ -133,13 +125,13 @@ export default handleActions(
     }),
     DELETE_CONTRIBUTOR_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     DELETE_CONTRIBUTOR_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     DELETE_CONTRIBUTOR_FAILURE: (state) => ({
       ...state,
@@ -148,13 +140,13 @@ export default handleActions(
     }),
     CREATE_PROCESS_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     CREATE_PROCESS_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     CREATE_PROCESS_FAILURE: (state) => ({
       ...state,
@@ -163,13 +155,13 @@ export default handleActions(
     }),
     UPDATE_PROCESS_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     UPDATE_PROCESS_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     UPDATE_PROCESS_FAILURE: (state) => ({
       ...state,
@@ -178,13 +170,13 @@ export default handleActions(
     }),
     DELETE_PROCESS_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     DELETE_PROCESS_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     DELETE_PROCESS_FAILURE: (state) => ({
       ...state,
@@ -193,13 +185,13 @@ export default handleActions(
     }),
     CREATE_NODE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     CREATE_NODE_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     CREATE_NODE_FAILURE: (state) => ({
       ...state,
@@ -208,13 +200,13 @@ export default handleActions(
     }),
     UPDATE_NODE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     UPDATE_NODE_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     UPDATE_NODE_FAILURE: (state) => ({
       ...state,
@@ -223,13 +215,13 @@ export default handleActions(
     }),
     DELETE_NODE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     DELETE_NODE_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     DELETE_NODE_FAILURE: (state) => ({
       ...state,
@@ -238,13 +230,13 @@ export default handleActions(
     }),
     FINISH_NODE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     FINISH_NODE_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     FINISH_NODE_FAILURE: (state) => ({
       ...state,
@@ -253,13 +245,13 @@ export default handleActions(
     }),
     CREATE_TIMELINE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     CREATE_TIMELINE_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     CREATE_TIMELINE_FAILURE: (state) => ({
       ...state,
@@ -268,13 +260,13 @@ export default handleActions(
     }),
     UPDATE_TIMELINE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     UPDATE_TIMELINE_SUCCESS: (state) => ({
       ...state,
       isUpdating: false,
-      error: null,
+      project: action.payload.data.project,
     }),
     UPDATE_TIMELINE_FAILURE: (state) => ({
       ...state,
@@ -283,13 +275,13 @@ export default handleActions(
     }),
     DELETE_TIMELINE_STARTED: (state) => ({
       ...state,
-      isUpdating: false,
+      isUpdating: true,
       error: null,
     }),
     DELETE_TIMELINE_SUCCESS: (state) => ({
       ...state,
-      isupdating: true,
-      error: null,
+      isUpdating: false,
+      project: action.payload.data.project,
     }),
     DELETE_TIMELINE_FAILURE: (state) => ({
       ...state,
@@ -302,9 +294,6 @@ export default handleActions(
     isUpdating: false,
     projects: [],
     project: {},
-    process: [],
-    timeline: [],
-    contributor: [],
     error: null,
   }
 );

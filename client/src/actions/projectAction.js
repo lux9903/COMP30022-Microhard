@@ -111,8 +111,6 @@ export const {
     UPDATE_TIMELINE_FAILURE: (error) => ({ error }),
     DELETE_TIMELINE_SUCCESS: (data) => ({ data }),
     DELETE_TIMELINE_FAILURE: (error) => ({ error }),
-
-
   },
   'FETCH_PROJECTLIST_STARTED',
   'FETCH_PROJECTLISTCONDITION_STARTED',
@@ -259,7 +257,7 @@ export const likeProject = (id) => {
 };
 
 //this use to update project general info and status
-export const updateProjectCondition = (info, id) => {
+export const updateProject = (info, id) => {
   return async (dispatch) => {
     dispatch(updateProjectStarted());
 
@@ -272,20 +270,6 @@ export const updateProjectCondition = (info, id) => {
   };
 };
 
-
-//use to update general + status
-export const updateProjectCondition = (info, id) => {
-  return async (dispatch) => {
-    dispatch(updateProjectStarted());
-
-    try {
-      const response = await axios.post(`/project/update/${id}`, info);
-      dispatch(updateProjectSuccess(response.data));
-    } catch (error) {
-      dispatch(updateProjectFailure('Could not update project general details and status.'));
-    }
-  };
-};
 
 //create contributor
 export const createContributor = (contributors, id) => {
@@ -318,13 +302,13 @@ export const deleteContributor = (contributors, id) => {
 //create process
 export const createProcess = (info, id) => {
   return async (dispatch) => {
-    dispatch(createContributorStarted());
+    dispatch(createProcessStarted());
 
     try {
       const response = await axios.post(`/project/process/${id}`, info);
-      dispatch(createContributorSuccess(response.data));
+      dispatch(createProcessSuccess(response.data));
     } catch (error) {
-      dispatch(createContributorFailure('Could not create a new process.'));
+      dispatch(createProcessFailure('Could not create a new process.'));
     }
   };
 };
