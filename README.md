@@ -1,19 +1,29 @@
-# COMP30022-Microhard
-Student E-portfolio app. Mongo/Express/React/Node.js.
+<h1 align="center">Microhard</h1>
+<p align="center">
+    <img src="logo.png" alt="logo" width="200"/>
+</p>
 
->The ePortfolio system must be capable of allowing you
-to submit individual guest lecture reports and end-of subject individual reflections that are requirements in
-COMP30022, as well as a team report. You will be
-assigned a client in addition, either a staff member or
-a group of Masters students studying SWEN90016.
+Microhard is a COMP30022 capstone project that delivers a solution to the following problem statement:
+> The ePortfolio system must be capable of allowing you to submit individual guest lecture reports and end-of subject individual reflections that are requirements in COMP30022, as well as a team report. You will be assigned a client in addition, either a staff member or a group of Masters students studying SWEN90016.
 
-## Heroku deployment link
+To tackle this problem, we have chosen to build a MERN stack application. The frontend is written in ReactJS / Redux. The backend is written in Node.js and Express. MongoDB Atlas is used to store our documents and files. Our CI/CD pipeline is through Github Actions where unit testing occurs. Finally, after testing is successfuly, the application is deployed to Heroku. 
+The React UI framework used was Material-UI, providing a consistent theme and palette to the application. 
 
-- **Demo URL**: https://comp30022-microhard.herokuapp.com/
+### Installation requirements
+#### Prerequisites
+This tutorial will cover the process of setting up the development environment on your local computer for this application.
+##### npm
+npm is our chosen package manager for Node.js packages.
+##### MongoDB Atlas
+MongoDB Atlas is a database service that is fully managed by MongoDB and is a NoSQL database. To learn more about MongoDB Atlas, read more here: (https://www.mongodb.com/cloud/atlas)
 
-## Development
+#### Packages
+Once all the prerequisites have been satisfied, we can focus on the two packages: one for the client-side (`/client`) and another for the server-side (`/server`). These two packages have its own `package.json` files that stores their own dependencies.
+- **Client packages**: this package is focused on the frontend development. To install the dependencies, make sure to `cd` to the `client` directory before `npm install`. 
+- **Backend packages**: this package keeps all its necessary files in the root directory and the `server` directory. To install the necessary dependencies, we can `npm install` them to the root directory. 
 
-1. Install node.js (https://nodejs.org/en/download/)
+#### Package Installation
+1. Install Node.js and npm through this link (https://nodejs.org/en/download/) 
 
 2. Open the terminal window, from the root folder 
 ```
@@ -21,14 +31,25 @@ a group of Masters students studying SWEN90016.
 > cd client
 > npm install
 ```
-3. Copy contents of .env.example and put it in a file called .env in both main folder and cilent folder
-4. Open another terminal window
-
+3. Copy contents of .env.example and put it in a file called .env in both main folder and client folder
+4. Up to this point, this should be sufficient enough to run the local development environment. Open a new terminal and type in the following command.
 ```
 > npm run dev
 ```
+#### Setting up the environmental variables
+This `.env` configuration is located in the root directory:
+```
+DATABASE: <MongoDB password>
+FROM_EMAIL:
+SECRET:
+SENDGRID_API_KEY:
+```
+This particular `.env` configuration should be located in the client directory:
+```
+...
+```
 
-## Test
+#### Test
 
 Running Mocha tests
 
