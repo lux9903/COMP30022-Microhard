@@ -158,8 +158,10 @@ class Project_View extends Component{
   handleLikeClick = () => {
     //if(liked) {
       //do post request to unliked the project => number people like reduce by one
+      //set liked = false
     //}else{
       //do post request to like the project => number people like increase by one
+      //set liked = true
     //}
   }
 
