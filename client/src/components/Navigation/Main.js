@@ -26,7 +26,7 @@ import ViewImage from '../View/ViewImage';
 import ViewDocument from '../View/ViewDocument';
 import ViewExperience from '../View/ViewExperience';
 import ViewCourse from '../View/ViewCourse';
-import  ViewProject from '../View/viewProject'
+import ViewProject from '../View/ViewProject';
 import ViewProjectItem from '../View/ViewProjectItem';
 
 import Test from '../Dashboard/test';
@@ -46,7 +46,11 @@ class Main extends Component {
         <Route exact path="/view/:id/course" component={ViewCourse} />
         <Route exact path="/view/:id/experiences" component={ViewExperience} />
         <Route exact path="/view/:id/project" component={ViewProject} />
-        <Route exact path ="/view/:id/project/:project_id" component= {ViewProjectItem} />
+        <Route
+          exact
+          path="/view/:id/project/:project_id"
+          component={ViewProjectItem}
+        />
 
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute
