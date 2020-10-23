@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
     icon:{
         marginTop: theme.spacing(2),
     },
+    user:{
+        underline: "none",
+        marginTop: theme.spacing(2),
+        width: "100%",
+    }
 }));
 
 //for class
@@ -217,10 +222,11 @@ function Con_Items(props){
                 <TextField
                     disabled
                     value={name}
+                    //fullWidth
                     //InputProps={{ disableUnderline: true }}
                     variant="outlined"
                     size = "small"
-                    className={classes.textfield}
+                    className={classes.user}
                 />
             ) : (
                 (!open) ? (
