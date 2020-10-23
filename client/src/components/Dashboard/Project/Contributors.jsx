@@ -86,7 +86,7 @@ class Con_List extends Component{
 
     renContributorList = () =>{
         return (this.state.conlist && this.state.conlist.map((cons,i)=>{
-            return <Con_Items cons={cons} id={this.props.id} update={this.updateContributor}/>
+            return <Con_Items cons={cons} id={this.props.id} update={this.updateContributor} username={this.props.username}/>
         }));
     }
 
@@ -213,41 +213,52 @@ function Con_Items(props){
     };
     return(
         <Fragment>
-            {(!open) ? (
-                <Grid container direction="row" justify="space-between" alignItems="center">
-                    <TextField
-                        disabled
-                        value={props.cons}
-                        //InputProps={{ disableUnderline: true }}
-                        variant="outlined"
-                        size = "small"
-                        className={classes.textfield}
-                    />
-                    <IconButton onClick={handleContributorOpen} className={classes.icon}>
-                        <EditIcon  fontSize="small" color="primary"/>
-                    </IconButton>
-                    <IconButton onClick={handleContributorDelete} className={classes.icon}>
-                        <DeleteIcon fontSize="small" style={{ color: "red" }}/>
-                    </IconButton>
-                </Grid>
+            {(name === props.username) ? (
+                <TextField
+                    disabled
+                    value={name}
+                    //InputProps={{ disableUnderline: true }}
+                    variant="outlined"
+                    size = "small"
+                    className={classes.textfield}
+                />
             ) : (
-                <form onSubmit={handleContributorUpdate} fullWidth>
-                    <TextField
-                        onChange={onInputContributorUpdate}
-                        value={name}
-                        //InputProps={{ disableUnderline: true }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        className={classes.textfield}
-                    />
-                    <IconButton type="submit">
-                        <CheckIcon fontSize="small" color="primary" className={classes.icon}/>
-                    </IconButton>
-                    <IconButton onClick={handleContributorCancel} >
-                        <ClearIcon fontSize="small" style={{ color: "red" }} className={classes.icon}/>
-                    </IconButton>
-                </form>
+                (!open) ? (
+                    <Grid container direction="row" justify="space-between" alignItems="center">
+                        <TextField
+                            disabled
+                            value={name}
+                            //InputProps={{ disableUnderline: true }}
+                            variant="outlined"
+                            size = "small"
+                            className={classes.textfield}
+                        />
+                        <IconButton onClick={handleContributorOpen} className={classes.icon}>
+                            <EditIcon  fontSize="small" color="primary"/>
+                        </IconButton>
+                        <IconButton onClick={handleContributorDelete} className={classes.icon}>
+                            <DeleteIcon fontSize="small" style={{ color: "red" }}/>
+                        </IconButton>
+                    </Grid>
+                ) : (
+                    <form onSubmit={handleContributorUpdate} fullWidth>
+                        <TextField
+                            onChange={onInputContributorUpdate}
+                            value={name}
+                            //InputProps={{ disableUnderline: true }}
+                            variant="outlined"
+                            size="small"
+                            required
+                            className={classes.textfield}
+                        />
+                        <IconButton type="submit">
+                            <CheckIcon fontSize="small" color="primary" className={classes.icon}/>
+                        </IconButton>
+                        <IconButton onClick={handleContributorCancel} >
+                            <ClearIcon fontSize="small" style={{ color: "red" }} className={classes.icon}/>
+                        </IconButton>
+                    </form>
+                )
             )}
         </Fragment>
     )

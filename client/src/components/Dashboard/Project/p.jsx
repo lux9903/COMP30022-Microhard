@@ -2,7 +2,7 @@ import React, {Fragment, Component} from 'react';
 import {Helmet} from 'react-helmet';
 import {withStyles } from '@material-ui/core/styles';
 import {withRouter} from "react-router";
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 //import {CircularProgress} from '@material-ui/core';
 
 import Card from '@material-ui/core/Card';
@@ -46,6 +46,8 @@ class Project extends Component{
   render(){
     const {classes} = this.props;
     const id = this.props.match.params.id;
+    const {user} = this.props.user;
+    //alert(user.username);
     /*let content;
     const {error, isFetching, project, isUpdating} = this.props.project;
     if (error) {
@@ -185,7 +187,7 @@ class Project extends Component{
                 <br/>
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
-                    <Contributor id={id}/>
+                    <Contributor id={id} username={user.username}/>
                   </CardContent>
                 </Card>
               </Grid>
@@ -198,11 +200,11 @@ class Project extends Component{
 
 //export default withRouter(Project);
 //export default withStyles(styles)(Project);
-export default withRouter(withStyles(styles)(Project));
+//export default withRouter(withStyles(styles)(Project));
 
-/*const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
   ...state,
 });
 export default withRouter(
   connect(mapStateToProps)(withStyles(styles)(Project))
-);*/
+);

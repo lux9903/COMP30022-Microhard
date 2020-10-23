@@ -2,6 +2,7 @@ import React, {Fragment, Component, useState} from 'react';
 import {Helmet} from 'react-helmet';
 import { withRouter } from "react-router";
 import {withStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import axios from '../../../helpers/axiosConfig';
 
 import Grid from '@material-ui/core/Grid';
@@ -32,6 +33,14 @@ import Collapse from '@material-ui/core/Collapse';
 
 import {fetchProject} from '../../../actions/projectAction';
 
+const useStyles = makeStyles((theme) => ({
+  item: {
+    marginLeft: 8,
+  },
+  icon: {
+    marginRight: 12,
+  }
+}));
 
 const styles = (theme) => ({
   heroContent: {
@@ -65,6 +74,7 @@ const styles = (theme) => ({
 //this render the process section
 function Process(props) {
   const [open, setOpen] = useState(false);
+  const classes = useStyles();
   const handleClick = () => {
     setOpen(!open);
   };
@@ -76,29 +86,31 @@ function Process(props) {
         {!open ? (<ExpandMoreIcon/>) : (<ExpandLessIcon/>)}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
+        <List>
         {props.proc.nodes && props.proc.nodes.length > 0 ? (
             props.proc.nodes.map((node, i)=>{
               return (
-                <List>
+                <Fragment>
                   {!node.state ? (
-                    <ListItem>
+                    <ListItem className={classes.item}>
                       <ListItemText primary={node.description} />
                     </ListItem>
                   ) : (
-                    <ListItem disabled>
+                    <ListItem disabled className={classes.item}>
                       <ListItemText primary={node.description} />
-                      <DoneAllIcon/>
+                      <DoneAllIcon className={classes.icon}/>
                     </ListItem>
                   )}
-                </List>
-            )})) : (
-              <List>
-                <ListItem>
-                  <ListItemText>No task yet</ListItemText>
-                </ListItem>
-              </List>
+                </Fragment>
+            )})
+        ) : (
+          <ListItem className={classes.icon}>
+            <ListItemText>No task yet</ListItemText>
+          </ListItem>
         )}
+        </List>
       </Collapse>
+      <Divider/>
     </List>
   )
 }
