@@ -39,14 +39,17 @@ Once all the prerequisites have been satisfied, we can focus on the two packages
 ### Setting up the environmental variables
 This `.env` configuration is located in the root directory:
 ```
-DATABASE: <MongoDB password>
-FROM_EMAIL:
-SECRET:
-SENDGRID_API_KEY:
+NODE_ENV=development
+DATABASE="mongodb+srv://macro:12345@cluster0-gbsk9.mongodb.net/micro?retryWrites=true&w=majority"
+SECRET="web-it"
+SENDGRID_API_KEY="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"
+FROM_EMAIL="luuh@student.unimelb.edu.au"
 ```
 This particular `.env` configuration should be located in the client directory:
 ```
-...
+REACT_APP_API_ENDPOINT = http://localhost:3000/api
+API_MIDDLEWARE = http://localhost:5000/
+SHARE_LINK = http://localhost:3000
 ```
 
 ## Test
