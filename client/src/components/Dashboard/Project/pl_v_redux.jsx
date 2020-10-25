@@ -1,23 +1,30 @@
 import React, {Component, Fragment} from 'react';
 //import {connect} from 'react-redux';
-import {Helmet} from 'react-helmet';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import axios from '../../../helpers/axiosConfig';
+import {Helmet} from 'react-helmet';
+
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
+
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider';
+import SearchIcon from '@material-ui/icons/Search';
+
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import SearchIcon from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
+
+
 
 const styles = (theme) => ({
   heroContent: {
@@ -173,10 +180,59 @@ class ProjectList extends Component{
   
 	render(){
     const {classes} = this.props;
+
+    const {error, isFetching, documents, isUpdating} = this.props.document;
+    console.log(this.props);
+    const {classes} = this.props;
+
+    let content;
+
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <CircularProgress>
+          <span>Loading...</span>
+        </CircularProgress>
+      );
+    } else if (isUpdating) {
+      content = (
+        <CircularProgress>
+          <span>Update your change</span>
+        </CircularProgress>
+      );
+    } else if (projects.length === 0 || !projects) {
+      content = (
+        <Typography>There is no project found.</Typography>
+      );
+    } else {
+      const Pdfs = documents.map((ele) => (
+        <TableRow>
+          <TableCell>{ele.title}</TableCell>
+          <TableCell align="right">
+            <a href={ele.getFileLink} target="_blank" rel="noopener noreferrer">
+              {ele.originalname}
+            </a>
+          </TableCell>
+          <TableCell align="right">{ele.date}</TableCell>
+          <TableCell align="right">
+            <EditDocument onEdit={this.onEdit} id={ele._id} />
+            <IconButton aria-label="delete">
+              <DeleteIcon
+                onClick={() => {
+                  this.deleteDocument(ele._id);
+                }}
+              />
+            </IconButton>
+          </TableCell>
+        </TableRow>
+      ));
+      content = <TableBody>{Pdfs}</TableBody>;
+    }
     return(
       <Fragment>
       <Helmet>
-        <title>Microhard &middot; My projects </title>
+        <title>Microhard &middot; My project list </title>
       </Helmet>
       <div className={classes.heroContent}>
         <Container maxWidth="sm">

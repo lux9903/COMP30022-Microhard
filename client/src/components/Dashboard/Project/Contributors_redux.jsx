@@ -1,6 +1,6 @@
 import React, { Component, Fragment, useState, useEffect} from 'react';
+import {connect} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import axios from '../../../helpers/axiosConfig';
 import {withStyles } from '@material-ui/core/styles';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -10,17 +10,18 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
-import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-//import Con_Items from './Contributors';
+
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
+
 
 import Grid from '@material-ui/core/Grid';
 
 import {
-    fetchProject,
     createContributor,
     deleteContributor,
-  } from '../../../actions/projectAction';
+} from '../../../actions/projectAction';
 
 //for function
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
     icon:{
         marginTop: theme.spacing(2),
     },
+    user:{
+        underline: "none",
+        marginTop: theme.spacing(2),
+        width: "100%",
+    }
 }));
 
 //for class
@@ -49,50 +55,42 @@ const styles = (theme) => ({
     icon:{
         marginTop: theme.spacing(2),
     },
+    progress: {
+        marginTop: theme.spacing(2),
+        marginBottom:theme.spacing(2),
+    },
+    root: {
+        width: "100%",
+    }
 });
 
 
 class Con_List extends Component{
     constructor(props){
         super(props);
-        this.componentDidMount=this.componentDidMount.bind(this);
-        this.getContributor = this.getContributor.bind(this);
-        this.renContributorList = this.renContributorList.bind(this);
-        this.updateContributor = this.updateContributor.bind(this);
+
+        this.addContributor = this.addContributor.bind(this);
+        this.deleteContributor = this.deleteContributor.bind(this);
+
         this.onInputContributor = this.onInputContributor.bind(this);
         this.handleContributorSubmit = this.handleContributorSubmit.bind(this);
         this.handleAddCancel = this.handleAddCancel.bind(this);
         this.handleAddClose = this.handleAddClose.bind(this);
         this.handleAddOpen = this.handleAddOpen.bind(this);
         this.state = {
-            conlist:[],
             input: "",
             open: false,
         }
     }
-    componentDidMount = () =>{
-        this.getContributor();
+
+    deleteContributor = (name) => {
+        let formD = {"old_users": name}
+        this.props.dispatch(deleteContributor(formD, this.props.id));
     }
 
-    getContributor = () =>{
-        axios.get('/project/'+this.props.id).then((res) => {
-            this.setState(
-                {conlist: res.data.project.contributors},
-                //alert(this.state.conlist)
-            );
-        })
-        .catch((error) => {});
-    }
-
-    renContributorList = () =>{
-        return (this.state.conlist && this.state.conlist.map((cons,i)=>{
-            return <Con_Items cons={cons} id={this.props.id} update={this.updateContributor} username={this.props.username}/>
-        }));
-    }
-
-    updateContributor = () => {
-        this.getContributor();
-        this.renContributorList();
+    addContributor = (name) => {
+        let formD = {"new_users": name}
+        this.props.dispatch(createContributor(formD, this.props.id));
     }
 
     onInputContributor =(event)=>{
@@ -101,13 +99,8 @@ class Con_List extends Component{
 
     handleContributorSubmit = (event) =>{
         event.preventDefault();
-        axios.post('/project/add_people/'+this.props.id, {"new_users":[this.state.input]})
-        .then(() => {
-            this.updateContributor();
-            this.setState({input:"", open:false})
-        })
-        .catch((error) => {});
-        //this.updateContributor();
+        this.setState({input:"", open:false});
+        this.addContributor([this.state.input]);
     }
 
     handleAddOpen = () => {
@@ -127,13 +120,36 @@ class Con_List extends Component{
 
     render(){
         const {classes}= this.props;
+        const {error, isUpdatingCon, project} = this.props.project;
+        const {user} = this.props.user;
+
+        //console.log(project);
+        let content;
+        if (error) {
+            content = <Alert severity="error">{error}</Alert>;
+        } else if (isUpdatingCon) {
+            content = (
+                <Grid container justify="center" className={classes.root}>
+                    <CircularProgress color="primary" className={classes.progress}/>
+                </Grid>
+            );
+        } else if (!project || !project.contributors) {
+            content = (
+              <Typography> The retrieve project not found.</Typography>
+            );
+        } else {
+            content = project.contributors.map((cons) => (
+              <Con_Items cons={cons} add={this.addContributor} delete={this.deleteContributor} username={user.username}/>
+            ));
+        }
+
         return(
             <Fragment>
                 <Typography gutterBottom variant="h5" component="h2">
                     Contributors
                 </Typography>
                 <Divider/>
-                {this.renContributorList()}
+                {content}
                 {!this.state.open ? (
                     <Button 
                         onClick={this.handleAddOpen}
@@ -151,7 +167,6 @@ class Con_List extends Component{
                             <TextField
                                 label="Add contributor"
                                 onChange={this.onInputContributor}
-                                //InputProps={{ disableUnderline: true }}
                                 required
                                 variant="outlined"
                                 size="small"
@@ -192,10 +207,7 @@ function Con_Items(props){
     }, [props.cons]);
 
     const handleContributorDelete = () =>{
-        //alert(name);
-        axios.post('/project/remove_people/'+props.id, {"old_users":[props.cons]})
-        .then(()=>props.update())
-        .catch((error) => {});
+        props.delete([props.cons]);
     };
 
     const onInputContributorUpdate = (event) =>{
@@ -205,11 +217,8 @@ function Con_Items(props){
     const handleContributorUpdate = (event) => {
         event.preventDefault();
         setOpen(false);
-        axios.post('/project/remove_people/'+props.id, {"old_users":[props.cons]})
-        .catch((error) => {})
-        axios.post('/project/add_people/'+props.id, {"new_users":[name]})
-        .then(()=>props.update())
-        .catch((error) => {});
+        props.add([name]);
+        props.delete([props.cons]);
     };
     return(
         <Fragment>
@@ -217,10 +226,9 @@ function Con_Items(props){
                 <TextField
                     disabled
                     value={name}
-                    //InputProps={{ disableUnderline: true }}
                     variant="outlined"
                     size = "small"
-                    className={classes.textfield}
+                    className={classes.user}
                 />
             ) : (
                 (!open) ? (
@@ -228,7 +236,6 @@ function Con_Items(props){
                         <TextField
                             disabled
                             value={name}
-                            //InputProps={{ disableUnderline: true }}
                             variant="outlined"
                             size = "small"
                             className={classes.textfield}
@@ -245,7 +252,6 @@ function Con_Items(props){
                         <TextField
                             onChange={onInputContributorUpdate}
                             value={name}
-                            //InputProps={{ disableUnderline: true }}
                             variant="outlined"
                             size="small"
                             required
@@ -264,98 +270,7 @@ function Con_Items(props){
     )
 }
 
-//export default (Con_List);
-export default withStyles(styles)(Con_List);
-
-/*
-class Con_Items extends Component{
-    constructor(props){
-        super(props);
-        this.onInputContributorUpdate = this.onInputContributorUpdate.bind(this);
-        this.handleContributorCancel = this.handleContributorCancel.bind(this);
-        this.handleContributorOpen = this.handleContributorOpen.bind(this);
-        this.handleContributorUpdate = this.handleContributorUpdate.bind(this);
-        this.handleContributorDelete = this.handleContributorDelete.bind(this);
-        this.state = {
-            name: this.props.contributor,
-            open: false,
-        }
-    }
-    handleContributorCancel = () =>{
-        this.setState({
-            open:false,
-            name:this.props.contributor,
-        })
-    }
-    handleContributorOpen = () =>{
-        this.setState({
-            open:true,
-        })
-    }
-    handleContributorDelete = () =>{
-        axios.post('/project/remove_people/'+this.props.id, {"old_users":[this.props.contributor]})
-        .catch((error) => {});
-        this.props.update();
-    };
-
-    onInputContributorUpdate = (event) =>{
-        this.setState({
-            name: event.target.value,
-        });
-    }
-
-    handleContributorUpdate = (event) => {
-        event.preventDefault();
-        this.setState({open:false});
-        axios.post('/project/remove_people/'+this.props.id, {"old_users":[this.props.contributor]})
-        .catch((error) => {})
-        this.props.update();
-        axios.post('/project/add_people/'+this.props.id, {"new_users":[this.state.name]})
-        .catch((error) => {});
-        this.props.update();
-    };
-
-    render(){
-        return(
-            <Fragment>
-                {(!this.state.open) ? (
-                    <div>
-                        <TextField
-                            disabled
-                            value={this.state.name}
-                            InputProps={{ disableUnderline: true }}
-                            variant="outlined"
-                            size = "small"
-                        />
-                        <IconButton onClick={this.handleContributorOpen}>
-                            <EditIcon  fontSize="small"/>
-                        </IconButton>
-                        <IconButton onClick={this.handleContributorDelete}>
-                            <DeleteIcon fontSize="small"/>
-                        </IconButton>
-                    </div>
-                ) : (
-                    <div>
-                        <form onSubmit={this.handleContributorUpdate} fullWidth>
-                            <TextField
-                                onChange={this.onInputContributorUpdate}
-                                value={this.state.name}
-                                InputProps={{ disableUnderline: true }}
-                                variant="outlined"
-                                size="small"
-                                required
-                            />
-                            <IconButton type="submit">
-                                <CheckIcon fontSize="small"/>
-                            </IconButton>
-                            <IconButton onClick={this.handleContributorCancel} >
-                                <ClearIcon fontSize="small"/>
-                            </IconButton>
-                        </form>
-                    </div>
-                )}
-            </Fragment>
-        )
-    }
-}*/
-  
+const mapStateToProps = (state) => ({
+    ...state,
+});
+export default connect(mapStateToProps)(withStyles(styles)(Con_List));

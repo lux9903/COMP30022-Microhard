@@ -1,5 +1,4 @@
 import React, { Component, Fragment, useState, useEffect} from 'react';
-import axios from '../../../helpers/axiosConfig';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
@@ -24,11 +23,15 @@ import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 
 import {
-    fetchProject,
     createTimeline,
     updateTimeline,
     deleteTimeline,
 } from '../../../actions/projectAction';
+
+
+import {connect} from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     oppositeContent:{
@@ -47,51 +50,39 @@ const styles = (theme) => ({
         width:"auto",
         underline: "none",
     },
+    progress: {
+        marginTop: theme.spacing(2),
+        marginBottom:theme.spacing(2),
+    },
+    root: {
+        width: "100%",
+    }
 });
 
 class Timeline_List extends Component{
     constructor(props) {
       super(props);
-      this.componentDidMount = this.componentDidMount.bind(this);
       this.updateTimeline = this.updateTimeline.bind(this);
-      this.getTimeline = this.getTimeline.bind(this);
-      this.renTimelineList = this.renTimelineList.bind(this);
       this.onChangeDate = this.onChangeDate.bind(this);
       this.onChangeDesc = this.onChangeDesc.bind(this);
+      this.updateTimeline = this.updateTimeline.bind(this);
+      this.deleteTimeline = this.deleteTimeline.bind(this);
       this.handleAddTimelineSubmit = this.handleAddTimelineSubmit.bind(this);
       this.handleAddTimelineOpen = this.handleAddTimelineOpen.bind(this);
       this.handleAddTimelineCancel = this.handleAddTimelineCancel.bind(this);
       this.state = {
-        timeline: [],
         date: "",
         description: "",
         open: false,
       };
     }
 
-    componentDidMount = () =>{
-        this.getTimeline();
+    deleteTimeline = (form) => {
+        this.props.dispatch(deleteTimeline(form, this.props.id));
     }
 
-    getTimeline = () => {
-        axios.get('/project/'+this.props.id).then((res) => {
-            this.setState({
-                timeline: res.data.project.timeline,
-            });
-        })
-        .catch((error) => {});
-    }
-
-    renTimelineList = () => {
-        return (this.state.timeline && this.state.timeline.map((each, i)=>{
-          return <Timeline_Items each={each} id={this.props.id} update={this.updateTimeline}/>
-        }));
-    }
-
-    updateTimeline = () => {
-        //alert("updating");
-        this.getTimeline();
-        this.renTimelineList();
+    updateTimeline = (form) => {
+        this.props.dispatch(updateTimeline(form, this.props.id));
     }
 
     onChangeDate = (event) => {
@@ -115,7 +106,7 @@ class Timeline_List extends Component{
 
     handleAddTimelineSubmit = (event) =>{
         event.preventDefault();
-        axios.post('/project/timeline/'+this.props.id, {
+        let formD = {
             'time': {
 				'year':parseInt(this.state.date.slice(0,4)),
 				'month':parseInt(this.state.date.slice(5,7)),
@@ -125,26 +116,42 @@ class Timeline_List extends Component{
 				'sec':0,
 				'minsec':0
             },
-            "description":this.state.description,
-        })
-        .then(() => {
-            this.updateTimeline();
-            this.setState({date: "", open:false, description: ""})
-        })
-        .catch((error) => {});
+            "description":this.state.description
+        }
+        this.setState({date: "", open:false, description: ""});
+        this.props.dispatch(createTimeline(formD, this.props.id));
     }
     
     render(){
         const {classes} = this.props;
+
+        const {error, isUpdatingTime, project} = this.props.project;
+        let content;
+        if (error) {
+            content = <Alert severity="error">{error}</Alert>;
+        } else if (isUpdatingTime) {
+            content = (
+                <Grid container justify="center" className={classes.root}>
+                    <CircularProgress color="primary" className={classes.progress}/>
+                </Grid>
+            );
+        } else if (!project || !project.timeline) {
+            content = (
+                <Typography> The retrieve project not found.</Typography>
+            );
+        } else {
+            const list = project.timeline.map((each) => (
+                <Timeline_Items each={each} id={this.props.id} delete={this.deleteTimeline} update={this.updateTimeline}/>
+            ));
+            content = <Timeline>{list}</Timeline>;
+        }
         return(
             <Fragment>
                 <Typography gutterBottom variant="h5" component="h2">
                     Timeline
                 </Typography>
                 <Divider/>
-                <Timeline>
-                    {this.renTimelineList()}
-                </Timeline>
+                {content}
                 {!this.state.open ? (
                     <Button 
                         onClick={this.handleAddTimelineOpen}
@@ -200,6 +207,7 @@ function Timeline_Items(props){
     const [date,setDate] = useState(props.each.time.slice(0,10));
     const [open,setOpen] = useState(false);
     const classes = useStyles();
+    
     useEffect(() => {
         setDescription(props.each.description);
         setDate(props.each.time.slice(0,10));
@@ -213,7 +221,6 @@ function Timeline_Items(props){
     }
 
     const OnChangeDateUpdate = (event) => {
-        //alert(event.target.value);
         setDate(event.target.value);
     }
 
@@ -222,16 +229,14 @@ function Timeline_Items(props){
     }
 
     const handleTimelineDelete = () => {
-        axios.post('/project/timeline/remove/'+props.id, {"index":props.each.index})
-        .then(()=> props.update())
-        .catch((error) => {});
+        let formD = {"index":props.each.index}
+        props.delete(formD);
     };
 
     const handleTimelineUpdate = (event) => {
         event.preventDefault();
         setOpen(false);
-        axios.post('/project/timeline/update/'+props.id, {
-            //"time":date,
+        let formD = {
             'time': {
 				'year':parseInt(date.slice(0,4)),
 				'month':parseInt(date.slice(5,7)),
@@ -239,9 +244,8 @@ function Timeline_Items(props){
             },
             "description": description,
             "index":props.each.index,
-        })
-        .then(()=>props.update())
-        .catch((error) => {});
+        }
+        props.update(formD);
     };
     return(
         <Fragment>
@@ -259,7 +263,6 @@ function Timeline_Items(props){
                                     <TextField
                                         disabled
                                         value={date}
-                                        //InputProps={{ disableUnderline: true }}
                                         variant="outlined"
                                         size="small"
                                         fullWidth
@@ -268,7 +271,6 @@ function Timeline_Items(props){
                                     <TextField
                                         disabled
                                         value={description}
-                                        //InputProps={{ disableUnderline: true }}
                                         variant="outlined"
                                         size="small"
                                         fullWidth
@@ -287,7 +289,6 @@ function Timeline_Items(props){
                                         <TextField
                                             onChange={OnChangeDateUpdate}
                                             value={date}
-                                            //InputProps={{ disableUnderline: true }}
                                             variant="outlined"
                                             size="small"
                                             type="date"
@@ -297,7 +298,6 @@ function Timeline_Items(props){
                                         <TextField
                                             onChange={OnChangeDescUpdate}
                                             value={description}
-                                            //InputProps={{ disableUnderline: true }}
                                             variant="outlined"
                                             size="small"
                                             fullWidth
@@ -320,136 +320,8 @@ function Timeline_Items(props){
     )
 }
 
-//export default (Timeline_List);
-export default withStyles(styles)(Timeline_List);
 
-/*
-class Timeline_Items extends Component{
-    constructor(props){
-        super(props);
-        this.handleTimelineCancel = this.handleTimelineCancel.bind(this);
-        this.handleTimelineOpen = this.handleTimelineOpen.bind(this);
-        this.handleTimelineUpdate = this.handleTimelineUpdate.bind(this);
-        this.handleTimelineDelete = this.handleTimelineDelete.bind(this);
-        this.OnChangeDateUpdate = this.OnChangeDateUpdate.bind(this);
-        this.OnChangeDescUpdate = this.OnChangeDescUpdate.bind(this);
-        this.state = {
-            description: this.props.each.description,
-            date: this.props.each.time,
-            open: false,
-        }
-    }
-    handleTimelineCancel = () =>{
-        this.setState({
-            open:false,
-        })
-    }
-    handleTimelineOpen = () =>{
-        this.setState({
-            open:true,
-        })
-    }
-
-    OnChangeDateUpdate = (event) => {
-        this.setState({
-            date: event.target.value,
-        });
-    }
-
-    OnChangeDescUpdate = (event) => {
-        this.setState({
-            description: event.target.value,
-        });
-    }
-
-    handleTimelineDelete = () => {
-        axios.post('/project/timeline/remove/'+this.props.id, {
-            "index":this.props.each.index,
-        })
-        .catch((error) => {});
-        this.props.update();
-    };
-
-    handleTimelineUpdate = (event) => {
-        event.preventDefault();
-        this.setState({open:false});
-        axios.post('/project/timeline/update/'+this.props.id, {
-            "time":this.state.date,
-            "description":this.state.description,
-            "index":this.props.each.index,
-        })
-        .catch((error) => {});
-        this.props.update();
-    };
-
-    render(){
-        return(
-            <Fragment>
-                <TimelineItem align="left">
-                    <TimelineSeparator>
-                        <TimelineDot/>
-                        <TimelineConnector/>
-                    </TimelineSeparator>
-                    <TimelineContent>
-                        <Card>
-                            <CardContent>
-                                {!this.state.open ? (
-                                    <div>
-                                        <TextField
-                                            disabled
-                                            value={this.state.date}
-                                            InputProps={{ disableUnderline: true }}
-                                            variant="outlined"
-                                            size="small"
-                                        />
-                                        <Divider/>
-                                        <TextField
-                                            disabled
-                                            value={this.state.description}
-                                            InputProps={{ disableUnderline: true }}
-                                            variant="outlined"
-                                            size="small"
-                                        />
-                                        <IconButton onClick={this.handleTimelineOpen}>
-                                            <EditIcon fontSize="small"/>
-                                        </IconButton>
-                                        <IconButton onClick={this.handleTimelineDelete} >
-                                            <DeleteIcon fontSize="small"/>
-                                        </IconButton>
-                                    </div>
-                                ) : (
-                                    <form onSubmit={this.handleTimelineUpdate}>
-                                        <TextField
-                                            onChange={this.OnChangeDateUpdate}
-                                            value={this.state.date}
-                                            InputProps={{ disableUnderline: true }}
-                                            variant="outlined"
-                                            size="small"
-                                        />
-                                        <Divider/>
-                                        <TextField
-                                            onChange={this.OnChangeDescUpdate}
-                                            value={this.state.description}
-                                            InputProps={{ disableUnderline: true }}
-                                            variant="outlined"
-                                            size="small"
-                                        />
-                                        <IconButton type="submit">
-                                            <CheckIcon fontSize="small"/>
-                                        </IconButton>
-                                        <IconButton onClick={this.handleTimelineCancel} >
-                                            <ClearIcon fontSize="small"/>
-                                        </IconButton>
-                                    </form>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </TimelineContent>
-                </TimelineItem>
-            </Fragment>
-        )
-    }
-}*/
-
-
-
+const mapStateToProps = (state) => ({
+    ...state,
+});
+export default connect(mapStateToProps)(withStyles(styles)(Timeline_List));
