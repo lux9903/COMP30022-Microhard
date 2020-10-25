@@ -7,12 +7,12 @@ export default handleActions(
       isFetching: true,
       error: null,
     }),
-    FETCH_PROJECTLIST_SUCCESS: (state) => ({
+    FETCH_PROJECTLIST_SUCCESS: (state , action) => ({
       ...state,
       isFetching: false,
       projects: action.payload.data.projects,
     }),
-    FETCH_PROJECTLIST_FAILURE: (state) => ({
+    FETCH_PROJECTLIST_FAILURE: (state , action) => ({
       ...state,
       isFetching: false,
       error: action.payload.error,
@@ -22,12 +22,12 @@ export default handleActions(
       isFetching: true,
       error: null,
     }),
-    FETCH_PROJECTLISTCONDITION_SUCCESS: (state) => ({
+    FETCH_PROJECTLISTCONDITION_SUCCESS: (state , action) => ({
       ...state,
       isFetching: false,
       projects: action.payload.data.projects,
     }),
-    FETCH_PROJECTLISTCONDITION_FAILURE: (state) => ({
+    FETCH_PROJECTLISTCONDITION_FAILURE: (state, action) => ({
       ...state,
       isFetching: false,
       error: action.payload.error,
@@ -37,12 +37,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    CREATE_PROJECT_SUCCESS: (state) => ({
+    CREATE_PROJECT_SUCCESS: (state, action) => ({
       ...state,
       isUpdating: false,
       projects: [...state.projects, action.payload.data.project],
     }),
-    CREATE_PROJECT_FAILURE: (state) => ({
+    CREATE_PROJECT_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -52,12 +52,12 @@ export default handleActions(
       isFetching: true,
       error: null,
     }),
-    FETCH_PROJECT_SUCCESS: (state) => ({
+    FETCH_PROJECT_SUCCESS: (state , action) => ({
       ...state,
       isFetching: false,
       project: action.payload.data.project,
     }),
-    FETCH_PROJECT_FAILURE: (state) => ({
+    FETCH_PROJECT_FAILURE: (state , action) => ({
       ...state,
       isFetching: false,
       error: action.payload.error,
@@ -67,12 +67,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    UPDATE_PROJECT_SUCCESS: (state) => ({
+    UPDATE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    UPDATE_PROJECT_FAILURE: (state) => ({
+    UPDATE_PROJECT_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -82,12 +82,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    LIKE_PROJECT_SUCCESS: (state) => ({
+    LIKE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    LIKE_PROJECT_FAILURE: (state) => ({
+    LIKE_PROJECT_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -98,12 +98,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    DELETE_PROJECT_SUCCESS: (state) => ({
+    DELETE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       projects: state.projects.filter((proj) => proj._id !== action.payload.data.deleteId),
     }),
-    DELETE_PROJECT_FAILURE: (state) => ({
+    DELETE_PROJECT_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -113,12 +113,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    CREATE_CONTRIBUTOR_SUCCESS: (state) => ({
+    CREATE_CONTRIBUTOR_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    CREATE_CONTRIBUTOR_FAILURE: (state) => ({
+    CREATE_CONTRIBUTOR_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -128,12 +128,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    DELETE_CONTRIBUTOR_SUCCESS: (state) => ({
+    DELETE_CONTRIBUTOR_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    DELETE_CONTRIBUTOR_FAILURE: (state) => ({
+    DELETE_CONTRIBUTOR_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -143,12 +143,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    CREATE_PROCESS_SUCCESS: (state) => ({
+    CREATE_PROCESS_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    CREATE_PROCESS_FAILURE: (state) => ({
+    CREATE_PROCESS_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -158,12 +158,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    UPDATE_PROCESS_SUCCESS: (state) => ({
+    UPDATE_PROCESS_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    UPDATE_PROCESS_FAILURE: (state) => ({
+    UPDATE_PROCESS_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -173,12 +173,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    DELETE_PROCESS_SUCCESS: (state) => ({
+    DELETE_PROCESS_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    DELETE_PROCESS_FAILURE: (state) => ({
+    DELETE_PROCESS_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -188,12 +188,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    CREATE_NODE_SUCCESS: (state) => ({
+    CREATE_NODE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    CREATE_NODE_FAILURE: (state) => ({
+    CREATE_NODE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -203,12 +203,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    UPDATE_NODE_SUCCESS: (state) => ({
+    UPDATE_NODE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    UPDATE_NODE_FAILURE: (state) => ({
+    UPDATE_NODE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -218,12 +218,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    DELETE_NODE_SUCCESS: (state) => ({
+    DELETE_NODE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    DELETE_NODE_FAILURE: (state) => ({
+    DELETE_NODE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -233,12 +233,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    FINISH_NODE_SUCCESS: (state) => ({
+    FINISH_NODE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    FINISH_NODE_FAILURE: (state) => ({
+    FINISH_NODE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -248,12 +248,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    CREATE_TIMELINE_SUCCESS: (state) => ({
+    CREATE_TIMELINE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    CREATE_TIMELINE_FAILURE: (state) => ({
+    CREATE_TIMELINE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -263,12 +263,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    UPDATE_TIMELINE_SUCCESS: (state) => ({
+    UPDATE_TIMELINE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    UPDATE_TIMELINE_FAILURE: (state) => ({
+    UPDATE_TIMELINE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,
@@ -278,12 +278,12 @@ export default handleActions(
       isUpdating: true,
       error: null,
     }),
-    DELETE_TIMELINE_SUCCESS: (state) => ({
+    DELETE_TIMELINE_SUCCESS: (state , action) => ({
       ...state,
       isUpdating: false,
       project: action.payload.data.project,
     }),
-    DELETE_TIMELINE_FAILURE: (state) => ({
+    DELETE_TIMELINE_FAILURE: (state , action) => ({
       ...state,
       isUpdating: false,
       error: action.payload.error,

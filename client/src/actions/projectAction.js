@@ -83,7 +83,6 @@ export const {
     LIKE_PROJECT_SUCCESS: (data) => ({ data }),
     LIKE_PROJECT_FAILURE: (error) => ({ error }),
 
-
     CREATE_CONTRIBUTOR_SUCCESS: (data) => ({ data }),
     CREATE_CONTRIBUTOR_FAILURE: (error) => ({ error }),
     DELETE_CONTRIBUTOR_SUCCESS: (data) => ({ data }),
@@ -133,7 +132,7 @@ export const {
   'DELETE_NODE_STARTED',
   'DELETE_TIMELINE_STARTED',
 
-  'FINISH_NODE_STARTED',
+  'FINISH_NODE_STARTED'
 );
 
 //fetch project list: in none; out: list of projects
@@ -165,12 +164,12 @@ export const {
 //like a project: in:none; out: current rating
 
 //featch all projects
+
 export const fetchProjectList = () => {
   return async (dispatch) => {
     dispatch(fetchProjectListStarted());
 
     try {
-      //const response = await axios.get(`/image?page=${page}`);
       const response = await axios.get(`/project/`);
       dispatch(fetchProjectListSuccess(response.data));
     } catch (error) {

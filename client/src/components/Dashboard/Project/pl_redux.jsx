@@ -1,44 +1,41 @@
 import React, {Component, Fragment, useState} from 'react';
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
-import {Link} from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-//import Link from '@material-ui/core/Link';
-import axios from '../../../helpers/axiosConfig';
 import {Formik, Field, Form} from 'formik';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
+import axios from '../../../helpers/axiosConfig';
+
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
+
+import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
 
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { IconButton } from '@material-ui/core';
 
+import { IconButton } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
-
-import {
-  fetchProjectList,
-  fetchProjectListCondition,
-  deleteProject,
-  createDocument,
-} from '../../../actions/projectAction';
+import {fetchProjectList, fetchProjectListCondition, deleteProject, createProject} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
   icon: {
@@ -79,10 +76,13 @@ function DeleteButton(props) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {setOpen(true);};
   const handleClose = () => {setOpen(false);};
+
+  //this might need to change to down 
   const handleDelete = () => {
     setOpen(false);
-    axios.delete('/project/'+ props.id).catch((error)=>{});
-    props.update();
+    props.delete();
+    //axios.delete('/project/'+ props.id).catch((error)=>{});
+    //props.update();
   }
   return (
     <div>
@@ -119,19 +119,24 @@ function AddButton(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  //this also need to go down 
   const onSubmit = (values) => {
-    let url= '/project/create';
-    axios.post(url, values).then(() => setOpen(false))
-    .catch(() => {});
-    props.update();
+    props.add();
+    //let url= '/project/create';
+    //axios.post(url, values).then(() => setOpen(false))
+    //.catch(() => {});
+    //props.update();
   };
+
+
   return (
     <div>
       <IconButton onClick={handleClickOpen}>
         <AddBoxIcon color="primary"/>
       </IconButton>
       {/*<Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>*/}
-      <MyForm open={open} update={props.update} handleClose={handleClose}
+      <MyForm open={open} handleClose={handleClose}
                 title='Add a project' submit={onSubmit} 
       />
     </div>
@@ -216,7 +221,7 @@ function Project(props){
         <Button variant="contained" size="small" href={"/project/"+props.project._id}>
           Edit
         </Button>
-        <DeleteButton id={props.project._id} update={()=>props.update()}/>
+        <DeleteButton id={props.project._id} delete={()=>props.delete()}/>
       </AccordionActions>
     </Accordion>
   )
@@ -235,6 +240,8 @@ class ProjectList extends Component{
     this.getCondition= this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onShowStatusChange = this.onShowStatusChange.bind(this);
+    this.deleteProject = this.deleteProject.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.state = {
       projlist : [],
       search : "",
@@ -244,18 +251,25 @@ class ProjectList extends Component{
     };
   }
 
+  //add new project
   onFormSubmit = (e) => {
 		e.preventDefault();
 		let formD = {
       "name":document.forms.namedItem("create")["name"]["value"],
       "description":document.forms.namedItem("create")["description"]["value"]
-		}
-		axios.post('/project/create', formD);
+    }
+    this.props.dispatch(createProject(formD));
+		//axios.post('/project/create', formD);
   }
+
+  deleteProject = (id) => {
+    this.props.dispatch(deleteProject(id));
+  }
+
 
   pList = () => {
     return (this.state.projlist && this.state.projlist.map((proj, i) => {
-      return <Project project={proj} update={this.update}/>
+      return <Project project={proj} delete={this.deleteProject}/>
     }));
   }
 
@@ -267,48 +281,61 @@ class ProjectList extends Component{
   }
 
   getCondition = () =>{
-    let formD = {
-      "name": this.state.input
-    }
-
+    let formD = {"name": this.state.input}
     if(this.state.search_status !== ""){
       formD['status'] = this.state.search_status;
     }
-
     if(this.state.sortBy !== ""){
       formD['sortBy'] = this.state.sortBy;
     }
-
     if(this.state.show_status !== ""){
-      //alert(this.state.show_status);
       formD['show_status'] = this.state.show_status;
-      //alert(formD['show_status']);
     }
-    axios.post('/project/conditional',formD)
-    .then((res) => {
-      this.setState({projlist: res.data.result});
-      //alert(res.data.result);
-    })
-    .catch((error) => {});
+    this.props.dispatch(fetchProjectListCondition(formD));
   }
+
 
   update = () => {
     this.getCondition();
     //this.pList();
   }
+
 	componentDidMount = () => {
-    this.getAll();
+    //this.getAll();
+    this.props.dispatch(fetchProjectListCondion());
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.props.projects !== prevProps.projects) {
+      //this.props.dispatch(fetchProjects());
+      this.getCondition();
+    }
+    if (this.state.search != prevState.search){
+      //this.props.dispatch(fetchProjects());
+      this.getCondition();
+    }
+    if (this.state.sortBy != prevState.sortBy){
+      //this.props.dispatch(fetchProjects());
+      this.getCondition();
+    }
+    if (this.state.show_status != prevState.show_status){
+      //this.props.dispatch(fetchProjects());
+      this.getCondition();
+    }
+    if (this.state.search_status != prevState.search_status){
+      //this.props.dispatch(fetchProjects());
+      this.getCondition();
+    }
   }
 
   onChangeInput = (event) => {
-    event.preventDefault();
     this.setState({input: event.target.value});
   }
 
   onSearch = (event) => {
-    //event.preventDefault();
     if(event.key === "Enter"){
-      this.update();
+      //this.update();
+      this.getCondition();
     }
   }
 
@@ -316,19 +343,18 @@ class ProjectList extends Component{
     if(newstatus !== null){
       this.setState(
         {search_status: newstatus},
-        //alert(this.state.search_status),
-        this.update
+        //this.update
+        this.getCondition
       );
     }
-    //alert(this.state.search_status);
   }
 
   onSortChange = (event, newsort) => {
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
-        //alert(this.state.search_status),
-        this.update
+        //this.update
+        this.getCondition
       );
     }
   }
@@ -337,13 +363,36 @@ class ProjectList extends Component{
     if(newshow !== null){
       this.setState(
         {show_status: newshow},
-        //alert(this.state.search_status),
-        this.update
+        //this.update
+        this.getCondition
       );
     }
   }
 
 	render(){
+    const {error, isFetching, projects} = this.props.project;
+    const {classes} = this.props;
+
+    let content;
+
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <CircularProgress>
+          <span>Loading...</span>
+        </CircularProgress>
+      );
+    } else if (projects.length === 0 || !projects) {
+      content = (
+        <Typography> No projects found.</Typography>
+      );
+    } else {
+      content = projects.map((proj) => (
+        <Typography>ha ha ha ha</Typography>
+        //<Project project={proj} delete={this.deleteProject}/>
+      ));
+    }
     return(
       <Fragment>
       <Helmet>
@@ -423,10 +472,10 @@ class ProjectList extends Component{
           </ToggleButtonGroup>
         </Grid>
         <Grid container direction="row" alignItems="center">
-          <AddButton update={this.update}/>
+          <AddButton add={this.onFormSubmit}/>
         </Grid>
         <br/>
-        {this.pList()}
+        {content}
         <br/>
         <br/>
       </Container>
@@ -434,10 +483,9 @@ class ProjectList extends Component{
     );
   }
 }
-/*const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
   ...state,
-});*/
+});
 
-//export default connect(mapStateToProps)(withStyles(styles)(Profile));
-
-export default (ProjectList);
+export default connect(mapStateToProps)(withStyles(styles)(ProjectList));
+//export default (ProjectList);
