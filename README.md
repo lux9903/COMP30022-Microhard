@@ -39,14 +39,16 @@ Once all the prerequisites have been satisfied, we can focus on the two packages
 ### Setting up the environmental variables
 This `.env` configuration is located in the root directory:
 ```
-DATABASE: <MongoDB password>
-FROM_EMAIL:
-SECRET:
-SENDGRID_API_KEY:
+NODE_ENV= <development | production>
+DATABASE="mongodb+srv://<your account: your password >@cluster0-gbsk9.mongodb.net/micro?retryWrites=true&w=majority"
+SECRET= <your JWT secret>
+SENDGRID_API_KEY= <your sendgrid api key>
+FROM_EMAIL= <email from address>
 ```
 This particular `.env` configuration should be located in the client directory:
 ```
-...
+REACT_APP_API_ENDPOINT = <path to react api endpoint>
+API_MIDDLEWARE = <path to api middleware>
 ```
 
 ## Test
