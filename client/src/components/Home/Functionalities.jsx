@@ -139,6 +139,7 @@ export default function Functionalities() {
           </Grid>
         </Grid>
       </Container>
+      <a href="/svg/uml">Visit W3Schools.com!</a>
     </div>
   );
 }
