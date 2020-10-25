@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import axios from '../../../helpers/axiosConfig';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 
-import {
-    fetchProject,
-    updateProject,
-  } from '../../../actions/projectAction';
+import {connect} from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
+
+import {updateProject} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
     textfield:{
@@ -23,29 +22,13 @@ const styles = (theme) => ({
 class General_Info extends Component{
     constructor(props) {
       super(props);
-      this.getGeneral = this.getGeneral.bind(this);
       this.onChangeDesc = this.onChangeDesc.bind(this);
       this.onChangeName = this.onChangeName.bind(this);
-      this.componentDidMount = this.componentDidMount.bind(this);
       this.handleGeneralSubmit = this.handleGeneralSubmit.bind(this);
       this.state = {
-        name: "",
-        description: "",
+        name: this.props.project.project.name,
+        description: this.props.project.project.description,
       };
-    }
-
-    componentDidMount = () =>{
-        this.getGeneral();
-    }
-
-    getGeneral = () =>{
-        axios.get('/project/'+this.props.id).then((res) => {
-            this.setState({
-                name: res.data.project.name,
-                description: res.data.project.description,
-            });
-        })
-        .catch((error) => {});
     }
 
     onChangeName = (event) => {
@@ -62,18 +45,26 @@ class General_Info extends Component{
 
     handleGeneralSubmit = (event) =>{
         event.preventDefault();
-        axios.post('/project/update/'+ this.props.id, {"name":this.state.name, "description": this.state.description})
-        .catch((error) => {});
+        let formD = {
+            "name": this.state.name,
+            "description": this.state.description,
+        }
+        this.props.dispatch(updateProject(formD, this.props.id));
     }
 
     render(){
         const {classes} = this.props;
-        return(
-            <Fragment>
-                <Typography gutterBottom variant="h5" component="h2">
-                    General Information
-                </Typography>
-                <Divider/>
+        const {error, project} = this.props.project;
+        const {user} = this.props.user;
+        let content;
+        if (error) {
+            content = <Alert severity="error">{error}</Alert>;
+        } else if (!project) {
+            content = (
+              <Typography> The retrieve project not found.</Typography>
+            );
+        } else {
+            content = (
                 <form onSubmit={this.handleGeneralSubmit} fullWidth>
                     <Typography>
                         Name
@@ -82,7 +73,7 @@ class General_Info extends Component{
                         value={this.state.name}
                         onChange={this.onChangeName}
                         fullWidth
-                        InputProps={{ disableUnderline: true }}
+                        className={classes.textfield}
                         variant="outlined"
                         required
                     />
@@ -95,7 +86,6 @@ class General_Info extends Component{
                         onChange={this.onChangeDesc}
                         fullWidth
                         multiline
-                        //InputProps={{ disableUnderline: true }}
                         variant="outlined"
                         className={classes.textfield}
                     />
@@ -111,11 +101,21 @@ class General_Info extends Component{
                         Submit
                     </Button>
                 </form>
-
+            );
+        }
+        return(
+            <Fragment>
+                <Typography gutterBottom variant="h5" component="h2">
+                    General Information
+                </Typography>
+                <Divider/>
+                {content}
             </Fragment>
         )
     }
 }
 
-//export default (General_Info);
-export default withStyles(styles)(General_Info);
+const mapStateToProps = (state) => ({
+    ...state,
+});
+export default connect(mapStateToProps)(withStyles(styles)(General_Info));

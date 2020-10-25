@@ -81,6 +81,7 @@ const deleteOneProject = (req, res)=>{
 			if(err){
                 return res.status(501).json({err:'Failed when delete project'});
             }else{
+				//console.log(req.params.idd);
                 return res.json({"deleteId":req.params.idd});
             }
 		});

@@ -80,9 +80,7 @@ function DeleteButton(props) {
   //this might need to change to down 
   const handleDelete = () => {
     setOpen(false);
-    props.delete();
-    //axios.delete('/project/'+ props.id).catch((error)=>{});
-    //props.update();
+    props.delete(props.id);
   }
   return (
     <div>
@@ -122,11 +120,7 @@ function AddButton(props) {
 
   //this also need to go down 
   const onSubmit = (values) => {
-    props.add();
-    //let url= '/project/create';
-    //axios.post(url, values).then(() => setOpen(false))
-    //.catch(() => {});
-    //props.update();
+    props.add(values);
   };
 
 
@@ -135,7 +129,6 @@ function AddButton(props) {
       <IconButton onClick={handleClickOpen}>
         <AddBoxIcon color="primary"/>
       </IconButton>
-      {/*<Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>*/}
       <MyForm open={open} handleClose={handleClose}
                 title='Add a project' submit={onSubmit} 
       />
@@ -181,7 +174,6 @@ function MyForm(props) {
                 />
                 <Button
                   type="submit"
-                  variant="raised"
                   color="primary"
                   fullWidth
                 >
@@ -221,7 +213,7 @@ function Project(props){
         <Button variant="contained" size="small" href={"/project/"+props.project._id}>
           Edit
         </Button>
-        <DeleteButton id={props.project._id} delete={()=>props.delete()}/>
+        <DeleteButton id={props.project._id} delete={(id)=>props.delete(id)}/>
       </AccordionActions>
     </Accordion>
   )
@@ -231,8 +223,6 @@ class ProjectList extends Component{
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.update = this.update.bind(this);
-    this.getAll = this.getAll.bind(this);
     this.pList = this.pList.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -241,9 +231,7 @@ class ProjectList extends Component{
     this.onSortChange = this.onSortChange.bind(this);
     this.onShowStatusChange = this.onShowStatusChange.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.state = {
-      projlist : [],
       search : "",
       search_status: "",
       sortBy: "",
@@ -252,32 +240,19 @@ class ProjectList extends Component{
   }
 
   //add new project
-  onFormSubmit = (e) => {
-		e.preventDefault();
-		let formD = {
-      "name":document.forms.namedItem("create")["name"]["value"],
-      "description":document.forms.namedItem("create")["description"]["value"]
-    }
-    this.props.dispatch(createProject(formD));
-		//axios.post('/project/create', formD);
+  onFormSubmit = (value) => {
+    console.log(value);
+    this.props.dispatch(createProject(value));
   }
 
   deleteProject = (id) => {
     this.props.dispatch(deleteProject(id));
   }
 
-
   pList = () => {
     return (this.state.projlist && this.state.projlist.map((proj, i) => {
       return <Project project={proj} delete={this.deleteProject}/>
     }));
-  }
-
-  getAll = () => {
-    axios.get('/project/').then((res) => {
-      this.setState({projlist: res.data.projects});
-    })
-    .catch((error) => {})
   }
 
   getCondition = () =>{
@@ -294,38 +269,8 @@ class ProjectList extends Component{
     this.props.dispatch(fetchProjectListCondition(formD));
   }
 
-
-  update = () => {
-    this.getCondition();
-    //this.pList();
-  }
-
 	componentDidMount = () => {
-    //this.getAll();
-    this.props.dispatch(fetchProjectListCondion());
-  }
-
-  componentDidUpdate = (prevProps, prevState) => {
-    if (this.props.projects !== prevProps.projects) {
-      //this.props.dispatch(fetchProjects());
-      this.getCondition();
-    }
-    if (this.state.search != prevState.search){
-      //this.props.dispatch(fetchProjects());
-      this.getCondition();
-    }
-    if (this.state.sortBy != prevState.sortBy){
-      //this.props.dispatch(fetchProjects());
-      this.getCondition();
-    }
-    if (this.state.show_status != prevState.show_status){
-      //this.props.dispatch(fetchProjects());
-      this.getCondition();
-    }
-    if (this.state.search_status != prevState.search_status){
-      //this.props.dispatch(fetchProjects());
-      this.getCondition();
-    }
+    this.getCondition();
   }
 
   onChangeInput = (event) => {
@@ -334,7 +279,6 @@ class ProjectList extends Component{
 
   onSearch = (event) => {
     if(event.key === "Enter"){
-      //this.update();
       this.getCondition();
     }
   }
@@ -343,7 +287,6 @@ class ProjectList extends Component{
     if(newstatus !== null){
       this.setState(
         {search_status: newstatus},
-        //this.update
         this.getCondition
       );
     }
@@ -353,7 +296,6 @@ class ProjectList extends Component{
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
-        //this.update
         this.getCondition
       );
     }
@@ -363,7 +305,6 @@ class ProjectList extends Component{
     if(newshow !== null){
       this.setState(
         {show_status: newshow},
-        //this.update
         this.getCondition
       );
     }
@@ -379,9 +320,9 @@ class ProjectList extends Component{
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <CircularProgress>
-          <span>Loading...</span>
-        </CircularProgress>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary"/>
+        </Grid>
       );
     } else if (projects.length === 0 || !projects) {
       content = (
@@ -389,8 +330,7 @@ class ProjectList extends Component{
       );
     } else {
       content = projects.map((proj) => (
-        <Typography>ha ha ha ha</Typography>
-        //<Project project={proj} delete={this.deleteProject}/>
+        <Project project={proj} delete={this.deleteProject}/>
       ));
     }
     return(

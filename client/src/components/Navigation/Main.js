@@ -11,11 +11,11 @@ import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
 //import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project/pl';
+import Project from '../Dashboard/Project/pl_redux';
 import About from '../About/About';
 //import Project from '../Dashboard/Project/ProjectList_edit';
-import Project_Edit from '../Dashboard/Project/p';
-import Project_View from '../Dashboard/Project/pv';
+import Project_Edit from '../Dashboard/Project/p_redux';
+import Project_View from '../Dashboard/Project/pv_redux';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';

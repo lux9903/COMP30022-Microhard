@@ -68,10 +68,10 @@ export const {
   deleteTimelineFailure,
 } = createActions(
   {
-    FETCH_PROJECTLIST_SUCCESS: (data) => ({ data }),
-    FETCH_PROJECTLIST_FAILURE: (error) => ({ error }),
-    FETCH_PROJECTLISTCONDITION_SUCCESS: (data) => ({ data }),
-    FETCH_PROJECTLISTCONDITION_FAILURE: (error) => ({ error }),
+    FETCH_PROJECT_LIST_SUCCESS: (data) => ({ data }),
+    FETCH_PROJECT_LIST_FAILURE: (error) => ({ error }),
+    FETCH_PROJECT_LIST_CONDITION_SUCCESS: (data) => ({ data }),
+    FETCH_PROJECT_LIST_CONDITION_FAILURE: (error) => ({ error }),
     FETCH_PROJECT_SUCCESS: (data) => ({ data }),
     FETCH_PROJECT_FAILURE: (error) => ({ error }),
     CREATE_PROJECT_SUCCESS: (data) => ({ data }),
@@ -111,9 +111,10 @@ export const {
     DELETE_TIMELINE_SUCCESS: (data) => ({ data }),
     DELETE_TIMELINE_FAILURE: (error) => ({ error }),
   },
-  'FETCH_PROJECTLIST_STARTED',
-  'FETCH_PROJECTLISTCONDITION_STARTED',
+  'FETCH_PROJECT_LIST_STARTED',
+  'FETCH_PROJECT_LIST_CONDITION_STARTED',
   'CREATE_PROJECT_STARTED',
+  'UPDATE_PROJECT_STARTED',
   'FETCH_PROJECT_STARTED',
   'DELETE_PROJECT_STARTED',
   'LIKE_PROJECT_STARTED',
@@ -264,6 +265,7 @@ export const updateProject = (info, id) => {
       const response = await axios.post(`/project/update/${id}`, info);
       dispatch(updateProjectSuccess(response.data));
     } catch (error) {
+      //console.log(error);
       dispatch(updateProjectFailure('Could not update project general details and status.'));
     }
   };

@@ -71,6 +71,14 @@ const styles = (theme) => ({
   },
   text: {
     marginTop: theme.spacing(1),
+  },
+  progress: {
+    marginTop: theme.spacing(2),
+    marginBottom:theme.spacing(2),
+    color: "white",
+  },
+  root: {
+      width: "100%",
   }
 });
 
@@ -152,27 +160,118 @@ class Project_View extends Component{
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <div className={classes.body}>
-          <Container maxWidth="sm" >
-            <CircularProgress>
-              <span>Loading...</span>
-            </CircularProgress>
-          </Container>
-        </div>
+        <Grid container justify="center" alignItems="center" className={classes.root}>
+          <CircularProgress color="primary" className={classes.progress}/>
+        </Grid>
       );
     } else if (!project) {
       content = (
-        <div className={classes.body}>
-          <Container maxWidth="sm" >
-            <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom> 
-              Cannot found the project requested.
-            </Typography>
-          </Container>
-        </div>
+        <Grid container justify="center" alignItems="center">
+          <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom> 
+            Cannot found the project requested.
+          </Typography>
+        </Grid>
       );
     } else {
       content = (
-        //adding stuff after fixed everything
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">Description</Typography>
+                <Divider/>
+                {project.description && project.description!=="" ? (
+                  <Typography className={classes.text}>{project.description}</Typography>
+                ) : (
+                  <Typography className={classes.text}>No Description Yet</Typography>
+                )}
+              </CardContent>
+            </Card>
+            <br/>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">Process</Typography>
+                <Divider/>
+                {project.process && project.process.length>0 ? (
+                  project.process.map((proc,i)=>{
+                    return <Process proc={proc}/>
+                  })) : (
+                    <Typography className={classes.text}>No Process Yet</Typography>
+                )}
+              </CardContent>
+            </Card>
+            <br/>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
+                <Divider/>
+                  {project.timeline && project.timeline.length > 0 ? (
+                    <Timeline>
+                    {project.timeline.map((each,i)=>{
+                      return (
+                        <TimelineItem align="left">
+                          <TimelineSeparator>
+                            <TimelineDot color="primary"/>
+                            <TimelineConnector />
+                          </TimelineSeparator>
+                          <TimelineOppositeContent className={classes.oppositeContent}/>
+                          <TimelineContent>
+                            <Card>
+                              <CardContent>
+                                <Typography>{each.time.slice(0,10)}</Typography>
+                                <Divider/>
+                                <Typography>{each.description}</Typography>
+                              </CardContent>
+                            </Card>
+                          </TimelineContent>
+                        </TimelineItem>
+                      )
+                    })}
+                    </Timeline>
+                  ) : (
+                    <Typography className={classes.text}>No Timeline Yet</Typography>
+                  )}
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">Status</Typography>
+                <Divider/>
+                <Typography className={classes.text}>Progress Status: {project.status}</Typography>
+                <Typography>Show Status: {project.show_status}</Typography>
+              </CardContent>
+            </Card>
+            <br/>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
+                <Divider/>
+                <Typography className={classes.text}>{project.rating}{" "} likes</Typography>
+              </CardContent>
+            </Card>
+            <br/>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
+                <Divider/>
+                <List>
+                  {project.contributors && project.contributors.map((con, i)=>{
+                    return <ListItemText>{con}</ListItemText>
+                  })}
+                </List>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      );
+    } 
+    return (
+      <Fragment>
+        <Helmet>
+          <title>Microhard &middot; Project View</title>
+        </Helmet>
         <div className={classes.body}>
           <Container maxWidth="sm" >
               <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
@@ -192,108 +291,10 @@ class Project_View extends Component{
                 </Grid>
               </Grid>
           </Container>
-          <Container className={classes.cardGrid} maxWidth="md">
-          <Grid container spacing={3}>
-              <Grid item xs={12} md={8}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">Description</Typography>
-                    <Divider/>
-                    {project.description && project.description!=="" ? (
-                      <Typography className={classes.text}>{project.description}</Typography>
-                    ) : (
-                      <Typography className={classes.text}>No Description Yet</Typography>
-                    )}
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">Process</Typography>
-                    <Divider/>
-                    {project.process && project.process.length>0 ? (
-                      project.process.map((proc,i)=>{
-                        return <Process proc={proc}/>
-                      })) : (
-                        <Typography className={classes.text}>No Process Yet</Typography>
-                    )}
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
-                    <Divider/>
-                      {project.timeline && project.timeline.length > 0 ? (
-                        <Timeline>
-                        {project.timeline.map((each,i)=>{
-                          return (
-                            <TimelineItem align="left">
-                              <TimelineSeparator>
-                                <TimelineDot color="primary"/>
-                                <TimelineConnector />
-                              </TimelineSeparator>
-                              <TimelineOppositeContent className={classes.oppositeContent}/>
-                              <TimelineContent>
-                                <Card>
-                                  <CardContent>
-                                    <Typography>{each.time.slice(0,10)}</Typography>
-                                    <Divider/>
-                                    <Typography>{each.description}</Typography>
-                                  </CardContent>
-                                </Card>
-                              </TimelineContent>
-                            </TimelineItem>
-                          )
-                        })}
-                        </Timeline>
-                      ) : (
-                        <Typography className={classes.text}>No Timeline Yet</Typography>
-                      )}
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">Status</Typography>
-                    <Divider/>
-                    <Typography className={classes.text}>Progress Status: {project.status}</Typography>
-                    <Typography>Show Status: {project.show_status}</Typography>
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
-                    <Divider/>
-                    <Typography className={classes.text}>{project.rating}{" "} likes</Typography>
-                  </CardContent>
-                </Card>
-                <br/>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
-                    <Divider/>
-                    <List>
-                      {project.contributors && project.contributors.map((con, i)=>{
-                        return <ListItemText>{con}</ListItemText>
-                      })}
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Container>
-        </div>
-      );
-    } 
-    return (
-      <Fragment>
-        <Helmet>
-          <title>Microhard &middot; Project View</title>
-        </Helmet>
-        {content} 
+        <Container className={classes.cardGrid} maxWidth="md">
+          {content} 
+        </Container>
+      </div>
       </Fragment>
   );}
 }
