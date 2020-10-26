@@ -191,7 +191,7 @@ server.js
 |                    | Experience.jsx |                     |                  |                       | ViewProject.jsx     |           |
 |                    |                |                     |                  |                       | ViewProjectItem.jsx |           |
 
-## Files in the "Component" directory
+## Files in the Dashboard directory
 
 | Course       | Document         | Photos          | Profile          | Project            |
 |--------------|------------------|-----------------|------------------|--------------------|
