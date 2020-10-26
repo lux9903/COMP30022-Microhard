@@ -14,11 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 
-import General from './General_redux';
-import Status from './Status_redux';
-import Contributor from './Contributors_redux';
-import Process from './Process_redux';
-import Timeline from './Timeline_redux';
+import General from './General';
+import Status from './Status';
+import Contributor from './Contributors';
+import Process from './Process';
+import Timeline from './Timeline';
 
 import {fetchProject} from '../../../actions/projectAction';
 
