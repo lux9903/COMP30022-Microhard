@@ -7,6 +7,8 @@ import Divider from '@material-ui/core/Divider';
 
 import {connect} from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
+import Grid from '@material-ui/core/Grid';
+import {CircularProgress} from '@material-ui/core';
 
 import {updateProject} from '../../../actions/projectAction';
 
@@ -17,6 +19,13 @@ const styles = (theme) => ({
         width:"100%",
         underline: "none",
     },
+    progress: {
+        marginTop: theme.spacing(2),
+        marginBottom:theme.spacing(2),
+    },
+    root: {
+        width: "100%",
+    }
 });
 
 class General_Info extends Component{
@@ -54,11 +63,17 @@ class General_Info extends Component{
 
     render(){
         const {classes} = this.props;
-        const {error, project} = this.props.project;
+        const {error, project, isUpdatingGen} = this.props.project;
         const {user} = this.props.user;
         let content;
         if (error) {
             content = <Alert severity="error">{error}</Alert>;
+        } else if(isUpdatingGen){
+            content = (
+                <Grid container justify="center" className={classes.root}>
+                    <CircularProgress color="primary" className={classes.progress}/>
+                </Grid>
+            );
         } else if (!project) {
             content = (
               <Typography> The retrieve project not found.</Typography>

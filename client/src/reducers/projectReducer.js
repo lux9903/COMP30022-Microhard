@@ -64,17 +64,17 @@ export default handleActions(
     }),
     UPDATE_PROJECT_STARTED: (state) => ({
       ...state,
-      isUpdating: true,
+      isUpdatingGen: true,
       error: null,
     }),
     UPDATE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
-      isUpdating: false,
+      isUpdatingGen: false,
       project: action.payload.data.result,
     }),
     UPDATE_PROJECT_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: false,
+      isUpdatingGen: false,
       error: action.payload.error,
     }),
     LIKE_PROJECT_STARTED: (state) => ({
@@ -295,6 +295,7 @@ export default handleActions(
     isUpdateCon: false,
     isUpdateTime :false,
     isUpdateProc: false,
+    isUpdateGen: false,
     projects: [],
     project: {},
     error: null,
