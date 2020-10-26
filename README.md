@@ -72,11 +72,30 @@ Running Mocha tests
 | Image              | Read    | /api/image          | Image.find()                 | GET       | View all existing images       |
 | Image              | Read    | /api/image/:filename| Image.findOne()              | GET       | View an existing image         |
 | Image              | Create  | /api/image/upload   | Image.save()                 | POST      | Post a new image to server     |
-| Image              | Delete  | /api/image/:id      | Image.deleteOne()            | DELETE    | Delete an existing image                   |
+| Image              | Delete  | /api/image/:id      | Image.deleteOne()            | DELETE    | Delete an existing image       |
 | PDF                | Read    | /api/pdf            | Pdf.find()                   | GET       | View all existing pdfs         |
 | PDF                | Read    | /api/pdf/:filename  | Pdf.findOne()                | GET       | View an existing pdf           |
 | PDF                | Create  | /api/pdf/upload     | Pdf.save()                   | POST      | Post a new pdf to server       |  
 | PDF                | Delete  | /api/pdf/:id        | Pdf.deleteOne()              | DELETE    | Delete an existing pdf         |
+
+| Project | Read    | /api/project                         | Project.find()     | GET    | View all existing project                   |
+| Project | Read    | /api/conditional                     | Project.find()     | POST   | Sort existing project base on condition     |
+| Project | Read    | /api/project/view/:id                | Project.findOne()  | GET    | View an existing project                    |
+| Project | Create  | /api/project/create                  | Project.save()     | POST   | Create a new project                        |
+| Project | Update  | /api/project/update/:id              | Project.findOne()  | POST   | Edit an existing project                    |
+| Project | Delete  | /api/project/:idd                    | Project.deleteOne()| DELETE | Delete an existing project                  |
+| Project | Create  | /api/project/add_people/:id          | Project.findOne()  | POST   | Add a contributor to an existing project    |
+| Project | Delete  | /api/project/remove_people/:id       | Project.findOne()  | POST   | Delete a contributor of an existing project |
+| Project | Create  | /api/project/process/:id             | Project.findOne()  | POST   | Add new process in an existing project      |
+| Project | Update  | /api/project/process/update/:id      | Project.findOne()  | POST   | Edit a process of an existing project       |
+| Project | Delete  | /api/project/process/remove/:id      | Project.findOne()  | POST   | Delete a process in an existing project     |
+| Project | Create  | /api/project/process/node/:id        | Project.findOne()  | POST   | Add new task into certain process in an existing project |
+| Project | Update  | /api/project/process/node/update/:id | Project.findOne()  | POST   | Edit a task of certain process in an existing project |
+| Project | Update  | /api/project/process/node/finish/:id | Project.findOne()  | POST   | Change a task's status of certain process to "finish" |
+| Project | Delete  | /api/project/process/node/remove/:id | Project.findOne()  | POST   | Delete task of certain process in an existing project |
+| Project | Create  | /api/project/timeline/:id            | Project.findOne()  | POST   | Add new event into timeline of an existing project |
+| Project | Update  | /api/project/timeline/update/:id     | Project.findOne()  | POST   | Update an event of timeline of an existing project |
+| Project | Delete  | /api/project/timeline/remove/:id     | Project.findOne()  | POST   | Delete an event of timeline of an existing project |
 
 ## MongoDB schemas
 
@@ -106,9 +125,24 @@ Pdf {
     'fileId': Pdf ID;
     'user': Ownership of pdfs;
 }
+
+Project {
+    'projectId': Project ID;
+    'user': Ownership of pdfs;
+    'name': Project's name;
+    'description': Project's description;
+    'status': Project's progress-status (In Progress/Complete/Cancel);
+    'show_status': Project's show-status (Public/Private);
+    'contributors': List of contributors;
+    'rating': Number of people give like to the project;
+    'process': The process list will describing the project' progression and tasks involved, consist of ProcessId, process's description and tasks list (nodes);
+    'nodes': The tasks list belong to certain process, consist of NodeId and description;
+    'timeline': The timeline listed down important events of project;
+}
 ```
 
 ## List of important files
+
 ```
 .github
     - workflows
@@ -148,6 +182,7 @@ README.md
 server.js
 ```
 ## Components in the client directory
+
 | Account            | Dashboard      | Home                | Navigation       | Sign Up               | View                | About     |
 |--------------------|----------------|---------------------|------------------|-----------------------|---------------------|-----------|
 | Account.jsx        | /Course        | Functionalities.jsx | Appbar.jsx       | AboutSectionStep.jsx  | view.jsx            | About.jsx |
@@ -157,6 +192,21 @@ server.js
 |                    | /Project       |                     | PrivateRoute.jsx | Review.jsx            | ViewImage.jsx       |           |
 |                    | Experience.jsx |                     |                  |                       | ViewProject.jsx     |           |
 |                    |                |                     |                  |                       | ViewProjectItem.jsx |           |
+
+## Files in the "Component" directory
+
+| Course       | Document         | Photos          | Profile          | Project            |
+|--------------|------------------|-----------------|------------------|--------------------|
+| Course.jsx   | AddDocument.jsx  | Image.jsx       | EditAvatar.jsx   | Project_view.jsx   |
+|              | Documents.jsx    | ImageGrid.jsx   | Profile.jsx      | Project_edit.jsx   |
+|              | EditDocument.jsx |                 |                  | Projectlist.jsx    |
+|              |                  |                 |                  | General.jsx        |
+|              |                  |                 |                  | Status.jsx         |   
+|              |                  |                 |                  | Contributors.jsx   |  
+|              |                  |                 |                  | Process.jsx        | 
+|              |                  |                 |                  | Timeline.jsx       |      
+  
+
 
 ## Controllers, models and routes in the server directory
 | Controllers             | Models             | Routes                            |

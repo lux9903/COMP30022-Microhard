@@ -29,8 +29,6 @@ import ViewCourse from '../View/ViewCourse';
 import ViewProject from '../View/ViewProject';
 import ViewProjectItem from '../View/ViewProjectItem';
 
-import Test from '../Dashboard/test';
-
 class Main extends Component {
   render() {
     return (
@@ -57,12 +55,6 @@ class Main extends Component {
           exact
           path="/experiences"
           component={Experience}
-          authed={this.props.user}
-        />
-        <PrivateRoute
-          exact
-          path="/test"
-          component={Test}
           authed={this.props.user}
         />
         <PrivateRoute

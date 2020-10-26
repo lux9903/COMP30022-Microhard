@@ -5,7 +5,6 @@ import {withStyles} from '@material-ui/core/styles';
 import {Formik, Field, Form} from 'formik';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
-import axios from '../../../helpers/axiosConfig';
 
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -35,7 +34,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
-import {fetchProjectList, fetchProjectListCondition, deleteProject, createProject} from '../../../actions/projectAction';
+import {fetchProjectListCondition, deleteProject, createProject} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
   icon: {
@@ -341,22 +340,8 @@ class ProjectList extends Component{
       <div style={{padding: "10px", backgroundColor: '#094183'}}>
         <Container maxWidth="sm">
           <br />
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            style={{color: '#fff'}}
-            gutterBottom
-          >
+          <Typography variant="h1" align="center" style={{color: '#fff'}} gutterBottom>
             Project Lists
-          </Typography>
-          <Typography
-            variant="h5"
-            align="center"
-            style={{color: '#fff'}}
-            paragraph
-          >
-            A place for me to showcase my projects
           </Typography>
         </Container>
       </div>
