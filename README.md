@@ -76,7 +76,6 @@ Running Mocha tests
 | PDF                | Read    | /api/pdf/:filename  | Pdf.findOne()                | GET       | View an existing pdf           |
 | PDF                | Create  | /api/pdf/upload     | Pdf.save()                   | POST      | Post a new pdf to server       |  
 | PDF                | Delete  | /api/pdf/:id        | Pdf.deleteOne()              | DELETE    | Delete an existing pdf         |
-
 | Project | Read    | /api/project                         | Project.find()     | GET    | View all existing project                   |
 | Project | Read    | /api/conditional                     | Project.find()     | POST   | Sort existing project base on condition     |
 | Project | Read    | /api/project/view/:id                | Project.findOne()  | GET    | View an existing project                    |
