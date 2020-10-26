@@ -14,6 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 
+import ListIcon from '@material-ui/icons/List';
+import ImportContactsIcon from '@material-ui/icons/ImportContacts';
+
 import General from './General';
 import Status from './Status';
 import Contributor from './Contributors';
@@ -65,14 +68,6 @@ class Project extends Component{
       id = this.props.match.params.id;
     }
     this.props.dispatch(fetchProject(id));
-  }
-
-  componentDidUpdate = (prevProps) => {
-    //after make change to description, is it console log out?
-    if(this.props.project.project != prevProps.project.project){
-      console.log(this.props.project.project);
-      console.log(prevProps.project.project);
-    }
   }
 
   render(){
@@ -148,12 +143,12 @@ class Project extends Component{
             <br/>
             <Grid container spacing={4} justify="center" alignItems="center">
               <Grid item>
-                <Button variant="contained" href={"/project/"}>
+                <Button variant="contained" href={"/project/"} endIcon={<ListIcon/>}>
                   Back to List
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" href={"/project/view/"+id}>
+                <Button variant="contained" href={"/project/view/"+id} endIcon={<ImportContactsIcon/>}>
                   View page
                 </Button>
               </Grid>
@@ -165,10 +160,6 @@ class Project extends Component{
       </Fragment>
   );}
 }
-
-//export default withRouter(Project);
-//export default withStyles(styles)(Project);
-//export default withRouter(withStyles(styles)(Project));
 
 const mapStateToProps = (state) => ({
   ...state,

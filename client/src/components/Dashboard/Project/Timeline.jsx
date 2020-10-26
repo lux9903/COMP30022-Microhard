@@ -141,7 +141,7 @@ class Timeline_List extends Component{
             );
         } else {
             const list = project.timeline.map((each) => (
-                <Timeline_Items each={each} id={this.props.id} delete={this.deleteTimeline} update={this.updateTimeline}/>
+                <TimeLineItems each={each} id={this.props.id} delete={this.deleteTimeline} update={this.updateTimeline}/>
             ));
             content = <Timeline>{list}</Timeline>;
         }
@@ -202,7 +202,7 @@ class Timeline_List extends Component{
     }
 }
 
-function Timeline_Items(props){
+function TimeLineItems(props){
     const [description, setDescription] = useState(props.each.description);
     const [date,setDate] = useState(props.each.time.slice(0,10));
     const [open,setOpen] = useState(false);

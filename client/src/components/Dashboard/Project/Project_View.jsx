@@ -6,7 +6,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import {CircularProgress} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import axios from '../../../helpers/axiosConfig';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -33,6 +32,8 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Collapse from '@material-ui/core/Collapse';
+import ListIcon from '@material-ui/icons/List';
+import EditIcon from '@material-ui/icons/Edit';
 
 import {fetchProject} from '../../../actions/projectAction';
 
@@ -280,12 +281,12 @@ class Project_View extends Component{
               <br/>
               <Grid container spacing={4} justify="center" alignItems="center">
                 <Grid item>
-                  <Button variant="contained" href={"/project/"}>
+                  <Button variant="contained" href={"/project/"} endIcon={<ListIcon/>}>
                     Back to List
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" href={"/project/"+id}>
+                  <Button variant="contained" href={"/project/"+id} endIcon={<EditIcon/>}>
                     Edit Page
                   </Button>
                 </Grid>

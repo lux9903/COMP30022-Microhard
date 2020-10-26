@@ -64,7 +64,6 @@ class General_Info extends Component{
     render(){
         const {classes} = this.props;
         const {error, project, isUpdatingGen} = this.props.project;
-        const {user} = this.props.user;
         let content;
         if (error) {
             content = <Alert severity="error">{error}</Alert>;

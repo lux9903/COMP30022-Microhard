@@ -83,7 +83,7 @@ function DeleteButton(props) {
   }
   return (
     <div>
-      <Button variant="contained" size="small" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" size="small" onClick={handleClickOpen}>
         Delete
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -206,10 +206,10 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" size="small" href={"/project/view/"+props.project._id}>
+        <Button variant="contained" color="primary" size="small" href={"/project/view/"+props.project._id}>
           View
         </Button>
-        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
+        <Button variant="contained" color="primary" size="small" href={"/project/"+props.project._id}>
           Edit
         </Button>
         <DeleteButton id={props.project._id} delete={(id)=>props.delete(id)}/>
@@ -311,7 +311,7 @@ class ProjectList extends Component{
 
 	render(){
     const {error, isFetching, projects} = this.props.project;
-    const {classes} = this.props;
+    //const {classes} = this.props;
 
     let content;
 
@@ -413,4 +413,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(ProjectList));
-//export default (ProjectList);

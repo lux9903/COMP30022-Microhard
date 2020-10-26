@@ -139,7 +139,7 @@ class Con_List extends Component{
             );
         } else {
             content = project.contributors.map((cons) => (
-              <Con_Items cons={cons} add={this.addContributor} delete={this.deleteContributor} username={user.username}/>
+              <ConItems cons={cons} add={this.addContributor} delete={this.deleteContributor} username={user.username}/>
             ));
         }
 
@@ -189,7 +189,7 @@ class Con_List extends Component{
     }
 }
 
-function Con_Items(props){
+function ConItems(props){
     const [open, setOpen] = useState(false);
     const [name, setName] = useState(props.cons);
     const classes = useStyles();
