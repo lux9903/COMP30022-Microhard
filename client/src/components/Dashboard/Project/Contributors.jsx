@@ -257,11 +257,11 @@ function ConItems(props){
                             required
                             className={classes.textfield}
                         />
-                        <IconButton type="submit">
-                            <CheckIcon fontSize="small" color="primary" className={classes.icon}/>
+                        <IconButton type="submit" className={classes.icon}>
+                            <CheckIcon fontSize="small" color="primary" />
                         </IconButton>
-                        <IconButton onClick={handleContributorCancel} >
-                            <ClearIcon fontSize="small" style={{ color: "red" }} className={classes.icon}/>
+                        <IconButton onClick={handleContributorCancel} className={classes.icon}>
+                            <ClearIcon fontSize="small" style={{ color: "red" }} />
                         </IconButton>
                     </form>
                 )
