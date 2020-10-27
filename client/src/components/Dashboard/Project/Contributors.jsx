@@ -258,7 +258,7 @@ function ConItems(props){
                             className={classes.textfield}
                         />
                         <IconButton type="submit" className={classes.icon}>
-                            <CheckIcon fontSize="small" color="primary"/>
+                            <CheckIcon fontSize="small" color="primary" />
                         </IconButton>
                         <IconButton onClick={handleContributorCancel} className={classes.icon}>
                             <ClearIcon fontSize="small" style={{ color: "red" }} />
