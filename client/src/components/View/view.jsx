@@ -303,7 +303,7 @@ class View extends Component {
                     >
                       <CopyToClipboard
                         text={
-                          /*`https://comp30022-microhard.herokuapp.com`*/ 'http://localhost:3000'+
+                          `https://comp30022-microhard.herokuapp.com` /*'http://localhost:3000'*/+
                           `/view/${view_user._id}`
                         }
                         onCopy={() => this.setState({copied: true})}
