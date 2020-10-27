@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import {withRouter} from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
 
 const styles = (theme) => ({
   root: {
@@ -80,11 +81,9 @@ class ImageGrid extends Component {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <div className="text-center">
-          <CircularProgress>
-            <span>Loading...</span>
-          </CircularProgress>
-        </div>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress />
+        </Grid>
       );
     } else if (photos.length === 0 || !photos) {
       content = <p className="lead">No photos found.</p>;
