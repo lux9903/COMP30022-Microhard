@@ -23,10 +23,12 @@ import Gallery from 'react-grid-gallery';
 import ViewNav from './ViewNav';
 import Button from '@material-ui/core/Button';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const styles = (theme) => ({
   root: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundImage:
+      'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
     marginTop: '-15px',
     padding: '25px 0 150px 0',
   },
@@ -63,7 +65,7 @@ const styles = (theme) => ({
   socialIcon: {
     marginRight: '8px',
   },
-  socialIcons: {
+  icons: {
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
@@ -80,8 +82,14 @@ const styles = (theme) => ({
   locationIcon: {
     position: 'relative',
     top: '7px',
+    right: '2px',
   },
   graduationIcon: {
+    position: 'relative',
+    top: '7px',
+    left: '-2px',
+  },
+  universityIcon: {
     position: 'relative',
     top: '7px',
     left: '-2px',
@@ -105,7 +113,6 @@ class View extends Component {
       view_user: 'default',
       copied: false,
       file: null,
-      fileLink: '',
     };
   }
 
@@ -147,30 +154,32 @@ class View extends Component {
           return {
             src: '/api/image/' + elem.filename,
             thumbnail: '/api/image/' + elem.filename,
-            thumbnailWidth: 340,
+            thumbnailWidth: 'auto',
             thumbnailHeight: 250,
+            thumbnailCaption: elem.caption,
+            caption: elem.caption,
           };
         }
 
         let photogrid = (
-          <Container>
-            <div
-              style={{
-                display: 'block',
-                minHeight: '1px',
-                width: '100%',
-                border: '1px solid #ddd',
-                overflow: 'auto',
-              }}
-            >
-              <Gallery
-                maxRows={5}
-                images={photodata}
-                enableLightbox={true}
-                enableImageSelection={false}
-              />
-            </div>
-          </Container>
+          <div
+            style={{
+              display: 'block',
+              minHeight: '1px',
+              width: '100%',
+              border: '1px solid #ddd',
+              overflow: 'auto',
+              fontFamily: 'Nunito, Lato, sans-serif',
+              textAlign: 'center',
+              background: 'white',
+            }}
+          >
+            <Gallery
+              images={photodata}
+              enableLightbox={true}
+              enableImageSelection={false}
+            />
+          </div>
         );
         ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
@@ -185,7 +194,6 @@ class View extends Component {
             break;
           }
         }
-        console.log(resumeUrl);
         if (resumeUrl) {
           const resumeLink = (
             <a
@@ -236,7 +244,7 @@ class View extends Component {
                         aria-haspopup="true"
                         color="inherit"
                       >
-                        <div id="avatar" {...bindTrigger(popupState)}></div>
+                        <div id="avatar" {...bindTrigger(popupState)}/>
                       </IconButton>
                     </div>
                   )}
@@ -335,7 +343,7 @@ class View extends Component {
               </Grid>
               <Grid item xs={12} sm={12} md={4} className={classes.icons}>
                 <Button variant="outlined" color="primary" fullWidth>
-                  <div id="resume"></div>
+                  <div id="resume"/>
                 </Button>
               </Grid>
               {/*<Grid item xs={12} sm={6} md={4}>*/}

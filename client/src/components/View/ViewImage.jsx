@@ -36,35 +36,37 @@ class ViewImage extends Component {
                     if (res.data.files) {
                         //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
                         const photodata = res.data.files.map(getPhoto);
-                        function getPhoto(elem) {
-                            return {
-                                src: '/api/image/' + elem.filename,
-                                thumbnail: '/api/image/' + elem.filename,
-                                thumbnailWidth: 340,
-                                thumbnailHeight: 250,
-                            };
-                        }
+ function getPhoto(elem) {
+          return {
+            src: '/api/image/' + elem.filename,
+            thumbnail: '/api/image/' + elem.filename,
+            thumbnailWidth: 'auto',
+            thumbnailHeight: 250,
+            thumbnailCaption: elem.caption,
+            caption: elem.caption,
+          };
+        }
 
-                        let photogrid = (
-                            <Container>
-                                <div
-                                    style={{
-                                        display: 'block',
-                                        minHeight: '1px',
-                                        width: '100%',
-                                        border: '1px solid #ddd',
-                                        overflow: 'auto',
-                                    }}
-                                >
-                                    <Gallery
-                                        maxRows={5}
-                                        images={photodata}
-                                        enableLightbox={true}
-                                        enableImageSelection={false}
-                                    />
-                                </div>
-                            </Container>
-                        );
+        let photogrid = (
+          <div
+            style={{
+              display: 'block',
+              minHeight: '1px',
+              width: '100%',
+              border: '1px solid #ddd',
+              overflow: 'auto',
+              fontFamily: 'Nunito, Lato, sans-serif',
+              textAlign: 'center',
+              background: 'white',
+            }}
+          >
+            <Gallery
+              images={photodata}
+              enableLightbox={true}
+              enableImageSelection={false}
+            />
+          </div>
+          );
                         ReactDOM.render(photogrid, document.getElementById('all_img'));
                     }
                 });
@@ -76,11 +78,15 @@ class ViewImage extends Component {
             <Fragment>
                 <ViewNav view_user={this.state.view_user}/>
                 <div style={{height: '120px', backgroundColor: '#094183'}}>
-                    <br />
-                    <br />
-                    <Typography variant="h1" align="center" style={{color: '#fff'}}>
-                        Images
-                    </Typography>
+                                  <br />
+                                  <br />
+                                  <Typography
+                                    variant="h1"
+                                    align="center"
+                                    style={{color: '#fff', fontSize: '36px'}}
+                                  >
+                                      Photos
+                                  </Typography>
                 </div>
 
                 <div className={classes.root}>

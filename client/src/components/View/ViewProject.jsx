@@ -208,7 +208,11 @@ class ViewProjectList extends Component {
         <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          <Typography
+            variant="h1"
+            align="center"
+            style={{color: '#fff', fontSize: '36px'}}
+          >
             Project Lists
           </Typography>
         </div>

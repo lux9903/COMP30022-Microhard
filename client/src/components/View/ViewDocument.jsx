@@ -14,7 +14,25 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import TableContainer from '@material-ui/core/TableContainer';
 import ViewNav from './ViewNav';
+import EditDocument from '../Dashboard/Document/EditDocument';
+import withStyles from '@material-ui/core/styles/withStyles';
 
+const styles = (theme) => ({
+    tableHeader: {
+        fontWeight: '700',
+    },
+    section: {
+        height: '120px',
+        backgroundColor: '#094183',
+    },
+    heading: {
+        color: '#fff',
+        fontSize: '36px',
+    },
+    noDocs: {
+        margin: '15px',
+    },
+});
 class ViewDocument extends Component {
     constructor(props) {
         super(props);
@@ -24,23 +42,29 @@ class ViewDocument extends Component {
     }
 
     componentDidMount() {
-        const user_id = this.props.match.params.id
+        const user_id = this.props.match.params.id;
+        const {classes} = this.props;
 
-        const view_user = axios.get(`/view/${user_id}`).then((res) => {
+        axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
-        const pdf = axios.get(`/view/${user_id}/pdf`).then((res) => {
-            if (res.data.pdfs) {
+        axios.get(`/view/${user_id}/pdf`).then((res) => {
+            if (res.data.pdfs.length === 0 || !res.data.pdfs) {
+                const Pdfs = (
+                  <Typography className={classes.noDocs}>No documents found.</Typography>
+                );
+                ReactDOM.render(Pdfs, document.getElementById('changeLater'));
+            } else {
                 const Pdfs = res.data.pdfs.map((ele) => (
-                    <TableRow>
-                        <TableCell>{ele.title}</TableCell>
-                        <TableCell align="right">
-                            <a href={ele.getFileLink} target="_blank">
-                                {ele.originalname}
-                            </a>
-                        </TableCell>
-                        <TableCell align="right">{ele.date}</TableCell>
-                    </TableRow>
+                  <TableRow>
+                      <TableCell>{ele.title}</TableCell>
+                      <TableCell align="right">
+                          <a href={ele.getFileLink} target="_blank" rel="noopener noreferrer">
+                              {ele.originalname}
+                          </a>
+                      </TableCell>
+                      <TableCell align="right">{ele.date}</TableCell>
+                  </TableRow>
                 ));
                 ReactDOM.render(Pdfs, document.getElementById('changeLater'));
             }
@@ -48,7 +72,7 @@ class ViewDocument extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const classes = this.props;
         return (
             <Fragment>
                 <ViewNav view_user={this.state.view_user}/>
@@ -76,16 +100,16 @@ class ViewDocument extends Component {
                         <Table size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell style={{fontWeight: '700'}}>Title</TableCell>
-                                    <TableCell align="right" style={{fontWeight: '700'}}>
+                                    <TableCell className={classes.tableHeader}>Title</TableCell>
+                                    <TableCell align="right" className={classes.tableHeader}>
                                         Filename
                                     </TableCell>
-                                    <TableCell align="right" style={{fontWeight: '700'}}>
+                                    <TableCell align="right" className={classes.tableHeader}>
                                         Date Uploaded
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody id="changeLater"></TableBody>
+                            <TableBody id="changeLater"/>
                         </Table>
                     </TableContainer>
                 </Container>
@@ -94,4 +118,4 @@ class ViewDocument extends Component {
     }
 }
 
-export default ViewDocument;
+export default withStyles(styles)(ViewDocument);
