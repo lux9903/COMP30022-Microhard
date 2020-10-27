@@ -1,25 +1,30 @@
-import React, {Component, Fragment, useState} from 'react';
-import {Helmet} from 'react-helmet';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import axios from '../../helpers/axiosConfig';
-import TextField from '@material-ui/core/TextField';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
+import {withStyles} from '@material-ui/core/styles';
+import {Helmet} from 'react-helmet';
+import axios from '../../helpers/axiosConfig';
+//import Alert from '@material-ui/lab/Alert';
+//import {CircularProgress} from '@material-ui/core';
+
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
+
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider';
+import SearchIcon from '@material-ui/icons/Search';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
-import SearchIcon from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import ViewNav from './ViewNav';
 
 const styles = (theme) => ({
@@ -56,13 +61,6 @@ const styles = (theme) => ({
   }
 });
 
-//button to opening warning delete form
-
-//Button opening add form
-
-//adding form
-
-
 function Project(props){
   return(
     <Accordion>
@@ -82,7 +80,7 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" size="small" href={`/view/${props.view_user._id}/project/`+props.project._id}>
+        <Button variant="contained" color="primary" size="small" href={`/view/${props.view_user._id}/project/`+props.project._id}>
           View
         </Button>
       </AccordionActions>
@@ -107,7 +105,6 @@ class ViewProjectList extends Component{
       search : "",
       search_status: "",
       sortBy: "",
-      show_status: "",
       view_user :"default",
     };
   }
@@ -119,7 +116,6 @@ class ViewProjectList extends Component{
   }
 
   getAll = (user_id) => {
-
     axios.get(`/view/${user_id}/project`).then((res) => {
       this.setState({projlist: res.data.projects});
     })
@@ -128,7 +124,8 @@ class ViewProjectList extends Component{
 
   getCondition = (user_id) =>{
     let formD = {
-      "name": this.state.input
+      "name": this.state.input,
+      "show_status": "public",
     }
 
     if(this.state.search_status !== ""){
@@ -138,27 +135,19 @@ class ViewProjectList extends Component{
     if(this.state.sortBy !== ""){
       formD['sortBy'] = this.state.sortBy;
     }
-
-    if(this.state.show_status !== ""){
-      //alert(this.state.show_status);
-      formD['show_status'] = this.state.show_status;
-      //alert(formD['show_status']);
-    }
     axios.post(`/view/${user_id}/project/conditional`,formD)
       .then((res) => {
         this.setState({projlist: res.data.result});
-        //alert(res.data.result);
       })
       .catch((error) => {});
   }
 
   update = () => {
     this.getCondition(this.state.view_user._id);
-    this.pList();
   }
-  componentDidMount = () => {
-    const user_id = this.props.match.params.id
 
+  componentDidMount = () => {
+    const user_id = this.props.match.params.id;
     const view_user = axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user:res.data});
     })
@@ -171,7 +160,6 @@ class ViewProjectList extends Component{
   }
 
   onSearch = (event) => {
-    //event.preventDefault();
     if(event.key === "Enter"){
       this.update();
     }
@@ -181,18 +169,15 @@ class ViewProjectList extends Component{
     if(newstatus !== null){
       this.setState(
         {search_status: newstatus},
-        //alert(this.state.search_status),
         this.update
       );
     }
-    //alert(this.state.search_status);
   }
 
   onSortChange = (event, newsort) => {
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
-        //alert(this.state.search_status),
         this.update
       );
     }
@@ -202,7 +187,6 @@ class ViewProjectList extends Component{
     if(newshow !== null){
       this.setState(
         {show_status: newshow},
-        //alert(this.state.search_status),
         this.update
       );
     }
@@ -215,27 +199,12 @@ class ViewProjectList extends Component{
         <Helmet>
           <title>Microhard &middot; My projects </title>
         </Helmet>
-        <div style={{padding: "10px", backgroundColor: '#094183'}}>
-          <Container maxWidth="sm">
-            <br />
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              style={{color: '#fff'}}
-              gutterBottom
-            >
-              Project Lists
-            </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              style={{color: '#fff'}}
-              paragraph
-            >
-              A place for me to showcase my projects
-            </Typography>
-          </Container>
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
+          <br />
+          <br />
+          <Typography variant="h1" align="center" style={{color: '#fff'}}>
+            Project Lists
+          </Typography>
         </div>
         <br/>
         <Container maxWidth="md">

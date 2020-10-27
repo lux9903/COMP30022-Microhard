@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react';
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core/styles';
-import axios from '../../../helpers/axiosConfig';
 import {Helmet} from 'react-helmet';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -24,30 +25,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-
+import {fetchProjectListCondition, deleteProject, createProject} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
-  heroContent: {
-      backgroundColor: '#094183',
-      padding: theme.spacing(6, 0, 6),
-  },
   body: {
       paddingTop: theme.spacing(4),
-  },
-  searchbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justify: "space-between",
-  },
-  margin: {
-      margin: theme.spacing(1),
-  },
-  ListItem:{
-      padding: "0px",
-  },
-  list:{
-      maxHeight: 100,
-      overflow: 'auto',
   },
 });
 
@@ -70,7 +52,7 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
+        <Button variant="contained" color="primary" size="small" href={"/project/view/"+props.project._id}>
           View
         </Button>
       </AccordionActions>
@@ -81,15 +63,12 @@ class ProjectList extends Component{
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.update = this.update.bind(this);
-    this.pList = this.pList.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
     this.getCondition= this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.state = {
-      projlist : [],
       search : "",
       search_status: "",
       sortBy: "",
@@ -114,26 +93,13 @@ class ProjectList extends Component{
       "name": this.state.input,
       "show_status": "public",
     }
-
     if(this.state.search_status !== ""){
       formD['status'] = this.state.search_status;
     }
-
     if(this.state.sortBy !== ""){
       formD['sortBy'] = this.state.sortBy;
     }
-
-    axios.post('/project/conditional',formD)
-    .then((res) => {
-      this.setState({projlist: res.data.result});
-    })
-    .catch((error) => {});
-  }
-
-  //the update function will just do get request then call the render function to re-render
-  update = () => {
-    this.getCondition();
-    this.pList();
+    this.props.dispatch(fetchProjectListCondition(formD));
   }
 
   //this is just function to mount the class
@@ -151,7 +117,7 @@ class ProjectList extends Component{
   onSearch = (event) => {
     //event.preventDefault();
     if(event.key === "Enter"){
-      this.update();
+      this.getCondition();
     }
   }
 
@@ -160,7 +126,7 @@ class ProjectList extends Component{
     if(newstatus !== null){
       this.setState(
         {search_status: newstatus},
-        this.update
+        this.getCondition
       );
     }
   }
@@ -170,7 +136,7 @@ class ProjectList extends Component{
     if(newsort !== null){
       this.setState(
         {sortBy: newsort},
-        this.update
+        this.getCondition
       );
     }
   }
@@ -181,9 +147,7 @@ class ProjectList extends Component{
 	render(){
     const {classes} = this.props;
 
-    const {error, isFetching, documents, isUpdating} = this.props.document;
-    console.log(this.props);
-    const {classes} = this.props;
+    const {error, isFetching, projects} = this.props.project;
 
     let content;
 
@@ -191,69 +155,32 @@ class ProjectList extends Component{
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <CircularProgress>
-          <span>Loading...</span>
-        </CircularProgress>
-      );
-    } else if (isUpdating) {
-      content = (
-        <CircularProgress>
-          <span>Update your change</span>
-        </CircularProgress>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary"/>
+        </Grid>
       );
     } else if (projects.length === 0 || !projects) {
       content = (
-        <Typography>There is no project found.</Typography>
+        <Grid container justify="center" alignItems="center">
+          <Typography> No projects found.</Typography>
+        </Grid>
       );
     } else {
-      const Pdfs = documents.map((ele) => (
-        <TableRow>
-          <TableCell>{ele.title}</TableCell>
-          <TableCell align="right">
-            <a href={ele.getFileLink} target="_blank" rel="noopener noreferrer">
-              {ele.originalname}
-            </a>
-          </TableCell>
-          <TableCell align="right">{ele.date}</TableCell>
-          <TableCell align="right">
-            <EditDocument onEdit={this.onEdit} id={ele._id} />
-            <IconButton aria-label="delete">
-              <DeleteIcon
-                onClick={() => {
-                  this.deleteDocument(ele._id);
-                }}
-              />
-            </IconButton>
-          </TableCell>
-        </TableRow>
+      content = projects.map((proj) => (
+        <Project project={proj} delete={this.deleteProject}/>
       ));
-      content = <TableBody>{Pdfs}</TableBody>;
     }
     return(
       <Fragment>
       <Helmet>
         <title>Microhard &middot; My project list </title>
       </Helmet>
-      <div className={classes.heroContent}>
-        <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            style={{color: '#fff'}}
-            gutterBottom
-          >
-            Project Lists
-          </Typography>
-          <Typography
-            variant="h5"
-            align="center"
-            style={{color: '#fff'}}
-            paragraph
-          >
-            A place for me to showcase my projects
-          </Typography>
-        </Container>
+      <div style={{height: '120px', backgroundColor: '#094183'}}>
+        <br />
+        <br />
+        <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          Project Lists
+        </Typography>
       </div>
       <Container maxWidth="md" className={classes.body}>
         <Grid container direction="row" justify="space-evenly" alignItems="center">
@@ -295,7 +222,7 @@ class ProjectList extends Component{
           </ToggleButtonGroup>
         </Grid>
         <br/>
-        {this.pList()}
+        {content}
         <br/>
         <br/>
       </Container>
@@ -306,4 +233,10 @@ class ProjectList extends Component{
 
 //export default (ProjectList);
 
-export default withStyles(styles)(ProjectList);
+//export default withStyles(styles)(ProjectList);
+
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(ProjectList));

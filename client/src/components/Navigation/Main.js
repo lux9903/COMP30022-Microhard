@@ -11,7 +11,8 @@ import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
 //import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project/ProjectList';
+//import Project from '../Dashboard/Project/ProjectList';
+import Project from '../Dashboard/Project/pl_v_redux';
 import About from '../About/About';
 //import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/Project_Edit';
@@ -44,11 +45,7 @@ class Main extends Component {
         <Route exact path="/view/:id/course" component={ViewCourse} />
         <Route exact path="/view/:id/experiences" component={ViewExperience} />
         <Route exact path="/view/:id/project" component={ViewProject} />
-        <Route
-          exact
-          path="/view/:id/project/:project_id"
-          component={ViewProjectItem}
-        />
+        <Route exact path="/view/:id/project/:project_id"component={ViewProjectItem} />
 
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute
@@ -67,12 +64,14 @@ class Main extends Component {
           exact
           path="/project/view/:id"
           component={Project_View}
+          //component={ViewProjectItem}
           authed={this.props.user}
         />
         <PrivateRoute
           exact
           path="/project"
           component={Project}
+          //component={ViewProject}
           authed={this.props.user}
         />
         <PrivateRoute

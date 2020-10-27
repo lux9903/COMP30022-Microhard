@@ -311,7 +311,7 @@ class ProjectList extends Component{
 
 	render(){
     const {error, isFetching, projects} = this.props.project;
-    //const {classes} = this.props;
+    const {classes} = this.props;
 
     let content;
 
@@ -337,13 +337,12 @@ class ProjectList extends Component{
       <Helmet>
         <title>Microhard &middot; My projects </title>
       </Helmet>
-      <div style={{padding: "10px", backgroundColor: '#094183'}}>
-        <Container maxWidth="sm">
-          <br />
-          <Typography variant="h1" align="center" style={{color: '#fff'}} gutterBottom>
-            Project Lists
-          </Typography>
-        </Container>
+      <div style={{height: '120px', backgroundColor: '#094183'}}>
+        <br />
+        <br />
+        <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          Project Lists
+        </Typography>
       </div>
       <br/>
       <Container maxWidth="md">
