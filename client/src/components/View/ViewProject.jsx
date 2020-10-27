@@ -75,7 +75,6 @@ function Project(props){
         <Grid container direction="column">
           <Typography>Description: {props.project.description}</Typography>
           <Typography>Progress: {props.project.status}</Typography>
-          <Typography>Show status: {props.project.show_status}</Typography>
         </Grid>
       </AccordionDetails>
       <Divider />
@@ -92,7 +91,6 @@ class ViewProjectList extends Component{
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.update = this.update.bind(this);
-    this.getAll = this.getAll.bind(this);
     this.pList = this.pList.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -111,15 +109,8 @@ class ViewProjectList extends Component{
 
   pList = () => {
     return (this.state.projlist && this.state.projlist.map((proj, i) => {
-      return <Project project={proj} view_user={this.state.view_user} update={this.update}/>
+      return <Project project={proj} view_user={this.state.view_user}/>
     }));
-  }
-
-  getAll = (user_id) => {
-    axios.get(`/view/${user_id}/project`).then((res) => {
-      this.setState({projlist: res.data.projects});
-    })
-      .catch((error) => {})
   }
 
   getCondition = (user_id) =>{
@@ -151,7 +142,7 @@ class ViewProjectList extends Component{
     const view_user = axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user:res.data});
     })
-    this.getAll(user_id);
+    this.getCondition(user_id);
   }
 
   onChangeInput = (event) => {
@@ -193,6 +184,18 @@ class ViewProjectList extends Component{
   }
 
   render(){
+    let content;
+    if (!this.state.projlist || (this.state.projlist && this.state.projlist.length === 0)) {
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <Typography> No projects found.</Typography>
+        </Grid>
+      );
+    } else {
+      content = this.state.projlist.map((proj) => (
+        <Project project={proj} view_user={this.state.view_user}/>
+      ));
+    }
     return(
       <Fragment>
         <ViewNav view_user={this.state.view_user}/>
@@ -247,7 +250,7 @@ class ViewProjectList extends Component{
             </ToggleButtonGroup>
           </Grid>
           <br/>
-          {this.pList()}
+          {content}
           <br/>
           <br/>
         </Container>

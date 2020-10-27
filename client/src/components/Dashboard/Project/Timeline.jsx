@@ -36,10 +36,18 @@ import {CircularProgress} from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     oppositeContent:{
       flex: 0,
+      padding: 0,
     },
     textfield:{
         margin: theme.spacing(1),
         underline: "none",
+    },
+    cardContent: {
+        flexGrow: 0,
+        margin: 0,
+        "&:last-child": {
+            paddingBottom: 0
+        }
     },
 }));
 
@@ -257,7 +265,7 @@ function TimeLineItems(props){
                 <TimelineOppositeContent className={classes.oppositeContent}/>
                 <TimelineContent>
                     <Card>
-                        <CardContent>
+                        <CardContent className={classes.cardContent}>
                             {!open ? (
                                 <Grid container justify="flex-end" alignItems="center">
                                     <TextField

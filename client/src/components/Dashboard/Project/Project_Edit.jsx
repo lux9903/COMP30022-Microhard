@@ -87,7 +87,9 @@ class Project extends Component{
       );
     } else if (!project) {
       content = (
-        <Typography> Cannot found the project requested.</Typography>
+        <Grid container justify="center" alignItems="center">
+          <Typography> Cannot found the project requested.</Typography>
+        </Grid>
       );
     } else {
       content = (

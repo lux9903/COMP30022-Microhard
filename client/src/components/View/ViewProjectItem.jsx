@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -32,16 +33,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Collapse from '@material-ui/core/Collapse';
 import { IconButton } from '@material-ui/core';
 import ViewNav from './ViewNav';
+import ListIcon from '@material-ui/icons/List';
 
 
 const styles = (theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: '#094183',
-    padding: theme.spacing(6, 0, 6),
-  },
   cardGrid: {
     paddingTop: theme.spacing(4),
   },
@@ -53,22 +48,8 @@ const styles = (theme) => ({
   cardContent: {
     flexGrow: 0,
   },
-  input: {
-    color: "white",
-    fontSize:50,
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  ListItem:{
-    padding: "0px",
-  },
   oppositeContent:{
     flex: 0,
-  },
-  list:{
-    maxHeight: 100,
-    overflow: 'auto',
   },
   body: {
     backgroundImage:
@@ -77,12 +58,25 @@ const styles = (theme) => ({
   },
   liketext: {
     marginTop: theme.spacing(1),
-  }
+  },  
+  text: {
+    marginTop: theme.spacing(1),
+  },
 });
+
+const useStyles = makeStyles((theme) => ({
+  item: {
+    marginLeft: 8,
+  },
+  icon: {
+    marginRight: 12,
+  }
+}));
 
 //this render the process section
 function Process(props) {
   const [open, setOpen] = useState(false);
+  const classes = useStyles();
   const handleClick = () => {
     setOpen(!open);
   };
@@ -99,19 +93,19 @@ function Process(props) {
             return (
               <List>
                 {!node.state ? (
-                  <ListItem>
+                  <ListItem className={classes.item}>
                     <ListItemText primary={node.description} />
                   </ListItem>
                 ) : (
-                  <ListItem disabled>
+                  <ListItem disabled className={classes.item}>
                     <ListItemText primary={node.description} />
-                    <DoneAllIcon/>
+                    <DoneAllIcon className={classes.icon}/>
                   </ListItem>
                 )}
               </List>
             )})) : (
           <List>
-            <ListItem>
+            <ListItem className={classes.item}>
               <ListItemText>No task yet</ListItemText>
             </ListItem>
           </List>
@@ -184,7 +178,7 @@ class Project_View extends Component{
             <br/>
             <Grid container spacing={4} justify="center" alignItems="center">
               <Grid item>
-                <Button variant="contained" href={`/view/${this.state.view_user._id}/project/`}>
+                <Button variant="contained" href={`/view/${this.state.view_user._id}/project/`} endIcon={<ListIcon/>}>
                   Back to List
                 </Button>
               </Grid>
@@ -203,9 +197,9 @@ class Project_View extends Component{
                     <Typography gutterBottom variant="h5" component="h2">Description</Typography>
                     <Divider/>
                     {this.state.project.description && this.state.project.description!=="" ? (
-                      <Typography>{this.state.project.description}</Typography>
+                      <Typography className={classes.text}>{this.state.project.description}</Typography>
                     ) : (
-                      <Typography>No Description Yet</Typography>
+                      <Typography className={classes.text}>No Description Yet</Typography>
                     )}
                   </CardContent>
                 </Card>
@@ -220,7 +214,7 @@ class Project_View extends Component{
                       this.state.project.process.map((proc,i)=>{
                         return <Process proc={proc}/>
                       })) : (
-                      <Typography>No Process Yet</Typography>
+                      <Typography className={classes.text}>No Process Yet</Typography>
                     )}
                   </CardContent>
                 </Card>
@@ -254,7 +248,7 @@ class Project_View extends Component{
                           )
                         })
                       ) : (
-                        <Typography>No Timeline Yet</Typography>
+                        <Typography className={classes.text}>No Timeline Yet</Typography>
                       )}
                     </Timeline>
                   </CardContent>
@@ -269,7 +263,7 @@ class Project_View extends Component{
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">Status</Typography>
                     <Divider/>
-                    <Typography>Progress Status: {this.state.project.status}</Typography>
+                    <Typography className={classes.text}>Progress Status: {this.state.project.status}</Typography>
                     <Typography>Show Status: {this.state.project.show_status}</Typography>
                   </CardContent>
                 </Card>

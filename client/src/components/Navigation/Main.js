@@ -12,7 +12,7 @@ import Experience from '../Dashboard/Experience';
 
 //import Image from '../Dashboard/Image';
 //import Project from '../Dashboard/Project/ProjectList';
-import Project from '../Dashboard/Project/pl_v_redux';
+import Project from '../Dashboard/Project/ProjectList';
 import About from '../About/About';
 //import Project from '../Dashboard/Project/ProjectList_edit';
 import Project_Edit from '../Dashboard/Project/Project_Edit';
@@ -64,14 +64,12 @@ class Main extends Component {
           exact
           path="/project/view/:id"
           component={Project_View}
-          //component={ViewProjectItem}
           authed={this.props.user}
         />
         <PrivateRoute
           exact
           path="/project"
           component={Project}
-          //component={ViewProject}
           authed={this.props.user}
         />
         <PrivateRoute

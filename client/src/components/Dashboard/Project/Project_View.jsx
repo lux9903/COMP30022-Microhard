@@ -55,15 +55,16 @@ const styles = (theme) => ({
       paddingTop: theme.spacing(4),
   },
   card: {
-      height: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardContent: {
-      flexGrow: 0,
+    flexGrow: 0,
   },
   oppositeContent:{
     flex: 0,
+    padding: 0,
   },
   body: {
     backgroundImage:
@@ -168,7 +169,7 @@ class Project_View extends Component{
     } else if (!project) {
       content = (
         <Grid container justify="center" alignItems="center">
-          <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom> 
+          <Typography> 
             Cannot found the project requested.
           </Typography>
         </Grid>

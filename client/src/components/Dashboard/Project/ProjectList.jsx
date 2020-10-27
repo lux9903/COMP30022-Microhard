@@ -325,7 +325,9 @@ class ProjectList extends Component{
       );
     } else if (projects.length === 0 || !projects) {
       content = (
-        <Typography> No projects found.</Typography>
+        <Grid container justify="center" alignItems="center">
+          <Typography> No projects found.</Typography>
+        </Grid>
       );
     } else {
       content = projects.map((proj) => (
