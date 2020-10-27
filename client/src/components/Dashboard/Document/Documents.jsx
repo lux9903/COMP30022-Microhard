@@ -134,13 +134,23 @@ class Documents extends Component {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <Grid container justify="center" alignItems="center">
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{padding: '10px'}}
+        >
           <CircularProgress />
         </Grid>
       );
     } else if (isUpdating) {
       content = (
-        <Grid container justify="center" alignItems="center">
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{padding: '10px'}}
+        >
           <CircularProgress />
         </Grid>
       );
