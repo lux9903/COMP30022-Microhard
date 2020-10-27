@@ -29,6 +29,7 @@ import Fade from '@material-ui/core/Fade';
 import DialogContent from '@material-ui/core/DialogContent';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import {DataGrid} from '@material-ui/data-grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -264,11 +265,7 @@ function GetList(props) {
                 <TableCell align="center">{row.grades}</TableCell>
                 <TableCell align="center">
                   <EditButton {...row} refresh={props.refresh} />
-                  <DeleteButton
-                    {...row}
-                    code={row.code}
-                    refresh={props.refresh}
-                  />
+                  <DeleteButton {...row} code={row.code} refresh={props.refresh} />
                 </TableCell>
               </TableRow>
             ))}
@@ -716,25 +713,18 @@ class Course extends Component {
       if (res.data.course) {
         this.setState({courses: res.data.course});
         keys.map((key) => {
-          if (this.state.courses[key]) {
+          if(this.state.courses[key]) {
             this.state.courses[key].map((value) => {
               rows[i] = {};
               rows[i] = {
-                code: value.code,
-                year: value.year,
-                sem: value.sem,
-                grades: value.grades,
-                score: value.score,
-                state: value.state,
-                description: value.description,
-                name: value.name,
-                link: value.link,
-                _id: value._id,
+                code: value.code, year: value.year, sem: value.sem,
+                grades: value.grades, score: value.score, state: value.state,
+                description: value.description, name: value.name,
+                link: value.link, _id: value._id,
               };
               i++;
             });
-          }
-        });
+          }});
         this.setState({courses2: rows});
       }
     });
