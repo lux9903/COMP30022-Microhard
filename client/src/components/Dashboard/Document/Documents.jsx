@@ -25,6 +25,7 @@ import {connect} from 'react-redux';
 import {CircularProgress} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Snackbar from '@material-ui/core/Snackbar';
+import Grid from '@material-ui/core/Grid';
 
 const styles = (theme) => ({
   tableHeader: {
@@ -133,9 +134,14 @@ class Documents extends Component {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
       content = (
-        <CircularProgress>
-          <span>Loading...</span>
-        </CircularProgress>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{padding: '10px'}}
+        >
+          <CircularProgress />
+        </Grid>
       );
     } else if (isUpdating) {
       content = (

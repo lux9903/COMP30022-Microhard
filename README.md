@@ -129,7 +129,7 @@ Project {
     'user': Ownership of pdfs;
     'name': Project's name;
     'description': Project's description;
-    'status': Project's progress-status (In Progress/Complete/Cancel);
+    'status': Project's progress-status (In progress/Complete/Cancel);
     'show_status': Project's show-status (Public/Private);
     'contributors': List of contributors;
     'rating': Number of people give like to the project;

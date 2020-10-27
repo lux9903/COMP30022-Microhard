@@ -44,16 +44,16 @@ const styles = (theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  ListItem:{
-    padding: "0px",
+  ListItem: {
+    padding: '0px',
   },
-  list:{
+  list: {
     maxHeight: 100,
     overflow: 'auto',
   },
-  container:{
-    justify_content: "space-between",
-  }
+  container: {
+    justify_content: 'space-between',
+  },
 });
 
 //button to opening warning delete form
@@ -62,9 +62,8 @@ const styles = (theme) => ({
 
 //adding form
 
-
-function Project(props){
-  return(
+function Project(props) {
+  return (
     <Accordion>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -82,14 +81,18 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" size="small" href={`/view/${props.view_user._id}/project/`+props.project._id}>
+        <Button
+          variant="contained"
+          size="small"
+          href={`/view/${props.view_user._id}/project/` + props.project._id}
+        >
           View
         </Button>
       </AccordionActions>
     </Accordion>
-  )
+  );
 }
-class ViewProjectList extends Component{
+class ViewProjectList extends Component {
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -99,86 +102,97 @@ class ViewProjectList extends Component{
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
-    this.getCondition= this.getCondition.bind(this);
+    this.getCondition = this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onShowStatusChange = this.onShowStatusChange.bind(this);
     this.state = {
-      projlist : [],
-      search : "",
-      search_status: "",
-      sortBy: "",
-      show_status: "",
-      view_user :"default",
+      projlist: [],
+      search: '',
+      search_status: '',
+      sortBy: '',
+      show_status: '',
+      view_user: 'default',
     };
   }
 
   pList = () => {
-    return (this.state.projlist && this.state.projlist.map((proj, i) => {
-      return <Project project={proj} view_user={this.state.view_user} update={this.update}/>
-    }));
-  }
+    return (
+      this.state.projlist &&
+      this.state.projlist.map((proj, i) => {
+        return (
+          <Project
+            project={proj}
+            view_user={this.state.view_user}
+            update={this.update}
+          />
+        );
+      })
+    );
+  };
 
   getAll = (user_id) => {
+    axios
+      .get(`/view/${user_id}/project`)
+      .then((res) => {
+        this.setState({projlist: res.data.projects});
+      })
+      .catch((error) => {});
+  };
 
-    axios.get(`/view/${user_id}/project`).then((res) => {
-      this.setState({projlist: res.data.projects});
-    })
-      .catch((error) => {})
-  }
-
-  getCondition = (user_id) =>{
+  getCondition = (user_id) => {
     let formD = {
-      "name": this.state.input
-    }
+      name: this.state.input,
+    };
 
-    if(this.state.search_status !== ""){
+    if (this.state.search_status !== '') {
       formD['status'] = this.state.search_status;
     }
 
-    if(this.state.sortBy !== ""){
+    if (this.state.sortBy !== '') {
       formD['sortBy'] = this.state.sortBy;
     }
 
-    if(this.state.show_status !== ""){
+    if (this.state.show_status !== '') {
       //alert(this.state.show_status);
       formD['show_status'] = this.state.show_status;
       //alert(formD['show_status']);
     }
-    axios.post(`/view/${user_id}/project/conditional`,formD)
+    axios
+      .post(`/view/${user_id}/project/conditional`, formD)
       .then((res) => {
         this.setState({projlist: res.data.result});
         //alert(res.data.result);
       })
       .catch((error) => {});
-  }
+  };
 
   update = () => {
     this.getCondition(this.state.view_user._id);
     this.pList();
-  }
+  };
   componentDidMount = () => {
-    const user_id = this.props.match.params.id
+    const user_id = this.props.match.params.id;
 
     const view_user = axios.get(`/view/${user_id}`).then((res) => {
-      this.setState({view_user:res.data});
-    })
+      this.setState({view_user: res.data});
+    });
     this.getAll(user_id);
-  }
+  };
 
   onChangeInput = (event) => {
     event.preventDefault();
     this.setState({input: event.target.value});
-  }
+  };
 
   onSearch = (event) => {
     //event.preventDefault();
-    if(event.key === "Enter"){
+    if (event.key === 'Enter') {
       this.update();
     }
-  }
+  };
 
   onStatusChange = (event, newstatus) => {
-    if(newstatus !== null){
+    if (newstatus !== null) {
       this.setState(
         {search_status: newstatus},
         //alert(this.state.search_status),
@@ -186,36 +200,36 @@ class ViewProjectList extends Component{
       );
     }
     //alert(this.state.search_status);
-  }
+  };
 
   onSortChange = (event, newsort) => {
-    if(newsort !== null){
+    if (newsort !== null) {
       this.setState(
         {sortBy: newsort},
         //alert(this.state.search_status),
         this.update
       );
     }
-  }
+  };
 
   onShowStatusChange = (event, newshow) => {
-    if(newshow !== null){
+    if (newshow !== null) {
       this.setState(
         {show_status: newshow},
         //alert(this.state.search_status),
         this.update
       );
     }
-  }
+  };
 
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        <ViewNav view_user={this.state.view_user}/>
+        <ViewNav view_user={this.state.view_user} />
         <Helmet>
           <title>Microhard &middot; My projects </title>
         </Helmet>
-        <div style={{padding: "10px", backgroundColor: '#094183'}}>
+        <div style={{padding: '10px', backgroundColor: '#094183'}}>
           <Container maxWidth="sm">
             <br />
             <Typography
@@ -237,22 +251,27 @@ class ViewProjectList extends Component{
             </Typography>
           </Container>
         </div>
-        <br/>
+        <br />
         <Container maxWidth="md">
-          <Grid container direction="row" justify="space-between" alignItems="center">
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
             <TextField
-              onChange ={this.onChangeInput}
+              onChange={this.onChangeInput}
               onKeyDown={this.onSearch}
               value={this.state.input}
               variant="outlined"
               size="small"
-              label="Search name"
+              placeholder="Search name"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon/>
+                    <SearchIcon />
                   </InputAdornment>
-                )
+                ),
               }}
             />
             <ToggleButtonGroup
@@ -262,8 +281,8 @@ class ViewProjectList extends Component{
               size="small"
             >
               <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value='descending'>Oldest</ToggleButton>
-              <ToggleButton value='ascending'>Lastest</ToggleButton>
+              <ToggleButton value="descending">Oldest</ToggleButton>
+              <ToggleButton value="ascending">Lastest</ToggleButton>
             </ToggleButtonGroup>
             <ToggleButtonGroup
               value={this.state.search_status}
@@ -272,15 +291,15 @@ class ViewProjectList extends Component{
               size="small"
             >
               <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value='Inprogress'>In Progress</ToggleButton>
-              <ToggleButton value='Completed'>Complete</ToggleButton>
-              <ToggleButton value='Cancel'>Cancel</ToggleButton>
+              <ToggleButton value="In progress">In progress</ToggleButton>
+              <ToggleButton value="Completed">Complete</ToggleButton>
+              <ToggleButton value="Cancel">Cancel</ToggleButton>
             </ToggleButtonGroup>
           </Grid>
-          <br/>
+          <br />
           {this.pList()}
-          <br/>
-          <br/>
+          <br />
+          <br />
         </Container>
       </Fragment>
     );
@@ -291,4 +310,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(ViewProjectList));
-

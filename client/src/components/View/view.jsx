@@ -153,24 +153,25 @@ class View extends Component {
         }
 
         let photogrid = (
-          <Container>
-            <div
-              style={{
-                display: 'block',
-                minHeight: '1px',
-                width: '100%',
-                border: '1px solid #ddd',
-                overflow: 'auto',
-              }}
-            >
-              <Gallery
-                maxRows={5}
-                images={photodata}
-                enableLightbox={true}
-                enableImageSelection={false}
-              />
-            </div>
-          </Container>
+          <div
+            style={{
+              display: 'block',
+              minHeight: '1px',
+              width: '100%',
+              border: '1px solid #ddd',
+              overflow: 'auto',
+              fontFamily: 'Nunito, Lato, sans-serif',
+              textAlign: 'center',
+              background: 'white',
+            }}
+          >
+            <Gallery
+              maxRows={5}
+              images={photodata}
+              enableLightbox={true}
+              enableImageSelection={false}
+            />
+          </div>
         );
         ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
@@ -295,7 +296,7 @@ class View extends Component {
                     >
                       <CopyToClipboard
                         text={
-                          /*`https://comp30022-microhard.herokuapp.com`*/ 'http://localhost:3000'+
+                          /*`https://comp30022-microhard.herokuapp.com`*/ 'http://localhost:3000' +
                           `/view/${view_user._id}`
                         }
                         onCopy={() => this.setState({copied: true})}
@@ -350,7 +351,7 @@ class View extends Component {
               elevation={3}
               className={classes.aboutSection}
             >
-              <Grid item xs={12} sm={11} md={11}>
+              <Grid item xs={12} sm={11} md={12}>
                 <Typography variant="h2" style={{paddingBottom: '10px'}}>
                   About Me
                 </Typography>
@@ -373,10 +374,10 @@ class View extends Component {
               elevation={3}
               className={classes.aboutSection}
             >
-              <Grid item xs={12} sm={11} md={12}>
+              <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h2">Photos</Typography>
               </Grid>
-              <Grid item xs={12} sm={11} md={11}>
+              <Grid item xs={12} sm={12} md={12}>
                 <div id="all_img"></div>
               </Grid>
             </Grid>
