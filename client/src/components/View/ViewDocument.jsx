@@ -16,6 +16,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import ViewNav from './ViewNav';
 import EditDocument from '../Dashboard/Document/EditDocument';
 import withStyles from '@material-ui/core/styles/withStyles';
+import {fetchViewDocuments, fetchViewPhotos} from '../../actions/viewAction';
+import Alert from '@material-ui/lab/Alert';
+import Grid from '@material-ui/core/Grid';
+import {CircularProgress} from '@material-ui/core';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const styles = (theme) => ({
     tableHeader: {
@@ -43,36 +49,51 @@ class ViewDocument extends Component {
 
     componentDidMount() {
         const user_id = this.props.match.params.id;
-        const {classes} = this.props;
 
         axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
-        axios.get(`/view/${user_id}/pdf`).then((res) => {
-            if (res.data.pdfs.length === 0 || !res.data.pdfs) {
-                const Pdfs = (
-                  <Typography className={classes.noDocs}>No documents found.</Typography>
-                );
-                ReactDOM.render(Pdfs, document.getElementById('changeLater'));
-            } else {
-                const Pdfs = res.data.pdfs.map((ele) => (
-                  <TableRow>
-                      <TableCell>{ele.title}</TableCell>
-                      <TableCell align="right">
-                          <a href={ele.getFileLink} target="_blank" rel="noopener noreferrer">
-                              {ele.originalname}
-                          </a>
-                      </TableCell>
-                      <TableCell align="right">{ele.date}</TableCell>
-                  </TableRow>
-                ));
-                ReactDOM.render(Pdfs, document.getElementById('changeLater'));
-            }
-        });
+
+        this.props.dispatch(fetchViewDocuments(1,user_id));
     }
 
     render() {
         const classes = this.props;
+        const {error, isFetching, view_documents} = this.props.view;
+
+        let content;
+
+        if (error) {
+            content = <Alert severity="error">{error}</Alert>;
+        } else if (isFetching) {
+            content = (
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                style={{padding: '10px'}}
+              >
+                  <CircularProgress />
+              </Grid>
+            );
+        } else if (view_documents.length === 0 || !view_documents) {
+            content = (
+              <Typography className={classes.noDocs}>No documents found.</Typography>
+            );
+        } else {
+            const Pdfs = view_documents.map((ele) => (
+              <TableRow>
+                  <TableCell>{ele.title}</TableCell>
+                  <TableCell align="right">
+                      <a href={ele.getFileLink} target="_blank" rel="noopener noreferrer">
+                          {ele.originalname}
+                      </a>
+                  </TableCell>
+                  <TableCell align="right">{ele.date}</TableCell>
+              </TableRow>
+            ));
+            content = <TableBody>{Pdfs}</TableBody>;
+        }
         return (
             <Fragment>
                 <ViewNav view_user={this.state.view_user}/>
@@ -109,7 +130,7 @@ class ViewDocument extends Component {
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody id="changeLater"/>
+                            {content}
                         </Table>
                     </TableContainer>
                 </Container>
@@ -118,4 +139,11 @@ class ViewDocument extends Component {
     }
 }
 
-export default withStyles(styles)(ViewDocument);
+const mapStateToProps = (state) => ({
+    ...state,
+});
+
+export default withRouter(
+  connect(mapStateToProps)(withStyles(styles)(ViewDocument))
+);
+
