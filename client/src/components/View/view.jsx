@@ -23,9 +23,14 @@ import Gallery from 'react-grid-gallery';
 import ViewNav from './ViewNav';
 import Button from '@material-ui/core/Button';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import Snackbar from '@material-ui/core/Snackbar';
-import {fetchViewDocuments, fetchViewPhotos, fetchViewUser} from '../../actions/viewAction';
-import {CircularProgress} from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
+import {
+  fetchViewDocuments,
+  fetchViewPhotos,
+  fetchViewUser,
+} from '../../actions/viewAction';
+
 const styles = (theme) => ({
   root: {
     backgroundImage:
@@ -121,7 +126,7 @@ class View extends Component {
     const {classes} = this.props;
     const user_id = this.props.match.params.id;
 
-    this.props.dispatch(fetchViewPhotos(1,user_id));
+    this.props.dispatch(fetchViewPhotos(1, user_id));
 
     const view_user = axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user: res.data});
@@ -261,7 +266,7 @@ class View extends Component {
                         aria-haspopup="true"
                         color="inherit"
                       >
-                        <div id="avatar" {...bindTrigger(popupState)}/>
+                        <div id="avatar" {...bindTrigger(popupState)} />
                       </IconButton>
                     </div>
                   )}
@@ -320,7 +325,7 @@ class View extends Component {
                     >
                       <CopyToClipboard
                         text={
-                          `https://comp30022-microhard.herokuapp.com` /*'http://localhost:3000'*/+
+                          `https://comp30022-microhard.herokuapp.com` /*'http://localhost:3000'*/ +
                           `/view/${view_user._id}`
                         }
                         onCopy={() => this.setState({copied: true})}
@@ -346,10 +351,15 @@ class View extends Component {
                   </Typography>
                 )}
                 {view_user.graduation && (
-                  <Typography variant="body1">
-                    <SchoolIcon className={classes.graduationIcon} />{' '}
-                    {view_user.graduation}
-                  </Typography>
+                  <Tooltip
+                    title="Expected graduation date"
+                    placement="bottom-start"
+                  >
+                    <Typography variant="body1">
+                      <SchoolIcon className={classes.graduationIcon} />{' '}
+                      {view_user.graduation}
+                    </Typography>
+                  </Tooltip>
                 )}
               </Grid>
               <Grid item xs={12} sm={12} md={5}>
@@ -360,14 +370,9 @@ class View extends Component {
               </Grid>
               <Grid item xs={12} sm={12} md={4} className={classes.icons}>
                 <Button variant="outlined" color="primary" fullWidth>
-                  <div id="resume"/>
+                  <div id="resume" />
                 </Button>
               </Grid>
-              {/*<Grid item xs={12} sm={6} md={4}>*/}
-              {/*  <Button variant="outlined" color="primary" fullWidth>*/}
-              {/*    <div id="resume"></div>*/}
-              {/*  </Button>*/}
-              {/*</Grid>*/}
             </Grid>
             <Grid
               container
@@ -375,7 +380,7 @@ class View extends Component {
               elevation={3}
               className={classes.aboutSection}
             >
-              <Grid item xs={12} sm={11} md={11}>
+              <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h2" style={{paddingBottom: '10px'}}>
                   About Me
                 </Typography>
@@ -398,11 +403,11 @@ class View extends Component {
               elevation={3}
               className={classes.aboutSection}
             >
-              <Grid item xs={12} sm={11} md={12}>
+              <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h2">Photos</Typography>
               </Grid>
-              <Grid item xs={12} sm={11} md={11}>
-                <div >{content}</div>
+              <Grid item xs={12} sm={12} md={12}>
+                <div>{content}</div>
               </Grid>
             </Grid>
           </Container>
