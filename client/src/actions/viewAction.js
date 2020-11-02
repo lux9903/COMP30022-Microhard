@@ -1,5 +1,11 @@
 import {createActions} from 'redux-actions';
 import axios from '../helpers/axiosConfig';
+import {
+  fetchProjectFailure,
+  fetchProjectListConditionFailure,
+  fetchProjectListConditionStarted,
+  fetchProjectListConditionSuccess, fetchProjectStarted, fetchProjectSuccess,
+} from './projectAction';
 
 export const {
   fetchViewPhotosStarted,
@@ -20,6 +26,9 @@ export const {
   fetchViewUserStarted,
   fetchViewUserSuccess,
   fetchViewUserFailure,
+  fetchViewProjectStarted,
+  fetchViewProjectSuccess,
+  fetchViewProjectFailure
 } = createActions(
   {
     FETCH_VIEW_PHOTOS_SUCCESS: (data) => ({data}),
@@ -34,6 +43,8 @@ export const {
     FETCH_VIEW_PROJECTS_FAILURE: (error) => ({error}),
     FETCH_VIEW_USER_SUCCESS: (data) => ({data}),
     FETCH_VIEW_USER_FAILURE: (error) => ({error}),
+    FETCH_VIEW_PROJECT_SUCCESS: (data) => ({data}),
+    FETCH_VIEW_PROJECT_FAILURE: (error) => ({error}),
 
   },
   'FETCH_VIEW_PHOTOS_STARTED',
@@ -42,6 +53,7 @@ export const {
   'FETCH_VIEW_EXPERIENCES_STARTED',
   'FETCH_VIEW_PROJECTS_STARTED',
   'FETCH_VIEW_USER_STARTED',
+  'FETCH_VIEW_PROJECT_STARTED',
 
 );
 
@@ -79,4 +91,29 @@ export const fetchViewUser = (page,user_id) => {
       dispatch(fetchViewUserFailure('Could not retrieve user.'));
     }
   }
+};
+
+export const fetchViewProjects = (condition,user_id) => {
+  return async (dispatch) => {
+    dispatch(fetchViewProjectsStarted());
+
+    try {
+      const response = await axios.post(`/view/${user_id}/project/conditional`, condition);
+      dispatch(fetchViewProjectsSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchViewProjectsFailure('Could not rerieve project lists based on required condition.'));
+    }
+  };
+};
+
+export const fetchViewProject = (projectid,user_id) => {
+  return async (dispatch) => {
+    dispatch(fetchViewProjectStarted());
+    try {
+      const response = await axios.get(`/view/${user_id}/project/${projectid}`);
+      dispatch(fetchViewProjectSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchViewProjectFailure('Could not retrieve the project.'));
+    }
+  };
 };

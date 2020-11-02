@@ -26,6 +26,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ViewNav from './ViewNav';
+import {fetchViewProjects} from '../../actions/viewAction';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
 
 const styles = (theme) => ({
   icon: {
@@ -91,7 +94,7 @@ function Project(props) {
     </Accordion>
   );
 }
-class ViewProjectList extends Component {
+class ViewProject extends Component {
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -134,12 +137,14 @@ class ViewProjectList extends Component {
     if (this.state.sortBy !== '') {
       formD['sortBy'] = this.state.sortBy;
     }
+    /*
     axios
       .post(`/view/${user_id}/project/conditional`, formD)
       .then((res) => {
         this.setState({projlist: res.data.result});
       })
-      .catch((error) => {});
+      .catch((error) => {});*/
+    this.props.dispatch(fetchViewProjects(formD,user_id));
   };
 
   update = () => {
@@ -184,18 +189,25 @@ class ViewProjectList extends Component {
   };
 
   render() {
+    const {error, isFetching, view_projects} = this.props.view;
     let content;
-    if (
-      !this.state.projlist ||
-      (this.state.projlist && this.state.projlist.length === 0)
-    ) {
+
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
+        </Grid>
+      );
+    } else if (view_projects.length === 0 || !view_projects) {
       content = (
         <Grid container justify="center" alignItems="center">
           <Typography> No projects found.</Typography>
         </Grid>
       );
     } else {
-      content = this.state.projlist.map((proj) => (
+      content = view_projects.map((proj) => (
         <Project project={proj} view_user={this.state.view_user} />
       ));
     }
@@ -274,4 +286,4 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(ViewProjectList));
+export default connect(mapStateToProps)(withStyles(styles)(ViewProject));

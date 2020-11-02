@@ -46,6 +46,36 @@ export default handleActions(
       ...state,
       isFetching: false,
     }),
+    FETCH_VIEW_PROJECTS_STARTED: (state) => ({
+      ...state,
+      isFetching: true,
+      error: null,
+    }),
+    FETCH_VIEW_PROJECTS_SUCCESS: (state , action) => ({
+      ...state,
+      isFetching: false,
+      view_projects: action.payload.data.result,
+    }),
+    FETCH_VIEW_PROJECTS_FAILURE: (state, action) => ({
+      ...state,
+      isFetching: false,
+      error: action.payload.error,
+    }),
+    FETCH_VIEW_PROJECT_STARTED: (state) => ({
+      ...state,
+      isFetching: true,
+      error: null,
+    }),
+    FETCH_VIEW_PROJECT_SUCCESS: (state , action) => ({
+      ...state,
+      isFetching: false,
+      view_project: action.payload.data.project,
+    }),
+    FETCH_VIEW_PROJECT_FAILURE: (state , action) => ({
+      ...state,
+      isFetching: false,
+      error: action.payload.error,
+    }),
 
   },
   {
@@ -53,6 +83,8 @@ export default handleActions(
     isUpdating: false,
     view_photos: [],
     view_documents: [],
+    view_projects: [],
+    view_project: {},
     view_user: null,
     error: null,
   }
