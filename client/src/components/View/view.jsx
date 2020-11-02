@@ -24,7 +24,8 @@ import ViewNav from './ViewNav';
 import Button from '@material-ui/core/Button';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import Snackbar from '@material-ui/core/Snackbar';
-
+import {fetchViewDocuments, fetchViewPhotos, fetchViewUser} from '../../actions/viewAction';
+import {CircularProgress} from '@material-ui/core';
 const styles = (theme) => ({
   root: {
     backgroundImage:
@@ -120,6 +121,8 @@ class View extends Component {
     const {classes} = this.props;
     const user_id = this.props.match.params.id;
 
+    this.props.dispatch(fetchViewPhotos(1,user_id));
+
     const view_user = axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user: res.data});
     });
@@ -144,44 +147,6 @@ class View extends Component {
           </Avatar>
         );
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
-      }
-    });
-    const imgs = axios.get(`/view/${user_id}/image`).then((res) => {
-      if (res.data.files) {
-        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
-        const photodata = res.data.files.map(getPhoto);
-        function getPhoto(elem) {
-          return {
-            src: '/api/image/' + elem.filename,
-            thumbnail: '/api/image/' + elem.filename,
-            thumbnailWidth: 'auto',
-            thumbnailHeight: 250,
-            thumbnailCaption: elem.caption,
-            caption: elem.caption,
-          };
-        }
-
-        let photogrid = (
-          <div
-            style={{
-              display: 'block',
-              minHeight: '1px',
-              width: '100%',
-              border: '1px solid #ddd',
-              overflow: 'auto',
-              fontFamily: 'Nunito, Lato, sans-serif',
-              textAlign: 'center',
-              background: 'white',
-            }}
-          >
-            <Gallery
-              images={photodata}
-              enableLightbox={true}
-              enableImageSelection={false}
-            />
-          </div>
-        );
-        ReactDOM.render(photogrid, document.getElementById('all_img'));
       }
     });
     const resume = axios.get(`/view/${user_id}/pdf`).then((res) => {
@@ -212,7 +177,59 @@ class View extends Component {
 
   render() {
     const {classes} = this.props;
+    console.log(this.props);
+    const {error, isFetching, view_photos} = this.props.view;
     const view_user = this.state.view_user;
+
+    let content;
+
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress />
+        </Grid>
+      );
+    } else if (view_photos.length === 0 || !view_photos) {
+      content = <p className="lead">No photos found.</p>;
+    } else {
+      const photodata = view_photos.map(getPhoto);
+
+      function getPhoto(elem) {
+        return {
+          src: '/api/image/' + elem.filename,
+          thumbnail: '/api/image/' + elem.filename,
+          thumbnailWidth: 'auto',
+          thumbnailHeight: 250,
+          thumbnailCaption: elem.caption,
+          caption: elem.caption,
+        };
+      }
+
+      let photogrid = (
+        <div
+          style={{
+            display: 'block',
+            minHeight: '1px',
+            width: '100%',
+            border: '1px solid #ddd',
+            overflow: 'auto',
+            fontFamily: 'Nunito, Lato, sans-serif',
+            textAlign: 'center',
+            background: 'white',
+          }}
+        >
+          <Gallery
+            images={photodata}
+            enableLightbox={true}
+            enableImageSelection={false}
+            currentImageWillChange={this.onCurrentImageChange}
+          />
+        </div>
+      );
+      content = <div>{photogrid}</div>;
+    }
     return (
       <Fragment>
         <ViewNav view_user={this.state.view_user} />
@@ -385,7 +402,7 @@ class View extends Component {
                 <Typography variant="h2">Photos</Typography>
               </Grid>
               <Grid item xs={12} sm={11} md={11}>
-                <div id="all_img"></div>
+                <div >{content}</div>
               </Grid>
             </Grid>
           </Container>
