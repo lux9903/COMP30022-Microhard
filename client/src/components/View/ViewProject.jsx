@@ -26,6 +26,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ViewNav from './ViewNav';
+import {fetchViewProjects} from '../../actions/viewAction';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
 
 const styles = (theme) => ({
   icon: {
@@ -49,20 +52,20 @@ const styles = (theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  ListItem:{
-    padding: "0px",
+  ListItem: {
+    padding: '0px',
   },
-  list:{
+  list: {
     maxHeight: 100,
     overflow: 'auto',
   },
-  container:{
-    justify_content: "space-between",
-  }
+  container: {
+    justify_content: 'space-between',
+  },
 });
 
-function Project(props){
-  return(
+function Project(props) {
+  return (
     <Accordion>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -79,14 +82,19 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" color="primary" size="small" href={`/view/${props.view_user._id}/project/`+props.project._id}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          href={`/view/${props.view_user._id}/project/` + props.project._id}
+        >
           View
         </Button>
       </AccordionActions>
     </Accordion>
-  )
+  );
 }
-class ViewProjectList extends Component{
+class ViewProject extends Component {
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -95,136 +103,152 @@ class ViewProjectList extends Component{
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
-    this.getCondition= this.getCondition.bind(this);
+    this.getCondition = this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onShowStatusChange = this.onShowStatusChange.bind(this);
     this.state = {
-      projlist : [],
-      search : "",
-      search_status: "",
-      sortBy: "",
-      view_user :"default",
+      projlist: [],
+      search: '',
+      search_status: '',
+      sortBy: '',
+      view_user: 'default',
     };
   }
 
   pList = () => {
-    return (this.state.projlist && this.state.projlist.map((proj, i) => {
-      return <Project project={proj} view_user={this.state.view_user}/>
-    }));
-  }
+    return (
+      this.state.projlist &&
+      this.state.projlist.map((proj, i) => {
+        return <Project project={proj} view_user={this.state.view_user} />;
+      })
+    );
+  };
 
-  getCondition = (user_id) =>{
+  getCondition = (user_id) => {
     let formD = {
-      "name": this.state.input,
-      "show_status": "public",
-    }
+      name: this.state.input,
+      show_status: 'public',
+    };
 
-    if(this.state.search_status !== ""){
+    if (this.state.search_status !== '') {
       formD['status'] = this.state.search_status;
     }
 
-    if(this.state.sortBy !== ""){
+    if (this.state.sortBy !== '') {
       formD['sortBy'] = this.state.sortBy;
     }
-    axios.post(`/view/${user_id}/project/conditional`,formD)
+    /*
+    axios
+      .post(`/view/${user_id}/project/conditional`, formD)
       .then((res) => {
         this.setState({projlist: res.data.result});
       })
-      .catch((error) => {});
-  }
+      .catch((error) => {});*/
+    this.props.dispatch(fetchViewProjects(formD,user_id));
+  };
 
   update = () => {
     this.getCondition(this.state.view_user._id);
-  }
+  };
 
   componentDidMount = () => {
     const user_id = this.props.match.params.id;
-    const view_user = axios.get(`/view/${user_id}`).then((res) => {
-      this.setState({view_user:res.data});
-    })
+    axios.get(`/view/${user_id}`).then((res) => {
+      this.setState({view_user: res.data});
+    });
     this.getCondition(user_id);
-  }
+  };
 
   onChangeInput = (event) => {
     event.preventDefault();
     this.setState({input: event.target.value});
-  }
+  };
 
   onSearch = (event) => {
-    if(event.key === "Enter"){
+    if (event.key === 'Enter') {
       this.update();
     }
-  }
+  };
 
   onStatusChange = (event, newstatus) => {
-    if(newstatus !== null){
-      this.setState(
-        {search_status: newstatus},
-        this.update
-      );
+    if (newstatus !== null) {
+      this.setState({search_status: newstatus}, this.update);
     }
-  }
+  };
 
   onSortChange = (event, newsort) => {
-    if(newsort !== null){
-      this.setState(
-        {sortBy: newsort},
-        this.update
-      );
+    if (newsort !== null) {
+      this.setState({sortBy: newsort}, this.update);
     }
-  }
+  };
 
   onShowStatusChange = (event, newshow) => {
-    if(newshow !== null){
-      this.setState(
-        {show_status: newshow},
-        this.update
-      );
+    if (newshow !== null) {
+      this.setState({show_status: newshow}, this.update);
     }
-  }
+  };
 
-  render(){
+  render() {
+    const {error, isFetching, view_projects} = this.props.view;
     let content;
-    if (!this.state.projlist || (this.state.projlist && this.state.projlist.length === 0)) {
+
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
+        </Grid>
+      );
+    } else if (view_projects.length === 0 || !view_projects) {
       content = (
         <Grid container justify="center" alignItems="center">
           <Typography> No projects found.</Typography>
         </Grid>
       );
     } else {
-      content = this.state.projlist.map((proj) => (
-        <Project project={proj} view_user={this.state.view_user}/>
+      content = view_projects.map((proj) => (
+        <Project project={proj} view_user={this.state.view_user} />
       ));
     }
-    return(
+    return (
       <Fragment>
-        <ViewNav view_user={this.state.view_user}/>
+        <ViewNav view_user={this.state.view_user} />
         <Helmet>
           <title>Microhard &middot; My projects </title>
         </Helmet>
         <div style={{height: '120px', backgroundColor: '#094183'}}>
           <br />
           <br />
-          <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          <Typography
+            variant="h1"
+            align="center"
+            style={{color: '#fff', fontSize: '36px'}}
+          >
             Project Lists
           </Typography>
         </div>
-        <br/>
+        <br />
         <Container maxWidth="md">
-          <Grid container direction="row" justify="space-between" alignItems="center">
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
             <TextField
-              onChange ={this.onChangeInput}
+              onChange={this.onChangeInput}
               onKeyDown={this.onSearch}
               value={this.state.input}
               variant="outlined"
               size="small"
-              label="Search name"
+              placeholder="Search name"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon/>
+                    <SearchIcon />
                   </InputAdornment>
-                )
+                ),
               }}
             />
             <ToggleButtonGroup
@@ -234,8 +258,8 @@ class ViewProjectList extends Component{
               size="small"
             >
               <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value='descending'>Oldest</ToggleButton>
-              <ToggleButton value='ascending'>Lastest</ToggleButton>
+              <ToggleButton value="descending">Oldest</ToggleButton>
+              <ToggleButton value="ascending">Lastest</ToggleButton>
             </ToggleButtonGroup>
             <ToggleButtonGroup
               value={this.state.search_status}
@@ -244,15 +268,15 @@ class ViewProjectList extends Component{
               size="small"
             >
               <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value='Inprogress'>In Progress</ToggleButton>
-              <ToggleButton value='Completed'>Complete</ToggleButton>
-              <ToggleButton value='Cancel'>Cancel</ToggleButton>
+              <ToggleButton value="Inprogress">In Progress</ToggleButton>
+              <ToggleButton value="Completed">Complete</ToggleButton>
+              <ToggleButton value="Cancel">Cancel</ToggleButton>
             </ToggleButtonGroup>
           </Grid>
-          <br/>
+          <br />
           {content}
-          <br/>
-          <br/>
+          <br />
+          <br />
         </Container>
       </Fragment>
     );
@@ -262,5 +286,4 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(ViewProjectList));
-
+export default connect(mapStateToProps)(withStyles(styles)(ViewProject));

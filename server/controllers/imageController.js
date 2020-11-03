@@ -45,10 +45,14 @@ const getAllImage = (req, res) => {
       return res.sendStatus(401).send('The user does not exist.');
     }
     Image.find({user: user._id, type: {$exists: false}})
-      .distinct('fileId')
-      .then(function (image) {
-        console.log(image);
-        gfs.files.find({_id: {$in: image}}).toArray((err, files) => {
+      .then(function (images) {
+        image_ids=[];
+        image_captions=[];
+        for (image of images){
+          image_ids.push(image['fileId']);
+          image_captions.push(image['caption']);
+        };
+        gfs.files.find({_id: {$in: image_ids}}).toArray((err, files) => {
           if (!files || files.length === 0) {
             return res.json({
               files: [],
@@ -64,18 +68,14 @@ const getAllImage = (req, res) => {
               file.isImage = false;
             }
           });
-          Image.find({user: user._id, type: {$exists: false}})
-            .distinct('caption')
-            .then(function (captions) {
-              const imgObj = [];
-              for (i= 0; i < files.length;i++){
-                if (files[i].isImage){
-                  files[i].caption = captions[i];
-                  imgObj.push(files[i]);
-                }
-              }
-              return res.json({files: imgObj});
-            });
+          const imgObj = [];
+          for (i= 0; i < files.length;i++){
+            if (files[i].isImage){
+              files[i].caption = image_captions[i];
+              imgObj.push(files[i]);
+            }
+          }
+          return res.json({files: imgObj});
         });
       });
   });

@@ -23,10 +23,16 @@ import Gallery from 'react-grid-gallery';
 import ViewNav from './ViewNav';
 import Button from '@material-ui/core/Button';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
+import {
+  fetchViewPhotos,
+} from '../../actions/viewAction';
 
 const styles = (theme) => ({
   root: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundImage:
+      'linear-gradient(to top, #094183 0%, #5FA5E1 100%, #CAE8FA 100%)',
     marginTop: '-15px',
     padding: '25px 0 150px 0',
   },
@@ -63,7 +69,7 @@ const styles = (theme) => ({
   socialIcon: {
     marginRight: '8px',
   },
-  socialIcons: {
+  icons: {
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
@@ -80,8 +86,14 @@ const styles = (theme) => ({
   locationIcon: {
     position: 'relative',
     top: '7px',
+    right: '2px',
   },
   graduationIcon: {
+    position: 'relative',
+    top: '7px',
+    left: '-2px',
+  },
+  universityIcon: {
     position: 'relative',
     top: '7px',
     left: '-2px',
@@ -105,7 +117,6 @@ class View extends Component {
       view_user: 'default',
       copied: false,
       file: null,
-      fileLink: '',
     };
   }
 
@@ -113,11 +124,13 @@ class View extends Component {
     const {classes} = this.props;
     const user_id = this.props.match.params.id;
 
-    const view_user = axios.get(`/view/${user_id}`).then((res) => {
+    this.props.dispatch(fetchViewPhotos(1, user_id));
+
+    axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user: res.data});
     });
 
-    const avatar = axios.get(`/view/${user_id}/avatar`).then((res) => {
+    axios.get(`/view/${user_id}/avatar`).then((res) => {
       if (res.data.files) {
         const imgPic = res.data.files.map((ele) => (
           <Avatar
@@ -139,43 +152,7 @@ class View extends Component {
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
-    const imgs = axios.get(`/view/${user_id}/image`).then((res) => {
-      if (res.data.files) {
-        //const imgPic = res.data.files.map((ele) => src={"/api/image/"+ele.filename} alt={"/image/"+ele.filename} />);
-        const photodata = res.data.files.map(getPhoto);
-        function getPhoto(elem) {
-          return {
-            src: '/api/image/' + elem.filename,
-            thumbnail: '/api/image/' + elem.filename,
-            thumbnailWidth: 340,
-            thumbnailHeight: 250,
-          };
-        }
-
-        let photogrid = (
-          <Container>
-            <div
-              style={{
-                display: 'block',
-                minHeight: '1px',
-                width: '100%',
-                border: '1px solid #ddd',
-                overflow: 'auto',
-              }}
-            >
-              <Gallery
-                maxRows={5}
-                images={photodata}
-                enableLightbox={true}
-                enableImageSelection={false}
-              />
-            </div>
-          </Container>
-        );
-        ReactDOM.render(photogrid, document.getElementById('all_img'));
-      }
-    });
-    const resume = axios.get(`/view/${user_id}/pdf`).then((res) => {
+    axios.get(`/view/${user_id}/pdf`).then((res) => {
       if (res.data.pdfs) {
         var resumeUrl = {getFileLink: '#'};
         var ele;
@@ -185,7 +162,6 @@ class View extends Component {
             break;
           }
         }
-        console.log(resumeUrl);
         if (resumeUrl) {
           const resumeLink = (
             <a
@@ -204,7 +180,59 @@ class View extends Component {
 
   render() {
     const {classes} = this.props;
+    console.log(this.props);
+    const {error, isFetching, view_photos} = this.props.view;
     const view_user = this.state.view_user;
+
+    let content;
+
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress />
+        </Grid>
+      );
+    } else if (view_photos.length === 0 || !view_photos) {
+      content = <p className="lead">No photos found.</p>;
+    } else {
+      const photodata = view_photos.map(getPhoto);
+
+      function getPhoto(elem) {
+        return {
+          src: '/api/image/' + elem.filename,
+          thumbnail: '/api/image/' + elem.filename,
+          thumbnailWidth: 'auto',
+          thumbnailHeight: 250,
+          thumbnailCaption: elem.caption,
+          caption: elem.caption,
+        };
+      }
+
+      let photogrid = (
+        <div
+          style={{
+            display: 'block',
+            minHeight: '1px',
+            width: '100%',
+            border: '1px solid #ddd',
+            overflow: 'auto',
+            fontFamily: 'Nunito, Lato, sans-serif',
+            textAlign: 'center',
+            background: 'white',
+          }}
+        >
+          <Gallery
+            images={photodata}
+            enableLightbox={true}
+            enableImageSelection={false}
+            currentImageWillChange={this.onCurrentImageChange}
+          />
+        </div>
+      );
+      content = <div>{photogrid}</div>;
+    }
     return (
       <Fragment>
         <ViewNav view_user={this.state.view_user} />
@@ -236,7 +264,7 @@ class View extends Component {
                         aria-haspopup="true"
                         color="inherit"
                       >
-                        <div id="avatar" {...bindTrigger(popupState)}></div>
+                        <div id="avatar" {...bindTrigger(popupState)} />
                       </IconButton>
                     </div>
                   )}
@@ -295,7 +323,7 @@ class View extends Component {
                     >
                       <CopyToClipboard
                         text={
-                          /*`https://comp30022-microhard.herokuapp.com`*/ 'http://localhost:3000'+
+                          `https://comp30022-microhard.herokuapp.com` /*'http://localhost:3000'*/ +
                           `/view/${view_user._id}`
                         }
                         onCopy={() => this.setState({copied: true})}
@@ -321,10 +349,15 @@ class View extends Component {
                   </Typography>
                 )}
                 {view_user.graduation && (
-                  <Typography variant="body1">
-                    <SchoolIcon className={classes.graduationIcon} />{' '}
-                    {view_user.graduation}
-                  </Typography>
+                  <Tooltip
+                    title="Expected graduation date"
+                    placement="bottom-start"
+                  >
+                    <Typography variant="body1">
+                      <SchoolIcon className={classes.graduationIcon} />{' '}
+                      {view_user.graduation}
+                    </Typography>
+                  </Tooltip>
                 )}
               </Grid>
               <Grid item xs={12} sm={12} md={5}>
@@ -335,14 +368,9 @@ class View extends Component {
               </Grid>
               <Grid item xs={12} sm={12} md={4} className={classes.icons}>
                 <Button variant="outlined" color="primary" fullWidth>
-                  <div id="resume"></div>
+                  <div id="resume" />
                 </Button>
               </Grid>
-              {/*<Grid item xs={12} sm={6} md={4}>*/}
-              {/*  <Button variant="outlined" color="primary" fullWidth>*/}
-              {/*    <div id="resume"></div>*/}
-              {/*  </Button>*/}
-              {/*</Grid>*/}
             </Grid>
             <Grid
               container
@@ -350,7 +378,7 @@ class View extends Component {
               elevation={3}
               className={classes.aboutSection}
             >
-              <Grid item xs={12} sm={11} md={11}>
+              <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h2" style={{paddingBottom: '10px'}}>
                   About Me
                 </Typography>
@@ -373,11 +401,11 @@ class View extends Component {
               elevation={3}
               className={classes.aboutSection}
             >
-              <Grid item xs={12} sm={11} md={12}>
+              <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h2">Photos</Typography>
               </Grid>
-              <Grid item xs={12} sm={11} md={11}>
-                <div id="all_img"></div>
+              <Grid item xs={12} sm={12} md={12}>
+                <div>{content}</div>
               </Grid>
             </Grid>
           </Container>

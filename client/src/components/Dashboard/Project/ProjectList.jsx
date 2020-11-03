@@ -30,12 +30,16 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-import { IconButton } from '@material-ui/core';
+import {IconButton} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
-import {fetchProjectListCondition, deleteProject, createProject} from '../../../actions/projectAction';
+import {
+  fetchProjectListCondition,
+  deleteProject,
+  createProject,
+} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
 });
@@ -49,14 +53,18 @@ const useStyles = makeStyles((theme) => ({
 //button to opening warning delete form
 function DeleteButton(props) {
   const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {setOpen(true);};
-  const handleClose = () => {setOpen(false);};
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   //when click delete project
   const handleDelete = () => {
     setOpen(false);
     props.delete(props.id);
-  }
+  };
   return (
     <Fragment>
       <Button color="primary" size="small" onClick={handleClickOpen}>
@@ -66,8 +74,8 @@ function DeleteButton(props) {
         <DialogTitle id="form-dialog-title">Delete Project</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this project? 
-            The project will be permanently delete and unable to recover.
+            Are you sure you want to delete this project? The project will be
+            permanently delete and unable to recover.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -104,13 +112,16 @@ function AddButton(props) {
   return (
     <div>
       <IconButton onClick={handleClickOpen}>
-        <AddBoxIcon color="primary"/>
+        <AddBoxIcon color="primary" />
       </IconButton>
-      <MyForm open={open} handleClose={handleClose}
-                title='Add a project' submit={onSubmit} 
+      <MyForm
+        open={open}
+        handleClose={handleClose}
+        title="Add a project"
+        submit={onSubmit}
       />
     </div>
-  )
+  );
 }
 
 //adding form with name and description
@@ -166,7 +177,7 @@ function MyForm(props) {
           </div>
         </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 //this will render each project in the project list
@@ -195,10 +206,13 @@ function Project(props){
         <Button color="primary" size="small" href={"/project/"+props.project._id}>
           Edit
         </Button>
-        <DeleteButton id={props.project._id} delete={(id)=>props.delete(id)}/>
+        <DeleteButton
+          id={props.project._id}
+          delete={(id) => props.delete(id)}
+        />
       </AccordionActions>
     </Accordion>
-  )
+  );
 }
 
 //main class: initiate and using all the function above
@@ -210,15 +224,15 @@ class ProjectList extends Component{
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
-    this.getCondition= this.getCondition.bind(this);
+    this.getCondition = this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onShowStatusChange = this.onShowStatusChange.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.state = {
-      search : "",
-      search_status: "",
-      sortBy: "",
-      show_status: "",
+      search: '',
+      search_status: '',
+      sortBy: '',
+      show_status: '',
     };
   }
 
@@ -226,12 +240,12 @@ class ProjectList extends Component{
   onFormSubmit = (value) => {
     console.log(value);
     this.props.dispatch(createProject(value));
-  }
+  };
 
   //this function handle delete a project
   deleteProject = (id) => {
     this.props.dispatch(deleteProject(id));
-  }
+  };
 
   //fetch data using condition save
   getCondition = () =>{
@@ -239,59 +253,50 @@ class ProjectList extends Component{
     if(this.state.search_status !== ""){
       formD['status'] = this.state.search_status;
     }
-    if(this.state.sortBy !== ""){
+    if (this.state.sortBy !== '') {
       formD['sortBy'] = this.state.sortBy;
     }
-    if(this.state.show_status !== ""){
+    if (this.state.show_status !== '') {
       formD['show_status'] = this.state.show_status;
     }
     this.props.dispatch(fetchProjectListCondition(formD));
-  }
+  };
 
   //fetch data when component first mount
 	componentDidMount = () => {
     this.getCondition();
-  }
+  };
 
   //functions below just handle input from user on utility lines
   onChangeInput = (event) => {
     this.setState({input: event.target.value});
-  }
+  };
 
   onSearch = (event) => {
-    if(event.key === "Enter"){
+    if (event.key === 'Enter') {
       this.getCondition();
     }
-  }
+  };
 
   onStatusChange = (event, newstatus) => {
-    if(newstatus !== null){
-      this.setState(
-        {search_status: newstatus},
-        this.getCondition
-      );
+    if (newstatus !== null) {
+      this.setState({search_status: newstatus}, this.getCondition);
     }
-  }
+  };
 
   onSortChange = (event, newsort) => {
-    if(newsort !== null){
-      this.setState(
-        {sortBy: newsort},
-        this.getCondition
-      );
+    if (newsort !== null) {
+      this.setState({sortBy: newsort}, this.getCondition);
     }
-  }
+  };
 
   onShowStatusChange = (event, newshow) => {
-    if(newshow !== null){
-      this.setState(
-        {show_status: newshow},
-        this.getCondition
-      );
+    if (newshow !== null) {
+      this.setState({show_status: newshow}, this.getCondition);
     }
-  }
+  };
 
-	render(){
+  render() {
     const {error, isFetching, projects} = this.props.project;
 
     let content;
@@ -302,7 +307,7 @@ class ProjectList extends Component{
       //if the fetch from the database have not arrive
       content = (
         <Grid container justify="center" alignItems="center">
-          <CircularProgress color="primary"/>
+          <CircularProgress color="primary" />
         </Grid>
       );
     } else if (projects.length === 0 || !projects) {
@@ -318,7 +323,7 @@ class ProjectList extends Component{
         <Project key={proj._id} project={proj} delete={this.deleteProject}/>
       ));
     }
-    return(
+    return (
       <Fragment>
       <Helmet>
         <title>Microhard &middot; My projects </title>

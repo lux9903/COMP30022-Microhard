@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ReactDOM from 'react-dom';
 import ViewNav from './ViewNav';
+
 const styles = (theme) => ({
     root: {
         backgroundColor: '#094183',
@@ -49,39 +50,38 @@ const styles = (theme) => ({
     form_group: {
         padding: '5px 5px 5px 5px',
     },
-});
-
+})
 
 class MyAccordion extends Component {
     render() {
         return (
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography variant="h6">{this.props.position}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Grid container direction="column">
-                        <Grid Item>
-                            <Typography variant="subtitle1">
-                                {this.props.start_date && this.props.start_date.substring(0, 10)} - {this.props.end_date.substring(0, 10)}
-                            </Typography>
-                        </Grid>
-                        <Grid Item>
-                            <Typography variant="subtitle1">{this.props.company}</Typography>
-                        </Grid>
-                        <Grid Item>
-                            <Typography>
-                                {this.props.description}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </AccordionDetails>
-                <Divider />
-            </Accordion>
+          <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                  <Typography variant="h6">{this.props.position}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                  <Grid container direction="column">
+                      <Grid Item>
+                          <Typography variant="subtitle1">
+                              {this.props.start_date &&
+                              this.props.start_date.substring(0, 10)}{' '}
+                              - {this.props.end_date.substring(0, 10)}
+                          </Typography>
+                      </Grid>
+                      <Grid Item>
+                          <Typography variant="subtitle1">{this.props.company}</Typography>
+                      </Grid>
+                      <Grid Item>
+                          <Typography>{this.props.description}</Typography>
+                      </Grid>
+                  </Grid>
+              </AccordionDetails>
+              <Divider />
+          </Accordion>
         );
     }
 }
@@ -99,11 +99,11 @@ class ViewExperience extends Component{
     componentDidMount() {
         const user_id = this.props.match.params.id
 
-        const view_user = axios.get(`/view/${user_id}`).then((res) => {
+        axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
 
-        const exp = axios.get(`/view/${user_id}/experience`).then((res) => {
+        axios.get(`/view/${user_id}/experience`).then((res) => {
             let temp = {};
             let i = 0;
             if (res.data !== undefined) {
@@ -151,35 +151,38 @@ class ViewExperience extends Component{
     render(){
     const {classes} = this.props;
     return (
-        <div>
-            <container>
-                <ViewNav view_user={this.state.view_user}/>
-                <Helmet>
-                    <title>Microhard &middot; Welcome </title>
-                </Helmet>
-                <div className={classes.root}>
-                    <div className={classes.formWrap}>
-                        <h1 className={classes.formTitle}>My Career Experience</h1>
-                    </div>
-                </div>
-            </container>
-            <br />
-            <br />
-            <Grid container justify="center" direction="row" spacing="3">
-                <Grid item xs={12} sm={9}>
-                    <div className={classes.body}>
-                        <h3 className={classes.NunitoFont}>Current position</h3>
-                        <br />
-                        <div id="experience_going"></div>
-                        <br />
-                        <br />
-                        <h3 className={classes.NunitoFont}>Past Experience</h3>
-                        <div id="experience_end"></div>
-                    </div>
-                </Grid>
-            </Grid>
-
-        </div>
+      <Fragment>
+          <ViewNav view_user={this.state.view_user}/>
+          <Helmet>
+              <title>Microhard &middot; Experience </title>
+          </Helmet>
+          <div style={{height: '120px', backgroundColor: '#094183'}}>
+              <br />
+              <br />
+              <Typography
+                variant="h1"
+                align="center"
+                style={{color: '#fff', fontSize: '36px'}}
+              >
+                  Career Experience
+              </Typography>
+          </div>
+          <br />
+          <br />
+          <Grid container justify="center" direction="row" spacing="3">
+              <Grid item xs={12} sm={9}>
+                  <div className={classes.body}>
+                      <h3 className={classes.NunitoFont}>Current position</h3>
+                      <br />
+                      <div id="experience_going"/>
+                      <br />
+                      <br />
+                      <h3 className={classes.NunitoFont}>Past Experience</h3>
+                      <div id="experience_end"/>
+                  </div>
+              </Grid>
+          </Grid>
+      </Fragment>
     );
 }
 }

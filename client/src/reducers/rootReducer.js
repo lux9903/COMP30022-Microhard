@@ -4,6 +4,7 @@ import user from './userReducer';
 import photo from './photoReducer';
 import document from './documentReducer';
 import project from './projectReducer';
+import view from './viewReducer';
 
 export default history =>
     combineReducers({
@@ -11,5 +12,6 @@ export default history =>
         user,
         photo,
         document,
-        project
+        project,
+        view
     });
