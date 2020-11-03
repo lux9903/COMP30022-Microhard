@@ -31,7 +31,6 @@ export default function EditAvatar(props) {
             Add a new profile avatar
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>Add a new avatar here</DialogContentText>
             <input type="file" name="file" onChange={props.onChange} />
           </DialogContent>
           <DialogActions>
