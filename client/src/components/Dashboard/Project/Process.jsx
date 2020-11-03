@@ -35,7 +35,7 @@ import {
     finishNode,
 } from '../../../actions/projectAction';
 
-//for function
+// css for function
 const useStyles = makeStyles((theme) => ({
     textfield:{
         width: "80%",
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-//for class
+// ss for class
 const styles = (theme) => ({
     textfield:{
         width: "83%",
@@ -64,7 +64,7 @@ const styles = (theme) => ({
         marginTop: theme.spacing(2),
     },
     button:{
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
     icon:{
@@ -76,6 +76,11 @@ const styles = (theme) => ({
     },
     root: {
         width: "100%",
+    },
+    typo: {
+        padding :theme.spacing(1),
+        align: "center",
+        width: "100%"
     }
 });
 
@@ -101,6 +106,7 @@ class Process_List extends Component{
         this.setState({input:event.target.value});
     }
 
+    //do add call for process when user request
     handleAddProcessSubmit = (event) =>{
         event.preventDefault();
         this.setState({open:false});
@@ -115,26 +121,32 @@ class Process_List extends Component{
         this.setState({input:""});
     }
 
+    //do delete call for process when user request
     deleteProcess = (formD) => {
         this.props.dispatch(deleteProcess(formD, this.props.id));
     }
 
+    //do update call for process when user request
     updateProcess = (formD) => {
         this.props.dispatch(updateProcess(formD, this.props.id));
     }
 
+    //do create call for node when user request
     createNode = (formD) => {
         this.props.dispatch(createNode(formD, this.props.id));
     }
 
+    //do update call for node when user request
     updateNode = (formD) => {
         this.props.dispatch(updateNode(formD, this.props.id));
     }
 
+    //do delete call for node when user request
     deleteNode = (formD) => {
         this.props.dispatch(deleteNode(formD, this.props.id));
     }
 
+    //do update state call for node when user request
     finishNode = (formD) => {
         this.props.dispatch(finishNode(formD, this.props.id));
     }
@@ -156,20 +168,30 @@ class Process_List extends Component{
 
         let content;
         if (error) {
+            //if fetch return error
             content = <Alert severity="error">{error}</Alert>;
         } else if (isUpdatingProc) {
+            //if update call havent return
             content = (
                 <Grid container justify="center" className={classes.root}>
                     <CircularProgress color="primary" className={classes.progress}/>
                 </Grid>
             );
         } else if (!project || !project.process) {
+            //if project or process is undefined
             content = (
-              <Typography> The retrieve project not found.</Typography>
+              <Typography className={classes.typo}> The retrieve project not found.</Typography>
+            );
+        }else if (project.process && project.process.length==0){
+            //if timeline is empty right now
+            content = (
+                <Typography className={classes.typo}> The process is empty right now.</Typography>
             );
         } else {
+            //render the process list
             content = project.process.map((proc) => (
                 <Process 
+                    key={proc.processNum}
                     process={proc} 
                     id={this.props.id}
                     deleteProcess={this.deleteProcess}
@@ -184,11 +206,17 @@ class Process_List extends Component{
 
         return(
             <Fragment>
+
+                {/* section name */}
                 <Typography gutterBottom variant="h5" component="h2">
                     Process
                 </Typography>
                 <Divider/>
+
+                {/* process list */}
                 {content}
+
+                {/* adding form */}
                 {!this.state.open ? (
                     <Button
                         onClick={this.handleAddProcessOpen}
@@ -237,14 +265,17 @@ function Process(props){
     const [nodelist, setNodeList] = useState(props.process.nodes);
     const classes = useStyles();
 
+    //re set when re-render happen
     useEffect(() => {
         setDescription(props.process.description);
         setNodeList(props.process.nodes);
     }, [props.process]);
 
+    //function to render all the node in a process
     const renNodeList = () => {
-        return (nodelist && nodelist.map((node,i)=>{
+        return (nodelist && nodelist.map((node)=>{
             return <Node 
+                        key={node.index}
                         node={node} 
                         id={props.id} 
                         processNum={props.process.processNum} 
@@ -277,6 +308,7 @@ function Process(props){
         setInput(event.target.value);
     }
 
+    //when click add node inside a process
     const handleAddNodeSubmit = (event) => {
         event.preventDefault();
         setOpenAdd(false);
@@ -300,6 +332,7 @@ function Process(props){
         setDescription(event.target.value);
     }
 
+    //when submit editing info for process
     const handleProcessEditSubmit = (event) => {
         event.preventDefault();
         setOpenEdit(false);
@@ -310,6 +343,7 @@ function Process(props){
         props.updateProcess(formD);
     }
 
+    //when click delete for process
     const handleProcessDelete = () => {
         let formD = {
             "processNum": props.process.processNum,
@@ -321,11 +355,11 @@ function Process(props){
             <List className={classes.root}>
                 <ListItem>
                     {!openEdit ? (
-                        <Grid container direction="row" justify="" alignItems="center">
+                        <Grid container direction="row" justify="space-between" alignItems="center">
                             <TextField
                                 disabled
                                 value={description}
-                                InputProps={{ disableUnderline: true }}
+                                //InputProps={{ disableUnderline: true }}
                                 variant="outlined"
                                 size = "small"
                                 className={classes.accordion}
@@ -416,6 +450,7 @@ function Node(props){
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
+    //re-set data when re-render
     useEffect(() => {
         setDescription(props.node.description);
         setStatus(props.node.state);
@@ -430,6 +465,7 @@ function Node(props){
         setOpen(true);
     }
 
+    //when click delete for node
     const handleNodeDelete = () => {
         let formD = {
             "processNum": props.processNum,
@@ -442,6 +478,7 @@ function Node(props){
         setDescription(event.target.value);
     }
 
+    //when submit editing data for node
     const handleEditNodeUpdate = (event) => {
         event.preventDefault();
         setOpen(false);
@@ -453,6 +490,7 @@ function Node(props){
         props.updateNode(formD);
     };
 
+    //when check state into "finish" for node
     const handleFinishNode = (event) => {
         setStatus(event.target.checked);
         let formD = {

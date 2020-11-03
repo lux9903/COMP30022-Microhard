@@ -196,6 +196,11 @@ class Profile extends Component {
     const {classes} = this.props;
     const {user} = this.props.user;
 
+    console.log(user);
+
+    const path = window.location.host+"/view/";
+    console.log(path);
+
     return (
       <Fragment>
         <Helmet>

@@ -23,7 +23,7 @@ import {
     deleteContributor,
 } from '../../../actions/projectAction';
 
-//for function
+// css for function
 const useStyles = makeStyles((theme) => ({
     textfield:{
         width: "65%",
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-//for class
+// css for class
 const styles = (theme) => ({
     textfield:{
         width: "65%",
@@ -64,14 +64,12 @@ const styles = (theme) => ({
     }
 });
 
-
+//main class
 class Con_List extends Component{
     constructor(props){
         super(props);
-
         this.addContributor = this.addContributor.bind(this);
         this.deleteContributor = this.deleteContributor.bind(this);
-
         this.onInputContributor = this.onInputContributor.bind(this);
         this.handleContributorSubmit = this.handleContributorSubmit.bind(this);
         this.handleAddCancel = this.handleAddCancel.bind(this);
@@ -83,11 +81,14 @@ class Con_List extends Component{
         }
     }
 
+    //do delete one contributor call when user request
+    //database called
     deleteContributor = (name) => {
         let formD = {"old_users": name}
         this.props.dispatch(deleteContributor(formD, this.props.id));
     }
 
+    //do add one contributor call when user request
     addContributor = (name) => {
         let formD = {"new_users": name}
         this.props.dispatch(createContributor(formD, this.props.id));
@@ -97,6 +98,7 @@ class Con_List extends Component{
         this.setState({input:event.target.value});
     }
 
+    //add new contributor
     handleContributorSubmit = (event) =>{
         event.preventDefault();
         this.setState({input:"", open:false});
@@ -126,30 +128,40 @@ class Con_List extends Component{
         //console.log(project);
         let content;
         if (error) {
+            //if the fetch return error
             content = <Alert severity="error">{error}</Alert>;
         } else if (isUpdatingCon) {
+            //if the updating is still yet return
             content = (
                 <Grid container justify="center" className={classes.root}>
                     <CircularProgress color="primary" className={classes.progress}/>
                 </Grid>
             );
         } else if (!project || !project.contributors) {
+            //if project is undefined or the contributor is undefined
             content = (
               <Typography> The retrieve project not found.</Typography>
             );
         } else {
-            content = project.contributors.map((cons) => (
-              <ConItems cons={cons} add={this.addContributor} delete={this.deleteContributor} username={user.username}/>
+            //render the contributor list
+            content = project.contributors.map((cons, i) => (
+              <ConItems key={i} cons={cons} add={this.addContributor} delete={this.deleteContributor} username={user.username}/>
             ));
         }
 
         return(
             <Fragment>
+
+                {/* section name */}
                 <Typography gutterBottom variant="h5" component="h2">
                     Contributors
                 </Typography>
                 <Divider/>
+
+                {/* contributor list */}
                 {content}
+
+                {/* adding form */}
                 {!this.state.open ? (
                     <Button 
                         onClick={this.handleAddOpen}
@@ -189,11 +201,13 @@ class Con_List extends Component{
     }
 }
 
+//render each contributor
 function ConItems(props){
     const [open, setOpen] = useState(false);
     const [name, setName] = useState(props.cons);
     const classes = useStyles();
 
+    //return to old data of the user cancel the editing 
     const handleContributorCancel = () =>{
         setOpen(false);
         setName(props.cons);
@@ -202,10 +216,12 @@ function ConItems(props){
         setOpen(true);
     }
 
+    //this is to re-set the data when list being re-render 
     useEffect(() => {
         setName(props.cons);
     }, [props.cons]);
 
+    //if the user click delete contributor
     const handleContributorDelete = () =>{
         props.delete([props.cons]);
     };
@@ -214,6 +230,8 @@ function ConItems(props){
         setName(event.target.value);
     }
 
+    //do update on one contributor call when user request
+    //if user click submit edit
     const handleContributorUpdate = (event) => {
         event.preventDefault();
         setOpen(false);
@@ -222,6 +240,9 @@ function ConItems(props){
     };
     return(
         <Fragment>
+            {/* check if the contributor is the owner user -> do not allow delete or update */}
+            {/* then if not open for edit: render with edit button and delete button*/}
+            {/* if is open for edit: render with submit button and cancel button  */}
             {(name === props.username) ? (
                 <TextField
                     disabled

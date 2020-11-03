@@ -33,6 +33,8 @@ import {connect} from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
 
+
+//css for function
 const useStyles = makeStyles((theme) => ({
     oppositeContent:{
       flex: 0,
@@ -51,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
+//css for class
 const styles = (theme) => ({
     textfield:{
         paddingLeft: theme.spacing(1),
@@ -64,9 +68,20 @@ const styles = (theme) => ({
     },
     root: {
         width: "100%",
-    }
+    },
+    typo: {
+        padding :theme.spacing(1),
+        align: "center",
+        width: "100%"
+    },
+    button:{
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+    },
 });
 
+
+//main class
 class Timeline_List extends Component{
     constructor(props) {
       super(props);
@@ -85,10 +100,12 @@ class Timeline_List extends Component{
       };
     }
 
+    //delete event call when user request
     deleteTimeline = (form) => {
         this.props.dispatch(deleteTimeline(form, this.props.id));
     }
 
+    //update event call when user request
     updateTimeline = (form) => {
         this.props.dispatch(updateTimeline(form, this.props.id));
     }
@@ -112,6 +129,7 @@ class Timeline_List extends Component{
         });
     }
 
+    //adding a new event call when user request
     handleAddTimelineSubmit = (event) =>{
         event.preventDefault();
         let formD = {
@@ -124,10 +142,10 @@ class Timeline_List extends Component{
 				'sec':0,
 				'minsec':0
             },
-            "description":this.state.description
+            "description":this.state.description,
         }
-        this.setState({date: "", open:false, description: ""});
         this.props.dispatch(createTimeline(formD, this.props.id));
+        this.setState({date: "", open:false, description: ""});
     }
     
     render(){
@@ -136,30 +154,45 @@ class Timeline_List extends Component{
         const {error, isUpdatingTime, project} = this.props.project;
         let content;
         if (error) {
+            //if fetch return error
             content = <Alert severity="error">{error}</Alert>;
         } else if (isUpdatingTime) {
+            //if the update havent return
             content = (
                 <Grid container justify="center" className={classes.root}>
                     <CircularProgress color="primary" className={classes.progress}/>
                 </Grid>
             );
         } else if (!project || !project.timeline) {
+            //if the poject or the timeline is undefine
             content = (
-                <Typography> The retrieve project not found.</Typography>
+                <Typography className={classes.typo}> The retrieve project not found.</Typography>
+            );
+        } else if (project.timeline && project.timeline.length==0){
+            //if timeline is empty right now
+            content = (
+                <Typography className={classes.typo}> There is no event inside timeline right now.</Typography>
             );
         } else {
+            //render the timeline
             const list = project.timeline.map((each) => (
-                <TimeLineItems each={each} id={this.props.id} delete={this.deleteTimeline} update={this.updateTimeline}/>
+                <TimeLineItems key={each.index} each={each} id={this.props.id} delete={this.deleteTimeline} update={this.updateTimeline}/>
             ));
             content = <Timeline>{list}</Timeline>;
         }
         return(
             <Fragment>
+
+                {/* section name */}
                 <Typography gutterBottom variant="h5" component="h2">
                     Timeline
                 </Typography>
                 <Divider/>
+
+                {/* timeline */}
                 {content}
+
+                {/* adding form */}
                 {!this.state.open ? (
                     <Button 
                         onClick={this.handleAddTimelineOpen}
@@ -167,6 +200,7 @@ class Timeline_List extends Component{
                         size="small"
                         variant="contained"
                         color="primary"
+                        className={classes.button}
                     >
                         Add new event
                     </Button>
@@ -216,6 +250,7 @@ function TimeLineItems(props){
     const [open,setOpen] = useState(false);
     const classes = useStyles();
     
+    //reset the data after re-render the list
     useEffect(() => {
         setDescription(props.each.description);
         setDate(props.each.time.slice(0,10));
@@ -236,11 +271,13 @@ function TimeLineItems(props){
         setDescription(event.target.value);
     }
 
+    //when click delete event
     const handleTimelineDelete = () => {
         let formD = {"index":props.each.index}
         props.delete(formD);
     };
 
+    //when click update an event
     const handleTimelineUpdate = (event) => {
         event.preventDefault();
         setOpen(false);
