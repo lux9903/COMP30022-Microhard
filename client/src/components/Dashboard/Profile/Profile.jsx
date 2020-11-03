@@ -145,7 +145,7 @@ class Profile extends Component {
   componentDidMount() {
     const {classes} = this.props;
     // Retrieve avatar image
-    const img = axios.get('/avatar').then((res) => {
+    axios.get('/avatar').then((res) => {
       if (res.data.files) {
         const imgPic = res.data.files.map((ele) => (
           <Avatar
@@ -166,7 +166,7 @@ class Profile extends Component {
       }
     });
 
-    const resume = axios.get('/pdf/').then((res) => {
+    axios.get('/pdf/').then((res) => {
       if (res.data.pdfs) {
         var resumeUrl = {getFileLink: '#'};
         var ele;

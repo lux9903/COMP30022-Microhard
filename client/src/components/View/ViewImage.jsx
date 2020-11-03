@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Helmet} from 'react-helmet';
-import ReactDOM from 'react-dom';
 import axios from '../../helpers/axiosConfig';
 import {Container} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import ViewNav from './ViewNav';
 import Gallery from 'react-grid-gallery';
-import {fetchViewPhotos, fetchViewUser} from '../../actions/viewAction';
+import {fetchViewPhotos} from '../../actions/viewAction';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
 import {withRouter} from 'react-router-dom';
@@ -32,7 +31,7 @@ class ViewImage extends Component {
     const user_id = this.props.match.params.id;
     this.props.dispatch(fetchViewPhotos(1, user_id));
 
-    const view_user = axios.get(`/view/${user_id}`).then((res) => {
+    axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user: res.data});
     });
   }
