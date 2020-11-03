@@ -1,5 +1,4 @@
 import React, {Component, Fragment, useState} from 'react';
-import {Link} from 'react-router-dom';
 import axios from '../../../helpers/axiosConfig';
 import {Helmet} from 'react-helmet';
 import {withStyles} from '@material-ui/core/styles';
@@ -77,7 +76,7 @@ function MyGrid(props) {
         }
       });
     }
-    if (i == 0) {
+    if (i === 0) {
       color = '#88B9EB';
       i = 1;
     } else {
@@ -642,7 +641,7 @@ class Course extends Component {
         );
       }
       if (
-        document.forms.namedItem('updateCourse')['link']['value'].trim() != ''
+        document.forms.namedItem('updateCourse')['link']['value'].trim() !== ''
       ) {
         formD['link'] = document.forms
           .namedItem('updateCourse')
