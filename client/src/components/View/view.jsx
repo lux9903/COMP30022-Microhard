@@ -26,9 +26,7 @@ import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
-  fetchViewDocuments,
   fetchViewPhotos,
-  fetchViewUser,
 } from '../../actions/viewAction';
 
 const styles = (theme) => ({
@@ -128,11 +126,11 @@ class View extends Component {
 
     this.props.dispatch(fetchViewPhotos(1, user_id));
 
-    const view_user = axios.get(`/view/${user_id}`).then((res) => {
+    axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user: res.data});
     });
 
-    const avatar = axios.get(`/view/${user_id}/avatar`).then((res) => {
+    axios.get(`/view/${user_id}/avatar`).then((res) => {
       if (res.data.files) {
         const imgPic = res.data.files.map((ele) => (
           <Avatar
@@ -154,7 +152,7 @@ class View extends Component {
         ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
       }
     });
-    const resume = axios.get(`/view/${user_id}/pdf`).then((res) => {
+    axios.get(`/view/${user_id}/pdf`).then((res) => {
       if (res.data.pdfs) {
         var resumeUrl = {getFileLink: '#'};
         var ele;

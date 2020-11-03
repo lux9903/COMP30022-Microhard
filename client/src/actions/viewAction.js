@@ -1,11 +1,5 @@
 import {createActions} from 'redux-actions';
 import axios from '../helpers/axiosConfig';
-import {
-  fetchProjectFailure,
-  fetchProjectListConditionFailure,
-  fetchProjectListConditionStarted,
-  fetchProjectListConditionSuccess, fetchProjectStarted, fetchProjectSuccess,
-} from './projectAction';
 
 export const {
   fetchViewPhotosStarted,

@@ -44,8 +44,11 @@ function MyGrid(props) {
           winter = [],
           sem1 = [],
           sem2 = [];
+        // eslint-disable-next-line no-lone-blocks
         {
+            // eslint-disable-next-line array-callback-return
             props.courses[key].map((value) => {
+                // eslint-disable-next-line default-case
                 switch (value.sem) {
                     case 'Sem1':
                         sem1.push(value.code + '\n');
@@ -62,7 +65,7 @@ function MyGrid(props) {
                 }
             });
         }
-        if (i == 0) {
+        if (i === 0) {
             color = '#88B9EB';
             i = 1;
         } else {
@@ -282,7 +285,7 @@ class ViewCourse extends Component {
     componentDidMount() {
         const user_id = this.props.match.params.id
 
-        const view_user = axios.get(`/view/${user_id}`).then((res) => {
+        axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
 

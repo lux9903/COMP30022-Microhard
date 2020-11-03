@@ -153,7 +153,7 @@ class ViewProject extends Component {
 
   componentDidMount = () => {
     const user_id = this.props.match.params.id;
-    const view_user = axios.get(`/view/${user_id}`).then((res) => {
+    axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user: res.data});
     });
     this.getCondition(user_id);

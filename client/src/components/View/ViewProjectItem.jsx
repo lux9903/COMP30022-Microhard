@@ -28,10 +28,8 @@ import { withRouter } from "react-router";
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import Collapse from '@material-ui/core/Collapse';
-import {CircularProgress, IconButton} from '@material-ui/core';
+import {CircularProgress} from '@material-ui/core';
 import ViewNav from './ViewNav';
 import ListIcon from '@material-ui/icons/List';
 import {fetchViewProject} from '../../actions/viewAction';
@@ -132,18 +130,10 @@ class View_Project_Item extends Component{
     console.log(this.props);
     const user_id = this.props.match.params.id
 
-    const view_user = axios.get(`/view/${user_id}`).then((res) => {
+    axios.get(`/view/${user_id}`).then((res) => {
       this.setState({view_user:res.data});
     })
     this.props.dispatch(fetchViewProject(this.props.match.params.project_id,user_id));
-    /*
-    axios.get(`/view/${user_id}/project/`+this.props.match.params.project_id).then((res) => {
-      this.setState({
-        project: res.data.project,
-        open:false,
-      });
-    })
-      .catch((error) => {});*/
   }
 
   handleClickOpen = () =>{
