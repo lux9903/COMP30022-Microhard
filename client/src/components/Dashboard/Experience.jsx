@@ -1,6 +1,6 @@
 import React, {Component, Fragment, useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
@@ -26,6 +26,49 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+
+import {fetchExperiences, deleteExperience} from '../../actions/experienceAction';
+import {connect} from 'react-redux';
+
+const useStyles2 = (theme) => ({
+  root: {
+    backgroundColor: '#094183',
+    paddingBottom: '0px',
+    color: '#fff',
+  },
+  body: {
+    width: '100%',
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    width: '100%',
+  },
+  formTitle: {
+    marginBottom: '1rem',
+    textAlign: 'center',
+    fontFamily: 'Nunito, sans-serif',
+  },
+  formWrap: {
+    padding: '64px 32px',
+  },
+  NunitoFont: {
+    fontFamily: 'Nunito, sans-serif',
+  },
+  form: {
+    width: '100%',
+  },
+  form_group: {
+    padding: '5px 5px 5px 5px',
+  },
+});
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -235,15 +278,23 @@ function DeleteButton(props) {
   const handleCancel = () => {
     setOpen(false);
   };
-
+/*
   const handleAccept = () => {
     let url = '/experience/' + props._id;
-    axios
-      .delete(url)
+    axios.delete(url)
       .then(() => setOpen(false))
       .catch(() => alert('error in deleting experience'));
     setTimeout(() => props.update(), 400);
   };
+  */
+  const handleAccept = () => {
+    let url = '/experience/' + props._id;
+    props.delete(props._id);
+
+    setTimeout(() => props.update(), 400);
+    setOpen(false);
+  };
+
 
   return (
     <div>
@@ -312,7 +363,7 @@ class MyAccordion extends Component {
             {...this.props}
           />
           <div>
-            <DeleteButton _id={this.props._id} update={this.props.update} />
+            <DeleteButton delete={this.props.delete} _id={this.props._id} update={this.props.update} />
           </div>
         </AccordionActions>
       </Accordion>
@@ -349,23 +400,44 @@ const DisplayItems = (items, state) => {
   return x;
 };
 
-export default function Experience() {
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState();
 
-  const handleClick = () => {
-    setOpen(true);
+
+
+class Experience extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.createExperience = this.createExperience.bind(this);
+    this.deleteExperience = this.deleteExperience.bind(this);
+    this.update = this.update.bind(this);
+    this.state = {
+      experiences: undefined,
+      open: null,
+    }
+  }
+
+  handleClick() {
+    this.setState({open:true})
+  }
+  handleClose() {
+    this.setState({open:false})
+  }
+
+  createExperience(values) {
+    axios
+      .post('/experience/create', values)
+      .then(() => alert('The experience is successfully created'))
+      .catch(() => alert('An error occurred'));
+    setTimeout(() => this.update(), 400);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  deleteExperience(_id) {
+    this.props.dispatch(deleteExperience(_id))
+  }
 
-  const classes = useStyles();
-  const getExp = () => axios.get('/experience').catch();
-
-  function update() {
-    getExp().then((data) => {
+  update() {
+    axios.get('/experience').then((data) => {
       let temp = {};
       let i = 0;
       if (data !== undefined) {
@@ -384,74 +456,73 @@ export default function Experience() {
               state={temp[i].state}
               company={temp[i].company}
               end_date={temp[i++].end_date}
-              update={update}
+              update={this.update}
+              delete={this.deleteExperience}
             />
           );
         });
-        setItems(expComp);
+        this.setState({experiences: expComp});
       }
     });
   }
 
-  useEffect(() => {
-    getExp().then(() => update());
-  }, []);
 
-  const onAddNewSubmit = (values) => {
-    axios
-      .post('/experience/create', values)
-      .then(() => alert('The experience is successfully created'))
-      .catch(() => alert('An error occurred'));
-    setTimeout(() => update(), 400);
-  };
+  componentDidMount() {
+    this.update();
+  }
 
-  return (
-    <Fragment>
-      {/*<container>*/}
-      <Helmet>
-        <title>Microhard &middot; Experience </title>
-      </Helmet>
-      {/*  <div className={classes.root}>*/}
-      {/*    <div className={classes.formWrap}>*/}
-      {/*      <h1 className={classes.formTitle}>My Career Experience</h1>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*</container>*/}
-      <div style={{height: '120px', backgroundColor: '#094183'}}>
+  render() {
+    const {classes} = this.props;
+    return (
+      <Fragment>
+
+        <Helmet>
+          <title>Microhard &middot; Experience </title>
+        </Helmet>
+
+        <div style={{height: '120px', backgroundColor: '#094183'}}>
+          <br />
+          <br />
+          <Typography variant="h1" align="center" style={{color: '#fff'}}>
+            Career Experience
+          </Typography>
+        </div>
         <br />
         <br />
-        <Typography variant="h1" align="center" style={{color: '#fff'}}>
-          Career Experience
-        </Typography>
-      </div>
-      <br />
-      <br />
-      <Grid container justify="center" direction="row" spacing="3">
-        <Grid item xs={12} sm={2}>
-          <Button variant="contained" color="primary" onClick={handleClick}>
-            Add new Experience
-          </Button>
+        <Grid container justify="center" direction="row" spacing="3">
+          <Grid item xs={12} sm={2}>
+            <Button variant="contained" color="primary" onClick={this.handleClick}>
+              Add new Experience
+            </Button>
+          </Grid>
+          <MyForm
+            open={this.state.open}
+            update={this.update}
+            classes={classes}
+            handleClose={this.handleClose}
+            title="Add New Experience"
+            submit={this.createExperience}
+          />
+          <Grid item xs={12} sm={9}>
+            <div className={classes.body}>
+              <h3 className={classes.NunitoFont}>Current position</h3>
+              <br />
+              {this.state.experiences && DisplayItems(this.state.experiences, 'going')}
+              <br />
+              <br />
+              <h3 className={classes.NunitoFont}>Past Experience</h3>
+              {this.state.experiences && DisplayItems(this.state.experiences, 'end')}
+            </div>
+          </Grid>
         </Grid>
-        <MyForm
-          open={open}
-          update={update}
-          classes={classes}
-          handleClose={handleClose}
-          title="Add New Experience"
-          submit={onAddNewSubmit}
-        />
-        <Grid item xs={12} sm={9}>
-          <div className={classes.body}>
-            <h3 className={classes.NunitoFont}>Current position</h3>
-            <br />
-            {items && DisplayItems(items, 'going')}
-            <br />
-            <br />
-            <h3 className={classes.NunitoFont}>Past Experience</h3>
-            {items && DisplayItems(items, 'end')}
-          </div>
-        </Grid>
-      </Grid>
-    </Fragment>
-  );
+      </Fragment>
+    );
+  }
 }
+
+
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+export default connect(mapStateToProps)(withStyles(useStyles2)(Experience));
