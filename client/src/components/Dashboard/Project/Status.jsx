@@ -35,6 +35,7 @@ class Status extends Component{
       };
     }
 
+    //do upate call for progress status when user request
     handleStatusChange = event => {
         let formD = {"status": event.target.value}
         this.props.dispatch(updateProject(formD, this.props.id));
@@ -44,6 +45,7 @@ class Status extends Component{
         })
     };
 
+    //do update call for show status when user request
     handleShowStatusChange = event => {
         let formD = {"show_status": event.target.value}
         this.props.dispatch(updateProject(formD, this.props.id));
@@ -81,15 +83,19 @@ class Status extends Component{
         const {error, project} = this.props.project;
         let content;
         if (error) {
+            //if database return a error
             content = <Alert severity="error">{error}</Alert>;
         } else if (!project) {
+            //if project is undefined
             content = (
               <Typography> The retrieve project not found.</Typography>
             );
         } else {
+            //render show-status and progress status
             content = (
                 <Fragment>
-                    <Grid container direction="row" justify="flex_start" alignItems="center">
+                    {/* progress status select bar*/}
+                    <Grid container direction="row" justify="flex-start" alignItems="center">
                         <Typography>
                             Progress Status: 
                         </Typography>
@@ -108,7 +114,8 @@ class Status extends Component{
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid container direction="row" justify="flex_start" alignItems="center">
+                    {/* show status select bar */}
+                    <Grid container direction="row" justify="flex-start" alignItems="center">
                         <Typography>
                             Show Status:
                         </Typography>
@@ -131,10 +138,14 @@ class Status extends Component{
         }
         return(
             <Fragment>
+
+                {/* hero content */}
                 <Typography gutterBottom variant="h5" component="h2">
                     Status
                 </Typography>
                 <Divider/>
+
+                {/* project content */}
                 {content}
             </Fragment>
         );

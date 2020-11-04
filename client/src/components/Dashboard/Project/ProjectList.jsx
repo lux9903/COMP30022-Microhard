@@ -2,6 +2,7 @@ import React, {Component, Fragment, useState} from 'react';
 import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
 import {withStyles} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {Formik, Field, Form} from 'formik';
 import Alert from '@material-ui/lab/Alert';
 import {CircularProgress} from '@material-ui/core';
@@ -41,38 +42,13 @@ import {
 } from '../../../actions/projectAction';
 
 const styles = (theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: '#094183',
-    padding: theme.spacing(8, 0, 6),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  ListItem: {
-    padding: '0px',
-  },
-  list: {
-    maxHeight: 100,
-    overflow: 'auto',
-  },
-  container: {
-    justify_content: 'space-between',
-  },
 });
+
+const useStyles = makeStyles((theme) => ({
+  textfield :{
+    marginBottom: theme.spacing(2),
+  }
+}));
 
 //button to opening warning delete form
 function DeleteButton(props) {
@@ -84,19 +60,14 @@ function DeleteButton(props) {
     setOpen(false);
   };
 
-  //this might need to change to down
+  //when click delete project
   const handleDelete = () => {
     setOpen(false);
     props.delete(props.id);
   };
   return (
-    <div>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        onClick={handleClickOpen}
-      >
+    <Fragment>
+      <Button color="primary" size="small" onClick={handleClickOpen}>
         Delete
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -116,25 +87,28 @@ function DeleteButton(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Fragment>
   );
 }
 
 //Button opening add form
 function AddButton(props) {
   const [open, setOpen] = useState(false);
+
+  //when click open form add
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  //when click close
   const handleClose = () => {
     setOpen(false);
   };
 
-  //this also need to go down
+  //when submit to create new project
   const onSubmit = (values) => {
     props.add(values);
   };
-
   return (
     <div>
       <IconButton onClick={handleClickOpen}>
@@ -150,60 +124,65 @@ function AddButton(props) {
   );
 }
 
-//adding form
+//adding form with name and description
 function MyForm(props) {
+  const classes = useStyles();
   return (
-    <Dialog open={props.open} onClose={props.handleClose} closeAfterTransition>
-      <DialogContent>
-        <div>
-          <Formik
-            initialValues={{
-              name: '',
-              description: '',
-            }}
-            onSubmit={(values) => {
-              props.submit(values);
-              props.handleClose();
-            }}
-          >
-            <Form width="100%" mt="2">
-              <Typography>ADD NEW PROJECT</Typography>
-              <Divider />
-              <br />
-              <Field
-                as={TextField}
-                label="Name"
-                variant="outlined"
-                name="name"
-                id="name"
-                fullWidth
-                autoComplete="off"
-                required
-              />
-              <br />
-              <br />
-              <Field
-                as={TextField}
-                label="Description"
-                variant="outlined"
-                name="description"
-                id="description"
-                autoComplete="off"
-                fullWidth
-              />
-              <Button type="submit" color="primary" fullWidth>
-                Submit
-              </Button>
-            </Form>
-          </Formik>
-        </div>
-      </DialogContent>
+    <Dialog
+      open={props.open}
+      onClose={props.handleClose}
+      closeAfterTransition
+    >
+        <DialogContent>
+          <div>
+            <Formik
+              initialValues={{
+                name: "",
+                description: "",
+              }}
+              onSubmit = {(values) => {props.submit(values); props.handleClose();}}
+            >
+              <Form width='100%'>
+                <Typography fullwidth align="center" className={classes.textfield}>
+                  ADD NEW PROJECT
+                </Typography>
+                <Field as={TextField}
+                  label="Name"
+                  variant="outlined"
+                  name="name"
+                  id="name"
+                  className={classes.textfield}
+                  fullWidth
+                  required
+                />
+                <Field as={TextField}
+                  label="Description"
+                  variant="outlined"
+                  name="description"
+                  id="description"
+                  className={classes.textfield}
+                  fullWidth
+                />
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  className={classes.textfield}
+                >
+                  Submit
+                </Button>
+              </Form>
+            </Formik>
+          </div>
+        </DialogContent>
     </Dialog>
   );
 }
 
-function Project(props) {
-  return (
+//this will render each project in the project list
+function Project(props){
+  return(
     <Accordion>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -221,20 +200,10 @@ function Project(props) {
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          href={'/project/view/' + props.project._id}
-        >
+        <Button color="primary" size="small" href={"/project/view/"+props.project._id}>
           View
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          href={'/project/' + props.project._id}
-        >
+        <Button color="primary" size="small" href={"/project/"+props.project._id}>
           Edit
         </Button>
         <DeleteButton
@@ -245,12 +214,13 @@ function Project(props) {
     </Accordion>
   );
 }
-class ProjectList extends Component {
+
+//main class: initiate and using all the function above
+class ProjectList extends Component{
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.pList = this.pList.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
@@ -266,28 +236,21 @@ class ProjectList extends Component {
     };
   }
 
-  //add new project
+  //this function will handle create a project
   onFormSubmit = (value) => {
     console.log(value);
     this.props.dispatch(createProject(value));
   };
 
+  //this function handle delete a project
   deleteProject = (id) => {
     this.props.dispatch(deleteProject(id));
   };
 
-  pList = () => {
-    return (
-      this.state.projlist &&
-      this.state.projlist.map((proj, i) => {
-        return <Project project={proj} delete={this.deleteProject} />;
-      })
-    );
-  };
-
-  getCondition = () => {
-    let formD = {name: this.state.input};
-    if (this.state.search_status !== '') {
+  //fetch data using condition save
+  getCondition = () =>{
+    let formD = {"name": this.state.input}
+    if(this.state.search_status !== ""){
       formD['status'] = this.state.search_status;
     }
     if (this.state.sortBy !== '') {
@@ -299,10 +262,12 @@ class ProjectList extends Component {
     this.props.dispatch(fetchProjectListCondition(formD));
   };
 
-  componentDidMount = () => {
+  //fetch data when component first mount
+	componentDidMount = () => {
     this.getCondition();
   };
 
+  //functions below just handle input from user on utility lines
   onChangeInput = (event) => {
     this.setState({input: event.target.value});
   };
@@ -333,106 +298,120 @@ class ProjectList extends Component {
 
   render() {
     const {error, isFetching, projects} = this.props.project;
-    const {classes} = this.props;
 
     let content;
-
+    //if there is issues with fetching
     if (error) {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
+      //if the fetch from the database have not arrive
       content = (
         <Grid container justify="center" alignItems="center">
           <CircularProgress color="primary" />
         </Grid>
       );
     } else if (projects.length === 0 || !projects) {
+      //if the data receive undefined or the project is empty
       content = (
         <Grid container justify="center" alignItems="center">
           <Typography> No projects found.</Typography>
         </Grid>
       );
     } else {
+      //map out all the project that fetched from databased
       content = projects.map((proj) => (
-        <Project project={proj} delete={this.deleteProject} />
+        <Project key={proj._id} project={proj} delete={this.deleteProject}/>
       ));
     }
     return (
       <Fragment>
-        <Helmet>
-          <title>Microhard &middot; My projects </title>
-        </Helmet>
-        <div style={{height: '120px', backgroundColor: '#094183'}}>
-          <br />
-          <br />
-          <Typography variant="h1" align="center" style={{color: '#fff'}}>
-            Project Lists
-          </Typography>
-        </div>
-        <br />
-        <Container maxWidth="md">
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="center"
-          >
-            <TextField
-              onChange={this.onChangeInput}
-              onKeyDown={this.onSearch}
-              value={this.state.input}
-              variant="outlined"
-              size="small"
-              placeholder="Search name"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <ToggleButtonGroup
-              value={this.state.sortBy}
-              exclusive
-              onChange={this.onSortChange}
-              size="small"
-            >
-              <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value="descending">Oldest</ToggleButton>
-              <ToggleButton value="ascending">Lastest</ToggleButton>
-            </ToggleButtonGroup>
-            <ToggleButtonGroup
-              value={this.state.search_status}
-              exclusive
-              onChange={this.onStatusChange}
-              size="small"
-            >
-              <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value="Inprogress">In Progress</ToggleButton>
-              <ToggleButton value="Completed">Complete</ToggleButton>
-              <ToggleButton value="Cancel">Cancel</ToggleButton>
-            </ToggleButtonGroup>
+      <Helmet>
+        <title>Microhard &middot; My projects </title>
+      </Helmet>
 
-            <ToggleButtonGroup
-              value={this.state.show_status}
-              exclusive
-              onChange={this.onShowStatusChange}
-              size="small"
-            >
-              <ToggleButton value="">All</ToggleButton>
-              <ToggleButton value="public">Public</ToggleButton>
-              <ToggleButton value="private">Private</ToggleButton>
-            </ToggleButtonGroup>
-          </Grid>
-          <Grid container direction="row" alignItems="center">
-            <AddButton add={this.onFormSubmit} />
-          </Grid>
-          <br />
-          {content}
-          <br />
-          <br />
-        </Container>
-      </Fragment>
+      {/* hero content */}
+      <div style={{height: '120px', backgroundColor: '#094183'}}>
+        <br />
+        <br />
+        <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          Project Lists
+        </Typography>
+      </div>
+      <br/>
+
+      {/* body content */}
+      <Container maxWidth="md">
+
+        {/* utility lines - each grid is a line */}
+        <Grid container direction="row" justify="space-between" alignItems="center">
+
+          {/* search bar */}
+          <TextField
+            onChange ={this.onChangeInput}
+            onKeyDown={this.onSearch}
+            value={this.state.input}
+            variant="outlined"
+            size="small"
+            label="Search name"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon/>
+                </InputAdornment>
+              )
+            }}
+          />
+
+          {/* sorting based on time update */}
+          <ToggleButtonGroup
+            value={this.state.sortBy}
+            exclusive
+            onChange={this.onSortChange}
+            size="small"
+          >
+            <ToggleButton value="">All</ToggleButton>
+            <ToggleButton value='descending'>Oldest</ToggleButton>
+            <ToggleButton value='ascending'>Lastest</ToggleButton>
+          </ToggleButtonGroup>
+
+          {/* sorting based on progress status */}
+          <ToggleButtonGroup
+            value={this.state.search_status}
+            exclusive
+            onChange={this.onStatusChange}
+            size="small"
+          >
+            <ToggleButton value="">All</ToggleButton>
+            <ToggleButton value='Inprogress'>In Progress</ToggleButton>
+            <ToggleButton value='Completed'>Complete</ToggleButton>
+            <ToggleButton value='Cancel'>Cancel</ToggleButton>
+          </ToggleButtonGroup>
+
+          {/* sorting based on show status */}
+          <ToggleButtonGroup
+            value={this.state.show_status}
+            exclusive
+            onChange={this.onShowStatusChange}
+            size="small"
+          >
+            <ToggleButton value="">All</ToggleButton>
+            <ToggleButton value='public'>Public</ToggleButton>
+            <ToggleButton value='private'>Private</ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+
+        <Grid container direction="row" alignItems="center">
+          {/* Add button */}
+          <AddButton add={this.onFormSubmit}/>
+        </Grid>
+        <br/>
+
+        {/* Listing content */}
+        {content}
+        <br/>
+        <br/>
+      </Container>
+    </Fragment>
     );
   }
 }

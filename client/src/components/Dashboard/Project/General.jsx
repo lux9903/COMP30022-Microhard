@@ -52,6 +52,7 @@ class General_Info extends Component{
         })
     }
 
+    //do update call when user request
     handleGeneralSubmit = (event) =>{
         event.preventDefault();
         let formD = {
@@ -66,20 +67,24 @@ class General_Info extends Component{
         const {error, project, isUpdatingGen} = this.props.project;
         let content;
         if (error) {
+            //if data from fetch is erro
             content = <Alert severity="error">{error}</Alert>;
         } else if(isUpdatingGen){
+            //if we are updating and data havent arrive
             content = (
                 <Grid container justify="center" className={classes.root}>
                     <CircularProgress color="primary" className={classes.progress}/>
                 </Grid>
             );
         } else if (!project) {
+            //if the project is undefined
             content = (
               <Typography> The retrieve project not found.</Typography>
             );
         } else {
+            //render the name and description of the project
             content = (
-                <form onSubmit={this.handleGeneralSubmit} fullWidth>
+                <form onSubmit={this.handleGeneralSubmit}>
                     <Typography>
                         Name
                     </Typography>
@@ -119,10 +124,14 @@ class General_Info extends Component{
         }
         return(
             <Fragment>
+
+                {/*section name*/}
                 <Typography gutterBottom variant="h5" component="h2">
                     General Information
                 </Typography>
                 <Divider/>
+
+                {/*name + description content*/}
                 {content}
             </Fragment>
         )

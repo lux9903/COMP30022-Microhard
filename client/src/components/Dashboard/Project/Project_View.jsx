@@ -37,6 +37,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import {fetchProject} from '../../../actions/projectAction';
 
+//this is css for fucntion
 const useStyles = makeStyles((theme) => ({
   item: {
     marginLeft: 8,
@@ -46,11 +47,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+//this is css for export class
 const styles = (theme) => ({
-  heroContent: {
-      backgroundColor: '#094183',
-      padding: theme.spacing(6, 0, 6),
-  },
   cardGrid: {
       paddingTop: theme.spacing(4),
   },
@@ -80,18 +79,17 @@ const styles = (theme) => ({
     color: "white",
   },
   root: {
-      width: "100%",
+    width: "100%",
   }
 });
 
-//this render the process section
+//this render the process section in main part
 function Process(props) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const handleClick = () => {
     setOpen(!open);
   };
-
   return (
     <List>
       <ListItem button onClick={handleClick}>
@@ -101,9 +99,9 @@ function Process(props) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
         {props.proc.nodes && props.proc.nodes.length > 0 ? (
-            props.proc.nodes.map((node, i)=>{
+            props.proc.nodes.map((node)=>{
               return (
-                <Fragment>
+                <Fragment key={node.index}>
                   {!node.state ? (
                     <ListItem className={classes.item}>
                       <ListItemText primary={node.description} />
@@ -128,15 +126,15 @@ function Process(props) {
   )
 }
 
+//this is the main part of the page
+//render all except the navigation
 class Project_View extends Component{
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.state = {
-      project: [],
-    };
   }
 
+  //fetch project from database when the page first load
   componentDidMount = () =>{
     let id = null;
     if (this.props.match.params.id !== undefined) {
@@ -145,28 +143,24 @@ class Project_View extends Component{
     this.props.dispatch(fetchProject(id));
   }
 
-  handleClickOpen = () =>{
-    this.setState({open: true})
-  }
-  handleClickClose = () =>{
-    this.setState({open: true})
-  }
-
   render(){
     const {classes} = this.props;
     const id = this.props.match.params.id;
 
+    //this will decided the content based on the result after fetching data from database
     let content;
     const {error, isFetching, project} = this.props.project;
     if (error) {
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
+      //show the circular progress bar if databased still process
       content = (
         <Grid container justify="center" alignItems="center" className={classes.root}>
           <CircularProgress color="primary" className={classes.progress}/>
         </Grid>
       );
     } else if (!project) {
+      //response if the project list is empty
       content = (
         <Grid container justify="center" alignItems="center">
           <Typography> 
@@ -175,9 +169,14 @@ class Project_View extends Component{
         </Grid>
       );
     } else {
+      //render all project fetched
       content = (
         <Grid container spacing={3}>
+
+          {/* left side collumn */}
           <Grid item xs={12} md={8}>
+
+            {/* 1st card: project description */}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Description</Typography>
@@ -190,28 +189,32 @@ class Project_View extends Component{
               </CardContent>
             </Card>
             <br/>
+
+            {/* 2nd card: project process*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Process</Typography>
                 <Divider/>
                 {project.process && project.process.length>0 ? (
-                  project.process.map((proc,i)=>{
-                    return <Process proc={proc}/>
+                  project.process.map((proc)=>{
+                    return <Process proc={proc} key={proc.processNum}/>
                   })) : (
                     <Typography className={classes.text}>No Process Yet</Typography>
                 )}
               </CardContent>
             </Card>
             <br/>
+
+            {/* 3rd card: project timeline*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
                 <Divider/>
                   {project.timeline && project.timeline.length > 0 ? (
                     <Timeline>
-                    {project.timeline.map((each,i)=>{
+                    {project.timeline.map((each)=>{
                       return (
-                        <TimelineItem align="left">
+                        <TimelineItem key={each.index} align="left">
                           <TimelineSeparator>
                             <TimelineDot color="primary"/>
                             <TimelineConnector />
@@ -236,7 +239,11 @@ class Project_View extends Component{
               </CardContent>
             </Card>
           </Grid>
+
+          {/* right sided collumn*/}
           <Grid item xs={12} md={4}>
+
+            {/* 1st card: project status*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Status</Typography>
@@ -246,6 +253,8 @@ class Project_View extends Component{
               </CardContent>
             </Card>
             <br/>
+
+            {/* 2nd card: project rating*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
@@ -254,13 +263,15 @@ class Project_View extends Component{
               </CardContent>
             </Card>
             <br/>
+
+            {/* 2nd card: project contributor*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
                 <Divider/>
                 <List>
                   {project.contributors && project.contributors.map((con, i)=>{
-                    return <ListItemText>{con}</ListItemText>
+                    return <ListItemText key={i}>{con}</ListItemText>
                   })}
                 </List>
               </CardContent>
@@ -275,6 +286,8 @@ class Project_View extends Component{
           <title>Microhard &middot; Project View</title>
         </Helmet>
         <div className={classes.body}>
+
+          {/* page hero content*/}
           <Container maxWidth="sm" >
               <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
                 {project.name}
@@ -293,10 +306,12 @@ class Project_View extends Component{
                 </Grid>
               </Grid>
           </Container>
-        <Container className={classes.cardGrid} maxWidth="md">
-          {content} 
-        </Container>
-      </div>
+
+          {/* project detail*/}
+          <Container className={classes.cardGrid} maxWidth="md">
+            {content} 
+          </Container>
+        </div>
       </Fragment>
   );}
 }

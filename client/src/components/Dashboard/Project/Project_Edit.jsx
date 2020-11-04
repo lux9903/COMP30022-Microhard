@@ -26,10 +26,6 @@ import Timeline from './Timeline';
 import {fetchProject} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
-  heroContent: {
-      backgroundColor: '#fff',
-      padding: theme.spacing(6, 0, 6),
-  },
   cardGrid: {
       paddingTop: theme.spacing(4),
   },
@@ -62,6 +58,7 @@ class Project extends Component{
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
+  //fetch data from database when first mount
   componentDidMount = () =>{
     let id = null;
     if (this.props.match.params.id !== undefined) {
@@ -73,25 +70,29 @@ class Project extends Component{
   render(){
     const {classes} = this.props;
     const id = this.props.match.params.id;
-    //const {user} = this.props.user;
-    //alert(user.username);
     let content;
     const {error, isFetching, project} = this.props.project;
     if (error) {
+      //if fetch have some error
       content = <Alert severity="error">{error}</Alert>;
     } else if (isFetching) {
+      //if data from database havent arrived
+      //show progress bar
       content = (
         <Grid container justify="center" alignItems="center" className={classes.root}>
           <CircularProgress className={classes.progress}/>
         </Grid>
       );
     } else if (!project) {
+      //if the project is undefined
       content = (
         <Grid container justify="center" alignItems="center">
           <Typography> Cannot found the project requested.</Typography>
         </Grid>
       );
     } else {
+      //if fetch arrive and succesfully fetch the project
+      //render out content of project
       content = (
         <Container maxWidth="md" className={classes.cardGrid}>
           <Grid container spacing={3}>
@@ -137,7 +138,10 @@ class Project extends Component{
           <title>Microhard &middot; Project</title>
         </Helmet>
 
+        {/* main content */}
         <div className={classes.body}>
+
+          {/* hero content */}
           <Container maxWidth="sm" >
             <Typography variant="h1" component="h2" align="center" style={{color: '#fff'}} gutterBottom>
               EDITING PAGE
@@ -157,7 +161,10 @@ class Project extends Component{
             </Grid>
           </Container>
           <br/>
+
+          {/* project content */}
           {content}
+
         </div>
       </Fragment>
   );}
