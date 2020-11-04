@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import axios from '../../../helpers/axiosConfig';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 
+import {connect} from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
+import Grid from '@material-ui/core/Grid';
+import {CircularProgress} from '@material-ui/core';
+
+import {updateProject} from '../../../actions/projectAction';
 
 const styles = (theme) => ({
     textfield:{
@@ -14,34 +19,25 @@ const styles = (theme) => ({
         width:"100%",
         underline: "none",
     },
+    progress: {
+        marginTop: theme.spacing(2),
+        marginBottom:theme.spacing(2),
+    },
+    root: {
+        width: "100%",
+    }
 });
 
 class General_Info extends Component{
     constructor(props) {
       super(props);
-      this.getGeneral = this.getGeneral.bind(this);
       this.onChangeDesc = this.onChangeDesc.bind(this);
       this.onChangeName = this.onChangeName.bind(this);
-      this.componentDidMount = this.componentDidMount.bind(this);
       this.handleGeneralSubmit = this.handleGeneralSubmit.bind(this);
       this.state = {
-        name: "",
-        description: "",
+        name: this.props.project.project.name,
+        description: this.props.project.project.description,
       };
-    }
-
-    componentDidMount = () =>{
-        this.getGeneral();
-    }
-
-    getGeneral = () =>{
-        axios.get('/project/'+this.props.id).then((res) => {
-            this.setState({
-                name: res.data.project.name,
-                description: res.data.project.description,
-            });
-        })
-        .catch((error) => {});
     }
 
     onChangeName = (event) => {
@@ -56,21 +52,39 @@ class General_Info extends Component{
         })
     }
 
+    //do update call when user request
     handleGeneralSubmit = (event) =>{
         event.preventDefault();
-        axios.post('/project/update/'+ this.props.id, {"name":this.state.name, "description": this.state.description})
-        .catch((error) => {});
+        let formD = {
+            "name": this.state.name,
+            "description": this.state.description,
+        }
+        this.props.dispatch(updateProject(formD, this.props.id));
     }
 
     render(){
         const {classes} = this.props;
-        return(
-            <Fragment>
-                <Typography gutterBottom variant="h5" component="h2">
-                    General Information
-                </Typography>
-                <Divider/>
-                <form onSubmit={this.handleGeneralSubmit} fullWidth>
+        const {error, project, isUpdatingGen} = this.props.project;
+        let content;
+        if (error) {
+            //if data from fetch is erro
+            content = <Alert severity="error">{error}</Alert>;
+        } else if(isUpdatingGen){
+            //if we are updating and data havent arrive
+            content = (
+                <Grid container justify="center" className={classes.root}>
+                    <CircularProgress color="primary" className={classes.progress}/>
+                </Grid>
+            );
+        } else if (!project) {
+            //if the project is undefined
+            content = (
+              <Typography> The retrieve project not found.</Typography>
+            );
+        } else {
+            //render the name and description of the project
+            content = (
+                <form onSubmit={this.handleGeneralSubmit}>
                     <Typography>
                         Name
                     </Typography>
@@ -78,7 +92,7 @@ class General_Info extends Component{
                         value={this.state.name}
                         onChange={this.onChangeName}
                         fullWidth
-                        InputProps={{ disableUnderline: true }}
+                        className={classes.textfield}
                         variant="outlined"
                         required
                     />
@@ -91,7 +105,6 @@ class General_Info extends Component{
                         onChange={this.onChangeDesc}
                         fullWidth
                         multiline
-                        //InputProps={{ disableUnderline: true }}
                         variant="outlined"
                         className={classes.textfield}
                     />
@@ -107,11 +120,25 @@ class General_Info extends Component{
                         Submit
                     </Button>
                 </form>
+            );
+        }
+        return(
+            <Fragment>
 
+                {/*section name*/}
+                <Typography gutterBottom variant="h5" component="h2">
+                    General Information
+                </Typography>
+                <Divider/>
+
+                {/*name + description content*/}
+                {content}
             </Fragment>
         )
     }
 }
 
-//export default (General_Info);
-export default withStyles(styles)(General_Info);
+const mapStateToProps = (state) => ({
+    ...state,
+});
+export default connect(mapStateToProps)(withStyles(styles)(General_Info));

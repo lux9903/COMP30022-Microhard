@@ -2,49 +2,49 @@ import { handleActions } from 'redux-actions';
 
 export default handleActions(
   {
-    FETCH_PROJECTLIST_STARTED: (state) => ({
+    FETCH_PROJECT_LIST_STARTED: (state) => ({
       ...state,
       isFetching: true,
       error: null,
     }),
-    FETCH_PROJECTLIST_SUCCESS: (state) => ({
+    FETCH_PROJECT_LIST_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isFetching: false,
+      projects: action.payload.data.projects,
     }),
-    FETCH_PROJECTLIST_FAILURE: (state) => ({
+    FETCH_PROJECT_LIST_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isFetching: false,
       error: action.payload.error,
     }),
-    FETCH_PROJECTLISTCONDITION_STARTED: (state) => ({
+    FETCH_PROJECT_LIST_CONDITION_STARTED: (state) => ({
       ...state,
       isFetching: true,
       error: null,
     }),
-    FETCH_PROJECTLISTCONDITION_SUCCESS: (state) => ({
+    FETCH_PROJECT_LIST_CONDITION_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isFetching: false,
+      projects: action.payload.data.result,
     }),
-    FETCH_PROJECTLISTCONDITION_FAILURE: (state) => ({
+    FETCH_PROJECT_LIST_CONDITION_FAILURE: (state, action) => ({
       ...state,
-      isFetching: true,
+      isFetching: false,
       error: action.payload.error,
     }),
     CREATE_PROJECT_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdating: true,
       error: null,
     }),
-    CREATE_PROJECT_SUCCESS: (state) => ({
+    CREATE_PROJECT_SUCCESS: (state, action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdating: false,
+      projects: [...state.projects, action.payload.data],
     }),
-    CREATE_PROJECT_FAILURE: (state) => ({
+    CREATE_PROJECT_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdating: false,
       error: action.payload.error,
     }),
     FETCH_PROJECT_STARTED: (state) => ({
@@ -52,252 +52,252 @@ export default handleActions(
       isFetching: true,
       error: null,
     }),
-    FETCH_PROJECT_SUCCESS: (state) => ({
+    FETCH_PROJECT_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isFetching: false,
+      project: action.payload.data.project,
     }),
-    FETCH_PROJECT_FAILURE: (state) => ({
+    FETCH_PROJECT_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isFetching: false,
       error: action.payload.error,
     }),
     UPDATE_PROJECT_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingGen: true,
       error: null,
     }),
-    UPDATE_PROJECT_SUCCESS: (state) => ({
+    UPDATE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingGen: false,
+      project: action.payload.data.result,
     }),
-    UPDATE_PROJECT_FAILURE: (state) => ({
+    UPDATE_PROJECT_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingGen: false,
       error: action.payload.error,
     }),
     LIKE_PROJECT_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdating: true,
       error: null,
     }),
-    LIKE_PROJECT_SUCCESS: (state) => ({
+    LIKE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdating: false,
+      project: action.payload.data.project,
     }),
-    LIKE_PROJECT_FAILURE: (state) => ({
+    LIKE_PROJECT_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdating: false,
       error: action.payload.error,
     }),
     //MAY BE THERE WILL BE A DISLIKE
     DELETE_PROJECT_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdating: true,
       error: null,
     }),
-    DELETE_PROJECT_SUCCESS: (state) => ({
+    DELETE_PROJECT_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdating: false,
+      projects: state.projects.filter(proj => proj._id !== action.payload.data),
     }),
-    DELETE_PROJECT_FAILURE: (state) => ({
+    DELETE_PROJECT_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdating: false,
       error: action.payload.error,
     }),
     CREATE_CONTRIBUTOR_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingCon: true,
       error: null,
     }),
-    CREATE_CONTRIBUTOR_SUCCESS: (state) => ({
+    CREATE_CONTRIBUTOR_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingCon: false,
+      project: action.payload.data,
     }),
-    CREATE_CONTRIBUTOR_FAILURE: (state) => ({
+    CREATE_CONTRIBUTOR_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingCon: false,
       error: action.payload.error,
     }),
     DELETE_CONTRIBUTOR_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingCon: true,
       error: null,
     }),
-    DELETE_CONTRIBUTOR_SUCCESS: (state) => ({
+    DELETE_CONTRIBUTOR_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingCon: false,
+      project: action.payload.data,
     }),
-    DELETE_CONTRIBUTOR_FAILURE: (state) => ({
+    DELETE_CONTRIBUTOR_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingCon: false,
       error: action.payload.error,
     }),
     CREATE_PROCESS_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: true,
       error: null,
     }),
-    CREATE_PROCESS_SUCCESS: (state) => ({
+    CREATE_PROCESS_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingProc: false,
+      project: action.payload.data,
     }),
-    CREATE_PROCESS_FAILURE: (state) => ({
+    CREATE_PROCESS_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: false,
       error: action.payload.error,
     }),
     UPDATE_PROCESS_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: true,
       error: null,
     }),
-    UPDATE_PROCESS_SUCCESS: (state) => ({
+    UPDATE_PROCESS_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingProc: false,
+      project: action.payload.data,
     }),
-    UPDATE_PROCESS_FAILURE: (state) => ({
+    UPDATE_PROCESS_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: false,
       error: action.payload.error,
     }),
     DELETE_PROCESS_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: true,
       error: null,
     }),
-    DELETE_PROCESS_SUCCESS: (state) => ({
+    DELETE_PROCESS_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingProc: false,
+      project: action.payload.data,
     }),
-    DELETE_PROCESS_FAILURE: (state) => ({
+    DELETE_PROCESS_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: true,
+      isUpdatingProc: false,
       error: action.payload.error,
     }),
     CREATE_NODE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: true,
       error: null,
     }),
-    CREATE_NODE_SUCCESS: (state) => ({
+    CREATE_NODE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingProc: false,
+      project: action.payload.data,
     }),
-    CREATE_NODE_FAILURE: (state) => ({
+    CREATE_NODE_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: false,
       error: action.payload.error,
     }),
     UPDATE_NODE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: true,
       error: null,
     }),
-    UPDATE_NODE_SUCCESS: (state) => ({
+    UPDATE_NODE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingProc: false,
+      project: action.payload.data,
     }),
-    UPDATE_NODE_FAILURE: (state) => ({
+    UPDATE_NODE_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: true,
+      isUpdatingProc: false,
       error: action.payload.error,
     }),
     DELETE_NODE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingProc: true,
       error: null,
     }),
-    DELETE_NODE_SUCCESS: (state) => ({
+    DELETE_NODE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingProc: false,
+      project: action.payload.data,
     }),
-    DELETE_NODE_FAILURE: (state) => ({
+    DELETE_NODE_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: true,
+      isUpdatingProc: false,
       error: action.payload.error,
     }),
     FINISH_NODE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      //isUpdating: true,
       error: null,
     }),
-    FINISH_NODE_SUCCESS: (state) => ({
+    FINISH_NODE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      //isUpdating: false,
+      project: action.payload.data,
     }),
-    FINISH_NODE_FAILURE: (state) => ({
+    FINISH_NODE_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: false,
+      //isUpdating: false,
       error: action.payload.error,
     }),
     CREATE_TIMELINE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingTime: true,
       error: null,
     }),
-    CREATE_TIMELINE_SUCCESS: (state) => ({
+    CREATE_TIMELINE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingTime: false,
+      project: action.payload.data,
     }),
-    CREATE_TIMELINE_FAILURE: (state) => ({
+    CREATE_TIMELINE_FAILURE: (state , action) => ({
       ...state,
-      isFetching: true,
+      isUpdatingTime: false,
       error: action.payload.error,
     }),
     UPDATE_TIMELINE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingTime: true,
       error: null,
     }),
-    UPDATE_TIMELINE_SUCCESS: (state) => ({
+    UPDATE_TIMELINE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingTime: false,
+      project: action.payload.data,
     }),
-    UPDATE_TIMELINE_FAILURE: (state) => ({
+    UPDATE_TIMELINE_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: false,
+      isUpdatingTime: false,
       error: action.payload.error,
     }),
     DELETE_TIMELINE_STARTED: (state) => ({
       ...state,
-      isFetching: true,
+      isUpdatingTime: true,
       error: null,
     }),
-    DELETE_TIMELINE_SUCCESS: (state) => ({
+    DELETE_TIMELINE_SUCCESS: (state , action) => ({
       ...state,
-      isFetching: true,
-      error: null,
+      isUpdatingTime: false,
+      project: action.payload.data,
     }),
-    DELETE_TIMELINE_FAILURE: (state) => ({
+    DELETE_TIMELINE_FAILURE: (state , action) => ({
       ...state,
-      isUpdating: false,
+      isUpdatingTime: false,
       error: action.payload.error,
     }),
   },
   {
     isFetching: false,
     isUpdating: false,
-    isCreating: false,
+    isUpdateCon: false,
+    isUpdateTime :false,
+    isUpdateProc: false,
+    isUpdateGen: false,
     projects: [],
     project: {},
-    process: [],
-    timeline: [],
-    contributor: [],
     error: null,
   }
 );

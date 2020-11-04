@@ -1,94 +1,81 @@
 import React, {Component, Fragment, useState} from 'react';
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 import {Helmet} from 'react-helmet';
-import {Link} from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-//import Link from '@material-ui/core/Link';
-import axios from '../../../helpers/axiosConfig';
+import {makeStyles} from '@material-ui/core/styles';
 import {Formik, Field, Form} from 'formik';
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
+
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
+
+import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
 
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { IconButton } from '@material-ui/core';
 
+import {IconButton} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
+import {
+  fetchProjectListCondition,
+  deleteProject,
+  createProject,
+} from '../../../actions/projectAction';
+
 const styles = (theme) => ({
-  icon: {
-      marginRight: theme.spacing(2),
-  },
-  heroContent: {
-      backgroundColor: '#094183',
-      padding: theme.spacing(8, 0, 6),
-  },
-  cardGrid: {
-      paddingTop: theme.spacing(8),
-  },
-  card: {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-  },
-  cardContent: {
-      flexGrow: 1,
-  },
-  margin: {
-      margin: theme.spacing(1),
-  },
-  ListItem:{
-      padding: "0px",
-  },
-  list:{
-      maxHeight: 100,
-      overflow: 'auto',
-  },
-  container:{
-    justify_content: "space-between",
-  }
 });
+
+const useStyles = makeStyles((theme) => ({
+  textfield :{
+    marginBottom: theme.spacing(2),
+  }
+}));
 
 //button to opening warning delete form
 function DeleteButton(props) {
   const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {setOpen(true);};
-  const handleClose = () => {setOpen(false);};
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  //when click delete project
   const handleDelete = () => {
     setOpen(false);
-    axios.delete('/project/'+ props.id).catch((error)=>{});
-    props.update();
-  }
+    props.delete(props.id);
+  };
   return (
-    <div>
-      <Button variant="contained" size="small" onClick={handleClickOpen}>
+    <Fragment>
+      <Button color="primary" size="small" onClick={handleClickOpen}>
         Delete
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle id="form-dialog-title">Delete Project</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this project? 
-            The project will be permanently delete and unable to recover.
+            Are you sure you want to delete this project? The project will be
+            permanently delete and unable to recover.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -100,40 +87,46 @@ function DeleteButton(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Fragment>
   );
 }
 
 //Button opening add form
 function AddButton(props) {
   const [open, setOpen] = useState(false);
+
+  //when click open form add
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  //when click close
   const handleClose = () => {
     setOpen(false);
   };
+
+  //when submit to create new project
   const onSubmit = (values) => {
-    let url= '/project/create';
-    axios.post(url, values).then(() => setOpen(false))
-    .catch(() => {});
-    props.update();
+    props.add(values);
   };
   return (
     <div>
       <IconButton onClick={handleClickOpen}>
-        <AddBoxIcon color="primary"/>
+        <AddBoxIcon color="primary" />
       </IconButton>
-      {/*<Button variant="contained" color="primary" onClick={handleClickOpen}>Add</Button>*/}
-      <MyForm open={open} update={props.update} handleClose={handleClose}
-                title='Add a project' submit={onSubmit} 
+      <MyForm
+        open={open}
+        handleClose={handleClose}
+        title="Add a project"
+        submit={onSubmit}
       />
     </div>
-  )
+  );
 }
 
-//adding form
+//adding form with name and description
 function MyForm(props) {
+  const classes = useStyles();
   return (
     <Dialog
       open={props.open}
@@ -149,30 +142,33 @@ function MyForm(props) {
               }}
               onSubmit = {(values) => {props.submit(values); props.handleClose();}}
             >
-              <Form width='100%' mt="2">
-                <Typography>ADD NEW PROJECT</Typography>
-                <Divider/>
+              <Form width='100%'>
+                <Typography fullwidth align="center" className={classes.textfield}>
+                  ADD NEW PROJECT
+                </Typography>
                 <Field as={TextField}
                   label="Name"
                   variant="outlined"
                   name="name"
                   id="name"
+                  className={classes.textfield}
                   fullWidth
                   required
                 />
-                <br/>
                 <Field as={TextField}
                   label="Description"
                   variant="outlined"
                   name="description"
                   id="description"
+                  className={classes.textfield}
                   fullWidth
                 />
                 <Button
                   type="submit"
-                  variant="raised"
                   color="primary"
+                  variant="contained"
                   fullWidth
+                  className={classes.textfield}
                 >
                   Submit
                 </Button>
@@ -181,10 +177,10 @@ function MyForm(props) {
           </div>
         </DialogContent>
     </Dialog>
-  )
+  );
 }
 
-
+//this will render each project in the project list
 function Project(props){
   return(
     <Accordion>
@@ -204,170 +200,152 @@ function Project(props){
       </AccordionDetails>
       <Divider />
       <AccordionActions>
-        <Button variant="contained" size="small" href={"/project/view/"+props.project._id}>
+        <Button color="primary" size="small" href={"/project/view/"+props.project._id}>
           View
         </Button>
-        <Button variant="contained" size="small" href={"/project/"+props.project._id}>
+        <Button color="primary" size="small" href={"/project/"+props.project._id}>
           Edit
         </Button>
-        <DeleteButton id={props.project._id} update={()=>props.update()}/>
+        <DeleteButton
+          id={props.project._id}
+          delete={(id) => props.delete(id)}
+        />
       </AccordionActions>
     </Accordion>
-  )
+  );
 }
+
+//main class: initiate and using all the function above
 class ProjectList extends Component{
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.update = this.update.bind(this);
-    this.getAll = this.getAll.bind(this);
-    this.pList = this.pList.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
-    this.getCondition= this.getCondition.bind(this);
+    this.getCondition = this.getCondition.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onShowStatusChange = this.onShowStatusChange.bind(this);
+    this.deleteProject = this.deleteProject.bind(this);
     this.state = {
-      projlist : [],
-      search : "",
-      search_status: "",
-      sortBy: "",
-      show_status: "",
+      search: '',
+      search_status: '',
+      sortBy: '',
+      show_status: '',
     };
   }
 
-  onFormSubmit = (e) => {
-		e.preventDefault();
-		let formD = {
-      "name":document.forms.namedItem("create")["name"]["value"],
-      "description":document.forms.namedItem("create")["description"]["value"]
-		}
-		axios.post('/project/create', formD);
-  }
+  //this function will handle create a project
+  onFormSubmit = (value) => {
+    console.log(value);
+    this.props.dispatch(createProject(value));
+  };
 
-  pList = () => {
-    return (this.state.projlist && this.state.projlist.map((proj, i) => {
-      return <Project project={proj} update={this.update}/>
-    }));
-  }
+  //this function handle delete a project
+  deleteProject = (id) => {
+    this.props.dispatch(deleteProject(id));
+  };
 
-  getAll = () => {
-    axios.get('/project/').then((res) => {
-      this.setState({projlist: res.data.projects});
-    })
-    .catch((error) => {})
-  }
-
+  //fetch data using condition save
   getCondition = () =>{
-    let formD = {
-      "name": this.state.input
-    }
-
+    let formD = {"name": this.state.input}
     if(this.state.search_status !== ""){
       formD['status'] = this.state.search_status;
     }
-
-    if(this.state.sortBy !== ""){
+    if (this.state.sortBy !== '') {
       formD['sortBy'] = this.state.sortBy;
     }
-
-    if(this.state.show_status !== ""){
-      //alert(this.state.show_status);
+    if (this.state.show_status !== '') {
       formD['show_status'] = this.state.show_status;
-      //alert(formD['show_status']);
     }
-    axios.post('/project/conditional',formD)
-    .then((res) => {
-      this.setState({projlist: res.data.result});
-      //alert(res.data.result);
-    })
-    .catch((error) => {});
-  }
+    this.props.dispatch(fetchProjectListCondition(formD));
+  };
 
-  update = () => {
-    this.getCondition();
-    this.pList();
-  }
+  //fetch data when component first mount
 	componentDidMount = () => {
-    this.getAll();
-  }
+    this.getCondition();
+  };
 
+  //functions below just handle input from user on utility lines
   onChangeInput = (event) => {
-    event.preventDefault();
     this.setState({input: event.target.value});
-  }
+  };
 
   onSearch = (event) => {
-    //event.preventDefault();
-    if(event.key === "Enter"){
-      this.update();
+    if (event.key === 'Enter') {
+      this.getCondition();
     }
-  }
+  };
 
   onStatusChange = (event, newstatus) => {
-    if(newstatus !== null){
-      this.setState(
-        {search_status: newstatus},
-        //alert(this.state.search_status),
-        this.update
-      );
+    if (newstatus !== null) {
+      this.setState({search_status: newstatus}, this.getCondition);
     }
-    //alert(this.state.search_status);
-  }
+  };
 
   onSortChange = (event, newsort) => {
-    if(newsort !== null){
-      this.setState(
-        {sortBy: newsort},
-        //alert(this.state.search_status),
-        this.update
-      );
+    if (newsort !== null) {
+      this.setState({sortBy: newsort}, this.getCondition);
     }
-  }
+  };
 
   onShowStatusChange = (event, newshow) => {
-    if(newshow !== null){
-      this.setState(
-        {show_status: newshow},
-        //alert(this.state.search_status),
-        this.update
-      );
+    if (newshow !== null) {
+      this.setState({show_status: newshow}, this.getCondition);
     }
-  }
+  };
 
-	render(){
-    return(
+  render() {
+    const {error, isFetching, projects} = this.props.project;
+
+    let content;
+    //if there is issues with fetching
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      //if the fetch from the database have not arrive
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
+        </Grid>
+      );
+    } else if (projects.length === 0 || !projects) {
+      //if the data receive undefined or the project is empty
+      content = (
+        <Grid container justify="center" alignItems="center">
+          <Typography> No projects found.</Typography>
+        </Grid>
+      );
+    } else {
+      //map out all the project that fetched from databased
+      content = projects.map((proj) => (
+        <Project key={proj._id} project={proj} delete={this.deleteProject}/>
+      ));
+    }
+    return (
       <Fragment>
       <Helmet>
         <title>Microhard &middot; My projects </title>
       </Helmet>
-      <div style={{padding: "10px", backgroundColor: '#094183'}}>
-        <Container maxWidth="sm">
-          <br />
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            style={{color: '#fff'}}
-            gutterBottom
-          >
-            Project Lists
-          </Typography>
-          <Typography
-            variant="h5"
-            align="center"
-            style={{color: '#fff'}}
-            paragraph
-          >
-            A place for me to showcase my projects
-          </Typography>
-        </Container>
+
+      {/* hero content */}
+      <div style={{height: '120px', backgroundColor: '#094183'}}>
+        <br />
+        <br />
+        <Typography variant="h1" align="center" style={{color: '#fff'}}>
+          Project Lists
+        </Typography>
       </div>
       <br/>
+
+      {/* body content */}
       <Container maxWidth="md">
+
+        {/* utility lines - each grid is a line */}
         <Grid container direction="row" justify="space-between" alignItems="center">
+
+          {/* search bar */}
           <TextField
             onChange ={this.onChangeInput}
             onKeyDown={this.onSearch}
@@ -383,6 +361,8 @@ class ProjectList extends Component{
               )
             }}
           />
+
+          {/* sorting based on time update */}
           <ToggleButtonGroup
             value={this.state.sortBy}
             exclusive
@@ -393,6 +373,8 @@ class ProjectList extends Component{
             <ToggleButton value='descending'>Oldest</ToggleButton>
             <ToggleButton value='ascending'>Lastest</ToggleButton>
           </ToggleButtonGroup>
+
+          {/* sorting based on progress status */}
           <ToggleButtonGroup
             value={this.state.search_status}
             exclusive
@@ -405,6 +387,7 @@ class ProjectList extends Component{
             <ToggleButton value='Cancel'>Cancel</ToggleButton>
           </ToggleButtonGroup>
 
+          {/* sorting based on show status */}
           <ToggleButtonGroup
             value={this.state.show_status}
             exclusive
@@ -416,11 +399,15 @@ class ProjectList extends Component{
             <ToggleButton value='private'>Private</ToggleButton>
           </ToggleButtonGroup>
         </Grid>
+
         <Grid container direction="row" alignItems="center">
-          <AddButton update={this.update}/>
+          {/* Add button */}
+          <AddButton add={this.onFormSubmit}/>
         </Grid>
         <br/>
-        {this.pList()}
+
+        {/* Listing content */}
+        {content}
         <br/>
         <br/>
       </Container>
@@ -428,10 +415,8 @@ class ProjectList extends Component{
     );
   }
 }
-/*const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
   ...state,
-});*/
+});
 
-//export default connect(mapStateToProps)(withStyles(styles)(Profile));
-
-export default (ProjectList);
+export default connect(mapStateToProps)(withStyles(styles)(ProjectList));

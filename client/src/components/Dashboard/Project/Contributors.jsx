@@ -1,6 +1,6 @@
 import React, { Component, Fragment, useState, useEffect} from 'react';
+import {connect} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import axios from '../../../helpers/axiosConfig';
 import {withStyles } from '@material-ui/core/styles';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -10,13 +10,20 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
-import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-//import Con_Items from './Contributors';
+
+import Alert from '@material-ui/lab/Alert';
+import {CircularProgress} from '@material-ui/core';
+
 
 import Grid from '@material-ui/core/Grid';
 
-//for function
+import {
+    createContributor,
+    deleteContributor,
+} from '../../../actions/projectAction';
+
+// css for function
 const useStyles = makeStyles((theme) => ({
     textfield:{
         width: "65%",
@@ -26,9 +33,14 @@ const useStyles = makeStyles((theme) => ({
     icon:{
         marginTop: theme.spacing(2),
     },
+    user:{
+        underline: "none",
+        marginTop: theme.spacing(2),
+        width: "100%",
+    }
 }));
 
-//for class
+// css for class
 const styles = (theme) => ({
     textfield:{
         width: "65%",
@@ -43,65 +55,54 @@ const styles = (theme) => ({
     icon:{
         marginTop: theme.spacing(2),
     },
+    progress: {
+        marginTop: theme.spacing(2),
+        marginBottom:theme.spacing(2),
+    },
+    root: {
+        width: "100%",
+    }
 });
 
-
+//main class
 class Con_List extends Component{
     constructor(props){
         super(props);
-        this.componentDidMount=this.componentDidMount.bind(this);
-        this.getContributor = this.getContributor.bind(this);
-        this.renContributorList = this.renContributorList.bind(this);
-        this.updateContributor = this.updateContributor.bind(this);
+        this.addContributor = this.addContributor.bind(this);
+        this.deleteContributor = this.deleteContributor.bind(this);
         this.onInputContributor = this.onInputContributor.bind(this);
         this.handleContributorSubmit = this.handleContributorSubmit.bind(this);
         this.handleAddCancel = this.handleAddCancel.bind(this);
         this.handleAddClose = this.handleAddClose.bind(this);
         this.handleAddOpen = this.handleAddOpen.bind(this);
         this.state = {
-            conlist:[],
             input: "",
             open: false,
         }
     }
-    componentDidMount = () =>{
-        this.getContributor();
+
+    //do delete one contributor call when user request
+    //database called
+    deleteContributor = (name) => {
+        let formD = {"old_users": name}
+        this.props.dispatch(deleteContributor(formD, this.props.id));
     }
 
-    getContributor = () =>{
-        axios.get('/project/'+this.props.id).then((res) => {
-            this.setState(
-                {conlist: res.data.project.contributors},
-                //alert(this.state.conlist)
-            );
-        })
-        .catch((error) => {});
-    }
-
-    renContributorList = () =>{
-        return (this.state.conlist && this.state.conlist.map((cons,i)=>{
-            return <Con_Items cons={cons} id={this.props.id} update={this.updateContributor}/>
-        }));
-    }
-
-    updateContributor = () => {
-        this.getContributor();
-        this.renContributorList();
+    //do add one contributor call when user request
+    addContributor = (name) => {
+        let formD = {"new_users": name}
+        this.props.dispatch(createContributor(formD, this.props.id));
     }
 
     onInputContributor =(event)=>{
         this.setState({input:event.target.value});
     }
 
+    //add new contributor
     handleContributorSubmit = (event) =>{
         event.preventDefault();
-        axios.post('/project/add_people/'+this.props.id, {"new_users":[this.state.input]})
-        .then(() => {
-            this.updateContributor();
-            this.setState({input:"", open:false})
-        })
-        .catch((error) => {});
-        //this.updateContributor();
+        this.setState({input:"", open:false});
+        this.addContributor([this.state.input]);
     }
 
     handleAddOpen = () => {
@@ -121,13 +122,46 @@ class Con_List extends Component{
 
     render(){
         const {classes}= this.props;
+        const {error, isUpdatingCon, project} = this.props.project;
+        const {user} = this.props.user;
+
+        //console.log(project);
+        let content;
+        if (error) {
+            //if the fetch return error
+            content = <Alert severity="error">{error}</Alert>;
+        } else if (isUpdatingCon) {
+            //if the updating is still yet return
+            content = (
+                <Grid container justify="center" className={classes.root}>
+                    <CircularProgress color="primary" className={classes.progress}/>
+                </Grid>
+            );
+        } else if (!project || !project.contributors) {
+            //if project is undefined or the contributor is undefined
+            content = (
+              <Typography> The retrieve project not found.</Typography>
+            );
+        } else {
+            //render the contributor list
+            content = project.contributors.map((cons, i) => (
+              <ConItems key={i} cons={cons} add={this.addContributor} delete={this.deleteContributor} username={user.username}/>
+            ));
+        }
+
         return(
             <Fragment>
+
+                {/* section name */}
                 <Typography gutterBottom variant="h5" component="h2">
                     Contributors
                 </Typography>
                 <Divider/>
-                {this.renContributorList()}
+
+                {/* contributor list */}
+                {content}
+
+                {/* adding form */}
                 {!this.state.open ? (
                     <Button 
                         onClick={this.handleAddOpen}
@@ -145,7 +179,6 @@ class Con_List extends Component{
                             <TextField
                                 label="Add contributor"
                                 onChange={this.onInputContributor}
-                                //InputProps={{ disableUnderline: true }}
                                 required
                                 variant="outlined"
                                 size="small"
@@ -168,11 +201,13 @@ class Con_List extends Component{
     }
 }
 
-function Con_Items(props){
+//render each contributor
+function ConItems(props){
     const [open, setOpen] = useState(false);
     const [name, setName] = useState(props.cons);
     const classes = useStyles();
 
+    //return to old data of the user cancel the editing 
     const handleContributorCancel = () =>{
         setOpen(false);
         setName(props.cons);
@@ -181,164 +216,82 @@ function Con_Items(props){
         setOpen(true);
     }
 
+    //this is to re-set the data when list being re-render 
     useEffect(() => {
         setName(props.cons);
     }, [props.cons]);
 
+    //if the user click delete contributor
     const handleContributorDelete = () =>{
-        //alert(name);
-        axios.post('/project/remove_people/'+props.id, {"old_users":[props.cons]})
-        .then(()=>props.update())
-        .catch((error) => {});
+        props.delete([props.cons]);
     };
 
     const onInputContributorUpdate = (event) =>{
         setName(event.target.value);
     }
 
+    //do update on one contributor call when user request
+    //if user click submit edit
     const handleContributorUpdate = (event) => {
         event.preventDefault();
         setOpen(false);
-        axios.post('/project/remove_people/'+props.id, {"old_users":[props.cons]})
-        .catch((error) => {})
-        axios.post('/project/add_people/'+props.id, {"new_users":[name]})
-        .then(()=>props.update())
-        .catch((error) => {});
+        props.add([name]);
+        props.delete([props.cons]);
     };
     return(
         <Fragment>
-            {(!open) ? (
-                <Grid container direction="row" justify="space-between" alignItems="center">
-                    <TextField
-                        disabled
-                        value={props.cons}
-                        //InputProps={{ disableUnderline: true }}
-                        variant="outlined"
-                        size = "small"
-                        className={classes.textfield}
-                    />
-                    <IconButton onClick={handleContributorOpen} className={classes.icon}>
-                        <EditIcon  fontSize="small" color="primary"/>
-                    </IconButton>
-                    <IconButton onClick={handleContributorDelete} className={classes.icon}>
-                        <DeleteIcon fontSize="small" style={{ color: "red" }}/>
-                    </IconButton>
-                </Grid>
+            {/* check if the contributor is the owner user -> do not allow delete or update */}
+            {/* then if not open for edit: render with edit button and delete button*/}
+            {/* if is open for edit: render with submit button and cancel button  */}
+            {(name === props.username) ? (
+                <TextField
+                    disabled
+                    value={name}
+                    variant="outlined"
+                    size = "small"
+                    className={classes.user}
+                />
             ) : (
-                <form onSubmit={handleContributorUpdate} fullWidth>
-                    <TextField
-                        onChange={onInputContributorUpdate}
-                        value={name}
-                        //InputProps={{ disableUnderline: true }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        className={classes.textfield}
-                    />
-                    <IconButton type="submit">
-                        <CheckIcon fontSize="small" color="primary" className={classes.icon}/>
-                    </IconButton>
-                    <IconButton onClick={handleContributorCancel} >
-                        <ClearIcon fontSize="small" style={{ color: "red" }} className={classes.icon}/>
-                    </IconButton>
-                </form>
+                (!open) ? (
+                    <Grid container direction="row" justify="space-between" alignItems="center">
+                        <TextField
+                            disabled
+                            value={name}
+                            variant="outlined"
+                            size = "small"
+                            className={classes.textfield}
+                        />
+                        <IconButton onClick={handleContributorOpen} className={classes.icon}>
+                            <EditIcon  fontSize="small" color="primary"/>
+                        </IconButton>
+                        <IconButton onClick={handleContributorDelete} className={classes.icon}>
+                            <DeleteIcon fontSize="small" style={{ color: "red" }}/>
+                        </IconButton>
+                    </Grid>
+                ) : (
+                    <form onSubmit={handleContributorUpdate} fullWidth>
+                        <TextField
+                            onChange={onInputContributorUpdate}
+                            value={name}
+                            variant="outlined"
+                            size="small"
+                            required
+                            className={classes.textfield}
+                        />
+                        <IconButton type="submit" className={classes.icon}>
+                            <CheckIcon fontSize="small" color="primary" />
+                        </IconButton>
+                        <IconButton onClick={handleContributorCancel} className={classes.icon}>
+                            <ClearIcon fontSize="small" style={{ color: "red" }} />
+                        </IconButton>
+                    </form>
+                )
             )}
         </Fragment>
     )
 }
 
-//export default (Con_List);
-export default withStyles(styles)(Con_List);
-
-/*
-class Con_Items extends Component{
-    constructor(props){
-        super(props);
-        this.onInputContributorUpdate = this.onInputContributorUpdate.bind(this);
-        this.handleContributorCancel = this.handleContributorCancel.bind(this);
-        this.handleContributorOpen = this.handleContributorOpen.bind(this);
-        this.handleContributorUpdate = this.handleContributorUpdate.bind(this);
-        this.handleContributorDelete = this.handleContributorDelete.bind(this);
-        this.state = {
-            name: this.props.contributor,
-            open: false,
-        }
-    }
-    handleContributorCancel = () =>{
-        this.setState({
-            open:false,
-            name:this.props.contributor,
-        })
-    }
-    handleContributorOpen = () =>{
-        this.setState({
-            open:true,
-        })
-    }
-    handleContributorDelete = () =>{
-        axios.post('/project/remove_people/'+this.props.id, {"old_users":[this.props.contributor]})
-        .catch((error) => {});
-        this.props.update();
-    };
-
-    onInputContributorUpdate = (event) =>{
-        this.setState({
-            name: event.target.value,
-        });
-    }
-
-    handleContributorUpdate = (event) => {
-        event.preventDefault();
-        this.setState({open:false});
-        axios.post('/project/remove_people/'+this.props.id, {"old_users":[this.props.contributor]})
-        .catch((error) => {})
-        this.props.update();
-        axios.post('/project/add_people/'+this.props.id, {"new_users":[this.state.name]})
-        .catch((error) => {});
-        this.props.update();
-    };
-
-    render(){
-        return(
-            <Fragment>
-                {(!this.state.open) ? (
-                    <div>
-                        <TextField
-                            disabled
-                            value={this.state.name}
-                            InputProps={{ disableUnderline: true }}
-                            variant="outlined"
-                            size = "small"
-                        />
-                        <IconButton onClick={this.handleContributorOpen}>
-                            <EditIcon  fontSize="small"/>
-                        </IconButton>
-                        <IconButton onClick={this.handleContributorDelete}>
-                            <DeleteIcon fontSize="small"/>
-                        </IconButton>
-                    </div>
-                ) : (
-                    <div>
-                        <form onSubmit={this.handleContributorUpdate} fullWidth>
-                            <TextField
-                                onChange={this.onInputContributorUpdate}
-                                value={this.state.name}
-                                InputProps={{ disableUnderline: true }}
-                                variant="outlined"
-                                size="small"
-                                required
-                            />
-                            <IconButton type="submit">
-                                <CheckIcon fontSize="small"/>
-                            </IconButton>
-                            <IconButton onClick={this.handleContributorCancel} >
-                                <ClearIcon fontSize="small"/>
-                            </IconButton>
-                        </form>
-                    </div>
-                )}
-            </Fragment>
-        )
-    }
-}*/
-  
+const mapStateToProps = (state) => ({
+    ...state,
+});
+export default connect(mapStateToProps)(withStyles(styles)(Con_List));

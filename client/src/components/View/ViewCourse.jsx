@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import axios from '../../helpers/axiosConfig';
 import {Helmet} from 'react-helmet';
 import {withStyles} from '@material-ui/core/styles';
@@ -34,16 +34,21 @@ const useStyles = (theme) => ({
         padding: '64px 32px',
     },
 });
-
 function MyGrid(props) {
     let keys = Object.keys(props.courses);
     let i = 0;
     let color;
 
-    let gridByYear = keys.map(key => {
-        let summer = [], winter = [], sem1 = [], sem2 = [];
+    let gridByYear = keys.map((key) => {
+        let summer = [],
+          winter = [],
+          sem1 = [],
+          sem2 = [];
+        // eslint-disable-next-line no-lone-blocks
         {
+            // eslint-disable-next-line array-callback-return
             props.courses[key].map((value) => {
+                // eslint-disable-next-line default-case
                 switch (value.sem) {
                     case 'Sem1':
                         sem1.push(value.code + '\n');
@@ -60,7 +65,7 @@ function MyGrid(props) {
                 }
             });
         }
-        if (i == 0) {
+        if (i === 0) {
             color = '#88B9EB';
             i = 1;
         } else {
@@ -68,69 +73,108 @@ function MyGrid(props) {
             i = 0;
         }
         return (
-            <div>
-                <Grid container style={{backgroundColor: color}} spacing={2} justify="space-evenly" alignItems='center'>
-                    <Grid item sm={1}>
-                        <Typography align="right" style={{fontFamily: 'sans-serif', fontSize: 22}}>{key}</Typography>
-                        <br />
-                    </Grid>
-                    <Divider orientation="vertical" flexItem />
-                    <Grid item sm={2}>
-                        <Typography align="center" variant="h5">{summer}</Typography>
-                        <br />
-                    </Grid>
-                    <Divider orientation="vertical" flexItem />
-                    <Grid item sm={2}>
-                        <Typography align="center" variant="h5">{sem1}</Typography>
-                        <br />
-                    </Grid>
-                    <Divider orientation="vertical" flexItem />
-                    <Grid item sm={2}>
-                        <Typography align="center" variant="h5">{winter}</Typography>
-                        <br />
-                    </Grid>
-                    <Divider orientation="vertical" flexItem />
-                    <Grid item sm={2}>
-                        <Typography align="center" variant="h5">{sem2}</Typography>
-                        <br />
-                    </Grid>
-                </Grid>
-            </div>
+          <div>
+              <Grid
+                container
+                style={{backgroundColor: color}}
+                spacing={2}
+                justify="space-evenly"
+                alignItems="center"
+              >
+                  <Grid item sm={1}>
+                      <Typography
+                        align="right"
+                        style={{fontFamily: 'sans-serif', fontSize: 22}}
+                      >
+                          {key}
+                      </Typography>
+                      <br />
+                  </Grid>
+                  <Divider orientation="vertical" flexItem />
+                  <Grid item sm={2}>
+                      <Typography align="center" variant="h5">
+                          {summer}
+                      </Typography>
+                      <br />
+                  </Grid>
+                  <Divider orientation="vertical" flexItem />
+                  <Grid item sm={2}>
+                      <Typography align="center" variant="h5">
+                          {sem1}
+                      </Typography>
+                      <br />
+                  </Grid>
+                  <Divider orientation="vertical" flexItem />
+                  <Grid item sm={2}>
+                      <Typography align="center" variant="h5">
+                          {winter}
+                      </Typography>
+                      <br />
+                  </Grid>
+                  <Divider orientation="vertical" flexItem />
+                  <Grid item sm={2}>
+                      <Typography align="center" variant="h5">
+                          {sem2}
+                      </Typography>
+                      <br />
+                  </Grid>
+              </Grid>
+          </div>
         );
     });
 
     return (
-        <div>
-            <br />
-            <br />
-            <Grid container spacing={2} justify="space-evenly">
-                <Grid item sm={1}>
-                    <br />
-                </Grid>
-                <Divider orientation="vertical" flexItem />
-                <Grid item sm={2}>
-                    <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Summer</Typography>
-                    <br />
-                </Grid>
-                <Divider orientation="vertical" flexItem />
-                <Grid item sm={2}>
-                    <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Semester 1</Typography>
-                    <br />
-                </Grid>
-                <Divider orientation="vertical" flexItem />
-                <Grid item sm={2}>
-                    <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Winter</Typography>
-                    <br />
-                </Grid>
-                <Divider orientation="vertical" flexItem />
-                <Grid item sm={2}>
-                    <Typography align="center" style={{fontFamily: 'sans-serif', fontSize: 22}}>Semester 2</Typography>
-                    <br />
-                </Grid>
-            </Grid>
-            {gridByYear}
-            <br />
-        </div>
+      <div>
+          <br />
+          <br />
+          <Grid container spacing={2} justify="space-evenly">
+              <Grid item sm={1}>
+                  <br />
+              </Grid>
+              <Divider orientation="vertical" flexItem />
+              <Grid item sm={2}>
+                  <Typography
+                    align="center"
+                    style={{fontFamily: 'sans-serif', fontSize: 22}}
+                  >
+                      Summer
+                  </Typography>
+                  <br />
+              </Grid>
+              <Divider orientation="vertical" flexItem />
+              <Grid item sm={2}>
+                  <Typography
+                    align="center"
+                    style={{fontFamily: 'sans-serif', fontSize: 22}}
+                  >
+                      Semester 1
+                  </Typography>
+                  <br />
+              </Grid>
+              <Divider orientation="vertical" flexItem />
+              <Grid item sm={2}>
+                  <Typography
+                    align="center"
+                    style={{fontFamily: 'sans-serif', fontSize: 22}}
+                  >
+                      Winter
+                  </Typography>
+                  <br />
+              </Grid>
+              <Divider orientation="vertical" flexItem />
+              <Grid item sm={2}>
+                  <Typography
+                    align="center"
+                    style={{fontFamily: 'sans-serif', fontSize: 22}}
+                  >
+                      Semester 2
+                  </Typography>
+                  <br />
+              </Grid>
+          </Grid>
+          {gridByYear}
+          <br />
+      </div>
     );
 }
 
@@ -138,53 +182,51 @@ function MyGrid(props) {
 class MyAccordion extends Component {
     render() {
         return (
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography variant="h6">{this.props.code}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Grid container direction="column">
-                        <Grid Item>
-                            <Typography variant="subtitle1">
-                                {this.props.name}
-                            </Typography>
-                        </Grid>
-                        <Grid Item>
-                            <Typography variant="subtitle1">{this.props.description}</Typography>
-                        </Grid>
-                        <Grid Item>
-                            <Typography>
-                                {this.props.link}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </AccordionDetails>
-                <Divider />
-            </Accordion>
+          <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                  <Typography variant="h6">{this.props.code}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                  <Grid container direction="column">
+                      <Grid Item>
+                          <Typography variant="subtitle1">{this.props.name}</Typography>
+                      </Grid>
+                      <Grid Item>
+                          <Typography variant="subtitle1">
+                              {this.props.description}
+                          </Typography>
+                      </Grid>
+                      <Grid Item>
+                          <Typography>{this.props.link}</Typography>
+                      </Grid>
+                  </Grid>
+              </AccordionDetails>
+              <Divider />
+          </Accordion>
         );
     }
 }
 
 
 function GetAccords(props) {
-
-    let accords = props.courses.map(elem => {
+    let accords = props.courses.map((elem) => {
         return (
-            <div>
-                <MyAccordion code={elem.code} name={elem.name} description={elem.description} link={elem.link} />
-            </div>
+          <div>
+              <MyAccordion
+                code={elem.code}
+                name={elem.name}
+                description={elem.description}
+                link={elem.link}
+              />
+          </div>
         );
     });
 
-    return (
-        <div>
-            {accords}
-        </div>
-    );
+    return <div>{accords}</div>;
 }
 
 
@@ -243,7 +285,7 @@ class ViewCourse extends Component {
     componentDidMount() {
         const user_id = this.props.match.params.id
 
-        const view_user = axios.get(`/view/${user_id}`).then((res) => {
+        axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
 
@@ -263,14 +305,25 @@ class ViewCourse extends Component {
         axios.get(`/view/${this.state.view_user._id}/course`).then((res) => {
             if (res.data.course) {
                 this.setState({courses: res.data.course});
-                keys.map(key => {
-                    this.state.courses[key].map((value) => {
-                        rows[i] = {};
-                        rows[i] ={code: value.code, year: value.year, sem: value.sem, grades: value.grades,
-                            score: value.score, state: value.state, description: value.description,
-                            name: value.name, link: value.link};
-                        i++;
-                    });
+                keys.map((key) => {
+                    if (this.state.courses[key]) {
+                        this.state.courses[key].map((value) => {
+                            rows[i] = {};
+                            rows[i] = {
+                                code: value.code,
+                                year: value.year,
+                                sem: value.sem,
+                                grades: value.grades,
+                                score: value.score,
+                                state: value.state,
+                                description: value.description,
+                                name: value.name,
+                                link: value.link,
+                                _id: value._id,
+                            };
+                            i++;
+                        });
+                    }
                 });
                 this.setState({courses2: rows});
             }
@@ -279,21 +332,24 @@ class ViewCourse extends Component {
 
 
     render() {
-        const {classes} = this.props;
 
         return (
-            <div>
-                <container>
-                    <ViewNav view_user={this.state.view_user}/>
-                    <Helmet>
-                        <title>Microhard &middot; Welcome </title>
-                    </Helmet>
-                    <div className={classes.root}>
-                        <div className={classes.formWrap}>
-                            <h1 className={classes.formTitle}>My Courses</h1>
-                        </div>
-                    </div>
-                </container>
+          <Fragment>
+              <ViewNav view_user={this.state.view_user}/>
+              <Helmet>
+                  <title>Microhard &middot; Courses </title>
+              </Helmet>
+              <div style={{height: '120px', backgroundColor: '#094183'}}>
+                  <br />
+                  <br />
+                  <Typography
+                    variant="h1"
+                    align="center"
+                    style={{color: '#fff', fontSize: '36px'}}
+                  >
+                      Courses
+                  </Typography>
+              </div>
                 <div>
                     <Tabs
                         value={this.state.tabIndex}
@@ -325,7 +381,7 @@ class ViewCourse extends Component {
                     </div>}
                     <br/>
                 </div>
-            </div>
+    </Fragment>
         );
     }
 }

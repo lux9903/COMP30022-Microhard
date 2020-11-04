@@ -1,6 +1,6 @@
 import { createActions } from 'redux-actions';
 import axios from '../helpers/axiosConfig';
-import { push } from 'connected-react-router';
+//import { push } from 'connected-react-router';
 
 export const {
   //projectlist
@@ -68,10 +68,10 @@ export const {
   deleteTimelineFailure,
 } = createActions(
   {
-    FETCH_PROJECTLIST_SUCCESS: (data) => ({ data }),
-    FETCH_PROJECTLIST_FAILURE: (error) => ({ error }),
-    FETCH_PROJECTLISTCONDITION_SUCCESS: (data) => ({ data }),
-    FETCH_PROJECTLISTCONDITION_FAILURE: (error) => ({ error }),
+    FETCH_PROJECT_LIST_SUCCESS: (data) => ({ data }),
+    FETCH_PROJECT_LIST_FAILURE: (error) => ({ error }),
+    FETCH_PROJECT_LIST_CONDITION_SUCCESS: (data) => ({ data }),
+    FETCH_PROJECT_LIST_CONDITION_FAILURE: (error) => ({ error }),
     FETCH_PROJECT_SUCCESS: (data) => ({ data }),
     FETCH_PROJECT_FAILURE: (error) => ({ error }),
     CREATE_PROJECT_SUCCESS: (data) => ({ data }),
@@ -82,7 +82,6 @@ export const {
     DELETE_PROJECT_FAILURE: (error) => ({ error }),
     LIKE_PROJECT_SUCCESS: (data) => ({ data }),
     LIKE_PROJECT_FAILURE: (error) => ({ error }),
-
 
     CREATE_CONTRIBUTOR_SUCCESS: (data) => ({ data }),
     CREATE_CONTRIBUTOR_FAILURE: (error) => ({ error }),
@@ -111,12 +110,11 @@ export const {
     UPDATE_TIMELINE_FAILURE: (error) => ({ error }),
     DELETE_TIMELINE_SUCCESS: (data) => ({ data }),
     DELETE_TIMELINE_FAILURE: (error) => ({ error }),
-
-
   },
-  'FETCH_PROJECTLIST_STARTED',
-  'FETCH_PROJECTLISTCONDITION_STARTED',
+  'FETCH_PROJECT_LIST_STARTED',
+  'FETCH_PROJECT_LIST_CONDITION_STARTED',
   'CREATE_PROJECT_STARTED',
+  'UPDATE_PROJECT_STARTED',
   'FETCH_PROJECT_STARTED',
   'DELETE_PROJECT_STARTED',
   'LIKE_PROJECT_STARTED',
@@ -135,7 +133,7 @@ export const {
   'DELETE_NODE_STARTED',
   'DELETE_TIMELINE_STARTED',
 
-  'FINISH_NODE_STARTED',
+  'FINISH_NODE_STARTED'
 );
 
 //fetch project list: in none; out: list of projects
@@ -167,12 +165,12 @@ export const {
 //like a project: in:none; out: current rating
 
 //featch all projects
+
 export const fetchProjectList = () => {
   return async (dispatch) => {
     dispatch(fetchProjectListStarted());
 
     try {
-      //const response = await axios.get(`/image?page=${page}`);
       const response = await axios.get(`/project/`);
       dispatch(fetchProjectListSuccess(response.data));
     } catch (error) {
@@ -259,7 +257,7 @@ export const likeProject = (id) => {
 };
 
 //this use to update project general info and status
-export const updateProjectCondition = (info, id) => {
+export const updateProject = (info, id) => {
   return async (dispatch) => {
     dispatch(updateProjectStarted());
 
@@ -267,25 +265,12 @@ export const updateProjectCondition = (info, id) => {
       const response = await axios.post(`/project/update/${id}`, info);
       dispatch(updateProjectSuccess(response.data));
     } catch (error) {
+      //console.log(error);
       dispatch(updateProjectFailure('Could not update project general details and status.'));
     }
   };
 };
 
-
-//use to update general + status
-export const updateProjectCondition = (info, id) => {
-  return async (dispatch) => {
-    dispatch(updateProjectStarted());
-
-    try {
-      const response = await axios.post(`/project/update/${id}`, info);
-      dispatch(updateProjectSuccess(response.data));
-    } catch (error) {
-      dispatch(updateProjectFailure('Could not update project general details and status.'));
-    }
-  };
-};
 
 //create contributor
 export const createContributor = (contributors, id) => {
@@ -318,13 +303,13 @@ export const deleteContributor = (contributors, id) => {
 //create process
 export const createProcess = (info, id) => {
   return async (dispatch) => {
-    dispatch(createContributorStarted());
+    dispatch(createProcessStarted());
 
     try {
       const response = await axios.post(`/project/process/${id}`, info);
-      dispatch(createContributorSuccess(response.data));
+      dispatch(createProcessSuccess(response.data));
     } catch (error) {
-      dispatch(createContributorFailure('Could not create a new process.'));
+      dispatch(createProcessFailure('Could not create a new process.'));
     }
   };
 };

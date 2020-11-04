@@ -11,11 +11,12 @@ import ResetPassword from '../Account/ResetPassword';
 import Experience from '../Dashboard/Experience';
 
 //import Image from '../Dashboard/Image';
-import Project from '../Dashboard/Project/pl';
+//import Project from '../Dashboard/Project/ProjectList';
+import Project from '../Dashboard/Project/ProjectList';
 import About from '../About/About';
 //import Project from '../Dashboard/Project/ProjectList_edit';
-import Project_Edit from '../Dashboard/Project/p';
-import Project_View from '../Dashboard/Project/pv';
+import Project_Edit from '../Dashboard/Project/Project_Edit';
+import Project_View from '../Dashboard/Project/Project_View';
 import Image from '../Dashboard/Photos/Image';
 import Documents from '../Dashboard/Document/Documents';
 import AddProfileContent from '../Sign Up/AddProfileContent';
@@ -26,8 +27,8 @@ import ViewImage from '../View/ViewImage';
 import ViewDocument from '../View/ViewDocument';
 import ViewExperience from '../View/ViewExperience';
 import ViewCourse from '../View/ViewCourse';
-
-import Test from '../Dashboard/test';
+import ViewProject from '../View/ViewProject';
+import ViewProjectItem from '../View/ViewProjectItem';
 
 class Main extends Component {
   render() {
@@ -43,18 +44,14 @@ class Main extends Component {
         <Route exact path="/view/:id/document" component={ViewDocument} />
         <Route exact path="/view/:id/course" component={ViewCourse} />
         <Route exact path="/view/:id/experiences" component={ViewExperience} />
+        <Route exact path="/view/:id/project" component={ViewProject} />
+        <Route exact path="/view/:id/project/:project_id"component={ViewProjectItem} />
 
         <PrivateHome exact path="/" authed={this.props.user} />
         <PrivateRoute
           exact
           path="/experiences"
           component={Experience}
-          authed={this.props.user}
-        />
-        <PrivateRoute
-          exact
-          path="/test"
-          component={Test}
           authed={this.props.user}
         />
         <PrivateRoute

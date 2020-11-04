@@ -145,7 +145,7 @@ class Profile extends Component {
   componentDidMount() {
     const {classes} = this.props;
     // Retrieve avatar image
-    const img = axios.get('/avatar').then((res) => {
+    axios.get('/avatar').then((res) => {
       if (res.data.files) {
         const imgPic = res.data.files.map((ele) => (
           <Avatar
@@ -166,7 +166,7 @@ class Profile extends Component {
       }
     });
 
-    const resume = axios.get('/pdf/').then((res) => {
+    axios.get('/pdf/').then((res) => {
       if (res.data.pdfs) {
         var resumeUrl = {getFileLink: '#'};
         var ele;
@@ -195,6 +195,11 @@ class Profile extends Component {
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
+
+    console.log(user);
+
+    const path = window.location.host + '/view/';
+    console.log(path);
 
     return (
       <Fragment>
@@ -302,7 +307,7 @@ class Profile extends Component {
                         >
                           <CopyToClipboard
                             text={
-                              `https://comp30022-microhard.herokuapp.com` +
+                              `https://comp30022-microhard.herokuapp.com` /*'http://localhost:3000'*/ +
                               `/view/${user._id}`
                             }
                             onCopy={() => this.setState({copied: true})}
@@ -320,7 +325,7 @@ class Profile extends Component {
                         <EditIcon style={{color: '#657786'}} />
                       </Fab>
                       {this.state.copied ? (
-                        <Alert severity="success">
+                        <Alert severity="success" style={{marginTop: '12px'}}>
                           Share link has copied to the clipboard
                         </Alert>
                       ) : null}
@@ -335,7 +340,6 @@ class Profile extends Component {
                   container
                   component={Paper}
                   className={classes.secondSection}
-                  spacing={1}
                 >
                   <Grid item xs={12} sm={12} md={3}>
                     {user.location && (

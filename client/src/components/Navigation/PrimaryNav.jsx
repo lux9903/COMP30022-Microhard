@@ -199,7 +199,7 @@ class PrimaryNav extends Component {
             </Button>
           </Link>
           <div className={classes.buttonSection}>
-            <Link exact={true} to="/" className={classes.noDecoration}>
+            <Link exact="true" to="/" className={classes.noDecoration}>
               <Button className={classes.button}>Profile</Button>
             </Link>
             <Link to="/course" className={classes.noDecoration}>
@@ -214,14 +214,8 @@ class PrimaryNav extends Component {
             <Link to="/image" className={classes.noDecoration}>
               <Button className={classes.button}>Photos</Button>
             </Link>
-            <Link exact={true} to="/document" className={classes.noDecoration}>
+            <Link exact="true" to="/document" className={classes.noDecoration}>
               <Button className={classes.button}>Personal documents</Button>
-            </Link>
-            {/*<Link to="/test" className={classes.noDecoration}>*/}
-            {/*  <Button className={classes.button}>Test</Button>*/}
-            {/*</Link>*/}
-            <Link to="/test" className={classes.noDecoration}>
-              <Button className={classes.button}>Test</Button>
             </Link>
           </div>
 
