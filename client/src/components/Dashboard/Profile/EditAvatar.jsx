@@ -3,9 +3,9 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
 
 export default function EditAvatar(props) {
   const [open, setOpen] = React.useState(false);
@@ -17,6 +17,10 @@ export default function EditAvatar(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   return (
     <div>
@@ -31,11 +35,17 @@ export default function EditAvatar(props) {
             Add a new profile avatar
           </DialogTitle>
           <DialogContent>
-            <input type="file" name="file" onChange={props.onChange} />
+            <Input
+              type="file"
+              name="file"
+              inputProps={{accept: 'image/*'}}
+              onChange={props.onChange}
+              color="primary"
+            />
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
-              <Button type="submit" color="primary">
+              <Button type="submit" color="primary" onClick={refreshPage}>
                 Upload
               </Button>
             </label>
