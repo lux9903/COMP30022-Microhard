@@ -1,11 +1,10 @@
 import React, {Component, Fragment, useState} from 'react';
-import axios from '../../../helpers/axiosConfig';
 import {Helmet} from 'react-helmet';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {Grid, TableContainer, Typography} from '@material-ui/core';
+import {CircularProgress, Grid, TableContainer, Typography} from '@material-ui/core';
 import {Field, Form, Formik} from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -31,6 +30,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import {editCourse, postCourse, fetchCourses, deleteCourse} from '../../../actions/courseAction';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = (theme) => ({
   root: {
@@ -189,6 +190,181 @@ function MyGrid(props) {
   );
 }
 
+/*
+function MyGrid2(props) {
+
+  let summer = [], winter = [], sem1 = [], sem2 = [];
+  props.courseArray.forEach((course) => {
+      switch (course.sem) {
+      case 'Sem1':
+        sem1.push(course.code + '\n');
+        break;
+      case 'Sem2':
+        sem2.push(course.code + '\n');
+        break;
+      case 'Winter':
+        winter.push(course.code + '\n');
+        break;
+      case 'Summer':
+        summer.push(course.code + '\n');
+        break;
+      }
+  })
+
+  let gridByYear = () => {
+    if (i === 0) {
+      color = '#88B9EB';
+      i = 1;
+    } else {
+      color = '#ffff';
+      i = 0;
+    }
+  };
+
+
+  let keys = Object.keys(props.courses);
+  let i = 0;
+  let color;
+
+  let gridByYear = keys.map((key) => {
+    let summer = [],
+      winter = [],
+      sem1 = [],
+      sem2 = [];
+    {
+      props.courses[key].map((value) => {
+        switch (value.sem) {
+          case 'Sem1':
+            sem1.push(value.code + '\n');
+            break;
+          case 'Sem2':
+            sem2.push(value.code + '\n');
+            break;
+          case 'Winter':
+            winter.push(value.code + '\n');
+            break;
+          case 'Summer':
+            summer.push(value.code + '\n');
+            break;
+        }
+      });
+    }
+    if (i === 0) {
+      color = '#88B9EB';
+      i = 1;
+    } else {
+      color = '#ffff';
+      i = 0;
+    }
+    return (
+      <div>
+        <Grid
+          container
+          style={{backgroundColor: color}}
+          spacing={2}
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Grid item sm={1}>
+            <Typography
+              align="right"
+              style={{fontFamily: 'sans-serif', fontSize: 22}}
+            >
+              {key}
+            </Typography>
+            <br />
+          </Grid>
+          <Divider orientation="vertical" flexItem />
+          <Grid item sm={2}>
+            <Typography align="center" variant="h5">
+              {summer}
+            </Typography>
+            <br />
+          </Grid>
+          <Divider orientation="vertical" flexItem />
+          <Grid item sm={2}>
+            <Typography align="center" variant="h5">
+              {sem1}
+            </Typography>
+            <br />
+          </Grid>
+          <Divider orientation="vertical" flexItem />
+          <Grid item sm={2}>
+            <Typography align="center" variant="h5">
+              {winter}
+            </Typography>
+            <br />
+          </Grid>
+          <Divider orientation="vertical" flexItem />
+          <Grid item sm={2}>
+            <Typography align="center" variant="h5">
+              {sem2}
+            </Typography>
+            <br />
+          </Grid>
+        </Grid>
+      </div>
+    );
+  });
+
+  return (
+    <div>
+      <br />
+      <br />
+      <Grid container spacing={2} justify="space-evenly">
+        <Grid item sm={1}>
+          <br />
+        </Grid>
+        <Divider orientation="vertical" flexItem />
+        <Grid item sm={2}>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Summer
+          </Typography>
+          <br />
+        </Grid>
+        <Divider orientation="vertical" flexItem />
+        <Grid item sm={2}>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Semester 1
+          </Typography>
+          <br />
+        </Grid>
+        <Divider orientation="vertical" flexItem />
+        <Grid item sm={2}>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Winter
+          </Typography>
+          <br />
+        </Grid>
+        <Divider orientation="vertical" flexItem />
+        <Grid item sm={2}>
+          <Typography
+            align="center"
+            style={{fontFamily: 'sans-serif', fontSize: 22}}
+          >
+            Semester 2
+          </Typography>
+          <br />
+        </Grid>
+      </Grid>
+      {gridByYear}
+      <br />
+    </div>
+  );
+}
+
+ */
+
+
 class MyAccordion extends Component {
   render() {
     return (
@@ -262,11 +438,10 @@ function GetList(props) {
                 <TableCell align="center">{row.state}</TableCell>
                 <TableCell align="center">{row.grades}</TableCell>
                 <TableCell align="center">
-                  <EditButton {...row} refresh={props.refresh} />
+                  <EditButton {...row} {...props} />
                   <DeleteButton
                     {...row}
-                    code={row.code}
-                    refresh={props.refresh}
+                    {...props}
                   />
                 </TableCell>
               </TableRow>
@@ -322,7 +497,8 @@ function MyForm(props) {
               onSubmit={(values) => {
                 props.submit(values);
                 props.handleClose();
-                setTimeout(() => props.refresh(), 400);
+                //setTimeout(() => props.refresh(), 400);
+                setTimeout(() => props.update(), 400);
               }}
             >
               <Form width="100%">
@@ -474,14 +650,11 @@ function EditButton(props) {
     setOpen(false);
   };
 
-  const onEditSubmit = (values) => {
-    let url = '/course/' + props._id;
-    axios
-      .post(url, values)
-      .then(() => setOpen(false))
-      .catch(() => alert('error in editing course'));
-    setTimeout(() => props.refresh(), 400);
-  };
+  const handleAccept = (values) => {
+    props.edit(props._id, values);
+    setOpen(false);
+    setTimeout(() => props.update(), 400);
+  }
 
   return (
     <div>
@@ -492,7 +665,7 @@ function EditButton(props) {
         open={open}
         handleClose={handleClose}
         title="Edit This Course"
-        submit={onEditSubmit}
+        submit={handleAccept}
         {...props}
       />
     </div>
@@ -511,12 +684,10 @@ function DeleteButton(props) {
   };
 
   const handleAccept = () => {
-    let url = '/course/' + props._id;
-    axios
-      .delete(url)
-      .then((r) => setOpen(false))
-      .catch(() => alert('error in deleting course'));
-    setTimeout(() => props.refresh(), 400);
+    props.delete(props._id);
+    setOpen(false);
+    setTimeout(() => props.update(), 400);
+
   };
 
   return (
@@ -557,194 +728,111 @@ class Course extends Component {
     super(props);
     this.createCourse = this.createCourse.bind(this);
     this.updateCourse = this.updateCourse.bind(this);
-    this.getOneCourse = this.getOneCourse.bind(this);
-    this.getAllCourse = this.getAllCourse.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
+    this.update = this.update.bind(this);
     this.state = {
-      courses: undefined,
       tabIndex: 0,
       open: null,
-      courses2: undefined,
     };
-    this.refresh = this.refresh.bind(this);
   }
 
-  createCourse(e) {
-    e.preventDefault();
-    var checked = document.forms.namedItem('createCourse')['core'].checked;
-    let formD = {
-      code: document.forms.namedItem('createCourse')['code']['value'],
-      name: document.forms.namedItem('createCourse')['name']['value'],
-      description: document.forms.namedItem('createCourse')['description'][
-        'value'
-      ],
-      related_skills: document.forms
-        .namedItem('createCourse')
-        ['related_skills']['value'].split(','),
-      state: document.forms.namedItem('createCourse')['state']['value'],
-      grades: parseInt(
-        document.forms.namedItem('createCourse')['grades']['value']
-      ),
-      link: document.forms.namedItem('createCourse')['link']['value'],
-      year: parseInt(document.forms.namedItem('createCourse')['year']['value']),
-      sem: document.forms.namedItem('createCourse')['sem']['value'],
-      core: checked,
-      score: parseInt(
-        document.forms.namedItem('createCourse')['score']['value']
-      ),
-    };
-    axios.post('/course/create', formD);
+  createCourse(values) {
+    this.props.dispatch(postCourse(values));
   }
 
-  updateCourse(e) {
-    e.preventDefault();
-    let formD = {};
-    if (
-      document.forms.namedItem('updateCourse')['code']['value'].trim() !== ''
-    ) {
-      const url =
-        '/course/' +
-        document.forms.namedItem('updateCourse')['code']['value'].trim();
-      if (
-        document.forms.namedItem('updateCourse')['name']['value'].trim() !== ''
-      ) {
-        formD['name'] = document.forms
-          .namedItem('updateCourse')
-          ['name']['value'].trim();
-      }
-      if (
-        document.forms
-          .namedItem('updateCourse')
-          ['description']['value'].trim() !== ''
-      ) {
-        formD['description'] = document.forms
-          .namedItem('updateCourse')
-          ['description']['value'].trim();
-      }
-      formD['state'] = document.forms.namedItem('updateCourse')['state'][
-        'value'
-      ];
-      if (
-        document.forms
-          .namedItem('updateCourse')
-          ['related_skills']['value'].trim() !== ''
-      ) {
-        formD['related_skills'] = document.forms
-          .namedItem('updateCourse')
-          ['related_skills']['value'].split(',');
-      }
-      if (
-        parseInt(document.forms.namedItem('updateCourse')['grades']['value'])
-      ) {
-        formD['grades'] = parseInt(
-          document.forms.namedItem('updateCourse')['grades']['value']
-        );
-      }
-      if (
-        document.forms.namedItem('updateCourse')['link']['value'].trim() !== ''
-      ) {
-        formD['link'] = document.forms
-          .namedItem('updateCourse')
-          ['link']['value'].trim();
-      }
-      if (parseInt(document.forms.namedItem('updateCourse')['year']['value'])) {
-        formD['year'] = parseInt(
-          document.forms.namedItem('updateCourse')['year']['value']
-        );
-      }
-      formD['sem'] = document.forms.namedItem('updateCourse')['sem']['value'];
-      formD['core'] = document.forms.namedItem('updateCourse')['core'][
-        'value'
-      ].checked;
-      if (
-        parseInt(document.forms.namedItem('updateCourse')['score']['value'])
-      ) {
-        formD['score'] = parseInt(
-          document.forms.namedItem('updateCourse')['score']['value']
-        );
-      }
-      axios.post(url, formD);
-    }
+  updateCourse(_id, values) {
+    this.props.dispatch(editCourse(_id, values))
   }
 
-  getOneCourse(e) {
-    e.preventDefault();
-    const url =
-      '/course/' + document.forms.namedItem('oneCourse')['code']['value'];
-    axios.get(url).then((res) => {
-      if (res.data.course) {
-        alert(JSON.stringify(res.data.course));
-      } else {
-        alert('No Such course');
-      }
-    });
+  update() {
+    this.props.dispatch(fetchCourses());
   }
 
-  getAllCourse(e) {
-    e.preventDefault();
-    axios.get('/course/').then((res) => {
-      if (res.data.course) {
-        alert(JSON.stringify(res.data.course));
-      } else {
-        alert('No Course found');
-      }
-    });
-  }
-
-  deleteCourse(e) {
-    e.preventDefault();
-    const url =
-      '/course/' + document.forms.namedItem('deleteCourse')['code']['value'];
-    axios.delete(url);
+  deleteCourse(_id) {
+    this.props.dispatch(deleteCourse(_id))
   }
 
   componentDidMount() {
-    axios.get('/course/').then((res) => {
-      if (res.data.course) {
-        this.setState({courses: res.data.course});
-        this.refresh();
-      }
-    });
-  }
-
-  refresh() {
-    let keys = Object.keys(this.state.courses);
-    let rows = [];
-    let i = 0;
-    axios.get('/course/').then((res) => {
-      if (res.data.course) {
-        this.setState({courses: res.data.course});
-        keys.map((key) => {
-          if (this.state.courses[key]) {
-            this.state.courses[key].map((value) => {
-              rows[i] = {};
-              rows[i] = {
-                code: value.code,
-                year: value.year,
-                sem: value.sem,
-                grades: value.grades,
-                score: value.score,
-                state: value.state,
-                description: value.description,
-                name: value.name,
-                link: value.link,
-                _id: value._id,
-              };
-              i++;
-            });
-          }
-        });
-        this.setState({courses2: rows});
-      }
-    });
-  }
-
-  submit(values) {
-    axios.post('/course/create', values);
+    this.props.dispatch(fetchCourses());
   }
 
   render() {
     const {classes} = this.props;
+
+    let overviewContent;
+    let detailsContent;
+
+    const {error, isFetching, courses} = this.props.course;
+
+    if (isFetching) {
+      //show the circular progress bar if database is still process
+      overviewContent = (
+        <Grid container justify="center" alignItems="center" className={classes.root}>
+          <CircularProgress color="primary" className={classes.progress}/>
+        </Grid>
+      );
+      detailsContent = (
+        <Grid container justify="center" alignItems="center" className={classes.root}>
+          <CircularProgress color="primary" className={classes.progress}/>
+        </Grid>
+      );
+    } else if (!courses) {
+      overviewContent = (
+        <Grid container justify="center" alignItems="center">
+          <Typography>
+            No courses found
+          </Typography>
+        </Grid>
+      );
+      detailsContent = (
+        <Grid container justify="center" alignItems="center">
+          <Typography>
+            No courses found
+          </Typography>
+        </Grid>
+      );
+    } else if (courses.course) {
+      //retrieved courses, parse data
+      let rows = [];
+      let i = 0;
+
+      Object.values(courses.course).map((yearArray) => {
+        yearArray.forEach((item) => {
+          rows[i] = {};
+          rows[i] = {
+            code: item.code,
+            year: item.year,
+            sem: item.sem,
+            grades: item.grades,
+            score: item.score,
+            state: item.state,
+            description: item.description,
+            name: item.name,
+            link: item.link,
+            _id: item._id,
+          };
+          i++;
+        })
+      });
+      //various ways to display data
+
+      detailsContent = <GetList courses={rows} edit={this.updateCourse}
+                                update={this.update} delete={this.deleteCourse} />;
+      overviewContent =
+        <div>
+          <MyGrid courses={courses.course}/>
+          <br />
+          <Typography align="center" variant="h3">
+            Course Overview
+          </Typography>
+          <br />
+          <Grid container justify="center" direction="row">
+            <Grid item xs={11}>
+              <GetAccords courses={rows} />
+            </Grid>
+          </Grid>
+        </div>;
+    }
 
     return (
       <Fragment>
@@ -758,16 +846,6 @@ class Course extends Component {
             Courses
           </Typography>
         </div>
-        {/*<container>*/}
-        {/*  <Helmet>*/}
-        {/*    <title>Microhard &middot; Courses </title>*/}
-        {/*  </Helmet>*/}
-        {/*  <div className={classes.root}>*/}
-        {/*    <div className={classes.formWrap}>*/}
-        {/*      <h1 className={classes.formTitle}>My Courses</h1>*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*</container>*/}
         <div>
           <Tabs
             value={this.state.tabIndex}
@@ -782,24 +860,12 @@ class Course extends Component {
           </Tabs>
           {this.state.tabIndex === 0 && (
             <div>
-              {this.state.courses && <MyGrid courses={this.state.courses} />}
-              <br />
-              <Typography align="center" variant="h3">
-                Course Overview
-              </Typography>
-              <br />
-              <Grid container justify="center" direction="row">
-                <Grid item xs={11}>
-                  {this.state.courses2 && (
-                    <GetAccords courses={this.state.courses2} />
-                  )}
-                </Grid>
-              </Grid>
+              {overviewContent}
             </div>
           )}
           {this.state.tabIndex === 1 && (
             <div>
-              <GetList courses={this.state.courses2} refresh={this.refresh} />
+              {detailsContent}
               <br />
               <Button
                 fullWidth
@@ -809,16 +875,15 @@ class Course extends Component {
               >
                 Add new Course
               </Button>
-
               <MyForm
                 open={this.state.open}
                 classes={classes}
                 handleClose={() => this.setState({open: null})}
                 title="Add New Course"
-                submit={this.submit}
+                submit={this.createCourse}
                 year="2020"
                 sem="Winter"
-                refresh={this.refresh}
+                update={this.update}
               />
             </div>
           )}
