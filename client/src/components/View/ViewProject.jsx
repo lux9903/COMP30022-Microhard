@@ -137,13 +137,6 @@ class ViewProject extends Component {
     if (this.state.sortBy !== '') {
       formD['sortBy'] = this.state.sortBy;
     }
-    /*
-    axios
-      .post(`/view/${user_id}/project/conditional`, formD)
-      .then((res) => {
-        this.setState({projlist: res.data.result});
-      })
-      .catch((error) => {});*/
     this.props.dispatch(fetchViewProjects(formD,user_id));
   };
 

@@ -202,8 +202,8 @@ class Profile extends Component {
     } else if (isFetching) {
       //show the circular progress bar if database is still process
       content = (
-        <Grid container justify="center" alignItems="center" >
-          <CircularProgress className={classes.progress}/>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
         </Grid>
       );
     } else if (!avatar) {

@@ -767,13 +767,13 @@ class Course extends Component {
     if (isFetching) {
       //show the circular progress bar if database is still process
       overviewContent = (
-        <Grid container justify="center" alignItems="center" className={classes.root}>
-          <CircularProgress color="primary" className={classes.progress}/>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
         </Grid>
       );
       detailsContent = (
-        <Grid container justify="center" alignItems="center" className={classes.root}>
-          <CircularProgress color="primary" className={classes.progress}/>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
         </Grid>
       );
     } else if (!courses) {
