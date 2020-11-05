@@ -5,7 +5,7 @@ import {withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {Grid, TableContainer, Typography} from '@material-ui/core';
+import {CircularProgress, Grid, TableContainer, Typography} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -18,6 +18,10 @@ import TableHead from '@material-ui/core/TableHead';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import ViewNav from './ViewNav';
+import {fetchCourses} from '../../actions/courseAction';
+import {fetchViewCourses} from '../../actions/viewAction';
+import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = (theme) => ({
     root: {
@@ -265,20 +269,8 @@ function GetList(props) {
 class ViewCourse extends Component {
     constructor(props) {
         super(props);
-        this.getAllCourse = this.getAllCourse.bind(this);
         this.state = {courses: undefined, tabIndex: 0, open: null, courses2: undefined,view_user :"default"};
-        this.refresh = this.refresh.bind(this);
-    }
-
-    getAllCourse(e) {
-        e.preventDefault();
-        axios.get(`/view/${this.state.view_user._id}/course`).then((res) => {
-            if (res.data.course) {
-                alert(JSON.stringify(res.data.course));
-            } else {
-                alert('No Course found');
-            }
-        });
+        this.update = this.update.bind(this);
     }
 
 
@@ -289,99 +281,134 @@ class ViewCourse extends Component {
             this.setState({view_user:res.data});
         })
 
+        this.props.dispatch(fetchViewCourses(user_id));
 
-        axios.get(`/view/${user_id}/course`).then((res) => {
-            if (res.data.course) {
-                this.setState({courses: res.data.course});
-                this.refresh();
-            }
-        });
     }
 
-    refresh() {
-        let keys = Object.keys(this.state.courses);
-        let rows = [];
-        let i = 0;
-        axios.get(`/view/${this.state.view_user._id}/course`).then((res) => {
-            if (res.data.course) {
-                this.setState({courses: res.data.course});
-                keys.map((key) => {
-                    if (this.state.courses[key]) {
-                        this.state.courses[key].map((value) => {
-                            rows[i] = {};
-                            rows[i] = {
-                                code: value.code,
-                                year: value.year,
-                                sem: value.sem,
-                                grades: value.grades,
-                                score: value.score,
-                                state: value.state,
-                                description: value.description,
-                                name: value.name,
-                                link: value.link,
-                                _id: value._id,
-                            };
-                            i++;
-                        });
-                    }
-                });
-                this.setState({courses2: rows});
-            }
-        });
+    update() {
+        this.props.dispatch(fetchCourses(this.state.view_user._id));
     }
 
 
     render() {
+        const {classes} = this.props;
+        console.log(this.props);
+        let overviewContent;
+        let detailsContent;
+
+        const {error, isFetching, view_courses} = this.props.view;
+        if (error) {
+            overviewContent = <Alert severity="error">{error}</Alert>;
+            detailsContent = <Alert severity="error">{error}</Alert>;
+        }
+        else if (isFetching) {
+            //show the circular progress bar if database is still process
+            overviewContent = (
+              <Grid container justify="center" alignItems="center" className={classes.root}>
+                  <CircularProgress color="primary" className={classes.progress}/>
+              </Grid>
+            );
+            detailsContent = (
+              <Grid container justify="center" alignItems="center" className={classes.root}>
+                  <CircularProgress color="primary" className={classes.progress}/>
+              </Grid>
+            );
+        } else if (!view_courses) {
+            overviewContent = (
+              <Grid container justify="center" alignItems="center">
+                  <Typography>
+                      No courses found
+                  </Typography>
+              </Grid>
+            );
+            detailsContent = (
+              <Grid container justify="center" alignItems="center">
+                  <Typography>
+                      No courses found
+                  </Typography>
+              </Grid>
+            );
+        } else if (view_courses.course) {
+            //retrieved courses, parse data
+            let rows = [];
+            let i = 0;
+
+            Object.values(view_courses.course).map((yearArray) => {
+                yearArray.forEach((item) => {
+                    rows[i] = {};
+                    rows[i] = {
+                        code: item.code,
+                        year: item.year,
+                        sem: item.sem,
+                        grades: item.grades,
+                        score: item.score,
+                        state: item.state,
+                        description: item.description,
+                        name: item.name,
+                        link: item.link,
+                        _id: item._id,
+                    };
+                    i++;
+                })
+            });
+            //various ways to display data
+
+            detailsContent = <GetList courses={rows} edit={this.updateCourse}
+                                      update={this.update} delete={this.deleteCourse} />;
+            overviewContent =
+              <div>
+                  <MyGrid courses={view_courses.course}/>
+                  <br />
+                  <Typography align="center" variant="h3">
+                      Course Overview
+                  </Typography>
+                  <br />
+                  <Grid container justify="center" direction="row">
+                      <Grid item xs={11}>
+                          <GetAccords courses={rows} />
+                      </Grid>
+                  </Grid>
+              </div>;
+        }
 
         return (
           <Fragment>
-              <ViewNav view_user={this.state.view_user}/>
+              <ViewNav view_user={this.state.view_user} />
               <Helmet>
                   <title>Microhard &middot; Courses </title>
               </Helmet>
               <div style={{height: '120px', backgroundColor: '#094183'}}>
                   <br />
                   <br />
-                  <Typography
-                    variant="h1"
-                    align="center"
-                    style={{color: '#fff', fontSize: '36px'}}
-                  >
+                  <Typography variant="h1" align="center" style={{color: '#fff'}}>
                       Courses
                   </Typography>
               </div>
-                <div>
-                    <Tabs
-                        value={this.state.tabIndex}
-                        onChange={(e, index) => this.setState({tabIndex: index})}
-                        variant="fullWidth"
-                        indicatorColor="secondary"
-                        textColor="secondary"
-                        aria-label="icon label tabs example"
-                    >
-                        <Tab label="Overview" index={0} />
-                        <Tab label='Details' index={1} />
-                    </Tabs>
-                    {this.state.tabIndex === 0 &&
+              <div>
+                  <Tabs
+                    value={this.state.tabIndex}
+                    onChange={(e, index) => this.setState({tabIndex: index})}
+                    variant="fullWidth"
+                    indicatorColor="secondary"
+                    textColor="secondary"
+                    aria-label="icon label tabs example"
+                  >
+                      <Tab label="Overview" index={0} />
+                      <Tab label="Details" index={1} />
+                  </Tabs>
+                  {this.state.tabIndex === 0 && (
                     <div>
-                        {this.state.courses && <MyGrid courses={this.state.courses} />}
-                        <br />
-                        <Typography align="center" variant="h3">Course Overview</Typography>
-                        <br />
-                        <Grid container justify="center" direction="row">
-                            <Grid item xs={11}>
-                                {this.state.courses2 && <GetAccords courses={this.state.courses2} />}
-                            </Grid>
-                        </Grid>
+                        {overviewContent}
                     </div>
-                    }
-                    {this.state.tabIndex === 1 && <div>
-                        <GetList courses={this.state.courses2} refresh={this.refresh} />
-                        <br />
-                    </div>}
-                    <br/>
-                </div>
-    </Fragment>
+                  )}
+                  {this.state.tabIndex === 1 && (
+                    <div>
+                        {detailsContent}
+                    </div>
+                  )}
+                  <br />
+              </div>
+          </Fragment>
         );
     }
 }
