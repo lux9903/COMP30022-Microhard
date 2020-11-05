@@ -92,6 +92,21 @@ export default handleActions(
       isFetching: false,
       error: action.payload.error,
     }),
+    FETCH_VIEW_EXPERIENCES_STARTED: (state) => ({
+      ...state,
+      isFetching: true,
+      error: null,
+    }),
+    FETCH_VIEW_EXPERIENCES_SUCCESS: (state , action) => ({
+      ...state,
+      isFetching: false,
+      view_experiences: action.payload.data,
+    }),
+    FETCH_VIEW_EXPERIENCES_FAILURE: (state , action) => ({
+      ...state,
+      isFetching: false,
+      error: action.payload.error,
+    }),
 
   },
   {
@@ -102,6 +117,7 @@ export default handleActions(
     view_projects: [],
     view_project: {},
     view_courses:[],
+    view_experiences:[],
     view_user: null,
     error: null,
   }
