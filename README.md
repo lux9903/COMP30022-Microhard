@@ -132,6 +132,7 @@ Project {
     'status': Project's progress-status (In Progress/Complete/Cancel);
     'show_status': Project's show-status (Public/Private);
     'contributors': List of contributors;
+    'skills': List of skills tag that relevant to the project;
     'rating': Number of people give like to the project;
     'process': The process list will describing the project' progression and tasks involved, consist of ProcessId, process's description and tasks list (nodes);
     'nodes': The tasks list belong to certain process, consist of NodeId and description;
@@ -193,16 +194,16 @@ server.js
 
 ## Files in the Dashboard directory
 
-| Course       | Document         | Photos          | Profile          | Project            |
-|--------------|------------------|-----------------|------------------|--------------------|
-| Course.jsx   | AddDocument.jsx  | Image.jsx       | EditAvatar.jsx   | Project_view.jsx   |
-|              | Documents.jsx    | ImageGrid.jsx   | Profile.jsx      | Project_edit.jsx   |
-|              | EditDocument.jsx |                 |                  | Projectlist.jsx    |
-|              |                  |                 |                  | General.jsx        |
-|              |                  |                 |                  | Status.jsx         |   
-|              |                  |                 |                  | Contributors.jsx   |  
-|              |                  |                 |                  | Process.jsx        | 
-|              |                  |                 |                  | Timeline.jsx       |      
+| Course                | Document                   | Photos                    | Profile                  | Project                    |
+|-----------------------|----------------------------|---------------------------|--------------------------|----------------------------|
+| Course.jsx            | AddDocument.jsx            | Image.jsx                 | EditAvatar.jsx           | Project_view.jsx           |
+|                       | Documents.jsx              | ImageGrid.jsx             | Profile.jsx              | Project_edit.jsx           |
+|                       | EditDocument.jsx           |                           |                          | Projectlist.jsx            |
+|                       |                            |                           |                          | General.jsx                |
+|                       |                            |                           |                          | Status.jsx                 |   
+|                       |                            |                           |                          | Contributors.jsx           |  
+|                       |                            |                           |                          | Process.jsx                | 
+|                       |                            |                           |                          | Timeline.jsx               |      
   
 
 
