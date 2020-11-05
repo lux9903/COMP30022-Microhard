@@ -29,7 +29,9 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
+import {fetchAvatar, postAvatar} from '../../../actions/photoAction';
+import {CircularProgress} from '@material-ui/core';
 
 const styles = (theme) => ({
   root: {
@@ -131,40 +133,20 @@ class Profile extends Component {
         'content-type': 'multipart/form-data',
       },
     };
-    axios
-      .post('/avatar/upload', formData, config)
-      .then((response) => {
-        alert('The file is successfully uploaded');
-      })
-      .catch((error) => {});
+    this.props.dispatch(postAvatar(formData,config));
   }
   onChange(e) {
     this.setState({file: e.target.files[0]});
   }
 
   componentDidMount() {
-    const {classes} = this.props;
+    let page = 1;
+    if (this.props.match.params.page !== undefined) {
+      page = this.props.match.params.page;
+    }
     // Retrieve avatar image
-    axios.get('/avatar').then((res) => {
-      if (res.data.files) {
-        const imgPic = res.data.files.map((ele) => (
-          <Avatar
-            alt="Nothing Here"
-            src={'/api/image/' + ele.filename}
-            className={classes.avatar}
-          />
-        ));
-        ReactDOM.render(imgPic, document.getElementById('avatar'));
-      } else {
-        const defaultAvatar = (
-          <Avatar
-            className={clsx(classes.primaryColor, classes.avatar)}
-            alt="default avatar"
-          />
-        );
-        ReactDOM.render(defaultAvatar, document.getElementById('avatar'));
-      }
-    });
+    this.props.dispatch(fetchAvatar(page));
+
 
     axios.get('/pdf/').then((res) => {
       if (res.data.pdfs) {
@@ -192,15 +174,54 @@ class Profile extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+
+    if (this.props.location !== prevProps.location) {
+      let page = 1;
+
+      if (this.props.match.params.page !== undefined) {
+        page = this.props.match.params.page;
+      }
+      this.props.dispatch(fetchAvatar(page));
+    }
+  }
+
   render() {
     const {classes} = this.props;
     const {user} = this.props.user;
 
-    console.log(user);
-
+    console.log(this.props);
     const path = window.location.host + '/view/';
     console.log(path);
 
+    const {error,isFetching,avatar} = this.props.photo;
+
+    let content;
+    if (error) {
+      content = <Alert severity="error">{error}</Alert>;
+    } else if (isFetching) {
+      //show the circular progress bar if database is still process
+      content = (
+        <Grid container justify="center" alignItems="center" >
+          <CircularProgress className={classes.progress}/>
+        </Grid>
+      );
+    } else if (!avatar) {
+      content = (
+        <Avatar
+          className={clsx(classes.primaryColor, classes.avatar)}
+          alt="default avatar"
+        />
+      );
+    } else {
+      const imgPic = avatar.map((ele) => (
+        <Avatar
+          alt="Nothing Here"
+          src={'/api/image/' + ele.filename}
+          className={classes.avatar}
+        />));
+      content = (<div>{imgPic} </div>);
+    }
     return (
       <Fragment>
         <Helmet>
@@ -233,7 +254,7 @@ class Profile extends Component {
                             aria-haspopup="true"
                             color="inherit"
                           >
-                            <div id="avatar" {...bindTrigger(popupState)}></div>
+                           <div {...bindTrigger(popupState)}>{content}</div>
                           </IconButton>
                           <Popover
                             {...bindPopover(popupState)}
@@ -430,4 +451,4 @@ const mapStateToProps = (state) => ({
   ...state,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Profile));
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(Profile)));
