@@ -1,5 +1,6 @@
 import {createActions} from 'redux-actions';
 import axios from '../helpers/axiosConfig';
+import {fetchCoursesFailure, fetchCoursesStarted, fetchCoursesSuccess} from './courseAction';
 
 export const {
   fetchViewPhotosStarted,
@@ -108,6 +109,19 @@ export const fetchViewProject = (projectid,user_id) => {
       dispatch(fetchViewProjectSuccess(response.data));
     } catch (error) {
       dispatch(fetchViewProjectFailure('Could not retrieve the project.'));
+    }
+  };
+};
+
+export const fetchViewCourses = (user_id) => {
+  return async (dispatch) => {
+    dispatch(fetchViewCoursesStarted());
+
+    try {
+      const response = await axios.get(`/view/${user_id}/course`);
+      dispatch(fetchViewCoursesSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchViewCoursesFailure('Could not retrieve courses.'));
     }
   };
 };
