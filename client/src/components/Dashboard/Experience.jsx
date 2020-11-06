@@ -388,7 +388,7 @@ class Experience extends Component {
       //show the circular progress bar if database is still process
       content = (
         <Grid container justify="center" alignItems="center">
-          <CircularProgress color="primary" className={classes.progress}/>
+          <CircularProgress color="primary" />
         </Grid>
       );
     } else if (!experiences) {
