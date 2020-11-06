@@ -1,6 +1,6 @@
 import React, {Fragment, Component, useState} from 'react';
 import {Helmet} from 'react-helmet';
-import {withRouter} from "react-router";
+import {withRouter} from 'react-router';
 import {withStyles} from '@material-ui/core/styles';
 import {makeStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
@@ -44,14 +44,13 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     marginRight: 12,
-  }
+  },
 }));
-
 
 //this is css for export class
 const styles = (theme) => ({
   cardGrid: {
-      paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(4),
   },
   card: {
     height: 'auto',
@@ -61,7 +60,7 @@ const styles = (theme) => ({
   cardContent: {
     flexGrow: 0,
   },
-  oppositeContent:{
+  oppositeContent: {
     flex: 0,
     padding: 0,
   },
@@ -75,12 +74,12 @@ const styles = (theme) => ({
   },
   progress: {
     marginTop: theme.spacing(2),
-    marginBottom:theme.spacing(2),
-    color: "white",
+    marginBottom: theme.spacing(2),
+    color: 'white',
   },
   root: {
-    width: "100%",
-  }
+    width: '100%',
+  },
 });
 
 //this render the process section in main part
@@ -93,13 +92,15 @@ function Process(props) {
   return (
     <List>
       <ListItem button onClick={handleClick}>
-        <ListItemText>{props.proc.processNum}:{" "}{props.proc.description}</ListItemText>
-        {!open ? (<ExpandMoreIcon/>) : (<ExpandLessIcon/>)}
+        <ListItemText>
+          {props.proc.processNum}: {props.proc.description}
+        </ListItemText>
+        {!open ? <ExpandMoreIcon /> : <ExpandLessIcon />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
-        {props.proc.nodes && props.proc.nodes.length > 0 ? (
-            props.proc.nodes.map((node)=>{
+          {props.proc.nodes && props.proc.nodes.length > 0 ? (
+            props.proc.nodes.map((node) => {
               return (
                 <Fragment key={node.index}>
                   {!node.state ? (
@@ -109,41 +110,42 @@ function Process(props) {
                   ) : (
                     <ListItem disabled className={classes.item}>
                       <ListItemText primary={node.description} />
-                      <DoneAllIcon className={classes.icon}/>
+                      <DoneAllIcon className={classes.icon} />
                     </ListItem>
                   )}
                 </Fragment>
-            )})
-        ) : (
-          <ListItem className={classes.icon}>
-            <ListItemText>No task yet</ListItemText>
-          </ListItem>
-        )}
+              );
+            })
+          ) : (
+            <ListItem className={classes.icon}>
+              <ListItemText>No task yet</ListItemText>
+            </ListItem>
+          )}
         </List>
       </Collapse>
-      <Divider/>
+      <Divider />
     </List>
-  )
+  );
 }
 
 //this is the main part of the page
 //render all except the navigation
-class Project_View extends Component{
+class Project_View extends Component {
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   //fetch project from database when the page first load
-  componentDidMount = () =>{
+  componentDidMount = () => {
     let id = null;
     if (this.props.match.params.id !== undefined) {
       id = this.props.match.params.id;
     }
     this.props.dispatch(fetchProject(id));
-  }
+  };
 
-  render(){
+  render() {
     const {classes} = this.props;
     const id = this.props.match.params.id;
 
@@ -155,165 +157,205 @@ class Project_View extends Component{
     } else if (isFetching) {
       //show the circular progress bar if databased still process
       content = (
-        <Grid container justify="center" alignItems="center" className={classes.root}>
-          <CircularProgress color="primary" className={classes.progress}/>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className={classes.root}
+        >
+          <CircularProgress color="primary" className={classes.progress} />
         </Grid>
       );
     } else if (!project) {
       //response if the project list is empty
       content = (
         <Grid container justify="center" alignItems="center">
-          <Typography> 
-            Cannot found the project requested.
-          </Typography>
+          <Typography>Cannot found the project requested.</Typography>
         </Grid>
       );
     } else {
       //render all project fetched
       content = (
         <Grid container spacing={3}>
-
           {/* left side collumn */}
           <Grid item xs={12} md={8}>
-
             {/* 1st card: project description */}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Description</Typography>
-                <Divider/>
-                {project.description && project.description!=="" ? (
-                  <Typography className={classes.text}>{project.description}</Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Description
+                </Typography>
+                <Divider />
+                {project.description && project.description !== '' ? (
+                  <Typography className={classes.text}>
+                    {project.description}
+                  </Typography>
                 ) : (
-                  <Typography className={classes.text}>No Description Yet</Typography>
+                  <Typography className={classes.text}>
+                    No Description Yet
+                  </Typography>
                 )}
               </CardContent>
             </Card>
-            <br/>
+            <br />
 
             {/* 2nd card: project process*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Process</Typography>
-                <Divider/>
-                {project.process && project.process.length>0 ? (
-                  project.process.map((proc)=>{
-                    return <Process proc={proc} key={proc.processNum}/>
-                  })) : (
-                    <Typography className={classes.text}>No Process Yet</Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Process
+                </Typography>
+                <Divider />
+                {project.process && project.process.length > 0 ? (
+                  project.process.map((proc) => {
+                    return <Process proc={proc} key={proc.processNum} />;
+                  })
+                ) : (
+                  <Typography className={classes.text}>
+                    No Process Yet
+                  </Typography>
                 )}
               </CardContent>
             </Card>
-            <br/>
+            <br />
 
             {/* 3rd card: project timeline*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Timeline</Typography>
-                <Divider/>
-                  {project.timeline && project.timeline.length > 0 ? (
-                    <Timeline>
-                    {project.timeline.map((each)=>{
+                <Typography gutterBottom variant="h5" component="h2">
+                  Timeline
+                </Typography>
+                <Divider />
+                {project.timeline && project.timeline.length > 0 ? (
+                  <Timeline>
+                    {project.timeline.map((each) => {
                       return (
                         <TimelineItem key={each.index} align="left">
                           <TimelineSeparator>
-                            <TimelineDot color="primary"/>
+                            <TimelineDot color="primary" />
                             <TimelineConnector />
                           </TimelineSeparator>
-                          <TimelineOppositeContent className={classes.oppositeContent}/>
+                          <TimelineOppositeContent
+                            className={classes.oppositeContent}
+                          />
                           <TimelineContent>
                             <Card>
                               <CardContent>
-                                <Typography>{each.time.slice(0,10)}</Typography>
-                                <Divider/>
+                                <Typography>
+                                  {each.time.slice(0, 10)}
+                                </Typography>
+                                <Divider />
                                 <Typography>{each.description}</Typography>
                               </CardContent>
                             </Card>
                           </TimelineContent>
                         </TimelineItem>
-                      )
+                      );
                     })}
-                    </Timeline>
-                  ) : (
-                    <Typography className={classes.text}>No Timeline Yet</Typography>
-                  )}
+                  </Timeline>
+                ) : (
+                  <Typography className={classes.text}>
+                    No Timeline Yet
+                  </Typography>
+                )}
               </CardContent>
             </Card>
           </Grid>
 
-          {/* right sided collumn*/}
+          {/* right sided column*/}
           <Grid item xs={12} md={4}>
-
             {/* 1st card: project status*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Status</Typography>
-                <Divider/>
-                <Typography className={classes.text}>Progress Status: {project.status}</Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Status
+                </Typography>
+                <Divider />
+                <Typography className={classes.text}>
+                  Progress Status: {project.status}
+                </Typography>
                 <Typography>Show Status: {project.show_status}</Typography>
               </CardContent>
             </Card>
-            <br/>
+            <br />
 
             {/* 2nd card: project rating*/}
-            <Card className={classes.card}>
-              <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
-                <Divider/>
-                <Typography className={classes.text}>{project.rating}{" "} likes</Typography>
-              </CardContent>
-            </Card>
-            <br/>
+            {/*<Card className={classes.card}>*/}
+            {/*  <CardContent className={classes.cardContent}>*/}
+            {/*    <Typography gutterBottom variant="h5" component="h2">Rating</Typography>*/}
+            {/*    <Divider/>*/}
+            {/*    <Typography className={classes.text}>{project.rating}{" "} likes</Typography>*/}
+            {/*  </CardContent>*/}
+            {/*</Card>*/}
+            {/*<br/>*/}
 
             {/* 2nd card: project contributor*/}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
-                <Divider/>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Contributor
+                </Typography>
+                <Divider />
                 <List>
-                  {project.contributors && project.contributors.map((con, i)=>{
-                    return <ListItemText key={i}>{con}</ListItemText>
-                  })}
+                  {project.contributors &&
+                    project.contributors.map((con, i) => {
+                      return <ListItemText key={i}>{con}</ListItemText>;
+                    })}
                 </List>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
       );
-    } 
+    }
     return (
       <Fragment>
         <Helmet>
           <title>Microhard &middot; Project View</title>
         </Helmet>
         <div className={classes.body}>
-
           {/* page hero content*/}
-          <Container maxWidth="sm" >
-              <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
-                {project.name}
-              </Typography>
-              <br/>
-              <Grid container spacing={4} justify="center" alignItems="center">
-                <Grid item>
-                  <Button variant="contained" href={"/project/"} endIcon={<ListIcon/>}>
-                    Back to List
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="contained" href={"/project/"+id} endIcon={<EditIcon/>}>
-                    Edit Page
-                  </Button>
-                </Grid>
+          <Container maxWidth="sm">
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              style={{color: '#fff'}}
+              gutterBottom
+            >
+              {project.name}
+            </Typography>
+            <br />
+            <Grid container spacing={4} justify="center" alignItems="center">
+              <Grid item>
+                <Button
+                  variant="contained"
+                  href={'/project/'}
+                  endIcon={<ListIcon />}
+                >
+                  Back to List
+                </Button>
               </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  href={'/project/' + id}
+                  endIcon={<EditIcon />}
+                >
+                  Edit Page
+                </Button>
+              </Grid>
+            </Grid>
           </Container>
 
           {/* project detail*/}
           <Container className={classes.cardGrid} maxWidth="md">
-            {content} 
+            {content}
           </Container>
         </div>
       </Fragment>
-  );}
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
