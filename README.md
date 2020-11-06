@@ -96,6 +96,16 @@ Running Mocha tests
 | Project | Create  | /api/project/timeline/:id            | Project.findOne()  | POST   | Add new event into timeline of an existing project |
 | Project | Update  | /api/project/timeline/update/:id     | Project.findOne()  | POST   | Update an event of timeline of an existing project |
 | Project | Delete  | /api/project/timeline/remove/:id     | Project.findOne()  | POST   | Delete an event of timeline of an existing project |
+| Experience        | Read    | /api/experience          | Experience.find()                 | GET       | View all existing experiences      |
+| Experience        | Read    | /api/experience/:filename| Experience.findOne()              | GET       | View an existing experience        |
+| Experience        | Create  | /api/experience/create   | Experience.save()                 | POST      | Post a new experience to server    |
+| Experience        | Delete  | /api/experience/:id      | Experience.deleteOne()            | DELETE    | Delete an existing experience      |
+| Experience        | Update  | /api/experience/:id      | Experience.deleteOne()            | POST      | Edit an existing experience        |
+| Course            | Read    | /api/course              | Course.find()                     | GET       | View all existing courses          |
+| Course            | Read    | /api/course/:filename    | Course.findOne()                  | GET       | View an existing course            |
+| Course            | Create  | /api/course/create       | Course.save()                     | POST      | Post a new course to server        |
+| Course            | Delete  | /api/course/:id          | Course.deleteOne()                | DELETE    | Delete an existing course          |
+| Course            | Update  | /api/course/:id          | Course.deleteOne()                | POST      | Edit an existing course            |
 
 ## MongoDB schemas
 
@@ -139,6 +149,30 @@ Project {
     'process': The process list will describing the project' progression and tasks involved, consist of ProcessId, process's description and tasks list (nodes);
     'nodes': The tasks list belong to certain process, consist of NodeId and description;
     'timeline': The timeline listed down important events of project;
+}
+
+Experience {
+    'experienceID': Experience ID
+    'user': Ownership of experiences
+    'start_date': When the experience was started
+    'end_date': When the experience was ended
+    'position': Users position in the experience
+    'company': The company of the experience
+    'description': Experience description
+    'state': Experience's status (On going/End)
+}
+
+Course {
+    'user': Ownnership of course
+    'code': Course code
+    'name': Name of the course
+    'description': Course description
+    'state': Course's status (Finished/On Going/Planned)
+    'grades': Course grade
+    'link': Link to course handbook
+    'year': Year course taken
+    'sem' : Semester course taken
+    'score': Rating of course
 }
 ```
 
