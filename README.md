@@ -9,6 +9,8 @@ Microhard is a COMP30022 capstone project that delivers a solution to the follow
 To tackle this problem, we have chosen to build a MERN stack application. The frontend is written in ReactJS / Redux. The backend is written in Node.js and Express. MongoDB Atlas is used to store our documents and files. Our CI/CD pipeline is through Github Actions where unit testing occurs. Finally, after testing is successfuly, the application is deployed to Heroku. 
 The React UI framework used was Material-UI, providing a consistent theme and palette to the application. 
 
+## Technical Manual
+[Can be accessed throgh this link](https://github.com/lux9903/COMP30022-Microhard/wiki)
 ## Installation requirements
 ### Prerequisites
 This tutorial will cover the process of setting up the development environment on your local computer for this application.
