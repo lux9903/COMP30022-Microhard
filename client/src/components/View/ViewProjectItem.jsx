@@ -246,14 +246,14 @@ class View_Project_Item extends Component{
               </CardContent>
             </Card>
             <br/>
-            <Card className={classes.card}>
-              <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">Rating</Typography>
-                <Divider/>
-                <Typography className={classes.text}>{view_project.rating}{" "} likes</Typography>
-              </CardContent>
-            </Card>
-            <br/>
+            {/*<Card className={classes.card}> */}
+              {/*<CardContent className={classes.cardContent}> */}
+              {/*  <Typography gutterBottom variant="h5" component="h2">Rating</Typography> */}
+              {/*  <Divider/> */}
+              {/*  <Typography className={classes.text}>{view_project.rating}{" "} likes</Typography> */}
+              {/*</CardContent> */}
+            {/*</Card> */}
+            {/*<br/> */}
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">Contributor</Typography>
