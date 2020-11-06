@@ -39,7 +39,6 @@ const useStyles2 = (theme) => ({
   progress: {
     marginTop: theme.spacing(2),
     marginBottom:theme.spacing(2),
-    color: "white",
   },
 });
 
