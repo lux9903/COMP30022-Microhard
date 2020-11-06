@@ -10,7 +10,7 @@ To tackle this problem, we have chosen to build a MERN stack application. The fr
 The React UI framework used was Material-UI, providing a consistent theme and palette to the application. 
 
 ## Technical Manual
-[Can be accessed throgh this link](https://github.com/lux9903/COMP30022-Microhard/wiki)
+[Can be accessed through this link](https://github.com/lux9903/COMP30022-Microhard/wiki)
 ## Installation requirements
 ### Prerequisites
 This tutorial will cover the process of setting up the development environment on your local computer for this application.
