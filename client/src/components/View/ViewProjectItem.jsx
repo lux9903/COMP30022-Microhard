@@ -281,7 +281,7 @@ class View_Project_Item extends Component{
 
           <Container maxWidth="sm" >
             <Typography component="h1" variant="h2" align="center" style={{color: '#fff'}} gutterBottom>
-              {this.state.project.name}
+              {view_project.name}
             </Typography>
             <br/>
             <Grid container spacing={4} justify="center" alignItems="center">
