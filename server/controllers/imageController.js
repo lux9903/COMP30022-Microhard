@@ -8,6 +8,7 @@ const path = require('path');
 
 const Image = mongoose.model('Image');
 const User = mongoose.model('User');
+
 // file transfer database
 const conn = mongoose.createConnection(process.env.DATABASE);
 let gfs;
@@ -44,40 +45,41 @@ const getAllImage = (req, res) => {
     if (!user) {
       return res.sendStatus(401).send('The user does not exist.');
     }
-    Image.find({user: user._id, type: {$exists: false}})
-      .then(function (images) {
-        image_ids=[];
-        image_captions=[];
-        for (image of images){
-          image_ids.push(image['fileId']);
-          image_captions.push(image['caption']);
-        };
-        gfs.files.find({_id: {$in: image_ids}}).toArray((err, files) => {
-          if (!files || files.length === 0) {
-            return res.json({
-              files: [],
-            });
-          }
-          files.map((file) => {
-            if (
-              file.contentType === 'image/jpeg' ||
-              file.contentType === 'image/png'
-            ) {
-              file.isImage = true;
-            } else {
-              file.isImage = false;
-            }
+    Image.find({user: user._id, type: {$exists: false}}).then(function (
+      images
+    ) {
+      image_ids = [];
+      image_captions = [];
+      for (image of images) {
+        image_ids.push(image.fileId);
+        image_captions.push(image.caption);
+      }
+      gfs.files.find({_id: {$in: image_ids}}).toArray((err, files) => {
+        if (!files || files.length === 0) {
+          return res.json({
+            files: [],
           });
-          const imgObj = [];
-          for (i= 0; i < files.length;i++){
-            if (files[i].isImage){
-              files[i].caption = image_captions[i];
-              imgObj.push(files[i]);
-            }
+        }
+        files.map((file) => {
+          if (
+            file.contentType === 'image/jpeg' ||
+            file.contentType === 'image/png'
+          ) {
+            file.isImage = true;
+          } else {
+            file.isImage = false;
           }
-          return res.json({files: imgObj});
         });
+        const imgObj = [];
+        for (i = 0; i < files.length; i++) {
+          if (files[i].isImage) {
+            files[i].caption = image_captions[i];
+            imgObj.push(files[i]);
+          }
+        }
+        return res.json({files: imgObj});
       });
+    });
   });
 };
 
