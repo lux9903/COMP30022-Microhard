@@ -111,3 +111,29 @@ export const fetchViewProject = (projectid,user_id) => {
     }
   };
 };
+
+export const fetchViewCourses = (user_id) => {
+  return async (dispatch) => {
+    dispatch(fetchViewCoursesStarted());
+
+    try {
+      const response = await axios.get(`/view/${user_id}/course`);
+      dispatch(fetchViewCoursesSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchViewCoursesFailure('Could not retrieve courses.'));
+    }
+  };
+};
+
+export const fetchViewExperiences = (user_id) => {
+  return async (dispatch) => {
+    dispatch(fetchViewExperiencesStarted());
+
+    try {
+      const response = await axios.get(`/view/${user_id}/experience`);
+      dispatch(fetchViewExperiencesSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchViewExperiencesFailure('Could not retrieve experiences.'));
+    }
+  };
+};

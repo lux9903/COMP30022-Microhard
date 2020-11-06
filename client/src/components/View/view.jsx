@@ -191,7 +191,7 @@ class View extends Component {
     } else if (isFetching) {
       content = (
         <Grid container justify="center" alignItems="center">
-          <CircularProgress />
+          <CircularProgress color="primary" />
         </Grid>
       );
     } else if (view_photos.length === 0 || !view_photos) {

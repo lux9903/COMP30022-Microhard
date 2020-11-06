@@ -32,7 +32,7 @@ const createProject = (req, res) =>{
 
 const getAllProject = (req, res) =>{
 	User.findById(req.payload.id).then(async function (user) {
-		var project = await Project.find({show_status:"public"});
+		/*var project = await Project.find({show_status:"public"});
 		var isLiked = false;
 		var result = [];
 		var liked = [];
@@ -55,13 +55,15 @@ const getAllProject = (req, res) =>{
 				}
 				
 			}
-		}
+		}*/
         const projects = await Project.find({user:user._id});
+        /*
         if(projects){
         	return res.json({"projects":projects,"result":result,"liked":liked});
     	}else{
     		return res.json({'projects':[],"result":result,"liked":liked});
-    	}
+    	}*/
+    	return res.json({"projects":projects});
     });
 };
 

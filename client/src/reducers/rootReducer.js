@@ -5,6 +5,8 @@ import photo from './photoReducer';
 import document from './documentReducer';
 import project from './projectReducer';
 import view from './viewReducer';
+import experience from './experienceReducer';
+import course from './courseReducer';
 
 export default history =>
     combineReducers({
@@ -13,5 +15,7 @@ export default history =>
         photo,
         document,
         project,
-        view
+        view,
+        experience,
+        course
     });

@@ -5,13 +5,16 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {Grid} from '@material-ui/core';
+import {CircularProgress, Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import axios from '../../helpers/axiosConfig';
 import Divider from '@material-ui/core/Divider';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ReactDOM from 'react-dom';
 import ViewNav from './ViewNav';
+import {fetchViewCourses, fetchViewExperiences} from '../../actions/viewAction';
+import Alert from '@material-ui/lab/Alert';
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ({
     root: {
@@ -85,6 +88,33 @@ class MyAccordion extends Component {
         );
     }
 }
+const DisplayItems = (items) => {
+    let current = [];
+    let past = [];
+    let i = 0;
+    let j = 0;
+    items.forEach((item) => {
+        if (item.props.state === 'going') {
+            current[i] = item;
+            i++;
+        }
+        else {
+            past[j] = item;
+            j++;
+        }
+    });
+    return (
+      <div>
+          <Typography variant='h3'>Current Experience</Typography>
+          <br/>
+          {current}
+          <br />
+          <Typography variant='h3'>Past Experience</Typography>
+          <br/>
+          {past}
+      </div>
+    );
+};
 
 
 
@@ -102,54 +132,60 @@ class ViewExperience extends Component{
         axios.get(`/view/${user_id}`).then((res) => {
             this.setState({view_user:res.data});
         })
-
-        axios.get(`/view/${user_id}/experience`).then((res) => {
-            let temp = {};
-            let i = 0;
-            if (res.data !== undefined) {
-                let expComp = res.data.map(item => {
-                    if (item.state === 'going'){
-                        temp[i] = {};
-                        (Object.entries(item).map(([key, value]) => {
-                            temp[i][key] = value;
-                        }));
-                        return (
-                            <MyAccordion _id={temp[i]._id} key={temp[i]._id} position={temp[i].position}
-                                         description={temp[i].description} start_date={temp[i].start_date}
-                                         state={temp[i].state} company={temp[i].company} end_date={temp[i++].end_date}
-                            />);
-                    }
-
-                });
-                ReactDOM.render(expComp, document.getElementById('experience_going'));
-            }
-            let tem = {};
-            let j = 0;
-            if (res.data !== undefined) {
-                let expComp = res.data.map(item => {
-                    if (item.state === 'end'){
-                        tem[j] = {};
-                        (Object.entries(item).map(([key, value]) => {
-                            tem[j][key] = value;
-                        }));
-                        return (
-                            <MyAccordion _id={tem[j]._id} key={tem[j]._id} position={tem[j].position}
-                                         description={tem[j].description} start_date={tem[j].start_date}
-                                         state={tem[j].state} company={tem[j].company} end_date={tem[j++].end_date}
-                            />);
-                    }
-
-                });
-                ReactDOM.render(expComp, document.getElementById('experience_end'));
-            }
-
-        })
+        this.props.dispatch(fetchViewExperiences(user_id));
     }
 
 
 
     render(){
     const {classes} = this.props;
+    console.log(this.props);
+        let content;
+        const {error, isFetching, view_experiences} = this.props.view;
+
+        if (error) {
+            content = <Alert severity="error">{error}</Alert>;
+        } else if (isFetching) {
+            //show the circular progress bar if database is still process
+            content = (
+              <Grid container justify="center" alignItems="center">
+                  <CircularProgress color="primary" />
+              </Grid>
+            );
+        } else if (!view_experiences) {
+            content = (
+              <Grid container justify="center" alignItems="center">
+                  <Typography>
+                      No experience found
+                  </Typography>
+              </Grid>
+            );
+        } else {
+            let experienceArray = {};
+            let i = 0;
+            let experienceObj = view_experiences.map((item) => {
+                experienceArray[i] = {};
+                Object.entries(item).map(([key, value]) => {
+                    experienceArray[i][key] = value;
+                });
+                return (
+                  <MyAccordion
+                    _id={experienceArray[i]._id}
+                    key={experienceArray[i]._id}
+                    position={experienceArray[i].position}
+                    description={experienceArray[i].description}
+                    start_date={experienceArray[i].start_date}
+                    state={experienceArray[i].state}
+                    company={experienceArray[i].company}
+                    end_date={experienceArray[i++].end_date}
+                    update={this.update}
+                    delete={this.deleteExperience}
+                    edit={this.editExperience}
+                  />
+                );
+            })
+            content = DisplayItems(experienceObj)
+        }
     return (
       <Fragment>
           <ViewNav view_user={this.state.view_user}/>
@@ -171,15 +207,7 @@ class ViewExperience extends Component{
           <br />
           <Grid container justify="center" direction="row" spacing="3">
               <Grid item xs={12} sm={9}>
-                  <div className={classes.body}>
-                      <h3 className={classes.NunitoFont}>Current position</h3>
-                      <br />
-                      <div id="experience_going"/>
-                      <br />
-                      <br />
-                      <h3 className={classes.NunitoFont}>Past Experience</h3>
-                      <div id="experience_end"/>
-                  </div>
+                  {content}
               </Grid>
           </Grid>
       </Fragment>

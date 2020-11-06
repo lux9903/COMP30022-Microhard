@@ -9,6 +9,8 @@ Microhard is a COMP30022 capstone project that delivers a solution to the follow
 To tackle this problem, we have chosen to build a MERN stack application. The frontend is written in ReactJS / Redux. The backend is written in Node.js and Express. MongoDB Atlas is used to store our documents and files. Our CI/CD pipeline is through Github Actions where unit testing occurs. Finally, after testing is successfuly, the application is deployed to Heroku. 
 The React UI framework used was Material-UI, providing a consistent theme and palette to the application. 
 
+## Technical Manual
+[Can be accessed throgh this link](https://github.com/lux9903/COMP30022-Microhard/wiki)
 ## Installation requirements
 ### Prerequisites
 This tutorial will cover the process of setting up the development environment on your local computer for this application.
@@ -132,6 +134,7 @@ Project {
     'status': Project's progress-status (In Progress/Complete/Cancel);
     'show_status': Project's show-status (Public/Private);
     'contributors': List of contributors;
+    'skills': List of skills tag that relevant to the project;
     'rating': Number of people give like to the project;
     'process': The process list will describing the project' progression and tasks involved, consist of ProcessId, process's description and tasks list (nodes);
     'nodes': The tasks list belong to certain process, consist of NodeId and description;
@@ -193,16 +196,16 @@ server.js
 
 ## Files in the Dashboard directory
 
-| Course       | Document         | Photos          | Profile          | Project            |
-|--------------|------------------|-----------------|------------------|--------------------|
-| Course.jsx   | AddDocument.jsx  | Image.jsx       | EditAvatar.jsx   | Project_view.jsx   |
-|              | Documents.jsx    | ImageGrid.jsx   | Profile.jsx      | Project_edit.jsx   |
-|              | EditDocument.jsx |                 |                  | Projectlist.jsx    |
-|              |                  |                 |                  | General.jsx        |
-|              |                  |                 |                  | Status.jsx         |   
-|              |                  |                 |                  | Contributors.jsx   |  
-|              |                  |                 |                  | Process.jsx        | 
-|              |                  |                 |                  | Timeline.jsx       |      
+| Course                | Document                   | Photos                    | Profile                  | Project                    |
+|-----------------------|----------------------------|---------------------------|--------------------------|----------------------------|
+| Course.jsx            | AddDocument.jsx            | Image.jsx                 | EditAvatar.jsx           | Project_view.jsx           |
+|                       | Documents.jsx              | ImageGrid.jsx             | Profile.jsx              | Project_edit.jsx           |
+|                       | EditDocument.jsx           |                           |                          | Projectlist.jsx            |
+|                       |                            |                           |                          | General.jsx                |
+|                       |                            |                           |                          | Status.jsx                 |   
+|                       |                            |                           |                          | Contributors.jsx           |  
+|                       |                            |                           |                          | Process.jsx                | 
+|                       |                            |                           |                          | Timeline.jsx               |      
   
 
 
