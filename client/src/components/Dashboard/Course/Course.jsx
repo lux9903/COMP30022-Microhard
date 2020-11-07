@@ -49,6 +49,7 @@ const useStyles = (theme) => ({
   },
 });
 
+//Display course information in grid by year and semester
 function MyGrid(props) {
   let keys = Object.keys(props.courses);
   let i = 0;
@@ -190,181 +191,7 @@ function MyGrid(props) {
   );
 }
 
-/*
-function MyGrid2(props) {
-
-  let summer = [], winter = [], sem1 = [], sem2 = [];
-  props.courseArray.forEach((course) => {
-      switch (course.sem) {
-      case 'Sem1':
-        sem1.push(course.code + '\n');
-        break;
-      case 'Sem2':
-        sem2.push(course.code + '\n');
-        break;
-      case 'Winter':
-        winter.push(course.code + '\n');
-        break;
-      case 'Summer':
-        summer.push(course.code + '\n');
-        break;
-      }
-  })
-
-  let gridByYear = () => {
-    if (i === 0) {
-      color = '#88B9EB';
-      i = 1;
-    } else {
-      color = '#ffff';
-      i = 0;
-    }
-  };
-
-
-  let keys = Object.keys(props.courses);
-  let i = 0;
-  let color;
-
-  let gridByYear = keys.map((key) => {
-    let summer = [],
-      winter = [],
-      sem1 = [],
-      sem2 = [];
-    {
-      props.courses[key].map((value) => {
-        switch (value.sem) {
-          case 'Sem1':
-            sem1.push(value.code + '\n');
-            break;
-          case 'Sem2':
-            sem2.push(value.code + '\n');
-            break;
-          case 'Winter':
-            winter.push(value.code + '\n');
-            break;
-          case 'Summer':
-            summer.push(value.code + '\n');
-            break;
-        }
-      });
-    }
-    if (i === 0) {
-      color = '#88B9EB';
-      i = 1;
-    } else {
-      color = '#ffff';
-      i = 0;
-    }
-    return (
-      <div>
-        <Grid
-          container
-          style={{backgroundColor: color}}
-          spacing={2}
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Grid item sm={1}>
-            <Typography
-              align="right"
-              style={{fontFamily: 'sans-serif', fontSize: 22}}
-            >
-              {key}
-            </Typography>
-            <br />
-          </Grid>
-          <Divider orientation="vertical" flexItem />
-          <Grid item sm={2}>
-            <Typography align="center" variant="h5">
-              {summer}
-            </Typography>
-            <br />
-          </Grid>
-          <Divider orientation="vertical" flexItem />
-          <Grid item sm={2}>
-            <Typography align="center" variant="h5">
-              {sem1}
-            </Typography>
-            <br />
-          </Grid>
-          <Divider orientation="vertical" flexItem />
-          <Grid item sm={2}>
-            <Typography align="center" variant="h5">
-              {winter}
-            </Typography>
-            <br />
-          </Grid>
-          <Divider orientation="vertical" flexItem />
-          <Grid item sm={2}>
-            <Typography align="center" variant="h5">
-              {sem2}
-            </Typography>
-            <br />
-          </Grid>
-        </Grid>
-      </div>
-    );
-  });
-
-  return (
-    <div>
-      <br />
-      <br />
-      <Grid container spacing={2} justify="space-evenly">
-        <Grid item sm={1}>
-          <br />
-        </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid item sm={2}>
-          <Typography
-            align="center"
-            style={{fontFamily: 'sans-serif', fontSize: 22}}
-          >
-            Summer
-          </Typography>
-          <br />
-        </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid item sm={2}>
-          <Typography
-            align="center"
-            style={{fontFamily: 'sans-serif', fontSize: 22}}
-          >
-            Semester 1
-          </Typography>
-          <br />
-        </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid item sm={2}>
-          <Typography
-            align="center"
-            style={{fontFamily: 'sans-serif', fontSize: 22}}
-          >
-            Winter
-          </Typography>
-          <br />
-        </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid item sm={2}>
-          <Typography
-            align="center"
-            style={{fontFamily: 'sans-serif', fontSize: 22}}
-          >
-            Semester 2
-          </Typography>
-          <br />
-        </Grid>
-      </Grid>
-      {gridByYear}
-      <br />
-    </div>
-  );
-}
-
- */
-
-
+//component to display course information
 class MyAccordion extends Component {
   render() {
     return (
@@ -397,6 +224,7 @@ class MyAccordion extends Component {
   }
 }
 
+//maps all courses to accordions
 function GetAccords(props) {
   let accords = props.courses.map((elem) => {
     return (
@@ -410,10 +238,10 @@ function GetAccords(props) {
       </div>
     );
   });
-
   return <div>{accords}</div>;
 }
 
+//function to display courses in a list
 function GetList(props) {
   return (
     <div>
@@ -453,6 +281,7 @@ function GetList(props) {
   );
 }
 
+//form used to edit or create new courses
 function MyForm(props) {
   let semesters = [
     {value: 'Sem1', label: 'Semester 1'},
@@ -640,22 +469,21 @@ function MyForm(props) {
   );
 }
 
+//Button used in GetList to open the form and edit a course
 function EditButton(props) {
   const [open, setOpen] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleAccept = (values) => {
     props.edit(props._id, values);
     setOpen(false);
     setTimeout(() => props.update(), 400);
   }
-
   return (
     <div>
       <Button size="small" onClick={handleClickOpen}>
@@ -672,24 +500,21 @@ function EditButton(props) {
   );
 }
 
+//Button used in GetList to open the form and delete a course
 function DeleteButton(props) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleCancel = () => {
     setOpen(false);
   };
-
   const handleAccept = () => {
     props.delete(props._id);
     setOpen(false);
     setTimeout(() => props.update(), 400);
-
   };
-
   return (
     <div>
       <Button size="small" color="primary" onClick={handleClickOpen}>
@@ -723,6 +548,7 @@ function DeleteButton(props) {
   );
 }
 
+//Main class to display the course page
 class Course extends Component {
   constructor(props) {
     super(props);
@@ -739,26 +565,20 @@ class Course extends Component {
   createCourse(values) {
     this.props.dispatch(postCourse(values));
   }
-
   updateCourse(_id, values) {
     this.props.dispatch(editCourse(_id, values))
   }
-
   update() {
     this.props.dispatch(fetchCourses());
   }
-
   deleteCourse(_id) {
     this.props.dispatch(deleteCourse(_id))
   }
-
   componentDidMount() {
     this.props.dispatch(fetchCourses());
   }
-
   render() {
     const {classes} = this.props;
-
     let overviewContent;
     let detailsContent;
 
@@ -767,14 +587,20 @@ class Course extends Component {
     if (isFetching) {
       //show the circular progress bar if database is still process
       overviewContent = (
-        <Grid container justify="center" alignItems="center" className={classes.root}>
-          <CircularProgress color="primary" className={classes.progress}/>
+        <div>
+        <br/>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress className={classes.progress}/>
         </Grid>
+        </div>
       );
       detailsContent = (
-        <Grid container justify="center" alignItems="center" className={classes.root}>
-          <CircularProgress color="primary" className={classes.progress}/>
-        </Grid>
+        <div>
+          <br/>
+          <Grid container justify="center" alignItems="center">
+            <CircularProgress className={classes.progress}/>
+          </Grid>
+        </div>
       );
     } else if (!courses) {
       overviewContent = (
@@ -814,8 +640,7 @@ class Course extends Component {
           i++;
         })
       });
-      //various ways to display data
-
+      //display data in each tab
       detailsContent = <GetList courses={rows} edit={this.updateCourse}
                                 update={this.update} delete={this.deleteCourse} />;
       overviewContent =

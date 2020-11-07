@@ -16,6 +16,12 @@ export const {
   deletePhotoSuccess,
   deletePhotoFailure,
   updatePhotoFailure,
+  fetchAvatarStarted,
+  fetchAvatarSuccess,
+  fetchAvatarFailure,
+  postAvatarStarted,
+  postAvatarSuccess,
+  postAvatarFailure,
 } = createActions(
   {
     FETCH_PHOTOS_SUCCESS: (data) => ({data}),
@@ -26,11 +32,17 @@ export const {
     POST_PHOTO_FAILURE: (error) => ({error}),
     DELETE_PHOTO_SUCCESS: (data) => ({data}),
     DELETE_PHOTO_FAILURE: (error) => ({error}),
+    FETCH_AVATAR_SUCCESS: (data) => ({data}),
+    FETCH_AVATAR_FAILURE: (error) => ({error}),
+    POST_AVATAR_SUCCESS: (data) => ({data}),
+    POST_AVATAR_FAILURE: (error) => ({error}),
   },
   'FETCH_PHOTOS_STARTED',
   'FETCH_PHOTO_STARTED',
   'POST_PHOTO_STARTED',
-  'DELETE_PHOTO_STARTED'
+  'DELETE_PHOTO_STARTED',
+  'FETCH_AVATAR_STARTED',
+  'POST_AVATAR_STARTED',
 );
 
 export const fetchPhotos = (page) => {
@@ -83,6 +95,33 @@ export const postPhoto = (url, data) => {
       dispatch(push('/image'));
     } catch (error) {
       dispatch(postPhotoFailure('Could not add photo.'));
+    }
+  };
+};
+
+export const fetchAvatar = (page) => {
+  return async (dispatch) => {
+    dispatch(fetchAvatarStarted());
+
+    try {
+      const response = await axios.get(`/avatar?page=${page}`);
+      dispatch(fetchAvatarSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchAvatarFailure('Could not retrieve avatar.'));
+    }
+  };
+};
+
+export const postAvatar = (data,config) => {
+  return async (dispatch) => {
+    dispatch(postPhotoStarted());
+
+    try {
+      const response = await axios.post( '/avatar/upload', data, config)
+      dispatch(postAvatarSuccess(response.data));
+      dispatch(push('/'));
+    } catch (error) {
+      dispatch(postAvatarFailure('Could not add avatar.'));
     }
   };
 };

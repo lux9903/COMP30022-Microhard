@@ -63,12 +63,43 @@ export default handleActions(
       isUpdating: false,
       error: action.payload.error,
     }),
+    FETCH_AVATAR_STARTED: (state) => ({
+      ...state,
+      isFetching: true,
+      error: null,
+    }),
+    FETCH_AVATAR_SUCCESS: (state, action) => ({
+      ...state,
+      isFetching: false,
+      avatar: action.payload.data.files,
+    }),
+    FETCH_AVATAR_FAILURE: (state, action) => ({
+      ...state,
+      isFetching: false,
+      error: action.payload.error,
+    }),
+    POST_AVATAR_STARTED: (state) => ({
+      ...state,
+      isUpdating: true,
+      error: null,
+    }),
+    POST_AVATAR_SUCCESS: (state, action) => ({
+      ...state,
+      isUpdating: false,
+      avatar: [action.payload.data],
+    }),
+    POST_AVATAR_FAILURE: (state, action) => ({
+      ...state,
+      isUpdating: false,
+      error: action.payload.error,
+    }),
   },
   {
     isFetching: false,
     isUpdating: false,
     photos: [],
     photo: {},
+    avatar: [],
     error: null,
   }
 );

@@ -45,7 +45,7 @@ export default function EditAvatar(props) {
           </DialogContent>
           <DialogActions>
             <label htmlFor="uploadPDFDocument">
-              <Button type="submit" color="primary" onClick={refreshPage}>
+              <Button type="submit" color="primary" onClick={handleClose}>
                 Upload
               </Button>
             </label>

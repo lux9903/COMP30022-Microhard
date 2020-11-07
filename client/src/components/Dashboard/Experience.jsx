@@ -39,7 +39,6 @@ const useStyles2 = (theme) => ({
   progress: {
     marginTop: theme.spacing(2),
     marginBottom:theme.spacing(2),
-    color: "white",
   },
 });
 
@@ -388,8 +387,8 @@ class Experience extends Component {
     } else if (isFetching) {
       //show the circular progress bar if database is still process
       content = (
-        <Grid container justify="center" alignItems="center" className={classes.root}>
-          <CircularProgress color="primary" className={classes.progress}/>
+        <Grid container justify="center" alignItems="center">
+          <CircularProgress color="primary" />
         </Grid>
       );
     } else if (!experiences) {
